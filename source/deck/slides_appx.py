@@ -1,397 +1,429 @@
-from deckkit import *
-import json, math
-from pptx.chart.data import CategoryChartData
-from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_LABEL_POSITION
-from paths import RENDERS as A, ORIGINAL as O, MODEL_JSON
-M = json.load(open(MODEL_JSON, encoding='utf-8'))
-B = M['base']; SEEDP = M['seed']; HIRES = M['hires']
+# SoftHand Seed IR deck v2 - appendix (light design, 개조식 copy, table-first).
+from kit import *
+import kit
+from slides_main import M, RAW, REN, ORI
 
-def ahead(s, code, kicker, title, sub=None):
-    dot(s, 0.6, 0.495, 0.1, OR)
-    text(s, 0.8, 0.42, 9.5, 0.26, f'APPENDIX  ·  {code}  ·  {kicker}', size=10, f='S', color=OR, spc=140, name='Kicker')
-    text(s, 0.6, 0.72, 12.13, 0.48, title, size=22, f='K', color=L_TEXT, ls=1.05, name='Title')
-    if sub: text(s, 0.6, 1.2, 12.13, 0.3, sub, size=11.5, color=L_TEXT2, name='Subtitle')
+APPX_LIST = [
+    ('A1', '주요 가정과 근거 수준'), ('A2', '단계별 점검 기준'), ('A3', '경쟁사 상세·로봇 제조사 분석'), ('A4', '피지컬 AI 흐름'),
+    ('A5', '시장 근거'), ('A6', '핸드 설계 상세'), ('A7', '성능 지표와 시험 방법'), ('A8', '스크루드라이버 기술 데모'),
+    ('A9', '수익 모델 가정'), ('A10', '5개년 손익 상세'), ('A11', '자금 사용 상세'), ('A12', '데이터 축적 계획'),
+    ('A13', '주방 데모 범위'), ('A14', '안전·인증·IP'), ('A15', '주요 위험과 대응'), ('A16', '출처'),
+]
+TOP = 2.0          # content top on appendix slides
+BOTTOM = 6.9       # content bottom (footer starts below)
 
-def lslide(prs, code):
-    s = new_slide(prs, code, bg=L_BG)
-    return s
 
-def lcard(s, x, y, w, h, title=None, tcolor=OR):
-    c = card(s, x, y, w, h, fill=L_CARD, r=0.08, shadow=True, name='Light card')
-    if title: text(s, x + 0.2, y + 0.16, w - 0.35, 0.22, title, size=9, f='S', color=tcolor, spc=100)
-    return c
+def aheader(s, code, title, sub=None):
+    text(s, MX, 0.55, 8, 0.28, f'부록 {code}', size=11, bold=True, color=T['accent'])
+    text(s, MX, 0.9, CW, 0.52, title, size=26, bold=True, line=0.95, label='atitle ' + code)
+    if sub: text(s, MX, 1.48, CW, 0.3, sub, size=13, color=T['text2'], label='asub ' + code)
 
-def lnote(s, t, y=6.62):
-    text(s, 0.6, y, 12.13, 0.4, t, size=9, color=L_TEXT2, ls=1.15)
+
+def afoot(s, code, note=None):
+    footer(s, code, note=note)
+
+
+def bullets(s, x, y, w, items, size=12, gap=4, label='bullets', color=None):
+    hh = text_h(items, size, w - 0.18, space_after=gap)
+    text(s, x, y, w, hh + 0.05, items, size=size, bullet='•', indent=0.18, space_after=gap, color=color or T['text2'], label=label)
+    return hh
+
+
+def block_title(s, x, y, w, t, color=None):
+    text(s, x, y, w, 0.3, t, size=13, bold=True, color=color or T['text'])
+    hline(s, x, y + 0.36, w, color=T['text'], lw=1.0)
+    return y + 0.48
+
+
+# ---------------------------------------------------------------- A0 divider
+def a00(prs):
+    s = new_slide(prs, 'A0 divider')
+    text(s, MX, 0.9, 6, 0.9, '부록', size=40, bold=True)
+    text(s, MX, 1.85, 6, 0.6, '본문의 근거와 상세 계획', size=16, color=T['text2'])
+    half = (len(APPX_LIST) + 1) // 2
+    for col in range(2):
+        x = MX + 4.4 + col * 4.0
+        y = 0.95
+        for code, t in APPX_LIST[col * half:(col + 1) * half]:
+            text(s, x, y, 0.65, 0.3, code, size=13, bold=True, color=T['accent'])
+            text(s, x + 0.65, y, 3.2, 0.3, t, size=13, label='toc ' + code)
+            y += 0.5
+            hline(s, x, y - 0.1, 3.6)
+    footer(s, 'A')
+
 
 # ---------------------------------------------------------------- A1 evidence
 def a01(prs):
-    s = lslide(prs, 'A1')
-    ahead(s, 'A1', '근거 상태', '무엇이 확인되었고, 무엇이 가설인가', 'Evidence Status — 투자자는 미완성보다, 사실과 가설을 구분하는 Founder를 신뢰한다')
-    rows = [['구분', '현재 내용', 'IR 표기 원칙'],
-            ['FACT (확인됨)', '사업 아이디어 · 기술 구상 · IR 초안(2026.10). 외부 시장 자료(IFR · BCG)는 출처 확인.\n법인 · 창업팀 · 특허 · 시제품 · 고객계약 · 매출 · 보유자금은 확인되지 않음', '회사 실적으로 표현하지 않음\n→ Founding & Seed Proposal'],
-            ['PLAN (계획)', 'SoftHand-4 V1 · Machine Tending Skill Pack · Design Partner 3곳 · Paid PoC 5건 · Robot Platform 2종\n고객 인터뷰 30곳 · 24개월 Roadmap · Seed Gate', 'Planned · Target · Seed Milestone'],
-            ['ASSUMPTION (가정)', 'Hand 패키지 ₩1,500만(원가 ₩950만→₩750만) · Skill Package ₩300만 · Runtime 연 ₩150만\nPaid PoC ₩5,000만 · Base Case 매출 · 손익 · 성능 목표치', 'Assumption · Management Forecast'],
-            ['MISSING EVIDENCE', 'Founder · 핵심인력 이력 · 시제품 / 무편집 시험영상 · 특허 / FTO · 고객 인터뷰 · LOI · Design Partner\nPaid PoC · BOM · 고객 Baseline · 동일조건 비교시험 · 실측 현금계획', '[정보 입력 필요] 표기\n→ 실사 전 확보']]
-    table(s, 0.6, 1.75, 12.13, [2.0, 7.2, 2.9], rows, row_h=[0.38, 0.95, 0.85, 0.85, 0.95], size=10, head_size=10, name='Evidence table')
-    lnote(s, 'Concept Rendering은 실제 시제품이 아니다 — 실제 Prototype 사진 → 시험 영상 → 고객 현장 → CAD → Concept 순으로 교체한다. 본 Deck의 SoftHand 이미지는 모두 동일한 SoftHand-4 Concept 모델(4지 · 대향 Thumb · Graphite Palm · Orange Pad · White Wrist Module)로 통일했다.', y=6.05)
-    footer(s, 'A1', appendix=True, light=True)
+    s = new_slide(prs, 'A1')
+    aheader(s, 'A1', '주요 가정과 근거 수준', '확인된 사실, 계획, 가정, 확보가 필요한 자료를 구분해 표기')
+    rows = [
+        [('확인된 사실', {'bold': True}), '사업 아이디어·기술 구상·IR 초안 (2026.10)\n외부 시장 자료(IFR·BCG) 출처 확인\n법인·창업팀·특허·시제품·고객 계약·매출·보유 자금은 미확인',
+         '회사 실적으로 표현하지 않음\n창업·Seed 제안서로 표기'],
+        [('계획', {'bold': True}), 'SoftHand-4 V1, 머신텐딩 스킬 팩, 공동개발 고객 3곳, 유료 PoC 5건, 로봇 2종\n고객 인터뷰 30곳, 24개월 로드맵, 단계별 점검 기준',
+         '"목표", "계획"으로 표기'],
+        [('가정', {'bold': True}), '핸드 1,500만 원 (원가 950만 → 750만 원), 스킬 300만 원, 런타임 연 150만 원\n유료 PoC 5,000만 원, 기본 시나리오 매출·손익, 성능 목표치',
+         '"가정", "경영 계획"으로 표기'],
+        [('확보 필요 자료', {'bold': True}), '창업자·핵심 인력 이력, 시제품·무편집 시험 영상, 특허·FTO\n고객 인터뷰·LOI·공동개발 고객, 유료 PoC, BOM, 고객 기존 수치, 동일 조건 비교시험',
+         '[정보 입력 필요] 표기\n투자 실사 전 확보'],
+    ]
+    table(s, MX, TOP + 0.05, CW, ['구분', '현재 내용', '표기 원칙'], rows, col_w=[2.0, 6.83, 3.0], size=12, pad=0.09,
+          max_h=3.9, label='A1 table')
+    footnote(s, '이미지: 모든 SoftHand 이미지는 같은 SoftHand-4 콘셉트 모델(4지·대향 엄지·그라파이트 손바닥·주황 패드·흰색 손목 모듈)로 통일. '
+                '실물 확보 시 시제품 사진, 시험 영상, 고객 현장, CAD 순으로 교체')
+    afoot(s, 'A1')
 
-# ---------------------------------------------------------------- A2 seed gates
+
+# ---------------------------------------------------------------- A2 gates
 def a02(prs):
-    s = lslide(prs, 'A2')
-    ahead(s, 'A2', 'Seed Gate', 'Seed Gate: 실패 조건과 의사결정을 먼저 정한다', '투자금은 R&D 소비가 아니라 가설검증 자본이다 — 각 Gate는 이사회 · 투자자와 분기별 KPI 리뷰로 판단')
-    rows = [['Gate', '검증하는 가설', '통과 기준 (Target)', '미달 시 결정', '자금 영향'],
-            [('M6', {'color': OR, 'f': 'K', 'size': 13}), '기술: 하나의 Hand로 대표 Sequence 수행', '대표 Task 5종 반복 시연 · 목표 토크 · 반복성 Log 공개', 'Hand Architecture 재검토\n(구동 방식 · 골격 · 잠금)', '후속 채용 보류 · Prototype 예산 재배분'],
-            [('M12', {'color': OR, 'f': 'K', 'size': 13}), '고객: 전환비용 개선에 돈을 낸다', 'Paid PoC 1건+ · 고객 Baseline 데이터 · 지불의사 확인', 'Beachhead · Task 재정의\n(다른 공정 · 다른 고객군)', 'Milestone Extension 집행 재검토'],
-            [('M18', {'color': OR, 'f': 'K', 'size': 13}), '제품: 반복 가능한 제품 · Skill 재사용', 'Design Freeze · First Repeat Order · 재사용률 측정 시작 · Platform B 통합', 'Platform Thesis 재검토\n→ Product + Service 모델 검토', f"Extension ₩{SEEDP['ext6']:.1f}억 집행 여부 결정"],
-            [('M24', {'color': OR, 'f': 'K', 'size': 13}), '확장: 반복 발주 · Skill 이식성', 'Repeat Customer 2곳+ · 2 Platform Portability · Gross Margin 검증', 'Series A Scale-up 보류\n축소 운영 · Bridge 검토', 'Series A 규모 · 시점 결정']]
-    table(s, 0.6, 1.75, 12.13, [0.8, 2.6, 3.4, 2.9, 2.4], rows, row_h=[0.38, 0.85, 0.85, 0.85, 0.85], size=10, name='Gate table', first_col_bold=True)
-    lcard(s, 0.6, 5.72, 12.13, 1.05, 'GATE 운영 원칙')
-    text(s, 0.8, 6.18, 11.8, 0.55, ['Gate 통과 조건 미달 시 → 범위 축소 또는 피벗을 결정한 뒤 다음 단계 자금을 집행한다 (18개월 Core Runway + 6개월 Milestone Extension 구조와 연동)',
-                                     '모든 시험 결과는 시험 횟수 · 성공 건수 · 최초 시도 / 재시도 분리 · 신뢰구간으로 보고한다 — 데모 영상이 아니라 Log로 판단'], size=10, color=L_TEXT2, ls=1.25)
-    footer(s, 'A2', appendix=True, light=True)
+    s = new_slide(prs, 'A2')
+    aheader(s, 'A2', '단계별 점검 기준', '실패 조건과 결정을 먼저 정하고 자금을 단계별로 집행')
+    rows = [
+        [('M6', {'bold': True, 'color': T['accent']}), '기술: 핸드 하나로 대표 공정 수행', '대표 작업 5종 반복 시연\n목표 토크·반복성 기록 공개', '핸드 구조 재검토\n(구동 방식·골격·잠금)', '후속 채용 보류\n시제품 예산 재배분'],
+        [('M12', {'bold': True, 'color': T['accent']}), '고객: 전환 비용 개선에 비용 지불', '유료 PoC 1건 이상\n고객 기존 수치 확보, 지불의사 확인', '첫 시장·작업 재정의\n(다른 공정·다른 고객군)', '6개월 연장 자금 집행 재검토'],
+        [('M18', {'bold': True, 'color': T['accent']}), '제품: 반복 판매·스킬 재사용', '설계 확정, 첫 재구매\n재사용률 측정 시작, 로봇 B 통합', '플랫폼 가설 재검토\n제품 + 서비스 모델 검토', 'Series A 착수 시점 조정'],
+        [('M24', {'bold': True, 'color': T['accent']}), '확장: 재구매·스킬 이식성', '재구매 고객 2곳 이상\n로봇 2종 호환, 매출총이익률 검증', 'Series A 확장 보류\n축소 운영·브리지 검토', 'Series A 규모·시점 결정'],
+    ]
+    table(s, MX, TOP + 0.05, CW, ['시점', '검증 가설', '통과 기준 (목표)', '미달 시 결정', '자금 영향'], rows,
+          col_w=[0.85, 2.85, 3.13, 2.75, 2.25], size=12, pad=0.09, max_h=3.6, label='A2 table')
+    by = 5.85
+    hline(s, MX, by, CW, color=T['text'], lw=1.0)
+    bullets(s, MX, by + 0.15, CW, ['점검은 이사회·투자자와 분기별 지표 리뷰로 판단, 미달 시 범위 축소 또는 방향 전환을 결정한 뒤 다음 단계 자금 집행 (18개월 + 6개월 구조와 연동)',
+                                    '시험 결과는 시험 횟수·성공 건수·최초 시도와 재시도 분리·신뢰구간으로 보고, 데모 영상이 아닌 기록으로 판단'], size=12, label='A2 notes')
+    afoot(s, 'A2')
 
-# ---------------------------------------------------------------- A3 red-team index
+
+# ---------------------------------------------------------------- A3 competition detail
 def a03(prs):
-    s = lslide(prs, 'A3')
-    ahead(s, 'A3', 'VC Red-Team', 'VC 예상 질문 17개와 본문 답변 위치', '실제 투자심의에서 나올 질문에 본문만으로 답할 수 있는지 점검한 결과')
-    qa = [('왜 기존 Adaptive Gripper로는 충분하지 않은가?', '형상 Pick은 강하지만 Door · Lever 조작과 토크는 제한 → 결국 설비 개조 · 추가 툴', '08'),
-          ('왜 Machine Tending에서 SoftHand가 필요한가?', '한 Cell에 Pick · Door · Lever · Button이 모여 Hand 하나의 가치가 가장 큼', '05·06'),
-          ('전용 End-effector가 더 싼 작업은 어떻게 하나?', '고속 단일 SKU · 고토크 체결은 공략하지 않음 — Hand가 개조를 줄이는 작업부터', '05'),
-          ('첫 번째 실제 구매자는 누구인가?', '다품종 가공 라인 제조기업 생산기술팀(가설) · 도입은 Robot SI 경유 · 90일 인터뷰', '05·11'),
-          ('왜 ₩1,500만 Hand를 사는가?', '비교 대상은 전용 Tooling + 설비 개조 + Engineering × 전환 횟수 · Paid PoC로 검증', '07'),
-          ('SI 회사가 되는 것을 어떻게 막는가?', '승인 Task 목록 내 수주 · 공통 Task를 Skill Pack으로 제품화 · 재사용 매출 KPI', '09'),
-          ('2 · 3번째 고객에서 무엇이 재사용되나?', 'Hand HW · Control Logic · ToolSkill · Runtime / Calibration Tool → 재사용률 측정', '09'),
-          ('동일 Skill이 다른 Robot에서도 동작하나?', '아직 가설 — Robot 독립 Task 정의 + Calibration · 24개월 내 2 Platform 검증', '10'),
-          ('Soft 구조가 토크 · 내구성을 버티나?', '하중은 골격이 부담 · 작업 순간 강성 상승 · 교체형 패드 · 30만 cycle · M6 Gate', '04·A7'),
-          ('왜 지금 5지 Hand가 아닌가?', '4지가 Machine Tending 최소 구성 · 비용 · 내구성 우선 · 5지는 Series A 이후', '04'),
-          ('왜 Kitchen을 주력시장에 두지 않나?', '회수기간이 가동률에 민감 · 위생 · 안전 부담 → 공장이 사업성, 주방은 Demonstrator', '12·A15'),
-          ('왜 Robot OEM이 직접 만들지 않나?', '다수 OEM은 Arm · Controller 집중, EOAT는 생태계 의존 · 멀티브랜드 Skill은 독립 Layer', '11·A4'),
-          ('OEM Design Win 이전에도 생존 가능한가?', 'Base Case는 OEM · Kitchen 0원 — HW + Skill + Integration으로 Y5 손익분기 근접(가정)', 'A11'),
-          ('20억원으로 24개월이 가능한가?', '8명 단계 채용 ₩9.6억 포함 · 18M Core + 6M Extension · 매출 0원이어도 M24', '15·A12'),
-          ('24개월 후 어떤 숫자면 Series A인가?', 'Paid PoC 5+ · Repeat 2+ · 완료율 95%+ · 30만 cycle · 2 Platform · 재사용률 ↑', '15'),
-          ('Repeat Customer가 나오지 않으면?', 'M24 Gate — Series A Scale-up 보류 · Beachhead 재정의 · 축소 운영', '13·A2'),
-          ('왜 이 Founder가 이 사업을 해야 하는가?', '[정보 입력 필요] — Founder 정보 없이는 답할 수 없음 (외부 제출 전 필수)', '14')]
-    rows = [['#', '질문', '본문의 답 (요약)', 'Slide']]
-    for i, (q, a, sl) in enumerate(qa):
-        rows.append([f'{i+1}', q, (a, {'color': YEL if '[정보' in a else L_TEXT2, 'f': 'S' if '[정보' in a else 'R'}), sl])
-    table(s, 0.6, 1.62, 12.13, [0.35, 3.9, 6.9, 0.85], rows, row_h=[0.3] + [0.276] * 17, size=8.5, head_size=9, name='Red team table', col_align=['c', 'l', 'l', 'c'])
-    footer(s, 'A3', appendix=True, light=True)
+    s = new_slide(prs, 'A3')
+    aheader(s, 'A3', '경쟁사 상세·로봇 제조사 분석', '공개 정보 기반 정성 비교, 독립 비교시험 아님 (Seed 기간 동일 조건 비교시험으로 검증)')
+    rows = [
+        [('전통 그리퍼·EOAT', {'bold': True}), '평행·진공·맞춤 EOAT (예: SCHUNK 등)', '정밀·저가·고신뢰', '작업마다 교체, 사람용 장치 조작은 설비 개조'],
+        [('적응형 그리퍼', {'bold': True}), 'Robotiq Adaptive Gripper', '다양한 형상 파지, 통합 용이', '문·레버 조작과 공구 토크 제한'],
+        [('소프트 핸드', {'bold': True}), 'qb SoftHand Industry (5지·1모터·파워그립 2kg, 제조사 공개)', '형상 적응, 안전한 접촉', '공구 토크·강성 전환 제한'],
+        [('다지 로봇 핸드', {'bold': True}), 'Shadow · Allegro · Tesollo DG-5F-S · Sharpa Wave · Tesla·Figure 자체 개발', '고자유도, 복잡한 조작', '비용·복잡도·내구성, 연구·휴머노이드 중심'],
+        [('전용 설비', {'bold': True}), '전용 체결 툴, 전용 조리 설비 (예: Moley형 로봇 주방)', '특정 작업 최적', '범용성 없음, 설비 투자 큼'],
+        [('SoftHand-4 (목표)', {'bold': True, 'color': T['accent']}), '사람용 장치 조작 + 재사용 스킬', '—', '미검증, Seed 기간 비교시험 대상'],
+    ]
+    h1 = table(s, MX, TOP - 0.05, CW, ['범주', '대표 사례 (공개 정보)', '강점', '머신텐딩 관점 한계'], rows,
+               col_w=[1.85, 4.9, 2.0, 3.08], size=11, pad=0.05, max_h=3.0, label='A3 table')
+    oy = TOP - 0.05 + h1 + 0.22
+    text(s, MX, oy, CW, 0.3, '로봇 제조사(OEM)가 직접 만든다면', size=13, bold=True)
+    table(s, MX, oy + 0.34, CW, None, [
+        [('관찰', {'bold': True}), 'Tesla·Figure는 휴머노이드 손 내재화, 다수 산업용·협동로봇 제조사는 EOAT 파트너 생태계 의존, NVIDIA 레퍼런스 휴머노이드(2026.6)도 외부 촉각 핸드 채택'],
+        [('해석', {'bold': True}), '로봇 제조사는 경쟁자이자 판매 채널, 단일 제조사는 여러 브랜드에서 쓰는 스킬을 만들기 어려움'],
+        [('대응', {'bold': True}), '로봇 무관 통합, 로봇 2종 이식성 검증, OEM 파트너십 우선 (확장 계기 = OEM 채택)'],
+    ], col_w=[0.8, CW - 0.8], size=11, pad=0.05, max_h=1.2, label='A3 oem')
+    afoot(s, 'A3', note='출처: 제조사 공개 사양·보도자료 (A16: S5·S13·S14·S15) · 회사명은 범주 예시이며 성능 우열을 주장하지 않음')
 
-# ---------------------------------------------------------------- A4 competition detail
+
+# ---------------------------------------------------------------- A4 physical AI
 def a04(prs):
-    s = lslide(prs, 'A4')
-    ahead(s, 'A4', '경쟁사 상세', '경쟁 Category 상세와 OEM 내재화 분석', '위치는 공개 정보 기반 정성 배치 · 독립 비교시험 아님 — Seed 기간 동일조건 비교시험으로 검증')
-    rows = [['Category', '대표 사례 (공개 정보)', '강점', 'Machine Tending 관점 한계'],
-            ['전통 Gripper · EOAT', '평행 · 진공 · 맞춤 EOAT (예: SCHUNK 등)', '정밀 · 저가 · 고신뢰', '작업마다 교체 · Interface 조작은 설비 개조'],
-            ['Adaptive Gripper', 'Robotiq Adaptive Gripper', '다양한 형상 Pick · 통합 용이', 'Door · Lever 조작 · 도구 토크 제한'],
-            ['Soft Hand', 'qb SoftHand Industry (5지 · 1모터 · 파워그립 2kg, 제조사 공개)', '형상 적응 · 안전한 접촉', '도구 토크 · 강성 전환 제한'],
-            ['Dexterous / Humanoid Hand', 'Shadow · Allegro · Tesollo DG-5F-S · Sharpa Wave · Tesla · Figure 자체', '고자유도 · 복잡 조작', '비용 · 복잡도 · 내구성 → 연구 · 휴머노이드 중심'],
-            ['Dedicated Tool System', '전용 체결 툴 · 전용 조리 설비 (예: Moley형 로봇 주방)', '특정 작업 최적', '범용 아님 · 설비 투자 큼'],
-            [('Our Target', {'color': OR, 'f': 'K'}), 'SoftHand-4 + Machine Tending Skill Pack', 'Interface 조작 + 재사용 Skill (목표)', ('미검증 — Seed 기간 비교시험 대상', {'color': OR, 'f': 'S'})]]
-    table(s, 0.6, 1.72, 8.05, [1.9, 2.9, 1.7, 2.3], rows, row_h=[0.36] + [0.62] * 6, size=9, head_size=9.5, name='Competitor table')
-    lcard(s, 8.9, 1.72, 3.83, 4.1, 'OEM이 직접 만든다면?')
-    text(s, 9.1, 2.18, 3.5, 3.7, [[('관찰', {'f': 'S', 'color': L_TEXT})], 'Tesla · Figure는 휴머노이드 손을 내재화', '다수 산업용 · 협동로봇 OEM은 EOAT 파트너 생태계에 의존',
-                                   'NVIDIA Isaac GR00T 레퍼런스 휴머노이드(2026.6)도 외부 촉각 핸드(Sharpa Wave, 22 DoF) 채택', '',
-                                   [('해석', {'f': 'S', 'color': L_TEXT})], 'OEM은 경쟁자이자 채널 — 단일 OEM은 멀티브랜드 Skill을 만들기 어렵다', '',
-                                   [('대응', {'f': 'S', 'color': L_TEXT})], 'Robot-agnostic 통합 · 2 Platform 이식성 검증 · OEM 파트너십 우선 (Scale Trigger = Design Win)'], size=9.5, color=L_TEXT2, ls=1.18)
-    lnote(s, '출처: 제조사 공개 사양 · 보도자료 (Sources A17: S5 · S15 · S16 · S17). 회사명은 범주 예시이며 성능 우열을 주장하지 않는다.', y=6.15)
-    footer(s, 'A4', appendix=True, light=True)
+    s = new_slide(prs, 'A4')
+    aheader(s, 'A4', '피지컬 AI 흐름: 두뇌·눈·몸은 상용화, 남은 병목은 손', '본문 08 "왜 지금인가"의 근거, 각 수치는 출처 발표 기준이며 독립 검증 아님')
+    rows = [
+        [('두뇌 · AI·VLA', {'bold': True}), '빠르게 발전', 'Gemini Robotics 1.5 (2025.9) · NVIDIA Isaac GR00T N1.6 (2026.1) · Physical Intelligence 기업가치 56억 달러 (2025.11)'],
+        [('눈 · 비전·엣지', {'bold': True}), '상용 수준', 'NVIDIA Jetson AGX Thor: 2,070 FP4 TFLOPS, 이전 세대 대비 AI 연산 7.5배 (2025.8)'],
+        [('몸 · 로봇 팔·휴머노이드', {'bold': True}), '대규모 보급', '산업용 로봇 가동 약 500만 대, 연 60만 대 이상 설치 (IFR, 2026.9) · Figure 기업가치 390억 달러 (2025.9)'],
+        [('손 · 현실 세계 조작', {'bold': True, 'color': T['accent']}), ('아직 병목', {'bold': True, 'color': T['accent']}),
+         '"The forearm and hand are more difficult than the entire rest of the robot." Elon Musk, Tesla 2025년 3분기 실적 발표 (2025.10)\n'
+         'NVIDIA 레퍼런스 휴머노이드(2026.6) 외부 촉각 핸드 채택 · Figure 03 촉각 손끝 (3g 감지, 2025.10)'],
+        [('자본 유입', {'bold': True}), '—', '로보틱스 스타트업 투자 2025년 150억 달러 (사상 최대), 2026년 상반기 188억 달러 (Crunchbase News, 2026.6)'],
+    ]
+    table(s, MX, TOP + 0.05, CW, ['단계', '상태', '근거 (출처·시점)'], rows, col_w=[2.6, 1.45, 7.78], size=12, pad=0.09, max_h=3.9, label='A4 table')
+    footnote(s, '해석: 두뇌·눈·몸이 상용화되면서 사람용 설비를 다루는 조작 계층이 병목. 장기 비전의 근거이며, 회사의 첫 매출 근거는 기존 설비의 자동화 전환 비용 (본문 03)')
+    afoot(s, 'A4', note='출처: A16 S4~S11')
 
-# ---------------------------------------------------------------- A5 physical AI signals
+
+# ---------------------------------------------------------------- A5 market evidence
 def a05(prs):
-    s = lslide(prs, 'A5')
-    ahead(s, 'A5', 'Physical AI 시장 신호', 'Physical AI Stack: 보고 판단하는 기술은 빨라졌고, 손이 남았다', '본문 Slide 16의 4단계 요약 근거 — 각 수치는 출처 발표 기준이며 독립 검증 아님')
-    rows = [['Layer', '상태', '근거 (출처 · 시점)'],
-            ['BRAIN  · AI / VLA', '빠르게 발전', 'Gemini Robotics 1.5 (2025.9) · NVIDIA Isaac GR00T N1.6 (2026.1) · Physical Intelligence 기업가치 $5.6B (2025.11)'],
-            ['EYES  · Vision / Edge', '상용 수준', 'NVIDIA Jetson AGX Thor — 2,070 FP4 TFLOPS, 이전 세대 대비 AI 연산 7.5배 (2025.8)'],
-            ['BODY  · Arm / Cobot / Humanoid', '대규모 보급', '산업용 로봇 가동 약 508만 대 · 연 60만 대+ 설치 (IFR 2026.9) · Figure 기업가치 $39B (2025.9)'],
-            [('HAND  · Manipulation', {'color': OR, 'f': 'K'}), ('여전히 어려운 문제', {'color': OR, 'f': 'S'}), '"The forearm and hand are more difficult than the entire rest of the robot." — Elon Musk, Tesla Q3 2025 Earnings Call (2025.10)\nNVIDIA 레퍼런스 휴머노이드(2026.6) 외부 촉각 핸드 채택 · Figure 03 촉각 손끝(3g 감지, 2025.10)'],
-            ['CAPITAL', '자본 유입', '로보틱스 스타트업 투자 2025년 $15B(사상 최대) → 2026년 상반기 $18.8B (Crunchbase News, 2026.6)']]
-    table(s, 0.6, 1.72, 12.13, [2.6, 1.6, 7.9], rows, row_h=[0.36, 0.62, 0.55, 0.62, 0.95, 0.55], size=9.5, head_size=9.5, name='Physical AI table')
-    lnote(s, '해석: Physical AI의 두뇌 · 눈 · 몸이 상용화되면서, 현실 세계의 사람용 Interface를 다루는 Manipulation Layer가 병목으로 남는다. 다만 이것은 장기 Vision의 근거이며, 회사의 첫 매출 근거는 기존 생산설비의 자동화 전환비용(Slide 02)이다.', y=5.65)
-    footer(s, 'A5', appendix=True, light=True)
+    s = new_slide(prs, 'A5')
+    aheader(s, 'A5', '시장 근거', '첫 시장은 설치 기반, 장기 상한은 로봇 제조사 출하량 (OEM 매출은 계산하지 않음)')
+    text(s, MX, TOP + 0.05, 4.6, 0.3, '연간 산업용 로봇 신규 설치 (천 대, IFR)', size=12, bold=True, color=T['muted'])
+    column_chart(s, MX, TOP + 0.45, 4.6, 3.1, ['2024', '2025', '2026F', '2029F'], [('설치', [542, 603, 655, 806])], [T['grey_bar']],
+                 stacked=False, vmax=950, fmt='0', gap=60, plot=(0.03, 0.1, 0.94, 0.78), size=12)
+    text(s, MX, TOP + 3.85, 4.6, 0.6, '가동 중 산업용 로봇 약 500만 대 (2025년 말)\n한국 로봇 밀도 1,220대 / 직원 1만 명 (세계 1위)', size=12, color=T['text2'], label='A5 cap')
+    rx = MX + 5.1; rw = W - MX - rx
+    rows = [
+        [('첫 시장', {'bold': True}), '국내 다품종 머신텐딩\n(로봇 SI·제조사)', '국내 연 약 3만 대 설치\n로봇 밀도 세계 1위', '구매의향 미검증\n고객 인터뷰 30곳'],
+        [('확장', {'bold': True}), '글로벌 산업용·협동로봇 설치 기반', '가동 약 500만 대\n2025년 60만 대+ (+11%)\n2029F 80.6만 대', '기존 설비 개조 수요'],
+        [('상한', {'bold': True}), '로봇 제조사 출하량\n휴머노이드·피지컬 AI', 'OEM 채택 시 출하량 연동 (본문 10 공식)\n휴머노이드 전망은 기관별 편차 큼', '매출 수치 미산정'],
+    ]
+    table(s, rx, TOP + 0.05, rw, ['단계', '정의', '규모 근거', '성격'], rows, col_w=[0.85, 1.95, 2.35, rw - 5.15], size=11.5, pad=0.08,
+          max_h=3.6, label='A5 table')
+    footnote(s, 'EOAT 시장 추정치는 조사기관별 편차가 커 시장 규모 근거로 사용하지 않음 · 휴머노이드 전망 예: Goldman Sachs 2035년 648만 대 (2026.8, Investing.com 보도)')
+    afoot(s, 'A5', note='출처: IFR World Robotics 2026 (2026.9), IFR 로봇 밀도 (2026.4)')
 
-# ---------------------------------------------------------------- A6 market sizing
+
+# ---------------------------------------------------------------- A6 hand engineering
 def a06(prs):
-    s = lslide(prs, 'A6')
-    ahead(s, 'A6', '시장 규모', '첫 시장은 설치 기반, 상한은 OEM 출하량', '숫자의 크기보다 Scale Mechanism — OEM 매출을 단순 곱셈으로 계산하지 않는다')
-    lcard(s, 0.6, 1.72, 5.0, 4.25, '연간 산업용 로봇 신규 설치 (천 대) · IFR')
-    cd = CategoryChartData(); cd.categories = ['2024', '2025', '2026F', '2029F']; cd.add_series('Installations', (542, 603, 655, 806))
-    gf = s.shapes.add_chart(XL_CHART_TYPE.COLUMN_CLUSTERED, I(0.75), I(2.05), I(4.7), I(3.0), cd)
-    ch = gf.chart; ch.has_legend = False; ch.has_title = False
-    plot = ch.plots[0]; plot.gap_width = 70; plot.has_data_labels = True
-    dl = plot.data_labels; dl.font.size = Pt(10); dl.font.bold = True; dl.font.color.rgb = RGBColor.from_string(L_TEXT); dl.position = XL_LABEL_POSITION.OUTSIDE_END
-    ser = plot.series[0]
-    for i, pt in enumerate(ser.points):
-        pt.format.fill.solid(); pt.format.fill.fore_color.rgb = RGBColor.from_string(OR if i == 1 else ('C9CCD1' if i < 1 else 'E3E1DC'))
-    va = ch.value_axis; va.visible = False; va.has_major_gridlines = False
-    ca = ch.category_axis; ca.tick_labels.font.size = Pt(10); ca.tick_labels.font.color.rgb = RGBColor.from_string(L_TEXT2); ca.format.line.color.rgb = RGBColor.from_string(L_LINE)
-    dl.font.name = 'Noto Sans KR SemiBold'; ca.tick_labels.font.name = 'Noto Sans KR'
-    text(s, 0.8, 5.15, 4.6, 0.7, [[('약 508만 대  ', {'f': 'K', 'size': 15, 'color': L_TEXT}), ('가동 중 산업용 로봇 (2025년 말)', {})], '한국: 연 3.0만 대 설치 · 로봇밀도 1,220대 / 직원 1만 명 (세계 1위)'], size=9.5, color=L_TEXT2, ls=1.2)
-    rows = [['단계', '정의', '규모 근거', '성격'],
-            ['Beachhead', '국내 다품종 Machine Tending\n(Robot SI · 제조기업)', '국내 연 3.0만 대 설치 · 로봇밀도 세계 1위', '구매의향 미검증 → 고객 인터뷰 30곳'],
-            ['Expansion', '글로벌 산업용 · 협동로봇 설치 기반', '가동 약 508만 대 · 2025년 60만 대+ (+11%) · 2029F 80.6만 대', 'IFR World Robotics 2026'],
-            ['Scale', 'Robot OEM 출하량 · Humanoid / Physical AI', 'OEM Design Win 시 출하량 연동 (Slide 11 공식) · 휴머노이드 전망은 기관별 편차 큼', '매출 수치 계산하지 않음']]
-    table(s, 5.85, 1.72, 6.88, [1.15, 2.05, 2.25, 1.43], rows, row_h=[0.36, 0.95, 0.95, 1.05], size=9, head_size=9.5, name='Market table')
-    text(s, 5.85, 5.2, 6.88, 0.8, ['삭제한 계산 — 기존 Deck의 OEM 채택률 × 단가 매출표(302억~1,810억)와 초기 기회 ₩75억(100개사 × 5대 × ₩1,500만)', 'EOAT 시장 추정치는 조사기관별 편차가 커 TAM 근거로 사용하지 않음'], size=9, color=L_TEXT2, ls=1.2)
-    lnote(s, 'Source: IFR World Robotics 2026 (2026.9) · IFR Robot Density (2026.4) · 휴머노이드 전망 예: Goldman Sachs 2035년 648만 대(2026.8, Investing.com 보도)', y=6.3)
-    footer(s, 'A6', appendix=True, light=True)
+    s = new_slide(prs, 'A6')
+    aheader(s, 'A6', '핸드 설계 상세: 구동·하중·센싱', '구동 방식은 미확정, 창업 후 3개월 내 비교시험으로 선정 (M6 점검과 연동)')
+    lw = 7.9
+    rows = [
+        [('구성 (4지)', {'bold': True}), '손가락 3 + 대향 엄지, 문·집기·레버·버튼 수행 최소 구성', '5지 대비 부품 수·비용·내구성·제어 복잡도 (5지는 Series A 이후)'],
+        [('구동부', {'bold': True}), '전동 텐던을 기준 후보로 소형 유압·공압과 비교', '손 무게·유지력·응답·누설·소음·소비전력·정비비'],
+        [('가변 순응성', {'bold': True}), '탄성 요소·장력 제어, 필요 시 잠금 기구', '접촉 충격 완화와 조작 토크 유지의 균형'],
+        [('감각부', {'bold': True}), '손끝·손바닥 접촉센서, 관절·장력 센서, 손목 6축 힘·토크 센서', '절삭유·분진·오염 조건 편차와 재교정'],
+        [('접촉부', {'bold': True}), '교체형 패드·외피, 용도별 재질 분리 (제조: 내마모·내유, 주방: 세척·내열)', '미끄럼·마모·세척·재질 적합성 시험'],
+        [('로봇 장착', {'bold': True}), '공통 손목 모듈·플랜지 어댑터·TCP 보정·통신 드라이버', '로봇 2종 실제 통합, 이식성 측정'],
+    ]
+    table(s, MX, TOP + 0.05, lw, ['기술 요소', '개발 내용', '검증 기준'], rows, col_w=[1.4, 3.45, 3.05], size=11.5, pad=0.08, max_h=4.6, label='A6 table')
+    rx = MX + lw + 0.45; rw = W - MX - rx
+    y = block_title(s, rx, TOP + 0.05, rw, '하중 설계 예시 (머신텐딩)')
+    y += bullets(s, rx, y, rw, ['소재 1.5kg, 파지점에서 무게중심 0.10m', '정적 모멘트 약 1.5 N·m (가속·충격 시 증가)', '문 개방력·레버 조작 토크는 설비별 기존 수치 측정 후 사양 확정',
+                               '손의 파지 하중 ≠ 로봇 팔 가반하중 (손·어댑터·소재 합산)'], size=11.5, label='A6 load') + 0.3
+    y = block_title(s, rx, y, rw, '제어 구조')
+    bullets(s, rx, y, rw, ['비전: 형상·장치 위치·배치 상태', '촉각: 접촉·미끄러짐', '손목 힘센서: 반력·토크', 'VLA·모방학습은 상위 작업 선택에 활용, 힘·속도·안전 한계는 독립 제어 계층에서 보장'],
+            size=11.5, label='A6 ctrl')
+    afoot(s, 'A6', note='공통 제어기·통신·손목 모듈은 유지하고 접촉부만 용도별로 분리')
 
-# ---------------------------------------------------------------- A7 hand engineering
+
+# ---------------------------------------------------------------- A7 performance
 def a07(prs):
-    s = lslide(prs, 'A7')
-    ahead(s, 'A7', 'Technical Due Diligence', 'Hand Engineering: 구동 · 하중 · 센싱', '구동 방식은 미확정 — 창업 후 3개월 내 비교시험으로 선정 (M6 Gate와 연동)')
-    rows = [['기술 요소', '개발 내용', '검증 기준'],
-            ['구성 (4지)', '3 Finger + 대향 Thumb — Door · Pick · Lever · Button 수행 최소 구성', '5지 대비 부품 수 · 비용 · 내구성 · 제어 복잡도 (5지는 Series A 이후)'],
-            ['구동부', '전동 Tendon을 기준 후보로 소형 유압 · 공압과 비교', '손 무게 · 유지력 · 응답 · 누설 · 소음 · 소비전력 · 정비비'],
-            ['가변 순응성', '탄성요소 · 장력 제어 · 필요 시 잠금기구', '접촉 충격 완화와 조작 토크 유지의 균형'],
-            ['감각부', '손끝 · 손바닥 접촉센서 · 관절 / 장력 센서 · 손목 6축 F/T', '절삭유 · 분진 · 오염 조건 편차와 재교정'],
-            ['접촉부', '교체형 패드 · 외피, 용도별 재질 분리 (제조: 내마모 · 내유 / 주방: 세척 · 내열)', '미끄럼 · 마모 · 세척 · 재질 적합성 시험'],
-            ['로봇 장착', '공통 Wrist Module · 플랜지 어댑터 · TCP 교정 · 통신 드라이버', 'Robot Platform 2종 실제 통합 · 이식성 측정']]
-    table(s, 0.6, 1.72, 8.0, [1.3, 3.6, 3.1], rows, row_h=[0.36] + [0.58] * 6, size=9, head_size=9.5, name='Engineering table')
-    lcard(s, 8.85, 1.72, 3.88, 2.15, 'LOAD DESIGN EXAMPLE · MACHINE TENDING')
-    text(s, 9.05, 2.18, 3.55, 1.8, ['소재 1.5kg, 파지점에서 무게중심 0.10m', '→ 정적 모멘트 ≈ 1.5 N·m (가속 · 충격 시 증가)', 'Door 개방력 · Lever 조작 토크는 설비별 Baseline 측정 후 Spec 확정', '손의 파지 하중 ≠ 로봇 팔 가반하중 (손 · 어댑터 · 소재 합산)'], size=9, color=L_TEXT2, ls=1.2)
-    lcard(s, 8.85, 4.02, 3.88, 1.95, 'SENSING ROLES')
-    text(s, 9.05, 4.48, 3.55, 1.6, ['비전: 형상 · Interface 위치 · 배치 상태', '촉각: 접촉 · 미끄러짐', '손목 F/T: 반력 · 토크', 'VLA · 모방학습은 상위 작업 선택에 활용, 힘 · 속도 · 안전 한계는 독립 제어 계층에서 보장'], size=9, color=L_TEXT2, ls=1.2)
-    lnote(s, '공통 제어기 · 통신 · Wrist Module은 유지하고 접촉부만 용도별로 분리한다 — 모든 용도를 하나의 재질 · 손가락 사양으로 충족한다고 가정하지 않는다.', y=6.15)
-    footer(s, 'A7', appendix=True, light=True)
+    s = new_slide(prs, 'A7')
+    aheader(s, 'A7', '성능 지표와 시험 방법', '파지 성공률이 아닌 작업 완료 기준 · 모든 수치는 목표이며 실적 아님')
+    rows = [
+        [('대표 공정 완료율 (6단계)', {'bold': True}), '단계별 반복 시연', '승인 작업 95% 이상', '최초 시도·재시도·중단 분리 보고, 신뢰구간'],
+        [('소재 집기·투입 (등록 소재)', {'bold': True}), '10종, 95% 이상', '20종, 98% 이상', '종별 100회, 낙하 없이 투입 완료'],
+        [('문·레버·버튼 조작', {'bold': True}), '대표 설비 2종', '설비 4종, 완료율 95% 이상', '조작력·작업 시간 함께 보고'],
+        [('핸드 하중', {'bold': True}), '원통 소재 1kg', '동일 조건 2kg', '자세·속도·모멘트 한계 명시'],
+        [('내구성', {'bold': True}), '반복 개폐 10만 회', '30만 회 (양산 목표 100만 회)', '하중·패드 교체 주기·힘 저하율 명시'],
+        [('스킬 이식성', {'bold': True}), '로봇 A 기준 기록', '로봇 B 재사용 검증', '추가 엔지니어링 시간·완료율·재사용 모듈 비중'],
+        [('재사용률', {'bold': True}), '측정 체계 수립', 'M12부터 측정, 상승 추세', '신규 고객 적용 시 그대로 쓴 모듈 비중'],
+        [('사람 개입·전환 시간', {'bold': True}), '공정별 고객 기존 수치 확보', '기존 수치 대비 감소 (PoC 측정)', '재료 보충·복구 포함, 임의 목표치 없음'],
+        [('연구 트랙 (점검 제외)', {'bold': True, 'color': T['muted']}), '스크루드라이버 저토크 체결 데모', '유연체·주방 벤치 데모', 'Seed 성공 조건이 아닌 기술 트랙'],
+    ]
+    table(s, MX, TOP + 0.05, CW, ['지표', '12개월 목표', '24개월 목표', '시험 정의'], rows, col_w=[2.85, 2.55, 2.85, 3.58], size=11.5, pad=0.065,
+          max_h=4.4, label='A7 table')
+    afoot(s, 'A7', note='시험 횟수·성공 건수·신뢰구간 공개, 편집 없는 시험 영상 제공 · 감소율 목표는 고객 기존 수치 확보 후 설정')
 
-# ---------------------------------------------------------------- A8 performance tests
+
+# ---------------------------------------------------------------- A8 screwdriver
 def a08(prs):
-    s = lslide(prs, 'A8')
-    ahead(s, 'A8', '성능 정의와 시험', '잘 잡는 손이 아니라, 일을 끝내는 손', 'Tasks, Not Just Grasps. — 모든 수치는 Target(제안 목표)이며 실적이 아님 · 파지 성공률은 보조 지표')
-    rows = [['지표', '12개월 Target', '24개월 Target', '시험 정의'],
-            ['대표 Sequence 완료율 (6단계)', '단계별 반복 시연', '승인 Task ≥ 95%', '최초 시도 / 재시도 / 중단 분리 보고 · 신뢰구간'],
-            ['소재 Pick → Loading (등록 소재)', '10종 · 95%+', '20종 · 98%+', '종별 100회, 낙하 없이 Loading 완료'],
-            ['Door · Lever · Button 조작', '대표 설비 2종', '설비 4종 · 완료율 95%+', '조작력 · 작업시간 동시 보고'],
-            ['핸드 하중', '원통 소재 1kg', '동일 조건 2kg', '자세 · 속도 · 모멘트 한계 명시'],
-            ['내구성', '반복 개폐 10만 회', '30만 회 (양산 목표 100만 회)', '하중 · 패드 교체주기 · 힘 저하율 명시'],
-            ['Skill 이식성', 'Platform A 기준 Log', 'Platform B 재사용 검증', '추가 Engineering 시간 · 완료율 · 재사용 Module 비중'],
-            ['재사용률 (Reusability)', '측정 체계 수립', 'M12부터 측정 · 상승 추세', '신규 고객 적용 시 그대로 쓴 Module 비중'],
-            ['사람 개입 · 전환 시간', '공정별 고객 Baseline 확보', 'Baseline 대비 감소 [PoC 측정]', '재료 보충 · 복구 포함 · 임의 목표치 없음'],
-            [('R&D 트랙 (Gate 제외)', {'color': L_TEXT2}), 'Screwdriver 저토크 체결 Demo', '유연체 · Kitchen Bench Demo', 'Seed 성공조건이 아닌 기술 트랙']]
-    table(s, 0.6, 1.72, 12.13, [2.8, 2.6, 2.9, 3.8], rows, row_h=[0.36] + [0.43] * 9, size=9.5, head_size=9.5, name='Performance table')
-    lnote(s, '보고 원칙: 시험 횟수 · 성공 건수 · 신뢰구간 공개, 편집 없는 시험 영상 제공. 기존 "사람 개입 −30%" 같은 감소율 목표는 고객 Baseline 확보 전이므로 삭제하고 PoC 측정 항목으로 전환했다.', y=6.15)
-    footer(s, 'A8', appendix=True, light=True)
+    s = new_slide(prs, 'A8')
+    aheader(s, 'A8', '스크루드라이버 기술 데모', '시각적으로 좋은 작업이지만 핵심 상용 작업은 아님, 기술 트랙으로 분리')
+    rect(s, MX, TOP + 0.05, 5.2, 4.4, fill='EEF0F2')
+    cutout(s, REN('screwdriver.png'), MX + 0.2, TOP + 0.25, 4.8, 4.0)
+    text(s, MX, TOP + 4.55, 5.2, 0.25, '저토크 체결 데모 · 콘셉트 렌더링', size=10, color=T['muted'])
+    rx = MX + 5.7; rw = W - MX - rx
+    y = block_title(s, rx, TOP + 0.05, rw, '이 데모로 확인하는 것')
+    y += bullets(s, rx, y, rw, ['공구 토크 전달 (일할 때는 단단하게)', '대향 엄지 파지 안정성', '작업 순간 강성 전환 (검증 예정)'], size=12.5, label='A8 a') + 0.3
+    y = block_title(s, rx, y, rw, '핵심 상용 작업이 아닌 이유')
+    y += bullets(s, rx, y, rw, ['로봇 손목에 전용 전동 드라이버를 다는 편이 더 싸고 빠르고 정밀', '핸드로 얻는 설비·엔드이펙터 절감 효과가 작음'], size=12.5, label='A8 b') + 0.3
+    y = block_title(s, rx, y, rw, '의미가 생기는 경우')
+    bullets(s, rx, y, rw, ['한 셀에서 체결이 가끔만 필요해 툴 체인저 추가가 과한 경우', '사람용 공구를 그대로 써야 하는 서비스·주방 환경 (집게 등은 주방 벤치 데모)'], size=12.5, label='A8 c')
+    afoot(s, 'A8')
 
-# ---------------------------------------------------------------- A9 tech demo screwdriver
+
+# ---------------------------------------------------------------- A9 revenue model assumptions
 def a09(prs):
-    s = lslide(prs, 'A9')
-    ahead(s, 'A9', 'Technology Demonstration', '기술 Demo: Screwdriver는 핵심 상용 Use Case가 아니다', "Tool Use를 보여주는 Demo — 고객 ROI는 Door · Lever · 다품종 Handling에서 먼저 증명한다")
-    card(s, 0.6, 1.72, 5.2, 4.3, fill=CARD, r=0.08, name='Dark card')
-    picture_fit(s, A + 'screwdriver.png', 0.8, 1.9, 4.8, 3.6, name='Screwdriver demo rendering')
-    text(s, 0.8, 5.62, 4.8, 0.26, 'CONCEPT RENDERING · 저토크 체결 Demo', size=8.5, f='S', color=TEXT2, spc=60, align='c')
-    items = [('이 Demo가 증명하는 것', ['도구 토크 전달 — Rigid to Work', '대향 Thumb 파지 안정성', '작업 순간 강성 전환 (검증 예정)']),
-             ('핵심 Use Case가 아닌 이유', ['Robot Wrist에 전용 전동 Screwdriver를 직접 다는 편이 더 싸고 빠르고 정밀하다', 'Hand를 써서 얻는 설비 · End-effector 절감 효과가 작다']),
-             ('언제 의미가 생기나', ['한 Cell에서 체결이 가끔만 필요해 Tool Changer 추가가 과한 경우', '사람용 공구를 그대로 써야 하는 서비스 · 주방 환경 (Tongs 등은 Kitchen Bench Demo)'])]
-    y = 1.72
-    for t, lines in items:
-        lcard(s, 6.05, y, 6.68, 1.35, t)
-        text(s, 6.25, y + 0.45, 6.3, 0.85, lines, size=10, color=L_TEXT2, ls=1.2)
-        y += 1.47
-    footer(s, 'A9', appendix=True, light=True)
+    s = new_slide(prs, 'A9')
+    aheader(s, 'A9', '수익 모델 가정', '모든 가격·원가·마진은 검증 전 가정')
+    rows = [
+        [('초기 (Seed)', {'bold': True}), '유료 PoC', '건당 5,000만 원 (8~12주, 대여 핸드 포함)', '40%', '지불의사 검증·고객 기존 수치 확보'],
+        [('초기', {'bold': True}), '통합 엔지니어링', '프로젝트당 4,000만 원', '40%', '진입 수단, 비중 축소 목표'],
+        [('초기~중기', {'bold': True}), 'SoftHand 하드웨어', '핸드 패키지 1,500만 원 (직판)\n1,200만 원 (SI 파트너 순매출)', '원가 950만 → 750만 원', 'BOM·공급사 확정 후 재산정 (M18)'],
+        [('초기~중기', {'bold': True}), '작업 스킬 패키지', '핸드당 300만 원 (파트너 240만 원)\n핸드당 1.0 → 1.6개', '85%', '승인 작업 단위 판매'],
+        [('중기', {'bold': True}), '런타임·유지보수', '설치 핸드당 연 150만 원', '70%', '설치 기반 반복 매출'],
+        [('장기', {'bold': True}), 'OEM 라이선스·내장 런타임·로열티', '출하량 연동 [OEM 협의 후 검증]', '—', '기본 시나리오 미반영 (확장 계기)'],
+    ]
+    table(s, MX, TOP + 0.05, CW, ['단계', '매출원', '과금 단위·가정 가격', '매출총이익률 가정', '역할'], rows,
+          col_w=[1.35, 2.55, 3.6, 1.95, 2.38], size=12, pad=0.085, max_h=4.0, label='A9 table')
+    footnote(s, '통합 매출은 숨기지 않되 장기 모델이 아닌 진입·제품화 수단으로 정의 · 주방 셀 판매는 기본 시나리오에서 제외 · 확정 표현이던 "스킬 연간 구독·소프트웨어 마진 70%"는 단계별 가정으로 전환')
+    afoot(s, 'A9')
 
-# ---------------------------------------------------------------- A10 business model
+
+# ---------------------------------------------------------------- A10 P&L detail
 def a10(prs):
-    s = lslide(prs, 'A10')
-    ahead(s, 'A10', 'Business Model', '제품회사로 시작해 Platform Economics로 확장한다', 'Hardware First. Skills Next. OEM at Scale. — 모든 가격 · 원가 · 마진은 검증 전 가정')
-    rows = [['단계', '매출원', '과금 단위 · 가정 가격', 'GM 가정', '역할'],
-            ['초기 (Seed)', 'Paid PoC', '건당 ₩5,000만 (8~12주 · 대여 Hand 포함)', '40%', '지불의사 검증 · Baseline 확보'],
-            ['초기', 'Integration Engineering', '프로젝트당 ₩4,000만', '40%', '진입 수단 — 비중 축소 목표'],
-            ['초기 ~ 중기', 'SoftHand Hardware', 'Hand 패키지 ₩1,500만 (직판) / ₩1,200만 (SI 파트너 순매출)', '원가 ₩950만 → ₩750만', 'BOM · 공급사 확정 후 재산정 (M18)'],
-            ['초기 ~ 중기', 'Task Skill Package', 'Hand당 ₩300만 (파트너 ₩240만) · Hand당 1.0 → 1.6개', '85%', '승인 Task 단위 판매'],
-            ['중기', 'Runtime / Support', '설치 Hand당 연 ₩150만', '70%', '설치 기반 반복 매출'],
-            [('장기', {'color': OR, 'f': 'S'}), ('OEM License · Embedded Runtime · Royalty', {'color': OR, 'f': 'S'}), '출하량 연동 [OEM 협의 후 검증]', '—', 'Base Case 미반영 (Scale Trigger)']]
-    table(s, 0.6, 1.72, 12.13, [1.4, 2.6, 4.0, 1.8, 2.3], rows, row_h=[0.36] + [0.52] * 6, size=9.5, head_size=9.5, name='Business model table')
-    lcard(s, 0.6, 5.35, 12.13, 1.2, '기존 Deck 대비 변경')
-    text(s, 0.8, 5.81, 11.8, 0.85, ['"Skill 연간 구독 ₩300만 · Software GM 70%" 확정 표현 삭제 → 단계별 매출원과 가정으로 전환',
-                                     'Integration 매출을 숨기지 않되 장기 모델이 아닌 진입 · 제품화 수단으로 정의 · Kitchen 셀 판매(₩2억/셀)는 Base Case에서 제외'], size=10, color=L_TEXT2, ls=1.25)
-    footer(s, 'A10', appendix=True, light=True)
-
-# ---------------------------------------------------------------- A11 base case
-def a11(prs):
-    s = lslide(prs, 'A11')
-    ahead(s, 'A11', 'Financial Model', 'Base Case 5개년: Story와 같은 사업을 설명하는 숫자', 'Management Forecast · 단위: 억원 · Y1 = 투자 집행 첫해 · Kitchen · OEM 매출 0원 (Upside로 분리)')
-    f1 = lambda v: f'{v:,.1f}'
-    pct = lambda v: f'{v*100:.0f}%'
-    A_ = M['assumptions']
-    hd = A_['hand_direct']; hp = A_['hand_partner']
-    rows = [['항목', 'Y1', 'Y2', 'Y3', 'Y4', 'Y5'],
-            ['Paid PoC / Integration (건)'] + [f"{a} / {b}" for a, b in zip(A_['poc_n'], A_['int_n'])],
-            ['신규 Hand (대) 직판 / 파트너'] + [f"{a} / {b}" for a, b in zip(hd, hp)],
-            ['설치 Hand 누적 (대)'] + [f"{int(v)}" for v in B['installed_end']],
-            ['매출 — Paid PoC · Integration'] + [f1(v) for v in B['poc_int']],
-            ['매출 — SoftHand Hardware'] + [f1(v) for v in B['hw']],
-            ['매출 — ToolSkill Package'] + [f1(v) for v in B['skill']],
-            ['매출 — Runtime / Support'] + [f1(v) for v in B['runtime']],
-            ['매출 — Partner Sales (HW+Skill)'] + [f1(v) for v in B['partner']],
-            [('총매출', {'f': 'K', 'color': L_TEXT})] + [(f1(v), {'f': 'K', 'color': L_TEXT}) for v in B['rev']],
-            ['매출총이익 (GM)'] + [f"{f1(g)} ({pct(m)})" for g, m in zip(B['gp'], B['gm'])],
-            ['운영비'] + [f1(v) for v in B['opex']],
-            [('영업손익', {'f': 'K', 'color': OR})] + [(f1(v), {'f': 'K', 'color': OR}) for v in B['op']],
-            ['재사용 매출 비중 (KPI)'] + [pct(v) for v in B['reuse_share']]]
-    table(s, 0.6, 1.62, 7.6, [2.6, 1.0, 1.0, 1.0, 1.0, 1.0], rows, row_h=[0.32] + [0.33] * 13, size=9, head_size=9.5, name='Base case table', col_align=['l', 'r', 'r', 'r', 'r', 'r'])
-    lcard(s, 8.45, 1.62, 4.28, 2.55, 'SENSITIVITY (Y5)')
-    sens = [('판매량 −30% (Y3~Y5)', '매출 31.4억 · 영업손익 −7.1억'), ('Hand 원가 절감 지연 (₩900만 유지)', '영업손익 −3.1억'), ('SI 파트너 채널 1년 지연', '매출 32.3억 · 영업손익 −6.4억'), ('판매량 −50%', '매출 22.4억 · 영업손익 −11.9억')]
-    y = 2.08
-    for a, b in sens:
-        text(s, 8.65, y, 3.95, 0.24, a, size=9, f='S', color=L_TEXT)
-        text(s, 8.65, y + 0.22, 3.95, 0.24, b, size=9, color=L_TEXT2)
-        y += 0.51
-    lcard(s, 8.45, 4.32, 4.28, 2.3, '기존 Deck 대비 · 조달')
-    text(s, 8.65, 4.78, 3.95, 1.95, [[('기존: ', {'f': 'S', 'color': L_TEXT}), ('Y5 ₩112억 (Kitchen 셀 ₩50억 = 45%)', {})], [('수정: ', {'f': 'S', 'color': OR}), (f"Y5 ₩{B['rev'][4]:.1f}억 (Kitchen 0 · OEM 0)", {})],
-                                     f"Y3~Y5 누적 영업손실 약 ₩{-sum(B['op'][2:]):.0f}억 + 운전자본 → Series A 규모는 M18 KPI로 확정",
-                                     'Upside (미반영): Kitchen 파트너 공동 제품화(Hand · Skill · Engineering만 인식) · OEM Design Win'], size=9, color=L_TEXT2, ls=1.22)
-    lnote(s, '운영비 Y1 · Y2 = Seed 24개월 집행계획과 동일(A12) · Y3~Y5 = 평균 인원 14 / 19 / 23명 × 1인 연 ₩0.72~0.76억 + 비인건비 ₩4.5~6.2억 · 매출원가 = PoC · Integration 60%, Hand 원가, Skill 15%, Runtime 30%', y=6.68)
-    footer(s, 'A11', appendix=True, light=True)
-
-# ---------------------------------------------------------------- A12 use of funds detail
-def a12(prs):
-    s = lslide(prs, 'A12')
-    ahead(s, 'A12', 'Use of Funds', 'Seed ₩20억 집행 계획과 P&L 연결', '18개월 Core Runway + 6개월 Milestone Extension · 정부지원금 · 공동개발비 미반영')
-    rows = [['역할', '합류', '24M 인건비']]
+    s = new_slide(prs, 'A10')
+    B = M['base']; A = M['assumptions']
+    aheader(s, 'A10', '5개년 손익 상세 (기본 시나리오)', '단위: 억 원 · 1년차 = 투자 집행 첫해 · 주방·OEM 매출 0원 (상승 요인으로 분리)')
+    f = lambda v: f'{v:.1f}'.replace('-', '−')
+    inst = []
     tot = 0
-    for role, start, mc in HIRES:
-        v = (24 - start + 1) * mc; tot += v
-        rows.append([role, f'M{start}', f'₩{v:.2f}억'])
-    rows.append([('합계 · 8명', {'f': 'K'}), '', (f'₩{tot:.1f}억', {'f': 'K', 'color': OR})])
-    table(s, 0.6, 1.62, 5.6, [3.3, 0.9, 1.4], rows, row_h=[0.32] + [0.36] * 9, size=9, head_size=9.5, name='Hiring table', col_align=['l', 'c', 'r'])
-    text(s, 0.6, 5.3, 5.6, 0.55, ['인건비 기준: 창업자 연 ₩5,000만 · 엔지니어 연 ₩7,000만 + 4대보험 · 퇴직충당 15%', '기존 "개발인력 9.0억"은 같은 채용 범위에서 과소 추정 → 9.6억으로 현실화'], size=8.5, color=L_TEXT2, ls=1.2)
-    import model as MM
-    npm = MM.np_month
-    rows2 = [['Use of Funds', 'Y1', 'Y2', '합계', '비중']]
-    pers_y1, pers_y2 = SEEDP['pers_y1'], SEEDP['pers_y2']
-    rows2.append(['핵심 인력', f'{pers_y1:.1f}', f'{pers_y2:.1f}', f'{pers_y1+pers_y2:.1f}', f'{(pers_y1+pers_y2)/20*100:.0f}%'])
-    for k, v in npm.items():
-        y1, y2 = sum(v[:12]), sum(v[12:])
-        rows2.append([k, f'{y1:.2f}', f'{y2:.2f}', f'{y1+y2:.1f}', f'{(y1+y2)/20*100:.1f}%'])
-    cont = SEEDP['uof'][-1][1]
-    rows2.append(['예비비 · 운전자본', '—', '—', f'{cont:.1f}', f'{cont/20*100:.1f}%'])
-    rows2.append([('P&L 운영비 (예비비 제외)', {'f': 'K'}), (f"{SEEDP['opex_y1']:.1f}", {'f': 'K'}), (f"{SEEDP['opex_y2']:.1f}", {'f': 'K'}), (f"{SEEDP['opex_y1']+SEEDP['opex_y2']:.1f}", {'f': 'K', 'color': OR}), ''])
-    table(s, 6.45, 1.62, 6.28, [2.75, 0.8, 0.8, 0.85, 0.75], rows2, row_h=[0.32] + [0.33] * 11, size=9, head_size=9.5, name='UoF table', col_align=['l', 'r', 'r', 'r', 'r'])
-    lcard(s, 6.45, 5.45, 6.28, 1.25, 'P&L 연결')
-    text(s, 6.65, 5.91, 5.95, 0.75, [f"P&L 운영비 Y1 ₩{SEEDP['opex_y1']:.1f}억 + Y2 ₩{SEEDP['opex_y2']:.1f}억 = Use of Funds − 예비비 · 매출원가는 매출로 충당",
-                                     f"Core 18M ₩{SEEDP['core18']:.1f}억 · Extension 6M ₩{SEEDP['ext6']:.1f}억 · 월 Burn M6 ₩0.56억 → M18 ₩0.87억",
-                                     f"매출 0원이어도 M24 잔액 ₩{cont:.1f}억 (예비비)"], size=9, color=L_TEXT2, ls=1.2)
-    footer(s, 'A12', appendix=True, light=True)
+    for d, p in zip(A['hand_direct'], A['hand_partner']): tot += d + p; inst.append(str(tot))
+    rows = [
+        ['유료 PoC / 통합 (건)'] + [f'{a} / {b}' for a, b in zip(A['poc_n'], A['int_n'])],
+        ['신규 핸드 (대) 직판 / 파트너'] + [f'{a} / {b}' for a, b in zip(A['hand_direct'], A['hand_partner'])],
+        ['설치 핸드 누적 (대)'] + inst,
+        ['매출: 유료 PoC·통합'] + [f(v) for v in B['poc_int']],
+        ['매출: SoftHand 하드웨어'] + [f(v) for v in B['hw']],
+        ['매출: 작업 스킬'] + [f(v) for v in B['skill']],
+        ['매출: 런타임·유지보수'] + [f(v) for v in B['runtime']],
+        ['매출: 파트너 판매 (하드웨어+스킬)'] + [f(v) for v in B['partner']],
+        [('총매출', {'bold': True})] + [(f(v), {'bold': True}) for v in B['rev']],
+        ['매출총이익 (이익률)'] + [f'{f(g)} ({m * 100:.0f}%)' for g, m in zip(B['gp'], B['gm'])],
+        ['운영비'] + [f(v) for v in B['opex']],
+        [('영업손익', {'bold': True})] + [(f(v), {'bold': True}) for v in B['op']],
+        [('재사용 매출 비중', {'bold': True})] + [(f'{v * 100:.0f}%', {'bold': True, 'color': T['accent']}) for v in B['reuse_share']],
+    ]
+    lw = 7.75
+    table(s, MX, TOP + 0.02, lw, ['항목', '1년', '2년', '3년', '4년', '5년'], rows, col_w=[2.75] + [1.0] * 5, size=11,
+          align=['l', 'r', 'r', 'r', 'r', 'r'], pad=0.045, max_h=4.85, label='A10 table')
+    rx = MX + lw + 0.45; rw = W - MX - rx
+    y = block_title(s, rx, TOP + 0.02, rw, '민감도 (5년차)')
+    h1 = table(s, rx, y, rw, None, [[('판매량 −30% (3~5년차)', {'bold': True}), '매출 31.4억\n영업손익 −7.1억'],
+                                    [('핸드 원가 절감 지연', {'bold': True}), '영업손익 −3.1억'],
+                                    [('SI 파트너 채널 1년 지연', {'bold': True}), '매출 32.3억\n영업손익 −6.4억'],
+                                    [('판매량 −50%', {'bold': True}), '매출 22.4억\n영업손익 −11.9억']],
+               col_w=[2.05, rw - 2.05], size=11, pad=0.06, label='A10 sens')
+    y = block_title(s, rx, y + h1 + 0.25, rw, '산정 기준')
+    bullets(s, rx, y, rw, ['운영비 1·2년차 = Seed 24개월 집행 계획 (A11)', '3~5년차 = 평균 인원 14·19·23명 × 1인 연 0.72~0.76억 + 비인건비 4.5~6.2억',
+                           '매출원가 = PoC·통합 60%, 핸드 원가, 스킬 15%, 런타임 30%', '미반영 상승 요인: 주방 파트너 공동 제품화, OEM 채택'], size=11, label='A10 basis')
+    afoot(s, 'A10')
 
-# ---------------------------------------------------------------- A13 data architecture
+
+# ---------------------------------------------------------------- A11 use of funds detail
+def a11(prs):
+    s = new_slide(prs, 'A11')
+    SP = M['seed']
+    aheader(s, 'A11', 'Seed 20억 원 집행 계획과 손익 연결', '18개월 핵심 운영 + 6개월 연장 · 정부지원금·공동개발비 미반영')
+    roles = {'대표 · 사업/제품 (Founder)': '대표 · 사업/제품', 'CTO · Hand 메카트로닉스 (Co-founder)': 'CTO · 핸드 메카트로닉스', '기구·구동 엔지니어': '기구·구동 엔지니어',
+             '제어·임베디드 엔지니어': '제어·임베디드 엔지니어', 'Robot SW · Skill 엔지니어': '로봇 SW·스킬 엔지니어', '현장 통합(FAE) 엔지니어': '현장 통합 엔지니어',
+             'Vision · 조작 AI 엔지니어': '비전·조작 AI 엔지니어', 'DFM · 품질 엔지니어': '설계·품질 엔지니어'}
+    hr = []; tot = 0
+    for role, start, mc in M['hires']:
+        c = mc * (24 - start + 1); tot += c
+        hr.append([roles.get(role, role), f'M{start}', f'{c:.2f}억'])
+    hr.append([('합계 · 8명', {'bold': True}), '', (f'{tot:.1f}억', {'bold': True})])
+    lw = 5.2
+    text(s, MX, TOP + 0.02, lw, 0.3, '핵심 인력 채용 계획', size=13, bold=True)
+    h1 = table(s, MX, TOP + 0.4, lw, ['역할', '합류', '24개월 인건비'], hr, col_w=[2.75, 0.9, 1.55], size=11, align=['l', 'c', 'r'], pad=0.05,
+               max_h=3.6, label='A11 hires')
+    text(s, MX, TOP + 0.5 + h1, lw, 0.5, '창업자 연 5,000만 원, 엔지니어 연 7,000만 원 + 4대보험·퇴직충당 15%', size=10.5, color=T['muted'], label='A11 basis')
+    rx = MX + lw + 0.5; rw = W - MX - rx
+    names = {'핵심 인력 (8명 단계 채용)': '핵심 인력 8명', 'Prototype · 내구시험': '시제품·내구시험', 'Robot 2종 · 시험 Cell': '로봇 2종·시험 셀',
+             '고객 PoC · 현장통합(비청구)': '고객 PoC·현장 통합 (비청구)', 'SW · AI · Data': 'SW·AI·데이터', '제조 · 품질 · 안전 · IP': '제조·품질·안전·IP',
+             'Kitchen Bench Demo': '주방 벤치 데모', '운영 (임차·법무·회계·보험·출장)': '운영 (임차·법무·회계·보험·출장)', '예비비 · 운전자본': '예비비·운전자본'}
+    rows = [[names.get(k, k), f'{v:.1f}억', f'{v / 20 * 100:.0f}%'] for k, v in SP['uof']]
+    rows.append([('합계', {'bold': True}), (f'{SP["uof_total"]:.1f}억', {'bold': True}), ('100%', {'bold': True})])
+    text(s, rx, TOP + 0.02, rw, 0.3, '자금 사용 계획', size=13, bold=True)
+    h2 = table(s, rx, TOP + 0.4, rw, ['항목', '금액', '비중'], rows, col_w=[rw - 2.2, 1.2, 1.0], size=11, align=['l', 'r', 'r'], pad=0.045,
+               max_h=3.6, label='A11 uof')
+    opex = SP['opex_y1'] + SP['opex_y2']
+    text(s, rx, TOP + 0.55 + h2, rw, 0.8,
+         [[('손익 연결  ', {'bold': True, 'color': T['text']}), (f'운영비(예비비 제외) 1년차 {SP["opex_y1"]:.1f}억 + 2년차 {SP["opex_y2"]:.1f}억 = {opex:.1f}억', {})],
+          [('집행 구조  ', {'bold': True, 'color': T['text']}), (f'18개월 핵심 운영 {SP["core18"]:.1f}억 + 6개월 연장 {SP["ext6"]:.1f}억 + 예비비 {SP["uof"][-1][1]:.1f}억', {})]],
+         size=11, color=T['text2'], space_after=3, label='A11 link')
+    afoot(s, 'A11', note='기존 "개발 인력 9.0억"은 같은 채용 범위에서 과소 추정 → 9.6억으로 재산정')
+
+
+# ---------------------------------------------------------------- A12 data
+def a12(prs):
+    s = new_slide(prs, 'A12')
+    aheader(s, 'A12', '데이터 축적 계획', '현재 보유 데이터 없음 · 제품화 구조(본문 09)가 먼저, 데이터는 그 위에 쌓이는 보조 경쟁력')
+    steps = ['더 많은 배치', '더 많은 실제 작업', '실패·복구 데이터', '더 나은 스킬', '더 높은 완료율']
+    sw = CW / 5; y = TOP + 0.15
+    hline(s, MX, y + 0.05, CW, color=T['text'], lw=1.25)
+    for i, st in enumerate(steps):
+        x = MX + i * sw
+        dot(s, x + 0.05, y + 0.05, d=0.12, fill=T['accent'] if i == 2 else T['text'])
+        text(s, x, y + 0.22, sw - 0.2, 0.3, st, size=14, bold=True, color=T['accent'] if i == 2 else T['text'], label='d ' + st)
+    cy = y + 0.95; cw3 = (CW - 0.6) / 3
+    cols = [('Seed 데이터 계획 (목표)', ['도구·부품·설비 장치 30종 이상', '시도 1만 회 이상, 시간 동기화', '실패 원인 라벨링·복구 기록', '물체·세션·현장 단위 분리 검증']),
+            ('데이터 권리', ['고객 데이터의 수집·학습·재사용 범위를 계약으로 분리 합의', '고객 고유 공정 정보는 고객 자산으로 보호', '스킬 개선용 일반화 데이터만 회사 자산']),
+            ('함께 쌓이는 역량', ['소프트-리지드 하이브리드, 교체형 접촉부, 강성 전환', '힘·미끄러짐 기반 장치 조작 제어', 'SI 현장 통합·PoC 운영 경험'])]
+    for i, (t, items) in enumerate(cols):
+        x = MX + i * (cw3 + 0.3)
+        yy = block_title(s, x, cy, cw3, t)
+        bullets(s, x, yy, cw3, items, size=12, label='A12 ' + t)
+    footnote(s, '목표는 성공 영상이 아닌 "어떤 상황에서 실패했고 어떻게 복구했는가"의 축적 · 데이터 경쟁력은 제품화 구조와 스킬 이식성 검증 이후에 강조')
+    afoot(s, 'A12')
+
+
+# ---------------------------------------------------------------- A13 kitchen
 def a13(prs):
-    s = lslide(prs, 'A13')
-    ahead(s, 'A13', 'Data Architecture', '데이터는 Productization Loop 위에 쌓이는 복리 자산이다', '현재 보유 데이터 없음 — Data Moat를 앞세우지 않고, 고객 프로젝트가 제품이 되는 구조(Slide 09) 다음에 둔다')
-    lcard(s, 0.6, 1.72, 3.7, 3.9, "TODAY'S MOAT · SEED에서 만드는 것")
-    text(s, 0.8, 2.18, 3.35, 3.5, [[('Mechanical Architecture', {'f': 'S', 'color': L_TEXT})], 'Soft-Rigid 하이브리드 · 교체형 접촉부 · 강성 전환', '', [('Tool-oriented Control', {'f': 'S', 'color': L_TEXT})], '힘 · 미끄러짐 기반 Interface 조작 제어', '',
-                                    [('Task Integration Know-how', {'f': 'S', 'color': L_TEXT})], 'SI 현장 통합 · PoC 운영 경험', '', [('Reusable Skill Library', {'f': 'S', 'color': L_TEXT})], 'Productization Loop의 산출물'], size=9.5, color=L_TEXT2, ls=1.18)
-    # flywheel
-    cx, cy, R = 6.45, 3.65, 1.45
-    nodes = ['더 많은 배치', '더 많은 실제 Task', '실패 · 복구 Data', '더 나은 Skill', '더 높은 완료율']
-    pts = [(cx + R * 1.12 * math.cos(-math.pi / 2 + i * 2 * math.pi / 5), cy + R * math.sin(-math.pi / 2 + i * 2 * math.pi / 5)) for i in range(5)]
-    nw, nh = 1.55, 0.5
-    for i in range(5):
-        (x1, y1), (x2, y2) = pts[i], pts[(i + 1) % 5]
-        dx, dy = x2 - x1, y2 - y1; L = math.hypot(dx, dy); ux, uy = dx / L, dy / L
-        tx = (nw / 2) / abs(ux) if abs(ux) > 1e-6 else 1e9; ty = (nh / 2) / abs(uy) if abs(uy) > 1e-6 else 1e9; d0 = min(tx, ty) + 0.06
-        line(s, x1 + ux * d0, y1 + uy * d0, x2 - ux * d0, y2 - uy * d0, color=OR, w=1.25, arrow=True)
-    for i, t in enumerate(nodes):
-        x, y = pts[i]
-        b = box(s, x - nw / 2, y - nh / 2, nw, nh, fill=L_CARD, line=OR if i == 2 else L_LINE, lw=1.0, r=0.1)
-        box_text(b, t, size=9.5, f='S', color=OR if i == 2 else L_TEXT)
-    text(s, cx - 1.0, cy - 0.2, 2.0, 0.42, ['Manipulation Data', 'Compounding Asset'], size=9, f='S', color=OR, align='c', ls=1.1)
-    lcard(s, 8.85, 1.72, 3.88, 1.9, 'SEED DATA PLAN · PLANNED')
-    text(s, 9.05, 2.18, 3.55, 1.55, ['도구 · 부품 · 설비 Interface 30종+', '시도 1만 회+ · 시간동기화', '실패 원인 라벨링 · 복구 Log', '물체 · 세션 · 현장 단위 분리 검증'], size=9.5, color=L_TEXT2, ls=1.2)
-    lcard(s, 8.85, 3.75, 3.88, 1.87, 'DATA RIGHTS')
-    text(s, 9.05, 4.21, 3.55, 1.5, ['고객 데이터의 수집 · 학습 · 재사용 범위를 계약으로 분리 합의', '고객 고유 공정 정보는 고객 자산으로 보호', 'Skill 개선에 쓰는 일반화 데이터만 회사 자산'], size=9.5, color=L_TEXT2, ls=1.2)
-    chips = ['OBJECT', 'TOOL / INTERFACE', 'GRIP', 'FORCE', 'POSE', 'MOTION', 'FAILURE', 'RECOVERY']
-    x = 0.6; w = (12.13 - 7 * 0.12) / 8
-    for i, t in enumerate(chips):
-        b = box(s, x, 5.85, w, 0.42, fill=L_CARD, line=OR if i >= 6 else L_LINE, lw=1.0, r=0.06)
-        box_text(b, t, size=8.5, f='S', color=OR if i >= 6 else L_TEXT)
-        x += w + 0.12
-    lnote(s, '성공 영상이 아니라 "어떤 상황에서 실패했고 어떻게 복구했는가"를 축적하는 것이 목표 — Data Flywheel은 Productization Loop와 Skill Portability가 검증된 이후의 보조 해자다.', y=6.42)
-    footer(s, 'A13', appendix=True, light=True)
+    s = new_slide(prs, 'A13')
+    aheader(s, 'A13', '주방 데모 범위', '주방은 첫 매출 시장이 아닌 기술 확장성 데모 · 기본 시나리오 매출 0원')
+    lw = 6.9
+    rows = [
+        [('형태', {'bold': True}), '단일 팔·벤치 규모 데모', '천장 레일·양팔 풀 키친'],
+        [('대표 작업', {'bold': True}), '손잡이·집게·팬·접시', '재료 투입·세척·가열·배식·수납'],
+        [('하드웨어', {'bold': True}), '기존 로봇 활용 (추가 구매 없음)', '로봇 팔 대여·파트너 하드웨어·공동개발 전제'],
+        [('예산', {'bold': True}), '0.3억 원 (기존 0.5억에서 축소)', '파트너 확보 후 별도 산정'],
+        [('전제 조건', {'bold': True}), '없음', '실제 파트너·공동개발 계약 (현재 미확보)'],
+    ]
+    h1 = table(s, MX, TOP + 0.05, lw, ['구분', 'Seed (M18~M24)', 'Series A 이후 (미래 비전)'], rows, col_w=[1.25, 2.6, 3.05], size=11.5, pad=0.07,
+               max_h=2.6, label='A13 table')
+    y = block_title(s, MX, TOP + h1 + 0.35, lw, '고객 경제성 예시 (가정)')
+    bullets(s, MX, y, lw, ['셀 투자 2억 원, 인건비 시간당 2.5만 원, 연 300일, 추가 운영비 연 1,000만 원',
+                           '하루 6시간 절감: 연 순절감 3,500만 원, 단순 회수 약 5.7년',
+                           '하루 10시간 절감: 연 순절감 6,500만 원, 단순 회수 약 3.1년',
+                           '회수기간이 가동률에 민감, 초기 매출원으로 두지 않음 (금융·세금·잔존가치 제외)'], size=11.5, label='A13 roi')
+    rx = MX + lw + 0.45; rw = W - MX - rx
+    image(s, ORI('hero05_ceiling_dual_arm_kitchen.png'), rx, TOP + 0.05, rw, rw * 9 / 16, focus=(0.5, 0.5))
+    text(s, rx, TOP + 0.15 + rw * 9 / 16, rw, 0.45, '미래 비전 · 콘셉트 렌더링\n천장형 양팔 주방은 Series A 이후, 실제 파트너 확보 후 진행', size=10.5, color=T['muted'], label='A13 cap')
+    yy = block_title(s, rx, TOP + 0.75 + rw * 9 / 16, rw, '하중·안전')
+    bullets(s, rx, yy, rw, ['3kg 냄비, 무게중심 0.20m: 정적 모멘트 약 5.9 N·m, 큰 냄비는 양손·거치대 보조',
+                            '고온 도구·칼·튀김: 차폐·접근 제한·독립 인터록 충족 전 기능 비활성'], size=11.5, label='A13 safety')
+    afoot(s, 'A13')
 
-# ---------------------------------------------------------------- A14 kitchen
+
+# ---------------------------------------------------------------- A14 safety / IP
 def a14(prs):
-    s = lslide(prs, 'A14')
-    ahead(s, 'A14', 'Robot Kitchen', 'Robot Kitchen: Seed 범위 · 경제성 · 안전', 'Future Application — Seed 매출 목표가 아닌 Technology Demonstrator의 설계 조건')
-    rows = [['구분', 'Seed (M18~M24)', 'Series A 이후 (Future Vision)'],
-            ['형태', 'Single-arm · Bench-scale Demo', 'Ceiling Rail · Dual-arm Full Kitchen'],
-            ['대표 작업', 'Handle · Tongs · Pan · Plate', '재료 투입 · 세척 · 가열 · 배식 · 수납'],
-            ['Hardware', '기존 Robot Platform 활용 (추가 구매 없음)', 'Robot Arm Loan · Partner Hardware · 공동개발 전제'],
-            ['예산', '₩0.3억 (기존 ₩0.5억에서 축소)', '파트너 확보 후 별도 산정'],
-            ['전제 조건', '없음', '실제 파트너 · 공동개발 계약 (현재 미확보)']]
-    table(s, 0.6, 1.72, 7.0, [1.3, 2.75, 2.95], rows, row_h=[0.36] + [0.5] * 5, size=9.5, head_size=9.5, name='Kitchen scope table')
-    picture(s, O + 'hero05_ceiling_dual_arm_kitchen.png', 0.6, 4.75, w=2.75, name='Future vision kitchen rendering')
-    text(s, 3.5, 4.8, 4.1, 0.9, ['FUTURE VISION · CONCEPT RENDERING', '천장형 양팔 Full Kitchen은 Series A 이후 비전이며, 실제 파트너 전제가 생긴 뒤 진행한다'], size=8.5, color=L_TEXT2, ls=1.2)
-    lcard(s, 7.85, 1.72, 4.88, 2.9, 'CUSTOMER ROI — ILLUSTRATIVE (가정)')
-    text(s, 8.05, 2.18, 4.5, 2.5, ['셀 투자 ₩2억 · 인건비 ₩2.5만/h · 연 300일 · 추가 운영비 ₩1,000만/년', [('6h/일 절감  ', {'f': 'S', 'color': L_TEXT}), ('연 순절감 ₩3,500만 → 단순 회수 ≈ 5.7년', {})],
-                                    [('10h/일 절감  ', {'f': 'S', 'color': L_TEXT}), ('연 순절감 ₩6,500만 → 단순 회수 ≈ 3.1년', {})], '→ 회수기간이 가동률에 민감 · 초기 매출 엔진으로 두지 않음', '→ 금융 · 세금 · 잔존가치 제외'], size=9.5, color=L_TEXT2, ls=1.25)
-    lcard(s, 7.85, 4.75, 4.88, 1.75, 'LOAD · SAFETY')
-    text(s, 8.05, 5.21, 4.5, 1.4, ['3kg 냄비, 무게중심 0.20m → 정적 모멘트 ≈ 5.9 N·m → 큰 냄비는 양손 · 거치대 보조', '고온 도구 · 칼 · 튀김: 차폐 · 접근 제한 · 독립 인터록 충족 전 기능 비활성'], size=9, color=L_TEXT2, ls=1.2)
-    footer(s, 'A14', appendix=True, light=True)
+    s = new_slide(prs, 'A14')
+    aheader(s, 'A14', '안전·인증·IP', '인증·권리 확보 전에는 적합성·독자성·세계 최초를 주장하지 않음')
+    cw2 = (CW - 0.6) / 2
+    y = block_title(s, MX, TOP + 0.05, cw2, '안전 (머신텐딩 셀)')
+    bullets(s, MX, y, cw2, ['소프트 핸드를 달아도 셀 전체가 자동으로 안전해지지 않음, 설비·공구·소재·이동 범위를 포함한 통합 위험성 평가',
+                            '적용 검토: ISO 10218-2:2025 (산업용 로봇 응용·로봇 셀 안전)',
+                            '로봇이 설비 문을 열어도 설비 안전 인터록은 우회하지 않음, 사람 작업자와 같은 조건으로 운전',
+                            '절삭유·분진 환경의 접촉부 재질·센서 신뢰성 별도 검증',
+                            '주방 확장 시 식품 접촉·세척·내열 요구는 판매국별 시험기관과 결정 (IP 등급 ≠ 위생 적합성)'], size=12, gap=6, label='A14 safety')
+    x2 = MX + cw2 + 0.6
+    y = block_title(s, x2, TOP + 0.05, cw2, 'IP·영업비밀 (계획)')
+    bullets(s, x2, y, cw2, ['출원 후보: 대향 엄지·관절 순응과 잠금 구조·교체형 손끝·밀봉 구조',
+                            '출원 후보: 사람용 장치 조작을 위한 핸드-스킬 구조, 로봇 독립 작업 스킬 표현, 보정 이식 방법',
+                            '영업비밀 후보: 데이터 정제·장력 보정·실패 복구 파라미터',
+                            '원칙: 선행기술 조사·권리범위 검토(FTO) 후 출원, 그 전에는 비침해·독자성 주장 금지',
+                            '오픈소스 모델·라이브러리 상업 이용 조건 출시 전 확인'], size=12, gap=6, label='A14 ip')
+    afoot(s, 'A14', note='현재 특허 출원 없음 · 예산: 제조·품질·안전·IP 1.1억 원')
 
-# ---------------------------------------------------------------- A15 safety & IP
+
+# ---------------------------------------------------------------- A15 risks
 def a15(prs):
-    s = lslide(prs, 'A15')
-    ahead(s, 'A15', 'Safety · IP', '안전 · 인증 · IP 전략', '인증 · 권리 확보 전에는 적합성 · 독자성 · 세계 최초를 주장하지 않는다')
-    lcard(s, 0.6, 1.72, 5.95, 4.3, 'SAFETY · MACHINE TENDING CELL')
-    text(s, 0.8, 2.18, 5.6, 4.2, ['Soft Hand를 달아도 Cell 전체가 자동으로 안전해지지 않는다 → 설비 · 공구 · 소재 · 이동 범위를 포함한 통합 위험성 평가',
-                                   '적용 검토: ISO 10218-2:2025 (산업용 로봇 응용 · 로봇 Cell 안전)',
-                                   'Robot이 설비 Door를 여는 경우에도 설비의 안전 인터록은 우회하지 않는다 — 사람 작업자와 같은 조건으로 운전',
-                                   '절삭유 · 분진 환경의 접촉부 재질 · 센서 신뢰성 별도 검증',
-                                   '주방 확장 시 식품접촉 · 세척 · 내열 요구는 판매국별로 시험기관과 결정 (IP 등급 ≠ 위생 적합성)'], size=11, color=L_TEXT2, ls=1.4, after=6)
-    lcard(s, 6.78, 1.72, 5.95, 4.3, 'IP · TRADE SECRETS (PLANNED)')
-    text(s, 6.98, 2.18, 5.6, 4.2, [[('출원 후보 ', {'f': 'S', 'color': L_TEXT})], '대향 Thumb · 관절 순응 / 잠금 구조 · 교체형 손끝 · 밀봉 구조', '사람용 Interface 조작을 위한 Hand-Skill 구조 · Robot 독립 Task Skill 표현 · Calibration 이식 방법', '',
-                                    [('영업비밀 후보', {'f': 'S', 'color': L_TEXT})], '데이터 정제 · 장력 보정 · 실패 복구 Parameter', '',
-                                    [('원칙', {'f': 'S', 'color': L_TEXT})], '선행기술 조사 · 권리범위 검토(FTO) 후 출원 — 그 전에는 비침해 · 독자성 주장 금지', '오픈소스 모델 · 라이브러리 상업 이용 조건 출시 전 확인',
-                                    [('현재 특허 출원 없음 ', {'f': 'S', 'color': OR}), ('· 예산: 제조 · 품질 · 안전 · IP ₩1.1억', {})]], size=10.5, color=L_TEXT2, ls=1.3)
-    footer(s, 'A15', appendix=True, light=True)
+    s = new_slide(prs, 'A15')
+    aheader(s, 'A15', '주요 위험과 대응')
+    rows = [
+        [('순응성과 강성 충돌', {'bold': True}), '레버·문 조작 시 처짐·미끄러짐', '골격·잠금 비교시험, 작업 토크별 출시 제한, M6 점검'],
+        [('과도한 맞춤 개발 (SI화)', {'bold': True}), '낮은 마진, 확장 불가', '승인 작업 목록, 비표준 요청 별도 견적, 재사용률 지표, M18 점검'],
+        [('스킬 이식성 실패', {'bold': True}), '플랫폼 가설 약화', '로봇 독립 작업 표현, 보정 도구, 로봇 2종 검증'],
+        [('지불의사 부족', {'bold': True}), '매출 지연, 첫 시장 오판', '유료 PoC 선수금, 기존 수치 측정 계약, M12 점검'],
+        [('긴 영업 주기·후속 조달', {'bold': True}), '운전자금 부족', '18 + 6개월 집행, 예비비, Series A 조기 착수 (M15~)'],
+        [('설비 안전·인터록', {'bold': True}), '도입 지연', '통합 위험성 평가, 설비 인터록 유지, ISO 10218-2 검토'],
+        [('로봇 제조사 내재화', {'bold': True}), 'OEM 채널 축소', '로봇 무관 통합, 여러 브랜드용 스킬, OEM 파트너십 우선'],
+        [('창업팀 구성 지연', {'bold': True}), '일정·실행력 저하', '공동창업자·핵심 2인 합류를 Seed 클로징 조건으로 설정'],
+        [('접촉부 마모·오염', {'bold': True}), '유지비 증가', '교체형 패드, 교체 주기 명시, 내구시험 (30만 회 목표)'],
+    ]
+    table(s, MX, 1.65, CW, ['주요 위험', '사업 영향', '대응·판정'], rows, col_w=[3.1, 3.2, 5.53], size=12, pad=0.08, max_h=5.2, label='A15 table')
+    afoot(s, 'A15')
 
-# ---------------------------------------------------------------- A16 risks
+
+# ---------------------------------------------------------------- A16 sources
+SOURCES = [
+    ('S1', 'IFR, World Robotics 2026 보도자료 (2026-09-24)', 'ifr.org/ifr-press-releases/news/five-million-robots-now-operate-in-factories-globally'),
+    ('S2', 'IFR, Robot Density: 한국 1,220대 / 직원 1만 명 (2026-04-08)', 'ifr.org (press release)'),
+    ('S3', 'BCG, How Physical AI Is Reshaping Robotics Today (2026-04)', 'bcg.com/publications/2026/how-physical-ai-is-reshaping-robotics-today'),
+    ('S4', 'Tesla 2025년 3분기 실적 발표 녹취, The Motley Fool (2025-10-22)', 'fool.com/earnings/call-transcripts/2025/10/22/tesla-tsla-q3-2025-earnings-call-transcript/'),
+    ('S5', 'NVIDIA, Isaac GR00T Reference Humanoid Robot 발표 (2026-06-01)', 'investor.nvidia.com'),
+    ('S6', 'NVIDIA, CES 2026 Physical AI 모델 발표, GR00T N1.6 (2026-01-05)', 'nvidianews.nvidia.com'),
+    ('S7', 'CNBC, NVIDIA Jetson AGX Thor 출시 (2025-08-25)', 'cnbc.com/2025/08/25/nvidias-thor-t5000-robot-brain-chip.html'),
+    ('S8', 'Google DeepMind, Gemini Robotics 1.5 (2025-09)', 'deepmind.google/blog/gemini-robotics-15-brings-ai-agents-into-the-physical-world/'),
+    ('S9', 'Figure, Series C (2025-09) · Figure 03 공개 (2025-10-09)', 'figure.ai/news'),
+    ('S10', 'Bloomberg, Physical Intelligence $5.6B 가치 평가 (2025-11-20)', 'bloomberg.com'),
+    ('S11', 'Crunchbase News, Robotics startup funding record (2026-06-22)', 'news.crunchbase.com/robotics/startup-venture-funding-surges-2026-data/'),
+    ('S12', 'Investing.com, Goldman Sachs 휴머노이드 전망 (2026-08-31)', 'investing.com'),
+    ('S13', 'qbrobotics, qb SoftHand Industry 제품 사양 (제조사 공개)', 'qbrobotics.com/product/qb-softhand-industry/'),
+    ('S14', 'Robotics & Automation News, Tesollo DG-5F-S (2026-03-13)', 'roboticsandautomationnews.com'),
+    ('S15', 'Moley Robotics, A-AiR kitchen (공급사 소개)', 'moley.com/a-air-kitchen/'),
+    ('S16', 'ISO 10218-2:2025, Industrial robot applications and robot cells', 'iso.org/standard/73934.html'),
+]
 def a16(prs):
-    s = lslide(prs, 'A16')
-    ahead(s, 'A16', 'Risk', '주요 위험과 대응 · 판정 기준')
-    rows = [['주요 위험', '사업 영향', '대응 · 판정'],
-            ['순응성과 강성 충돌', 'Lever · Door 조작 시 처짐 · 미끄러짐', '골격 · 잠금 비교시험 · 작업 토크별 출시 제한 · M6 Gate'],
-            ['과도한 맞춤 개발 (SI화)', '낮은 마진 · 확장 불가', '승인 Task 목록 · 비표준 요청 별도 견적 · 재사용률 KPI · M18 Gate'],
-            ['Skill 이식성 실패', 'Platform Thesis 약화', 'Robot 독립 Task 표현 · Calibration Tool · 2 Platform 검증'],
-            ['지불의사 부족', '매출 지연 · Beachhead 오류', 'Paid PoC 선수금 · Baseline 계약 · M12 Gate'],
-            ['긴 영업주기 · 후속 조달', '운전자금 부족', '18 + 6 집행 · 예비비 · Series A 조기 착수 (M15~)'],
-            ['설비 안전 · 인터록', '도입 지연', '통합 위험성 평가 · 설비 인터록 유지 · ISO 10218-2 검토'],
-            ['OEM 내재화', 'OEM 채널 축소', 'Robot-agnostic 통합 · 멀티브랜드 Skill · OEM 파트너십 우선'],
-            ['창업팀 구성 지연', '일정 · 실행력 저하', '공동창업자 · 핵심 2인 합류를 Seed 클로징 조건으로 설정'],
-            ['접촉부 마모 · 오염', '유지비 증가', '교체형 패드 · 교체주기 명시 · 내구시험 (30만 cycle Target)']]
-    table(s, 0.6, 1.45, 12.13, [2.6, 3.0, 6.5], rows, row_h=[0.36] + [0.5] * 9, size=10, head_size=10, name='Risk table')
-    footer(s, 'A16', appendix=True, light=True)
+    s = new_slide(prs, 'A16')
+    aheader(s, 'A16', '출처', '열람 기준 2026-10-06 · 가격·원가·성능·고객 수·일정·매출은 출처 수치가 아닌 본 계획의 가정')
+    rows = [[(sid, {'bold': True, 'color': T['accent']}), t, (u, {'color': T['text2'], 'size': 9.5})] for sid, t, u in SOURCES]
+    table(s, MX, TOP + 0.02, CW, ['번호', '출처', '링크'], rows, col_w=[0.6, 5.15, 6.08], size=10, pad=0.035, max_h=4.85, label='A16 table')
+    afoot(s, 'A16')
 
-# ---------------------------------------------------------------- A17 sources
-def a17(prs):
-    s = lslide(prs, 'A17')
-    ahead(s, 'A17', 'Sources', '출처', '열람 기준 2026-10-06 · 가격 · 원가 · 성능 · 고객수 · 일정 · 매출은 출처 수치가 아닌 본 계획의 가정')
-    src = [('S1', "IFR, World Robotics 2026 — 'Five Million Robots now Operate in Factories Globally' (2026-09-24)", 'ifr.org/ifr-press-releases/news/five-million-robots-now-operate-in-factories-globally'),
-           ('S2', 'IFR, Robot Density — Republic of Korea 1,220 robots per 10,000 employees (2026-04)', 'ifr.org (press release, 2026-04-08)'),
-           ('S3', "BCG, 'How Physical AI Is Reshaping Robotics Today—and What Comes Next' (2026-04-14)", 'bcg.com/publications/2026/how-physical-ai-is-reshaping-robotics-today'),
-           ('S4', 'Tesla Q3 2025 Earnings Call Transcript, The Motley Fool (2025-10-22)', 'fool.com/earnings/call-transcripts/2025/10/22/tesla-tsla-q3-2025-earnings-call-transcript/'),
-           ('S5', 'NVIDIA, Isaac GR00T Reference Humanoid Robot 발표 (2026-06-01)', 'investor.nvidia.com'),
-           ('S6', 'NVIDIA, CES 2026 Physical AI 모델 발표 — GR00T N1.6 (2026-01-05)', 'nvidianews.nvidia.com'),
-           ('S7', 'CNBC, NVIDIA Jetson AGX Thor 출시 (2025-08-25)', 'cnbc.com/2025/08/25/nvidias-thor-t5000-robot-brain-chip.html'),
-           ('S8', 'Google DeepMind, Gemini Robotics 1.5 (2025-09)', 'deepmind.google/blog/gemini-robotics-15-brings-ai-agents-into-the-physical-world/'),
-           ('S9', 'Figure, Series C — $39B post-money (2025-09) · Introducing Figure 03 (2025-10-09)', 'figure.ai/news'),
-           ('S10', 'Bloomberg, Physical Intelligence $5.6B 가치 평가 (2025-11-20)', 'bloomberg.com'),
-           ('S11', 'Crunchbase News, Robotics startup funding record (2026-06-22)', 'news.crunchbase.com/robotics/startup-venture-funding-surges-2026-data/'),
-           ('S12', 'Investing.com, Goldman Sachs 휴머노이드 전망 — 2035년 648만 대 (2026-08-31)', 'investing.com'),
-           ('S13', 'qbrobotics, qb SoftHand Industry 제품 사양 (제조사 공개)', 'qbrobotics.com/product/qb-softhand-industry/'),
-           ('S14', 'Robotics & Automation News, Tesollo DG-5F-S (2026-03-13)', 'roboticsandautomationnews.com'),
-           ('S15', 'Moley Robotics, A-AiR kitchen (공급사 소개)', 'moley.com/a-air-kitchen/'),
-           ('S16', 'ISO 10218-2:2025 — Industrial robot applications and robot cells', 'iso.org/standard/73934.html'),
-           ('S17', 'Noh et al., YORI — Yummy Operations Robot Initiative, arXiv:2405.11094', 'arxiv.org/abs/2405.11094'),
-           ('S18', 'PR Newswire, Chef Robotics $43M Series A (2025-04) · 헤럴드경제 외식업계 인력난 (2025-05-10)', 'prnewswire.com · biz.heraldcorp.com')]
-    half = 9
-    for col in range(2):
-        x = 0.6 + col * 6.18; y = 1.62
-        for sid, t, u in src[col * half:(col + 1) * half]:
-            text(s, x, y, 5.95, 0.5, [[(f'[{sid}] ', {'f': 'S', 'color': OR}), (t, {'color': L_TEXT})], [(u, {'size': 7.5, 'color': L_MUTED})]], size=8.5, ls=1.1)
-            y += 0.55
-    footer(s, 'A17', appendix=True, light=True)
+
+APPX = [a00, a01, a02, a03, a04, a05, a06, a07, a08, a09, a10, a11, a12, a13, a14, a15, a16]

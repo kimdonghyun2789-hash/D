@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 source/render3d/node_modules/
 source/render3d/final/
+source/deck/_img/
