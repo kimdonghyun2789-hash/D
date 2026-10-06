@@ -145,6 +145,7 @@ def text_h(paras, size, w, line=1.0, bold=False, space_after=0):
     if isinstance(paras, str): paras = paras.split('\n')
     tot = 0
     for i, p in enumerate(paras):
+        if isinstance(p, list): p = ''.join(rt for rt, _ in p)   # paragraph given as styled runs
         tot += n_lines(p, size, w - 0.03, bold) * size * LH * line / 72
         if space_after and i < len(paras) - 1: tot += space_after / 72
     return tot
@@ -203,6 +204,13 @@ def cutout(s, path, x, y, w, h, align='c', valign='m'):
     py = {'m': y + (h - ph) / 2, 't': y, 'b': y + h - ph}[valign]
     return s.shapes.add_picture(path, Inches(px), Inches(py), Inches(pw), Inches(ph))
 
+def _cell(cell):
+    """Table cell -> (text, opts). A cell is str, (str, opts) or a list of (text, opts) runs (one paragraph)."""
+    if isinstance(cell, list):
+        return ''.join(rt for rt, _ in cell), {'bold': any(ro.get('bold') for _, ro in cell)} if all(ro.get('bold') for _, ro in cell) else {}
+    if isinstance(cell, tuple): return cell
+    return cell, {}
+
 # ---------------------------------------------------------------- table (no style, horizontal rules only)
 NO_STYLE = '{2D5ABB26-0587-4C30-8999-92F81FD0307C}'
 def table(s, x, y, w, header, rows, col_w=None, size=11, header_size=None, pad=0.06, align=None,
@@ -217,7 +225,7 @@ def table(s, x, y, w, header, rows, col_w=None, size=11, header_size=None, pad=0
     for ri, r in enumerate(all_rows):
         hm = 0
         for ci, cell in enumerate(r):
-            t, o = cell if isinstance(cell, tuple) else (cell, {})
+            t, o = _cell(cell)
             is_h = header and ri == 0
             sz = o.get('size', header_size if is_h else size)
             b = o.get('bold', is_h or (bold_first_col and ci == 0))
@@ -238,20 +246,30 @@ def table(s, x, y, w, header, rows, col_w=None, size=11, header_size=None, pad=0
     for ri, r in enumerate(all_rows):
         is_h = header and ri == 0
         for ci, cell in enumerate(r):
-            t, o = cell if isinstance(cell, tuple) else (cell, {})
+            t, o = _cell(cell)
+            runs = cell if isinstance(cell, list) else None
             c = tbl.cell(ri, ci)
             c.margin_left = Inches(0.08); c.margin_right = Inches(0.08)
             c.margin_top = Inches(pad); c.margin_bottom = Inches(pad)
             c.vertical_anchor = {'t': MSO_ANCHOR.TOP, 'm': MSO_ANCHOR.MIDDLE}[anchor]
             tf = c.text_frame; tf.word_wrap = True
-            for pi, ptxt in enumerate(str(t).split('\n')):
-                para = tf.paragraphs[0] if pi == 0 else tf.add_paragraph()
-                para.alignment = {'l': PP_ALIGN.LEFT, 'c': PP_ALIGN.CENTER, 'r': PP_ALIGN.RIGHT}[o.get('align', align[ci])]
+            csz = o.get('size', header_size if is_h else size)
+            cb = o.get('bold', is_h or (bold_first_col and ci == 0))
+            ccol = o.get('color', (header_color or T['text']) if is_h else T['text'])
+            if runs is not None:   # one paragraph of styled runs
+                para = tf.paragraphs[0]
+                para.alignment = {'l': PP_ALIGN.LEFT, 'c': PP_ALIGN.CENTER, 'r': PP_ALIGN.RIGHT}[align[ci]]
                 para.line_spacing = 1.0
-                rr = para.add_run(); rr.text = ptxt
-                _font_runs(rr, o.get('size', header_size if is_h else size),
-                           o.get('bold', is_h or (bold_first_col and ci == 0)),
-                           o.get('color', (header_color or T['text']) if is_h else T['text']))
+                for rt, ro in runs:
+                    rr = para.add_run(); rr.text = rt
+                    _font_runs(rr, ro.get('size', csz), ro.get('bold', cb), ro.get('color', ccol))
+            else:
+                for pi, ptxt in enumerate(str(t).split('\n')):
+                    para = tf.paragraphs[0] if pi == 0 else tf.add_paragraph()
+                    para.alignment = {'l': PP_ALIGN.LEFT, 'c': PP_ALIGN.CENTER, 'r': PP_ALIGN.RIGHT}[o.get('align', align[ci])]
+                    para.line_spacing = 1.0
+                    rr = para.add_run(); rr.text = ptxt
+                    _font_runs(rr, csz, cb, ccol)
             tcPr = c._tc.get_or_add_tcPr()
             for e in list(tcPr): tcPr.remove(e)
             def ln(tag, wd, color):
