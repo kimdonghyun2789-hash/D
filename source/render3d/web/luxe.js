@@ -213,9 +213,22 @@ async function kluxe(W, H, p) {
   const K = buildLuxe(s, p);
   const task = p.get('task') || 'stir';
   const rs = num(p, 'rscale', 1.0);
+  // rail=1: ceiling LM axis (profile beam, two guide rails, drive, cable carrier) with one common carriage carrying both arms
+  const rail = p.get('rail') === '1';
+  const mY = rail ? 180.4 : 184;
+  if (rail) {
+    const cx = (num(p, 'bx', -8) + num(p, 'bx2', 62)) / 2;
+    const beam = rbox(240, 2.2, 30, 0.3, lmat().steel); beam.position.set(0, 184.9, -30); s.add(beam);
+    for (const z of [-41, -19]) { const g = rbox(236, 0.9, 2.2, 0.15, lmat().chrome); g.position.set(0, 183.35, z); s.add(g); }
+    const car = rbox(96, 2.4, 30, 0.4, MAT.graphite); car.position.set(cx, 181.7, -30); s.add(car);
+    for (const x of [cx - 40, cx + 40]) for (const z of [-41, -19]) { const b = rbox(10, 1.4, 4, 0.2, lmat().steel); b.position.set(x, 183.1, z); s.add(b); }
+    const mot = rbox(9, 7, 9, 0.6, MAT.graphite); mot.position.set(-114, 180.6, -30); s.add(mot);
+    for (const x of [-118.5, 118.5]) { const st = rbox(2.2, 3.2, 30, 0.3, MAT.graphite); st.position.set(x, 182.6, -30); s.add(st); }
+    const chain = rbox(cx + 108, 1.6, 3.2, 0.3, MAT.graphite); chain.position.set((cx - 108) / 2 - 2, 183.1, -12.8); s.add(chain);
+  }
   const mountR = (bx, bz) => {
-    const plate = rbox(22, 2, 22, 0.5, MAT.graphite); plate.position.set(bx, 185, bz); s.add(plate);
-    const robot = buildCobot('A'); robot.scale.setScalar(rs); robot.rotation.set(Math.PI, num(p, 'ry', 0) * D, 0); robot.position.set(bx, 184, bz); s.add(robot); robot.updateMatrixWorld(true);
+    const plate = rbox(22, 2, 22, 0.5, MAT.graphite); plate.position.set(bx, mY + 1, bz); s.add(plate);
+    const robot = buildCobot('A'); robot.scale.setScalar(rs); robot.rotation.set(Math.PI, num(p, 'ry', 0) * D, 0); robot.position.set(bx, mY, bz); s.add(robot); robot.updateMatrixWorld(true);
     return robot;
   };
   if (p.get('norobot') === '1') {
@@ -263,8 +276,8 @@ async function kluxe(W, H, p) {
   // optional second (idle) arm for the wide/front views
   if (p.get('arms') === '2') {
     const r2 = mountR(num(p, 'bx2', 62), num(p, 'bz2', -30));
-    const h2 = buildHand(KPOSES.open); h2.scale.setScalar(1 / rs); r2.userData.flange.add(h2);
-    const g2 = frameXZ(V(1, 0, 0), V(0, -0.2, 1), V(...vec(p, 'idle2', [70, 128, -18])));
+    const h2 = buildHand(KPOSES[p.get('pose2') || 'open']); h2.scale.setScalar(1 / rs); r2.userData.flange.add(h2);
+    const g2 = frameXZ(V(...vec(p, 'x2', [1, 0, 0])), V(...vec(p, 'z2', [0, -0.2, 1])), V(...vec(p, 'idle2', [70, 128, -18])));
     solveIK(r2, g2, vec(p, 'q02', [0, 30, 80, 40, -90, 0]).map(v => v * D), 700);
   }
   const view = p.get('view') || 'close';

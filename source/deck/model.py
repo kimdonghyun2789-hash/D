@@ -1,113 +1,98 @@
-# Base Case financial model + Seed 24M plan (unit: 억원). Single source of truth for deck + report.
+# 5-year plan, market sizing, customer payback and Seed use of funds from the business plan
+# (사업계획서 08~10장, 작성일 2026-10-06). Unit: 억 원. Single source of numbers for the deck and the report.
+# Every value is a plan assumption, not a result. Y1 = 투자 집행 시작연도 (Seed 24개월 = Y1~Y2).
 import json, copy, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 Y = ['Y1', 'Y2', 'Y3', 'Y4', 'Y5']
 A = dict(
-    poc_n=[1, 4, 5, 6, 6], poc_price=0.5,                # Paid PoC (8~12주, 대여 Hand 포함)
-    int_n=[0, 2, 6, 8, 8], int_price=0.4,                # 고객별 통합 Engineering
-    hand_direct=[0, 6, 24, 50, 80], hand_price=0.15,     # Hand 패키지 직판 (₩1,500만)
-    hand_partner=[0, 0, 12, 50, 120], partner_price=0.12, # SI 파트너 경유 (20% 할인, 순매출)
-    skill_per_hand=[0, 1.0, 1.2, 1.4, 1.6], skill_price=0.03, skill_partner_price=0.024,
-    runtime_fee=0.015,                                    # 설치 Hand당 연 ₩150만 (평균 설치기반)
-    unit_cost=[0.095, 0.095, 0.090, 0.082, 0.075],        # Hand 원가 (BOM+조립)
-    gm_poc=0.40, gm_skill=0.85, gm_runtime=0.70,
-    fte=[None, None, 14, 19, 23], fte_cost=[None, None, 0.72, 0.74, 0.76], nonpers=[None, None, 4.5, 5.4, 6.2],
+    hands=[0, 30, 100, 200, 350],        # 핸드 단품 판매 대수 (주방 셀에 들어가는 핸드는 제외)
+    cells=[0, 0, 5, 12, 25],             # 주방 셀 판매 대수
+    sw=[0, 10, 40, 120, 250],            # 연간 SW 유효 계약 수 (당해 매출 인식 가능한 연간 계약 환산치)
+    pilot=[1.0, 2.0, 2.0, 2.0, 2.0],     # 유료 실증·개발 매출
+    hand_price=0.15, hand_cost=0.08,     # 4지 중심 핸드 패키지 평균 1,500만 원 / 직접원가 800만 원
+    cell_price=2.0, cell_cost=1.4,       # 주방 셀 1식 2억 원 / 1억4,000만 원 (팔 2·핸드 2·레일/프레임·제어/안전·설치·보증)
+    sw_price=0.03, sw_cost=0.009,        # 소프트웨어 연간 계약 300만 원 / 90만 원
+    gm_pilot=0.40,                       # 실증·개발 매출 총이익률
+    opex=[8.0, 10.0, 14.0, 20.0, 28.0],  # 운영비 (연구개발·영업·관리·감가상각 포함 계획값)
 )
-
-# ---------------- Seed 24-month plan (monthly) ----------------
-FOUNDER_M = 0.0480   # 창업자 월 인건비(4대보험·퇴직 포함, 연 ₩5,000만 기준)
-ENG_M = 0.0671       # 엔지니어 월 인건비(연 ₩7,000만 기준, 15% 가산)
-HIRES = [  # (role, start month, monthly cost)
-    ('대표 · 사업/제품 (Founder)', 1, FOUNDER_M),
-    ('CTO · Hand 메카트로닉스 (Co-founder)', 1, FOUNDER_M),
-    ('기구·구동 엔지니어', 2, ENG_M),
-    ('제어·임베디드 엔지니어', 3, ENG_M),
-    ('Robot SW · Skill 엔지니어', 5, ENG_M),
-    ('현장 통합(FAE) 엔지니어', 8, ENG_M),
-    ('Vision · 조작 AI 엔지니어', 10, ENG_M),
-    ('DFM · 품질 엔지니어', 13, ENG_M),
-]
-months = list(range(1, 25))
-pers = [sum(c for _, s, c in HIRES if m >= s) for m in months]
-headcount = [sum(1 for _, s, _ in HIRES if m >= s) for m in months]
-
-def spread(total, m0, m1):
-    n = m1 - m0 + 1
-    return {m: total / n for m in range(m0, m1 + 1)}
-NP = {
-    'Prototype · 내구시험': [spread(0.9, 1, 6), spread(0.6, 7, 12), spread(0.8, 13, 18), spread(0.4, 19, 24)],
-    'Robot 2종 · 시험 Cell': [{2: 0.45, 3: 0.35, 4: 0.10, 13: 0.40}],
-    '고객 PoC · 현장통합(비청구)': [spread(0.3, 7, 12), spread(0.45, 13, 18), spread(0.45, 19, 24)],
-    'SW · AI · Data': [spread(0.6, 1, 24)],
-    '제조 · 품질 · 안전 · IP': [spread(0.15, 1, 6), spread(0.2, 7, 12), spread(0.45, 13, 18), spread(0.3, 19, 24)],
-    'Kitchen Bench Demo': [spread(0.3, 19, 24)],
-    '운영 (임차·법무·회계·보험·출장)': [spread(1.5, 1, 24)],
-}
-np_month = {k: [sum(d.get(m, 0) for d in v) for m in months] for k, v in NP.items()}
-CONTINGENCY = 1.7
 SEED = 20.0
+UOF = [  # Seed 20억 원 사용 계획 (24개월 현금 집행 한도, 손익계산서 운영비와 일대일로 일치하지 않음)
+    ('개발 인력', 10.0, '기구·구동·제어·AI·통합 인력의 단계 채용'),
+    ('시제품·시험 설비', 3.5, '핸드 반복 제작, 팔·센서·지그·내구 시험'),
+    ('AI 데이터·연산', 1.5, '시연·실험 데이터, 저장·학습·검증 환경'),
+    ('주방 통합 실증', 2.0, '레일/프레임, 세척·가열 연동, 설치 시험'),
+    ('안전·품질·지식재산', 1.0, '시험·외부 검토·선행조사·출원'),
+    ('운영·예비비', 2.0, '사업 운영, 공급 지연·재작업 대비'),
+]
+TEAM = [  # 초기 핵심 역할 7명 (단계 채용 전제)
+    ('사업·제품 책임자', 1), ('핸드 기구/구동', 2), ('제어·임베디드', 1), ('비전·조작 AI', 2), ('시스템 통합', 1),
+]
+SAM = dict(hand_sites=100, hand_units=5, cell_sites=30, cells_per_site=1)   # 초기 접근시장 가정 (고객 명단 미확인)
+ROI = dict(capex=2.0, wage=25000, days=300, hours=[6, 10], extra=1000)   # 주방 셀 고객 투자회수 예시 (원·만 원)
 
-def seed_plan():
-    tot_pers = sum(pers)
-    others = tot_pers + sum(sum(v) for v in np_month.values())
-    uof = [('핵심 인력 (8명 단계 채용)', tot_pers)] + [(k, sum(v)) for k, v in np_month.items()] + [('예비비 · 운전자본', SEED - others)]
-    s = sum(v for _, v in uof)
-    opex_m = [pers[i] + sum(np_month[k][i] for k in np_month) for i in range(24)]
-    core = sum(opex_m[:18]); ext = sum(opex_m[18:])
-    y1 = sum(opex_m[:12]); y2 = sum(opex_m[12:])
-    return dict(uof=uof, uof_total=s, opex_m=opex_m, core18=core, ext6=ext, opex_y1=y1, opex_y2=y2,
-                pers_total=tot_pers, pers_y1=sum(pers[:12]), pers_y2=sum(pers[12:]), headcount_end=headcount[-1],
-                burn_m18=opex_m[17], burn_m24=opex_m[23])
 
-def model(a=None, opex12=None):
+def model(a=None):
     a = a or A
-    sp = seed_plan()
-    out = {k: [] for k in ['poc_int', 'hw', 'skill', 'runtime', 'partner', 'rev', 'cogs', 'gp', 'gm', 'opex', 'op', 'reuse_share', 'installed_end', 'hands_new']}
-    installed = 0
+    out = {k: [] for k in ['rev_hand', 'rev_cell', 'rev_sw', 'rev_pilot', 'rev', 'gp_hand', 'gp_cell', 'gp_sw', 'gp_pilot',
+                           'gp', 'gm', 'opex', 'op', 'op_margin', 'cum_op']}
+    cum = 0.0
     for i in range(5):
-        poc = a['poc_n'][i] * a['poc_price'] + a['int_n'][i] * a['int_price']
-        hd, hp = a['hand_direct'][i], a['hand_partner'][i]
-        hw = hd * a['hand_price']
-        skill = hd * a['skill_per_hand'][i] * a['skill_price']
-        start = installed; installed += hd + hp
-        rt = (start + (hd + hp) / 2) * a['runtime_fee']
-        partner = hp * (a['partner_price'] + a['skill_per_hand'][i] * a['skill_partner_price'])
-        rev = poc + hw + skill + rt + partner
-        uc = a['unit_cost'][i]
-        cogs = poc * (1 - a['gm_poc']) + (hd + hp) * uc + (skill + hp * a['skill_per_hand'][i] * a['skill_partner_price']) * (1 - a['gm_skill']) + rt * (1 - a['gm_runtime'])
-        gp = rev - cogs
-        if i == 0: opex = sp['opex_y1'] if opex12 is None else opex12[0]
-        elif i == 1: opex = sp['opex_y2'] if opex12 is None else opex12[1]
-        else: opex = a['fte'][i] * a['fte_cost'][i] + a['nonpers'][i]
-        for k, v in [('poc_int', poc), ('hw', hw), ('skill', skill), ('runtime', rt), ('partner', partner), ('rev', rev), ('cogs', cogs), ('gp', gp),
-                     ('gm', gp / rev if rev else 0), ('opex', opex), ('op', gp - opex), ('reuse_share', (rev - poc) / rev if rev else 0),
-                     ('installed_end', installed), ('hands_new', hd + hp)]:
+        rh, rc, rs, rp = a['hands'][i] * a['hand_price'], a['cells'][i] * a['cell_price'], a['sw'][i] * a['sw_price'], a['pilot'][i]
+        gh = a['hands'][i] * (a['hand_price'] - a['hand_cost'])
+        gc = a['cells'][i] * (a['cell_price'] - a['cell_cost'])
+        gs = a['sw'][i] * (a['sw_price'] - a['sw_cost'])
+        gpl = rp * a['gm_pilot']
+        rev = rh + rc + rs + rp; gp = gh + gc + gs + gpl; op = gp - a['opex'][i]; cum += op
+        for k, v in [('rev_hand', rh), ('rev_cell', rc), ('rev_sw', rs), ('rev_pilot', rp), ('rev', rev), ('gp_hand', gh), ('gp_cell', gc),
+                     ('gp_sw', gs), ('gp_pilot', gpl), ('gp', gp), ('gm', gp / rev if rev else 0), ('opex', a['opex'][i]), ('op', op),
+                     ('op_margin', op / rev if rev else 0), ('cum_op', cum)]:
             out[k].append(v)
     return out
 
-def scaled(f_units=1.0, f_poc=1.0, from_year=2, cost_flat=False, partner_delay=False):
+
+def scaled(year, f):
+    """All volumes, contracts and pilot revenue of one year scaled by f, same margins and opex (사업계획서 민감도 방식)."""
     a = copy.deepcopy(A)
-    for i in range(from_year, 5):
-        a['hand_direct'][i] = round(a['hand_direct'][i] * f_units)
-        a['hand_partner'][i] = round(a['hand_partner'][i] * f_units)
-        a['poc_n'][i] = round(a['poc_n'][i] * f_poc); a['int_n'][i] = round(a['int_n'][i] * f_poc)
-    if cost_flat: a['unit_cost'] = [0.095, 0.095, 0.090, 0.090, 0.090]
-    if partner_delay: a['hand_partner'] = [0, 0, 0, a['hand_partner'][2], a['hand_partner'][3]]
+    for k in ['hands', 'cells', 'sw', 'pilot']:
+        a[k][year] = a[k][year] * f
     return model(a)
 
+
+def sam():
+    hand = SAM['hand_sites'] * SAM['hand_units'] * A['hand_price']
+    cell = SAM['cell_sites'] * SAM['cells_per_site'] * A['cell_price']
+    return dict(hand=hand, cell=cell, hand_units=SAM['hand_sites'] * SAM['hand_units'], cell_units=SAM['cell_sites'] * SAM['cells_per_site'])
+
+
+def roi():
+    out = []
+    for h in ROI['hours']:
+        saving = ROI['wage'] * h * ROI['days'] / 1e4 - ROI['extra']          # 만 원/년
+        out.append(dict(hours=h, saving=saving, payback=ROI['capex'] * 1e4 / saving))
+    return out
+
+
+def gm_unit():
+    return dict(hand=1 - A['hand_cost'] / A['hand_price'], cell=1 - A['cell_cost'] / A['cell_price'], sw=1 - A['sw_cost'] / A['sw_price'])
+
+
 if __name__ == '__main__':
-    sp = seed_plan(); b = model()
-    r = lambda x: round(x, 2)
-    print('Seed plan: total', r(sp['uof_total']), 'core18', r(sp['core18']), 'ext6', r(sp['ext6']), 'opexY1', r(sp['opex_y1']), 'opexY2', r(sp['opex_y2']), 'pers', r(sp['pers_total']), 'burn M18', r(sp['burn_m18']), 'M24', r(sp['burn_m24']))
-    for k, v in sp['uof']: print('  UoF', k, r(v), f"{v/SEED*100:.1f}%")
-    for k in ['poc_int', 'hw', 'skill', 'runtime', 'partner', 'rev', 'cogs', 'gp', 'gm', 'opex', 'op', 'reuse_share', 'installed_end', 'hands_new']:
-        print(k.ljust(14), [r(x) for x in b[k]])
-    cum = 0
-    for i in range(5): cum += b['op'][i]; print(Y[i], 'cum OP', r(cum))
-    print('cash end M24 (no WC)', r(SEED - sum(sp['opex_m']) + b['gp'][0] + b['gp'][1]))
-    print('cash end M24 if zero revenue', r(SEED - sum(sp['opex_m'])))
-    for name, m in [('vol-30%', scaled(0.7, 0.7)), ('cost flat', scaled(cost_flat=True)), ('partner delay 1y', scaled(partner_delay=True)), ('vol-50% Y3', scaled(0.5, 0.5, 2))]:
-        print(name, 'Y5 rev', r(m['rev'][4]), 'Y5 GP', r(m['gp'][4]), 'Y5 OP', r(m['op'][4]), 'Y3 OP', r(m['op'][2]), 'cumY3-5', r(sum(m['op'][2:])))
-    json.dump(dict(seed=sp, base=b, hires=HIRES, assumptions=A,
-                   sens={n: scaled(*args) for n, args in [('vol70', (0.7, 0.7)), ('vol50', (0.5, 0.5))]}), open(__import__('paths').MODEL_JSON, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    b = model(); r = lambda x: round(x, 2)
+    for k in b: print(k.ljust(10), [r(x) for x in b[k]])
+    s3 = scaled(2, 0.5); s4 = scaled(3, 0.8)
+    print('sens Y3 50%: rev', r(s3['rev'][2]), 'gp', r(s3['gp'][2]), 'op', r(s3['op'][2]))
+    print('sens Y4 80%: rev', r(s4['rev'][3]), 'gp', r(s4['gp'][3]), 'op', r(s4['op'][3]))
+    print('Y1~Y2 cumulative OP', r(b['cum_op'][1]), '| UoF total', sum(v for _, v, _ in UOF), '| team', sum(n for _, n in TEAM))
+    print('SAM', sam(), '| ROI', [(x['hours'], r(x['saving']), r(x['payback'])) for x in roi()], '| GM', {k: r(v) for k, v in gm_unit().items()})
+    # the business plan's published figures must be reproduced exactly
+    assert [r(x) for x in b['rev']] == [1.0, 6.8, 28.2, 59.6, 112.0]
+    assert [r(x) for x in b['gp']] == [0.4, 3.11, 11.64, 24.52, 45.55]
+    assert [r(x) for x in b['op']] == [-7.6, -6.89, -2.36, 4.52, 17.55]
+    assert (r(s3['rev'][2]), r(s3['op'][2]), r(s4['gp'][3])) == (14.1, -8.18, 19.62)
+    assert r(-b['cum_op'][1]) == 14.49 and sum(v for _, v, _ in UOF) == SEED
+    json.dump(dict(base=b, assumptions=A, uof=UOF, team=TEAM, seed=SEED, sam=sam(), roi=roi(), gm_unit=gm_unit(),
+                   sens=dict(y3_50=dict(rev=s3['rev'][2], gp=s3['gp'][2], op=s3['op'][2]),
+                             y4_80=dict(rev=s4['rev'][3], gp=s4['gp'][3], op=s4['op'][3]))),
+              open(__import__('paths').MODEL_JSON, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    print('saved model.json')

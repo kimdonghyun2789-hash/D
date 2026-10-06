@@ -14,8 +14,8 @@ prs = new_prs()
 for f in slides_main.MAIN + slides_appx.APPX:
     f(prs)
 cp = prs.core_properties
-cp.title = '투자유치 사업계획서 (Seed) · 주방 조리 자동화용 로봇 핸드 SoftHand'
-cp.subject = '로봇 핸드와 주방 작업 소프트웨어 개발·사업화 · Seed 20억 원 / 24개월'
+cp.title = '투자유치 사업계획서 (Seed) · 사람용 도구를 잡고 사용하는 소프트 로봇핸드 개발 및 사업화'
+cp.subject = '4지·5지 소프트 로봇핸드와 도구 사용 제어 소프트웨어, 천장 이동형 양팔 로봇 주방 · Seed 20억 원 / 24개월'
 cp.author = '[회사명 입력 필요]'; cp.last_modified_by = ''
 cp.created = cp.modified = datetime.datetime(2026, 10, 6, 9, 0, 0)
 prs.save(OUTPUT)

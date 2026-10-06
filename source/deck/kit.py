@@ -127,14 +127,17 @@ def text(s, x, y, w, h, paras, size=14, bold=False, color=None, align='l', ancho
         runs = [(p, {})] if isinstance(p, str) else p
         plain = ''; big = 0; anyb = False
         for t, o in runs:
-            r = para.add_run(); r.text = t; plain += t
             sz = o.get('size', size); b = o.get('bold', bold)
             big = max(big, sz); anyb = anyb or b
-            _font_runs(r, sz, b, o.get('color', color or T['text']))
+            for k, seg in enumerate(t.split('\n')):   # '\n' inside a paragraph item = soft line break (<a:br/>)
+                if k: para.add_line_break()
+                r = para.add_run(); r.text = seg
+                _font_runs(r, sz, b, o.get('color', color or T['text']))
+            plain += t
         if bullet: _bullet(para, bullet, indent, bullet_color or T['muted'])
-        n = n_lines(plain, big, avail - 0.03, anyb) if plain.strip() else 1
+        n = sum(n_lines(seg, big, avail - 0.03, anyb) if seg.strip() else 1 for seg in plain.split('\n'))
         need += n * big * LH * line / 72 + ((space_after / 72) if space_after and i < len(paras) - 1 else 0)
-        for wd in plain.split(' '):
+        for wd in plain.replace('\n', ' ').split(' '):
             if wd and text_w(wd, big, anyb) > avail: _flag(f'{label or plain[:20]!r}: word "{wd}" wider than box')
     if check and need > h + 0.02:
         _flag(f'{label or str(paras[0])[:24]!r}: needs {need:.2f}in > box {h:.2f}in')
@@ -146,7 +149,7 @@ def text_h(paras, size, w, line=1.0, bold=False, space_after=0):
     tot = 0
     for i, p in enumerate(paras):
         if isinstance(p, list): p = ''.join(rt for rt, _ in p)   # paragraph given as styled runs
-        tot += n_lines(p, size, w - 0.03, bold) * size * LH * line / 72
+        tot += sum(n_lines(seg, size, w - 0.03, bold) for seg in p.split('\n')) * size * LH * line / 72
         if space_after and i < len(paras) - 1: tot += space_after / 72
     return tot
 
