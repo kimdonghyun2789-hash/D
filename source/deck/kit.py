@@ -411,3 +411,26 @@ def footnote(s, txt, y=None, w=None):
     hh = text_h(txt, 10, w or CW)
     yy = y if y is not None else H - 0.62 - hh
     text(s, MX, yy, w or CW, hh + 0.02, txt, size=10, color=T['muted'], label='footnote')
+
+
+# ---------------------------------------------------------------- v3 diagram helpers
+def arrow(s, x1, y1, x2, y2, color=None, lw=1.25, head='triangle'):
+    """Straight connector with an arrowhead at (x2, y2)."""
+    c = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x1), Inches(y1), Inches(x2), Inches(y2))
+    c.line.color.rgb = _rgb(color or T['muted']); c.line.width = Pt(lw)
+    _nostyle(c)
+    ln = c.line._get_or_add_ln()
+    te = etree.SubElement(ln, qn('a:tailEnd')); te.set('type', head); te.set('w', 'med'); te.set('len', 'med')
+    return c
+
+def chip(s, x, y, w, h, txt, fill=None, color=None, size=12, bold=True, align='c', line=None, label=None, pad=0.08):
+    """Filled block with centered text (no rounded corners, no outline unless `line`)."""
+    rect(s, x, y, w, h, fill=fill or T['soft'], line=line)
+    text(s, x + pad, y, w - 2 * pad, h, txt, size=size, bold=bold, color=color or T['text'], align=align, anchor='m',
+         label=label or ('chip ' + str(txt)[:14]))
+
+def dashed_rect(s, x, y, w, h, color=None, lw=1.0):
+    from pptx.enum.dml import MSO_LINE
+    sh = rect(s, x, y, w, h, line=color or T['grey_bar'], lw=lw)
+    sh.line.dash_style = MSO_LINE.DASH
+    return sh

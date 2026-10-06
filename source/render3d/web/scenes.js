@@ -1,3 +1,5 @@
+import { KSCENES } from './kitchen.js';
+import { LSCENES } from './luxe.js';
 import { THREE, initMaterials, MAT, buildHand, HAND_DEFAULT_POSE, makeRenderer, makeScene, addLights, shadowCatcher, buildCobot, setJoints, solveIK, buildMachine, buildPart, buildTrayStation, rbox, cyl, softCyl } from './lib.js';
 const D = Math.PI / 180;
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
@@ -221,3 +223,5 @@ export const SCENES = {
     return { posErr: +res.posErr.toFixed(4), rotErr: +res.rotErr.toFixed(4), q: res.q.map(v => +(v / D).toFixed(1)), focus: focus.toArray().map(v => +v.toFixed(1)) };
   },
 };
+Object.assign(SCENES, KSCENES);
+Object.assign(SCENES, LSCENES);

@@ -1,50 +1,54 @@
-# SoftHand — 창업 및 Seed 투자 제안서 (최종 수정본)
+# SoftHand — 창업 및 Seed 투자 제안서 (3차 수정본)
 
-**사람용 설비를 그대로 쓰는 로봇 핸드, SoftHand-4**
-기존 설비를 크게 바꾸지 않는 머신텐딩 자동화 · Seed 20억 원 / 24개월
+**모든 주방에서 일할 수 있는 로봇 · The Robot That Can Work in Any Kitchen**
+Kitchen Robotics Platform (SoftHand + Kitchen Skills) · 상업용 + 가정용 주방 · Seed 20억 원 / 24개월
 
-## 이번 수정 (2차)
+> 주방을 로봇에 맞게 다시 만들지 않는다. 로봇이 사람이 쓰던 주방을 그대로 사용하게 만든다.
 
-- 문체: 제목과 본문을 개조식 한국어로 다시 작성, 영어는 제품명·슬로건·업계 약어(PoC·SI·OEM)만 사용
-- 디자인: 흰 배경, 큰 제목, 주황은 장마다 핵심 1곳, 3D 렌더링은 사각형 사진형으로 배치
-- 구성: 2장 투자 요약, 8장 시장 규모와 "왜 지금인가", 15장 투자 요청, 16장 마무리에서 요청 금액 재강조
-- 사업 전략·재무 모델·Seed 집행 계획은 1차 수정 내용 유지
+## 이번 수정 (3차)
 
-상세 내용은 `SoftHand_IR_Revision_Report` (기존 → 수정 → 이유 → 투자자 효과) 참고.
+- 회사 정의: 머신텐딩용 로봇 핸드 → Kitchen Robotics Platform (SoftHand + Kitchen Skills + Runtime + Data)
+- 본문 16장 → 14장: 첫 5장(비전·문제·인사이트·해법·작업 흐름)에서 사업 이해가 끝나는 구조
+- 시장: 상업용·가정용 주방을 모두 핵심 시장으로 정의, 공통 조작 Skill로 연결. Seed 실행은 집게·팬·용기·노브·버튼·문 반복 작업으로 좁힘
+- 재무: 수치는 그대로, 5년차 매출 44.7억 원은 헤드라인에서 내려 Base Case(하방)로, Scale Triggers(상방)는 수치 없이 제시
+- Seed: 20억 원을 Runway가 아닌 Value Inflection으로 (증명할 3가지: 실제 주방 · 유료 고객 · Skill 재사용)
+- 머신텐딩: 본문에서 부록 A5 산업 검증 트랙으로 이동 (삭제하지 않음)
+- 이미지: 참고 사진(검은 캐비닛·백라이트 니치·대리석 상판·천장 로봇 팔) 분위기의 주방 렌더링 16장 신규 제작. 공급사 사진·로고는 사용하지 않음
+
+상세 내용은 `SoftHand_IR_Revision_Report` (슬라이드별 판정, 핵심 변경 8가지의 이유, VC 자체 검토, 투자심의 평가) 참고.
 
 ## 산출물
 
 | 파일 | 내용 |
 |---|---|
-| `SoftHand_Founding_Seed_IR_Deck_Final.pptx` | 최종 IR 덱, 33장 (본문 16 + 부록 목차 1 + 부록 16), 16:9 |
+| `SoftHand_Founding_Seed_IR_Deck_Final.pptx` | 최종 IR 덱, 32장 (본문 14 + 부록 목차 1 + 부록 17), 16:9 |
 | `SoftHand_Founding_Seed_IR_Deck_Final_preview.pdf` | 검토용 PDF |
-| `SoftHand_IR_Revision_Report.docx` / `.md` | 수정 보고서: 2차 수정 상세, 1차 필수 변경 반영 위치, 재무, VC 예상 질문 17개, 제출 전 입력 정보 |
-| `assets/renders/` | SoftHand-4 콘셉트 렌더링 (`raw/`: 장면 렌더링, `*.png`: 핸드 단독 이미지) |
-| `assets/original/` | 원본 덱에서 유지한 이미지 2장 (전용 그리퍼, 천장형 주방) |
+| `SoftHand_IR_Revision_Report.docx` / `.md` | 3차 수정 보고서: 슬라이드별 판정, 8가지 이유, VC 검토·평가, 출처 재확인, 입력 필요 정보 |
+| `assets/renders/kitchen/` | 주방 렌더링 16장 (`lx_*`: 참고 사진 스타일, `pro_*`: 상업용 주방, `pro_pick·lid·plate`는 교체용 예비) |
+| `assets/renders/` | SoftHand-4 콘셉트 렌더링 (`raw/`: 2차 장면, `product`·`screwdriver`: 핸드 단독) |
+| `assets/original/` | 원본 덱 이미지 2장 (3차에서는 미사용, 보존) |
 | `source/` | 덱·보고서·재무 모델·렌더링 생성 코드 |
 
 ## 덱 구성
 
 | 장 | 제목 |
 |---|---|
-| 01 | 사람용 설비를 그대로 쓰는 로봇 핸드 (표지) |
-| 02 | 설비를 크게 바꾸지 않는 로봇 자동화, 첫 시장은 머신텐딩 (투자 요약) |
-| 03 | 로봇 도입마다 반복되는 설비 재설계 |
-| 04 | 설비는 그대로, 핸드가 사람처럼 사용 |
-| 05 | 핸드 하나로 공정 하나 완결 |
-| 06 | 첫 시장은 다품종 머신텐딩 |
-| 07 | 구매 이유: 품목이 바뀌어도 다시 쓰는 자동화 |
-| 08 | 첫 시장은 이미 공장에 설치된 로봇 |
-| 09 | 고객 프로젝트를 표준 스킬로 축적 |
-| 10 | 제품 판매로 시작, 스킬과 로봇 제조사 탑재로 확장 |
-| 11 | 경쟁 기준은 설비 변경 없이 끝낸 작업 수 |
-| 12 | 5년차 매출 44.7억 원, 손익분기 근접 |
-| 13 | 24개월 4단계 검증 계획 |
-| 14 | 이 문제를 풀 수 있는 팀 |
-| 15 | Seed 20억 원, 24개월 사업성 검증 |
-| 16 | 공장에서 시작, 사람 손이 필요한 현장으로 확장 |
+| 01 | 모든 주방에서 일할 수 있는 로봇 (표지) |
+| 02 | 현재 주방 자동화는 로봇보다 주방을 더 많이 바꿉니다 |
+| 03 | 주방은 이미 사람 손에 맞춰 표준화되어 있습니다 |
+| 04 | SoftHand + Kitchen Skills: 사람용 도구를 그대로 쓰는 손 |
+| 05 | One Hand. Many Tools. Many Tasks. |
+| 06 | AI가 발전할수록 병목은 '손'으로 이동합니다 |
+| 07 | 하나의 조작 플랫폼, 두 개의 큰 시장 |
+| 08 | 메뉴가 바뀌어도 다시 만들지 않는 자동화 |
+| 09 | 메뉴가 늘수록 장비가 아니라 Skill이 쌓입니다 |
+| 10 | 경쟁자는 다른 로봇 손이 아니라, 작업마다 새로 만드는 전용 자동화 |
+| 11 | 하드웨어로 검증하고, Skill·Runtime 반복매출로 확장합니다 |
+| 12 | 20억 원 · 24개월로 증명할 3가지 |
+| 13 | 왜 우리가 이 문제를 풀 수 있는가 |
+| 14 | 모든 주방에서 일할 수 있는 로봇 (Seed 요청 + 비전) |
 
-부록: A1 주요 가정과 근거 수준 · A2 단계별 점검 기준 · A3 경쟁사 상세 · A4 피지컬 AI 흐름 · A5 시장 근거 · A6 핸드 설계 · A7 성능 지표 · A8 스크루드라이버 데모 · A9 수익 모델 가정 · A10 5개년 손익 · A11 자금 사용 · A12 데이터 축적 · A13 주방 데모 · A14 안전·인증·IP · A15 위험과 대응 · A16 출처
+부록: A1 주요 가정과 근거 수준 · A2 단계별 점검 기준 · A3 SoftHand 설계 상세 · A4 성능 지표와 시험 방법 · A5 산업 검증 트랙 (머신텐딩) · A6 경쟁 상세 · A7 피지컬 AI 흐름 · A8 시장 근거 · A9 수익 모델 가정 · A10 5개년 손익 (Base Case) · A11 Seed 자금 사용 상세 · A12 데이터 축적 계획 · A13 장기 보급 채널 · A14 스크루드라이버 기술 데모 · A15 안전·위생·인증·IP · A16 주요 위험과 대응 · A17 출처
 
 ## 외부 제출 전 입력할 정보
 
@@ -52,13 +56,14 @@
 
 | 항목 | 위치 |
 |---|---|
-| 회사명 `[회사명 입력 필요]` | 01 · 16 |
-| 창업자 정보 (이름·사진·경력·시제품·연구실적·특허, 질문 3개에 대한 답, 참여 조건) `[정보 입력 필요]` | 14 |
-| 투자 조건 (기업가치·지분율) `[투자 조건 입력 필요]` | 15 |
-| 대표자 연락처 `[대표자명 · 이메일 · 연락처 입력 필요]` | 16 |
-| OEM 매출 구조의 각 항목 `[OEM 협의 후 검증]` | 10 · A9 |
-| 공동개발 고객 3곳 (현재 목표, 확보 시 실명·상태 표기) | 10 · 13 · 15 |
-| 실물 이미지 (시제품 사진 → 시험 영상 → 고객 현장 → CAD 순으로 교체) | 전 장 |
+| 회사명 `[회사명 입력 필요]` | 01 · 14 |
+| 창업자 정보 (이름·사진·경력, Problem Insight·Build Capability·Market Access의 실제 답, 참여 조건) | 13 |
+| 투자 조건·라운드 진행 상황 | 14 |
+| 현재 확보된 증거 (확보 항목만 ● 표시, 확보 시 12장을 Proof 중심으로 바꿔 앞쪽 배치) | 12 |
+| PoC 대상 고객군 (현재 가설) | 07 |
+| 대표자 연락처 | 14 |
+| 장기 채널 관련 네트워크, 특허 출원 여부 | A13 · A15 |
+| 실물 이미지 (시제품 사진 → 시험 영상 → 고객 주방 순으로 교체) | 전 장 |
 
 ## 다시 만들기
 
@@ -83,8 +88,9 @@ python3 source/deck/make_report.py SoftHand_IR_Revision_Report.md SoftHand_IR_Re
 cd source/render3d
 npm install                          # three@0.170.0, playwright
 npx playwright install chromium      # Chromium이 없는 경우만
-mkdir -p final && bash batch.sh      # 장면·핸드 렌더링 → final/
-python3 make_assets.py               # → assets/renders/
+mkdir -p final
+bash batch.sh && python3 make_assets.py                    # 핸드·머신텐딩 장면 → assets/renders/
+bash batch_kitchen.sh && python3 make_kitchen_assets.py    # 주방 장면 → assets/renders/kitchen/
 ```
 
 ## 폴더 구조
@@ -95,9 +101,9 @@ python3 make_assets.py               # → assets/renders/
 ├── SoftHand_Founding_Seed_IR_Deck_Final_preview.pdf
 ├── SoftHand_IR_Revision_Report.docx / .md
 ├── assets/
-│   ├── renders/      # raw/ 장면 렌더링, product·closing·screwdriver 핸드 이미지
-│   └── original/     # 원본 덱에서 유지한 이미지
+│   ├── renders/      # kitchen/ 주방 렌더링, raw/ 장면 렌더링, product·screwdriver 핸드 이미지
+│   └── original/     # 원본 덱에서 보존한 이미지
 └── source/
     ├── deck/         # model.py · build.py · kit.py · slides_main.py · slides_appx.py · to_pdf.py · make_report.py
-    └── render3d/     # shot.js · batch.sh · make_assets.py · web/(lib.js · scenes.js)
+    └── render3d/     # shot.js · batch.sh · batch_kitchen.sh · make_assets.py · make_kitchen_assets.py · web/(lib.js · scenes.js · kitchen.js · luxe.js)
 ```

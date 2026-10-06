@@ -21,8 +21,8 @@ def base_rows():
     rows.append(['신규 핸드 (대) 직판 / 파트너'] + [f'{a} / {b}' for a, b in zip(A['hand_direct'], A['hand_partner'])])
     rows.append(['매출: 유료 PoC·통합'] + [f(v) for v in B['poc_int']])
     rows.append(['매출: SoftHand 하드웨어'] + [f(v) for v in B['hw']])
-    rows.append(['매출: 작업 스킬'] + [f(v) for v in B['skill']])
-    rows.append(['매출: 런타임·유지보수'] + [f(v) for v in B['runtime']])
+    rows.append(['매출: Kitchen Skill'] + [f(v) for v in B['skill']])
+    rows.append(['매출: Runtime·유지보수'] + [f(v) for v in B['runtime']])
     rows.append(['매출: 파트너 판매'] + [f(v) for v in B['partner']])
     rows.append(['총매출'] + [f(v) for v in B['rev']])
     rows.append(['매출총이익 (이익률)'] + [f'{f(g)} ({m*100:.0f}%)' for g, m in zip(B['gp'], B['gm'])])
@@ -31,13 +31,13 @@ def base_rows():
     rows.append(['재사용 매출 비중'] + [f'{v*100:.0f}%' for v in B['reuse_share']])
     return rows
 
-ASSUMP = ('가정: 유료 PoC 건당 5,000만 원 · 통합 프로젝트 4,000만 원 · 핸드 1,500만 원 (SI 파트너 순매출 1,200만 원) · 핸드 원가 950만 → 750만 원 · '
-          '스킬 300만 원 (파트너 240만 원, 핸드당 1.0 → 1.6개) · 런타임 설치 핸드당 연 150만 원 · 매출총이익률: PoC·통합 40%, 스킬 85%, 런타임 70% · '
-          '운영비 1·2년차는 Seed 집행 계획과 동일, 3~5년차는 평균 인원 14·19·23명 기준')
-FUND = [f"18개월 핵심 운영 {S['core18']:.1f}억 원 + 6개월 연장 {S['ext6']:.1f}억 원 (M18 점검 통과 시) + 예비비 {CONT:.1f}억 원 = 20.0억 원",
-        f"손익 연결: 운영비 1년차 {S['opex_y1']:.1f}억 + 2년차 {S['opex_y2']:.1f}억 = 집행 계획 − 예비비 (매출원가는 매출로 충당)",
-        f'매출이 없어도 24개월 뒤 예비비 {CONT:.1f}억 원 잔존, 정부지원금·공동개발비는 확정 전이라 기본 재원에서 제외']
-REDTEAM_NOTE = '실제 투자 심의에서 나올 질문 17개에 2차 수정본 본문만으로 답할 수 있는지 점검한 결과. 1차에서 덱 부록에 있던 목록을 투자자 배포 자료가 아니므로 이 보고서로 이동'
+ASSUMP = ('가정 (2차와 동일): 유료 PoC 건당 5,000만 원 · 통합 프로젝트 4,000만 원 · 핸드 1,500만 원 (파트너 순매출 1,200만 원) · 핸드 원가 950만 → 750만 원 · '
+          'Kitchen Skill 300만 원 (파트너 240만 원, 핸드당 1.0 → 1.6개) · Runtime 설치 핸드당 연 150만 원 · 매출총이익률: PoC·통합 40%, Skill 85%, Runtime 70% · '
+          '운영비 1·2년차는 Seed 집행 계획과 동일, 3~5년차는 평균 인원 14·19·23명 기준 · 매출원은 분야 무관 가정 (주방·산업 비중은 PoC 후 재산정)')
+FUND = [f"18개월 핵심 운영 {S['core18']:.1f}억 원 + 6개월 연장 {S['ext6']:.1f}억 원 (M18 점검 통과 시) + 예비비 {CONT:.1f}억 원 = 20.0억 원 (2차와 동일)",
+        f"손익 연결: 운영비 1년차 {S['opex_y1']:.1f}억 + 2년차 {S['opex_y2']:.1f}억 = 집행 계획 − 예비비",
+        '항목명만 주방 중심으로 바꾸고 금액은 그대로 유지']
+AVG = sum(sc for _, sc, _ in SCORES) / len(SCORES)
 
 # ---------------------------------------------------------------- Markdown
 def md_table(rows):
@@ -47,36 +47,51 @@ def md_table(rows):
 
 md = [f'# {TITLE}', f'_{SUBTITLE}_', '']
 md.append(md_table([['구분', '내용']] + [list(r) for r in META]))
-md += ['', '## 0. 요약', '']
-md += [f'- {t}' for t in SUMMARY]
-md += ['', '### 1차 → 2차 수치 비교 (본문 16장)', '']
-md.append(md_table([['항목', '1차 수정본', '2차 수정본']] + [list(r) for r in METRICS]))
-md += ['', '### 투자자가 이렇게 설명할 수 있는가', '']
-md.append(md_table([['투자자가 설명해야 하는 내용', '답하는 장']] + [list(r) for r in JUDGMENT]))
-md += ['', '## 1. 2차 수정 상세: 기존 → 수정 → 이유 → 투자자 효과', '']
-for i, (t, before, after, why, eff) in enumerate(CHANGES2):
-    md += [f'### 1.{i+1} {t}', '']
-    md.append(md_table([['구분', '내용'], ['기존', before], ['수정', after], ['이유', why], ['투자자 효과', eff]]))
+md += ['', '## 0. 요약', ''] + [f'- {t}' for t in SUMMARY]
+md += ['', '### 2차 → 3차 비교', '']
+md.append(md_table([['항목', '2차 수정본', '3차 수정본']] + [list(r) for r in METRICS]))
+md += ['', '### 투자자가 도달해야 할 판단과 답하는 장', '']
+md.append(md_table([['판단', '답하는 장']] + [list(r) for r in JUDGMENT]))
+md += ['', '## 1. 슬라이드별 수정 내역', '', '### 1.1 판정 요약 (2차 본문 16장)', '']
+md.append(md_table([['2차 장', '제목', '판정', '3차 위치']] + [[c[0], c[1], c[2], c[3]] for c in MAIN_CHANGES]))
+md += ['', '### 1.2 장별 상세: 기존 메시지 → 수정 후 메시지 → 이유 → 투자자 관점 개선점', '']
+for c in MAIN_CHANGES:
+    md += [f'#### 2차 {c[0]} {c[1]} → 3차 {c[3]} · {c[2]}', '']
+    md.append(md_table([['구분', '내용'], ['기존 메시지', c[4]], ['수정 후 메시지', c[5]], ['수정 이유', c[6]], ['투자자 관점 개선점', c[7]]]))
     md.append('')
-md += ['## 2. 1차 필수 변경 14항목의 2차 반영 위치', '']
-md.append(md_table([['#', '변경', '2차 반영 내용', '위치']] + [[str(i + 1)] + list(r) for i, r in enumerate(CHANGES1)]))
-md += ['', '## 3. 2차 수정본 장표 구성', '']
+md += ['### 1.3 신규 장', '']
+md.append(md_table([['3차 장', '역할', '제목', '내용']] + [list(r) for r in NEW_SLIDES]))
+md += ['', '### 1.4 부록 변경', '']
+md.append(md_table([['2차 부록', '판정', '3차 위치', '내용']] + [list(r) for r in APPX_CHANGES]))
+md += ['', '## 2. 핵심 변경 8가지의 이유', '']
+for i, (t, items) in enumerate(WHYS):
+    md += [f'### 2.{i + 1} {t}', ''] + [f'- {x}' for x in items] + ['']
+md += ['## 3. 3차 수정본 구성', '']
 md.append(md_table([['장', '제목', '역할']] + [list(r) for r in SLIDES]))
-md += ['', '## 4. 재무 계획과 Seed 집행 (1차와 동일)', '', '### 4.1 5개년 기본 시나리오 (주방·OEM 매출 0원)', '']
+md += ['', '## 4. VC 관점 자체 검토 (완성본 기준)', '']
+md.append(md_table([['질문', '검토 결과', '판정', '검토 후 수정']] + [list(r) for r in REVIEW]))
+md += ['', '## 5. 투자심의 평가 (10점 만점)', '']
+md.append(md_table([['항목', '점수', '근거']] + [[a, str(b), c] for a, b, c in SCORES]))
+md += ['', f'평균 {AVG:.1f}점. 비전·구조 항목은 높고, 실물·고객·팀 항목이 낮은 전형적인 Pre-proof Seed 상태', '',
+       '### 현재 상태에서 투자를 보류한다면 가장 큰 이유 3개', ''] + [f'{i + 1}. **{a}**: {b}' for i, (a, b) in enumerate(HOLD)]
+md += ['', '### 이 3가지가 확보되면 실제 투자 결정 가능성이 크게 높아지는 증거 3개', ''] + [f'{i + 1}. **{a}**: {b}' for i, (a, b) in enumerate(EVIDENCE)]
+md += ['', '## 6. 재무와 Seed 집행 (수치는 2차와 동일)', '', '### 6.1 Base Case = 하방 (대규모 주방·OEM 매출 제외)', '']
 md.append(md_table(base_rows()))
-md += ['', ASSUMP, '', '### 4.2 민감도', '']
+md += ['', ASSUMP, '', '### 6.2 민감도', '']
 md.append(md_table([['시나리오', '결과']] + [list(r) for r in SENS]))
-md += ['', '### 4.3 Seed 20억 원 자금 사용: 원본 vs 수정 (억 원)', '']
-md.append(md_table([['항목', '원본', '수정', '근거']] + [list(r) for r in UOF_COMPARE]))
+md += ['', '### 6.3 Seed 20억 원 자금 사용: 항목명 변경 (억 원)', '']
+md.append(md_table([['2차 항목명', '3차 항목명', '금액']] + [list(r) for r in UOF_RELABEL]))
 md += [''] + [f'- {t}' for t in FUND] + ['']
-md += ['## 5. VC 예상 질문 17개와 답변 위치', '', REDTEAM_NOTE, '']
-md.append(md_table([['#', '질문', '위치', '판정', '근거']] + [[str(i + 1), q, sl, v, n] for i, (q, sl, v, n) in enumerate(REDTEAM)]))
-md += ['', '## 6. 외부 제출 전 입력할 정보', '']
+md += ['## 7. 출처 재확인 결과', '']
+md.append(md_table([['항목', '확인 내용']] + [list(r) for r in FACTS]))
+md += ['', '## 8. 사실·가정 구분 원칙', ''] + [f'- {t}' for t in PRINCIPLES]
+md += ['', '## 9. 외부 제출 전 입력할 정보', '']
 md.append(md_table([['항목', '위치', '내용']] + [list(r) for r in TODO]))
-md += ['', '## 7. 사실·가정 구분 원칙', ''] + [f'- {t}' for t in PRINCIPLES]
-md += ['', '## 8. 이미지 기준: SoftHand-4 디자인', '']
-md.append(md_table([['요소', '고정 기준']] + [list(r) for r in DESIGN_LANG]))
-md += ['', DESIGN_NOTE, '', '## 9. 다음 단계', ''] + [f'{i + 1}. {t}' for i, t in enumerate(NEXT)] + ['']
+md += ['', '## 10. 이미지', '']
+md.append(md_table([['파일 (assets/renders/kitchen)', '장면', '사용 위치']] + [list(r) for r in IMAGES]))
+md += ['', IMAGE_NOTE, '', '## 11. 출처 (열람 2026-10-06)', '']
+md.append(md_table([['번호', '출처', 'URL']] + [list(r) for r in SOURCES_FULL]))
+md += ['', '## 12. 다음 단계', ''] + [f'{i + 1}. {t}' for i, t in enumerate(NEXT)] + ['']
 open(OUT_MD, 'w', encoding='utf-8').write('\n'.join(md))
 
 # ---------------------------------------------------------------- DOCX
@@ -161,41 +176,60 @@ para(SUBTITLE, 10.5, False, ORANGE, after=10)
 table([['구분', '내용']] + [list(r) for r in META], [3.2, 13.8], first_col_bold=True)
 heading('0. 요약')
 for t_ in SUMMARY: bullet(t_)
-heading('1차 → 2차 수치 비교 (본문 16장)', 3)
-table([['항목', '1차 수정본', '2차 수정본']] + [list(r) for r in METRICS], [5.0, 6.0, 6.0], first_col_bold=True)
-heading('투자자가 이렇게 설명할 수 있는가', 3)
-table([['투자자가 설명해야 하는 내용', '답하는 장']] + [list(r) for r in JUDGMENT], [13.0, 4.0])
-heading('1. 2차 수정 상세: 기존 → 수정 → 이유 → 투자자 효과')
-for i, (t_, before, after, why, eff) in enumerate(CHANGES2):
-    heading(f'1.{i+1}  {t_}', 2)
-    table([['구분', '내용'], ['기존', before], ['수정', after], ['이유', why], ['투자자 효과', eff]], [3.0, 14.0], first_col_bold=True)
-heading('2. 1차 필수 변경 14항목의 2차 반영 위치')
-table([['#', '변경', '2차 반영 내용', '위치']] + [[str(i + 1)] + list(r) for i, r in enumerate(CHANGES1)], [0.8, 5.0, 8.6, 2.6], size=8.5)
-heading('3. 2차 수정본 장표 구성')
-table([['장', '제목', '역할']] + [list(r) for r in SLIDES], [1.2, 8.3, 7.5], size=8.5)
-heading('4. 재무 계획과 Seed 집행 (1차와 동일)')
-heading('4.1 5개년 기본 시나리오 (주방·OEM 매출 0원)', 2)
+heading('2차 → 3차 비교', 3)
+table([['항목', '2차 수정본', '3차 수정본']] + [list(r) for r in METRICS], [4.2, 5.6, 7.2], first_col_bold=True)
+heading('투자자가 도달해야 할 판단과 답하는 장', 3)
+table([['판단', '답하는 장']] + [list(r) for r in JUDGMENT], [9.5, 7.5])
+heading('1. 슬라이드별 수정 내역')
+heading('1.1 판정 요약 (2차 본문 16장)', 2)
+table([['2차 장', '제목', '판정', '3차 위치']] + [[c[0], c[1], c[2], c[3]] for c in MAIN_CHANGES], [1.6, 4.6, 5.4, 5.4], size=9)
+heading('1.2 장별 상세: 기존 메시지 → 수정 후 메시지 → 이유 → 투자자 관점 개선점', 2)
+for c in MAIN_CHANGES:
+    heading(f'2차 {c[0]} {c[1]} → 3차 {c[3]} · {c[2]}', 3)
+    table([['구분', '내용'], ['기존 메시지', c[4]], ['수정 후 메시지', c[5]], ['수정 이유', c[6]], ['투자자 관점 개선점', c[7]]], [3.4, 13.6], first_col_bold=True)
+heading('1.3 신규 장', 2)
+table([['3차 장', '역할', '제목', '내용']] + [list(r) for r in NEW_SLIDES], [1.4, 2.4, 5.4, 7.8], size=9)
+heading('1.4 부록 변경', 2)
+table([['2차 부록', '판정', '3차 위치', '내용']] + [list(r) for r in APPX_CHANGES], [4.2, 1.6, 1.6, 9.6], size=8.5)
+heading('2. 핵심 변경 8가지의 이유')
+for i, (t_, items) in enumerate(WHYS):
+    heading(f'2.{i + 1}  {t_}', 2)
+    for x in items: bullet(x)
+heading('3. 3차 수정본 구성')
+table([['장', '제목', '역할']] + [list(r) for r in SLIDES], [1.6, 9.0, 6.4], size=9)
+heading('4. VC 관점 자체 검토 (완성본 기준)')
+table([['질문', '검토 결과', '판정', '검토 후 수정']] + [list(r) for r in REVIEW], [3.6, 5.8, 2.0, 5.6], size=8.5)
+heading('5. 투자심의 평가 (10점 만점)')
+table([['항목', '점수', '근거']] + [[a, str(b), c] for a, b, c in SCORES], [3.6, 1.4, 12.0], first_col_bold=True, size=9)
+para(f'평균 {AVG:.1f}점. 비전·구조 항목은 높고, 실물·고객·팀 항목이 낮은 전형적인 Pre-proof Seed 상태', 10, True, DARK, after=6)
+heading('현재 상태에서 투자를 보류한다면 가장 큰 이유 3개', 3)
+for i, (a, b) in enumerate(HOLD): para(f'{i + 1}. {a}: {b}', 10, after=3)
+heading('이 3가지가 확보되면 실제 투자 결정 가능성이 크게 높아지는 증거 3개', 3)
+for i, (a, b) in enumerate(EVIDENCE): para(f'{i + 1}. {a}: {b}', 10, after=3)
+heading('6. 재무와 Seed 집행 (수치는 2차와 동일)')
+heading('6.1 Base Case = 하방 (대규모 주방·OEM 매출 제외)', 2)
 table(base_rows(), [5.0, 2.4, 2.4, 2.4, 2.4, 2.4], first_col_bold=True, size=8.5)
 para(ASSUMP, 9, color=GRAY)
-heading('4.2 민감도', 2)
+heading('6.2 민감도', 2)
 table([['시나리오', '결과']] + [list(r) for r in SENS], [6.0, 11.0], first_col_bold=True)
-heading('4.3 Seed 20억 원 자금 사용: 원본 vs 수정 (억 원)', 2)
-table([['항목', '원본', '수정', '근거']] + [list(r) for r in UOF_COMPARE], [3.8, 3.2, 2.6, 7.4], first_col_bold=True, size=8.5)
+heading('6.3 Seed 20억 원 자금 사용: 항목명 변경 (억 원)', 2)
+table([['2차 항목명', '3차 항목명', '금액']] + [list(r) for r in UOF_RELABEL], [6.2, 7.8, 3.0], size=9)
 for t_ in FUND: bullet(t_)
-heading('5. VC 예상 질문 17개와 답변 위치')
-para(REDTEAM_NOTE, 9.5, color=GRAY)
-table([['#', '질문', '위치', '판정', '근거']] + [[str(i + 1), q, sl, v, n] for i, (q, sl, v, n) in enumerate(REDTEAM)], [0.8, 5.4, 2.0, 1.8, 7.0], size=8.5)
-heading('6. 외부 제출 전 입력할 정보')
-table([['항목', '위치', '내용']] + [list(r) for r in TODO], [3.6, 2.6, 10.8], first_col_bold=True)
-heading('7. 사실·가정 구분 원칙')
+heading('7. 출처 재확인 결과')
+table([['항목', '확인 내용']] + [list(r) for r in FACTS], [3.4, 13.6], first_col_bold=True, size=9)
+heading('8. 사실·가정 구분 원칙')
 for t_ in PRINCIPLES: bullet(t_)
-heading('8. 이미지 기준: SoftHand-4 디자인')
-table([['요소', '고정 기준']] + [list(r) for r in DESIGN_LANG], [4.0, 13.0], first_col_bold=True)
-para(DESIGN_NOTE, 9, color=GRAY)
-heading('9. 다음 단계')
-for t_ in NEXT: bullet(t_, style='List Number')
+heading('9. 외부 제출 전 입력할 정보')
+table([['항목', '위치', '내용']] + [list(r) for r in TODO], [3.6, 2.0, 11.4], first_col_bold=True, size=9)
+heading('10. 이미지')
+table([['파일 (assets/renders/kitchen)', '장면', '사용 위치']] + [list(r) for r in IMAGES], [5.4, 8.8, 2.8], size=9)
+para(IMAGE_NOTE, 9, color=GRAY)
+heading('11. 출처 (열람 2026-10-06)')
+table([['번호', '출처', 'URL']] + [list(r) for r in SOURCES_FULL], [1.2, 7.4, 8.4], size=8)
+heading('12. 다음 단계')
+for i, t_ in enumerate(NEXT): para(f'{i + 1}. {t_}', 10, after=3)
 fp = sec.footer.paragraphs[0]; fp.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-r = fp.add_run('SoftHand IR Deck 수정 보고서  ·  대외비  ·  '); set_font(r, 8, False, GRAY)
+r = fp.add_run('SoftHand IR Deck 수정 보고서 (3차)  ·  대외비  ·  '); set_font(r, 8, False, GRAY)
 fld1 = OxmlElement('w:fldSimple'); fld1.set(qn('w:instr'), 'PAGE'); rr = OxmlElement('w:r'); t = OxmlElement('w:t'); t.text = '1'; rr.append(t); fld1.append(rr); fp._p.append(fld1)
 z = doc.settings.element.find(qn('w:zoom'))
 if z is not None and z.get(qn('w:percent')) is None: z.set(qn('w:percent'), '100')

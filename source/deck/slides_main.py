@@ -1,5 +1,7 @@
-# SoftHand Seed IR deck v2 - main slides (light design, 개조식 copy).
+# SoftHand Seed IR deck v3 - main slides: Kitchen Robotics Platform (light design, 14 slides).
+# Rules: one message per slide, headline + big image/diagram + 1-3 messages, nothing unverified stated as fact.
 import json, os
+from pptx.enum.shapes import MSO_SHAPE
 from kit import *
 import kit
 
@@ -8,576 +10,567 @@ PATHS = dict(raw=_RAW, renders=_RENDERS, original=_ORIGINAL, model=_MODEL)
 def RAW(n): return os.path.join(PATHS['raw'], n)
 def REN(n): return os.path.join(PATHS['renders'], n)
 def ORI(n): return os.path.join(PATHS['original'], n)
+def KIT(n): return os.path.join(PATHS['renders'], 'kitchen', n)
 
 M = {}
 def load_model():
     M.update(json.load(open(PATHS['model'], encoding='utf-8')))
 
-def eok(v, d=1):
-    return f'{v:.{d}f}억'
+FOOT = 'SoftHand  |  주방 로봇 조작 플랫폼  |  Seed 투자 제안서'
+def foot(s, page, note=None):
+    footer(s, page, left=FOOT, note=note)
 
 
-# ---------------------------------------------------------------- helpers
-def num_item(s, x, y, w, n, title, desc, tsize=15, dsize=12, nw=0.42, gap=0.04):
-    text(s, x, y - 0.03, nw, 0.46, str(n), size=tsize + 5, bold=True, color=T['accent'])
-    text(s, x + nw, y, w - nw, 0.32, title, size=tsize, bold=True, label='item ' + title)
-    dh = text_h(desc, dsize, w - nw)
-    text(s, x + nw, y + tsize * LH / 72 + gap, w - nw, dh + 0.02, desc, size=dsize, color=T['text2'], label='item desc ' + title)
-    return tsize * LH / 72 + gap + dh
-
-def flow_row(s, x, y, w, label, steps, label_color=None, strong=(), size=14, lw=1.45):
-    text(s, x, y, lw, 0.3, label, size=size, bold=True, color=label_color or T['text'])
-    runs = []
-    for i, st in enumerate(steps):
-        if i: runs.append(('   ›   ', {'color': T['muted']}))
-        runs.append((st, {'bold': st in strong, 'color': T['text'] if st in strong else T['text2']}))
-    text(s, x + lw, y, w - lw, 0.3, [runs], size=size, label='flow ' + label)
-
-
-# ---------------------------------------------------------------- 01 cover
+# ---------------------------------------------------------------- 01 vision (cover)
 def s01(prs):
-    s = new_slide(prs, '01 cover')
-    ix = 6.25
-    image(s, RAW('cover_color.png'), ix, 0, W - ix, H, focus=(0.56, 0.42), zoom=1.22)
-    text(s, MX, 0.7, 5, 0.3, '[회사명 입력 필요]', size=12, color=T['muted'])
-    text(s, MX, 1.62, 5, 0.32, 'Seed 투자 제안서', size=15, bold=True, color=T['accent'])
-    text(s, MX, 2.08, 5.3, 2.32, '사람용 설비를\n그대로 쓰는\n로봇 핸드', size=40, bold=True, line=0.95, label='cover title')
-    text(s, MX, 4.55, 5.3, 0.7, 'SoftHand-4 + 머신텐딩 스킬 팩\n기존 설비를 크게 바꾸지 않는 공장 자동화', size=16, color=T['text2'], label='cover sub')
-    xs = [MX, MX + 1.85, MX + 3.45]
-    for i, (k, v) in enumerate([('투자 요청', '20억 원'), ('기간', '24개월'), ('첫 시장', '머신텐딩')]):
-        if i: vline(s, xs[i] - 0.22, 5.62, 0.72)
-        text(s, xs[i], 5.6, 1.6, 0.26, k, size=11, color=T['muted'])
-        text(s, xs[i], 5.9, 1.7, 0.45, v, size=20, bold=True)
-    text(s, MX, H - 0.62, 3, 0.25, 'ONE HAND. MANY TOOLS.', size=11, bold=True, color=T['text2'], check=False)
-    text(s, MX + 3.1, H - 0.62, 2.2, 0.25, '2026. 10', size=11, color=T['muted'], check=False)
-    text(s, MX + 3.1, H - 0.36, 2.4, 0.2, '이미지: 콘셉트 렌더링', size=9, color=T['muted'], check=False)
-    notes(s, '표지. 사람이 쓰도록 만든 공장 설비를 로봇이 그대로 쓰게 하는 로봇 핸드 회사. 첫 제품 SoftHand-4 + 머신텐딩 스킬 팩, Seed 20억 원 / 24개월.')
+    s = new_slide(prs, '01 vision')
+    ix = 5.85
+    image(s, KIT('lx_hero.jpg'), ix, 0, W - ix, H, focus=(0.6, 0.5))
+    text(s, MX, 0.62, 4.8, 0.26, '[회사명 입력 필요]', size=11, color=T['muted'])
+    text(s, MX, 1.42, 4.9, 0.3, 'KITCHEN ROBOTICS PLATFORM', size=13, bold=True, color=T['accent'])
+    text(s, MX, 1.86, 4.95, 1.66, '모든 주방에서\n일할 수 있는 로봇', size=42, bold=True, line=0.95, label='cover title')
+    text(s, MX, 3.6, 4.95, 0.32, 'The Robot That Can Work in Any Kitchen', size=15, color=T['text2'], label='cover en')
+    text(s, MX, 4.1, 4.95, 0.62, '사람이 사용하는 기존 주방과 도구를\n그대로 사용하는 Kitchen Robotics Platform', size=14, label='cover sub')
+    rows = [('시장', '상업용 주방 + 가정용 주방', T['text']), ('제품', 'Powered by SoftHand + Kitchen Skills', T['text']),
+            ('투자 요청', 'Seed 20억 원 · 24개월', T['accent'])]
+    y = 5.02
+    hline(s, MX, y, 4.85, color=T['text'], lw=1.0)
+    for k, v, c in rows:
+        text(s, MX, y + 0.13, 1.0, 0.26, k, size=11, color=T['muted'])
+        text(s, MX + 1.0, y + 0.09, 3.85, 0.32, v, size=14.5, bold=True, color=c, label='cover row ' + k)
+        y += 0.48
+        hline(s, MX, y, 4.85)
+    text(s, MX, H - 0.55, 4.8, 0.22, '2026. 10  ·  이미지: 콘셉트 렌더링', size=9, color=T['muted'], check=False)
+    notes(s, '모든 주방에서 일할 수 있는 로봇. 주방을 로봇에 맞게 다시 만들지 않고, 로봇이 사람이 쓰던 주방·도구·가전을 그대로 쓰게 하는 '
+             'Kitchen Robotics Platform. 상업용 주방과 가정용 주방이 모두 핵심 시장, 제품은 SoftHand + Kitchen Skills, Seed 20억 원 / 24개월.')
 
 
-# ---------------------------------------------------------------- 02 summary
+# ---------------------------------------------------------------- 02 problem
 def s02(prs):
-    s = new_slide(prs, '02 summary')
-    y0 = header(s, '투자 요약', '설비를 크게 바꾸지 않는 로봇 자동화,\n첫 시장은 머신텐딩')
-    rows = [
-        ('문제', '로봇 도입 시 전용 그리퍼·지그·설비 개조 동반, 품목이 바뀌면 같은 작업 반복'),
-        ('해결', '문 열기·소재 집기·버튼 조작까지 하는 로봇 핸드 SoftHand-4, 기존 설비는 그대로 사용'),
-        ('첫 시장', '공작기계 소재 투입·배출(머신텐딩), 품목이 자주 바뀌는 중소·중견 가공 공장'),
-        ('수익 구조', '핸드 판매·유료 PoC로 초기 매출, 현장 작업을 표준 스킬로 만들어 다음 고객에 재판매'),
-        ('확장', 'SI 파트너 판매 후 로봇 제조사(OEM) 기본 옵션 탑재 목표'),
-    ]
-    y = y0 + 0.25; lw = 7.9; rh = 0.78
-    hline(s, MX, y, lw, color=T['text'], lw=1.0)
-    for k, v in rows:
-        text(s, MX, y + 0.17, 1.45, 0.3, k, size=14, bold=True, label='row ' + k)
-        text(s, MX + 1.55, y + 0.15, lw - 1.55, rh - 0.2, v, size=14, color=T['text2'], label='row text ' + k)
-        y += rh
-        hline(s, MX, y, lw)
-    bx = 9.2; bw = W - MX - bx; by = y0 + 0.25; bh = y - by
-    rect(s, bx, by, bw, bh, fill=T['dark'])
-    text(s, bx + 0.35, by + 0.32, bw - 0.7, 0.3, '투자 요청', size=13, color=T['on_dark2'])
-    text(s, bx + 0.35, by + 0.6, bw - 0.7, 0.92, '20억 원', size=44, bold=True, color=T['accent'], label='ask')
-    text(s, bx + 0.35, by + 1.5, bw - 0.7, 0.3, 'Seed  ·  24개월', size=14, color=T['on_dark'])
-    hline(s, bx + 0.35, by + 1.98, bw - 0.7, color='3A3E44')
-    text(s, bx + 0.35, by + 2.12, bw - 0.7, 0.3, '24개월 목표', size=12, color=T['on_dark2'])
-    text(s, bx + 0.35, by + 2.46, bw - 0.7, 1.5,
-         ['유료 PoC 5건', '재구매 고객 2곳', '로봇 2종에서 같은 스킬 검증', 'Series A 준비'],
-         size=15, color=T['on_dark'], space_after=5, label='ask list')
-    footer(s, 2)
-    notes(s, '투자자가 한 장으로 설명할 수 있어야 하는 내용. 문제-해결-첫 시장-수익 구조-확장, 그리고 요청 금액과 24개월 목표.')
+    s = new_slide(prs, '02 problem')
+    y0 = header(s, 'PROBLEM', '현재 주방 자동화는 로봇보다 주방을 더 많이 바꿉니다',
+                '메뉴와 작업이 바뀔 때마다 새 하드웨어와 엔지니어링이 다시 필요')
+    items = ['전용 그리퍼', '전용 조리장비', '전용 투입장치', '전용 레이아웃', '작업별 통합']
+    menus = ['메뉴 A', '메뉴 B', '메뉴 C', '새 메뉴']
+    tw, gap, bh, bg = 1.62, 0.22, 0.56, 0.08
+    ty = y0 + 0.35
+    fills = [T['dark'], '4A4F57', '7D838B']
+    for j, m in enumerate(menus):
+        x = MX + j * (tw + gap)
+        for i, it in enumerate(items):
+            yy = ty + i * (bh + bg)
+            if j == 3:
+                dashed_rect(s, x, yy, tw, bh, color=T['accent'])
+                text(s, x, yy, tw, bh, it, size=11.5, color=T['accent'], align='c', anchor='m', label=f'tower new {i}')
+            else:
+                chip(s, x, yy, tw, bh, it, fill=fills[j], color='FFFFFF', size=11.5, bold=j == 0, label=f'tower {j}{i}')
+        text(s, x, ty + 5 * (bh + bg) + 0.06, tw, 0.3, m, size=13, bold=True, align='c',
+             color=T['accent'] if j == 3 else T['text'], label='menu ' + m)
+    cy = ty + 5 * (bh + bg) + 0.48
+    tot = 4 * tw + 3 * gap
+    text(s, MX, cy, tot, 0.28, '메뉴가 늘수록 같은 과정 반복 (개념도)', size=11, color=T['muted'], align='c')
+    rx = MX + tot + 0.75; rw = W - MX - rx
+    vline(s, rx - 0.38, y0 + 0.35, 3.75)
+    text(s, rx, y0 + 0.18, rw, 1.3, '75%', size=72, bold=True, color=T['accent'], line=0.9, label='75')
+    text(s, rx, y0 + 1.5, rw, 0.62, '로봇 도입 총비용(TCO) 중\n초기 셋업·재설계 비중', size=15, bold=True, label='75 cap')
+    text(s, rx, y0 + 2.18, rw, 0.25, '출처: BCG (2026.4), 로봇 도입 전반 기준', size=10, color=T['muted'])
+    text(s, rx, y0 + 2.75, rw, 1.0, ['로봇 가격보다 환경을 맞추는 비용이 큼', '메뉴·도구가 바뀌면 같은 비용 반복'],
+         size=13, color=T['text2'], bullet='–', indent=0.22, space_after=6, label='75 take')
+    foot(s, 2, note='개념도 · 전용 주방 자동화 사례는 10장·부록 A6')
+    notes(s, '기존 주방 자동화는 메뉴·작업마다 전용 그리퍼, 전용 조리장비, 전용 투입장치, 전용 레이아웃, 작업별 통합을 새로 만듦. '
+             '메뉴가 바뀌면 같은 과정 반복. BCG(2026.4): 로봇 도입 총소유비용의 약 75%가 초기 셋업과 재설계(로봇 도입 전반 기준, 주방 한정 수치 아님).')
 
 
-# ---------------------------------------------------------------- 03 problem
+# ---------------------------------------------------------------- 03 insight
 def s03(prs):
-    s = new_slide(prs, '03 problem')
-    y0 = header(s, '문제', '로봇 도입마다 반복되는 설비 재설계', '품목이 바뀌면 같은 과정을 처음부터 반복')
-    steps = [('전용 그리퍼', '부품 모양별\n신규 제작'), ('지그·고정구', '위치 맞춤용\n치공구 제작'),
-             ('설비 개조', '자동문·센서·\n구동기 추가'), ('프로그래밍', '로봇 동작\n재입력(티칭)'), ('시운전·검증', '라인 정지 후\n반복 시험')]
-    lx, lw = MX, 7.75; ty = y0 + 0.55
-    hline(s, lx, ty, lw, color=T['text'], lw=1.25)
-    cw = lw / 5
-    for i, (a, b) in enumerate(steps):
-        x = lx + i * cw
-        dot(s, x + 0.05, ty)
-        text(s, x, ty - 0.42, cw - 0.1, 0.26, f'{i + 1:02d}', size=11, bold=True, color=T['muted'])
-        text(s, x, ty + 0.2, cw - 0.12, 0.32, a, size=15, bold=True, label='step ' + a)
-        text(s, x, ty + 0.58, cw - 0.12, 0.6, b, size=12, color=T['text2'], label='step note ' + a)
-    iy = ty + 1.35
-    cutout(s, ORI('hero02_dedicated_grippers.png'), lx, iy, 5.3, 2.75, align='l')
-    text(s, lx + 5.55, iy + 1.0, 2.2, 0.9, '작업별로 새로 만드는\n전용 그리퍼와 지그', size=13, color=T['text2'], label='grip cap')
-    rx = 9.2; rw = W - MX - rx
-    vline(s, rx - 0.45, y0 + 0.2, 4.6)
-    text(s, rx, y0 + 0.12, rw, 1.5, '75%', size=80, bold=True, color=T['accent'], line=0.9, label='75')
-    text(s, rx, y0 + 1.62, rw, 0.85, '로봇 도입 총비용(TCO) 중\n초기 셋업·재설계 비중', size=15, label='75 cap')
-    text(s, rx, y0 + 2.5, rw, 0.25, '출처: BCG, 2026년 4월', size=10, color=T['muted'])
-    text(s, rx, y0 + 3.05, rw, 1.0, ['비용 대부분이 설비 맞춤 작업에서 발생', '품목 전환이 잦을수록 자동화 지연'],
-         size=13, color=T['text2'], space_after=6, bullet='–', indent=0.22, label='75 take')
-    footer(s, 3)
-    notes(s, 'BCG(2026.4): 기존 로봇 도입에서 총소유비용의 약 75%가 초기 셋업과 재설계(워크플로 구성, 신제품 대응, 기존 설비 통합). '
-             '고객의 진짜 비용은 핸드 가격이 아니라 작업이 바뀔 때마다 반복되는 자동화 전환 비용.')
+    s = new_slide(prs, '03 insight')
+    y0 = header(s, 'INSIGHT', '주방은 이미 사람 손에 맞춰 표준화되어 있습니다')
+    iw, ih = 7.3, 4.95
+    iy = y0 + 0.17
+    image(s, KIT('lx_insight.jpg'), MX, iy, iw, ih, focus=(0.5, 0.5))
+    rx = MX + iw + 0.5; rw = W - MX - rx
+    text(s, rx, iy, rw, 0.28, '어느 주방에나 있는 사람용 인터페이스', size=12, bold=True, color=T['muted'])
+    words = ['팬', '냄비', '집게', '국자', '칼', '용기', '손잡이', '노브', '버튼', '서랍', '냉장고', '가전']
+    cw3 = rw / 3; gy = iy + 0.42; rh = 0.56
+    for i, wd in enumerate(words):
+        r, c = divmod(i, 3)
+        x = rx + c * cw3; yy = gy + r * rh
+        hline(s, x, yy, cw3 - 0.12, color=T['text'] if r == 0 else T['line'], lw=1.0 if r == 0 else 0.75)
+        text(s, x, yy + 0.1, cw3 - 0.12, 0.38, wd, size=18, bold=True, label='w ' + wd)
+    my = gy + 4 * rh + 0.14
+    text(s, rx, my, rw, 0.62, ['상업용·가정용 주방 모두 같은 형태', '새 주방도 같은 인터페이스 = 설치 환경'],
+         size=12.5, color=T['text2'], bullet='–', indent=0.22, space_after=4, label='ins msg')
+    bh = 1.25; by = iy + ih - bh
+    rect(s, rx, by, rw, bh, fill=T['dark'])
+    text(s, rx + 0.28, by, rw - 0.5, bh,
+         [[('주방을 로봇에 맞추는 대신,', {'color': T['on_dark']})],
+          [('로봇에게 ', {'color': T['on_dark']}), ('사람처럼 도구를 사용하는 능력', {'color': T['accent']}), ('을 준다', {'color': T['on_dark']})]],
+         size=15, bold=True, anchor='m', label='ins concl')
+    foot(s, 3, note='사람용 조리도구·용기·수전·화구를 그대로 둔 주방 · 콘셉트 렌더링')
+    notes(s, '주방은 이미 사람 손 기준으로 표준화: 팬·냄비·집게·국자·칼·용기·손잡이·노브·버튼·서랍·냉장고·가전. 상업용과 가정용 모두 같은 형태. '
+             '주방을 로봇에 맞추는 대신 로봇에게 사람처럼 도구를 쓰는 능력을 주면, 기존 주방이 곧 설치 환경.')
 
 
 # ---------------------------------------------------------------- 04 solution
 def s04(prs):
     s = new_slide(prs, '04 solution')
-    y0 = header(s, '해결', '설비는 그대로, 핸드가 사람처럼 사용', '잡을 때는 부드럽게, 일할 때는 단단하게')
-    iw = 2.3; ix = (W - iw) / 2
-    cutout(s, REN('product.png'), ix, y0 + 0.05, iw, 3.45)
-    cols = [
-        (MX, '잡기', '부드러워야 잘 잡음', [('형상 차이 대응', '다른 부품·용기를 같은 핸드로'), ('위치 오차 흡수', '지그 의존도 감소'), ('미끄러짐 대응', '촉각·힘 제어')]),
-        (ix + iw + 0.45, '일하기', '단단해야 일을 끝냄', [('토크 전달', '레버·노브 조작'), ('반력 지지', '문·손잡이 개폐'), ('모멘트 저항', '투입 자세 유지')]),
-    ]
-    cwid = ix - 0.45 - MX
-    for x, h1, h2, items in cols:
-        text(s, x, y0 + 0.15, cwid, 0.42, h1, size=20, bold=True)
-        text(s, x, y0 + 0.62, cwid, 0.3, h2, size=12, color=T['muted'])
-        hline(s, x, y0 + 1.0, cwid, color=T['text'], lw=1.0)
-        yy = y0 + 1.12
-        for a, b in items:
-            text(s, x, yy, cwid, 0.3, a, size=15, bold=True, label='sol ' + a)
-            text(s, x, yy + 0.32, cwid, 0.28, b, size=12, color=T['text2'], label='sol d ' + a)
-            yy += 0.78
-            hline(s, x, yy - 0.1, cwid)
-    by = y0 + 3.7
-    text(s, MX, by, 6, 0.3, '핵심 구조', size=12, bold=True, color=T['accent'])
-    comps = [('부드러운 접촉면', '교체형 탄성 패드'), ('하중 지지 골격', '토크·반력은 골격이 부담'), ('대향 엄지', '손잡이·레버를 감싸 쥠'),
-             ('가변 강성', '작업 순간 관절 강성 상승'), ('힘·미끄러짐 제어', '손끝 촉각 + 손목 힘센서')]
-    ccw = CW / 5
-    for i, (a, b) in enumerate(comps):
-        x = MX + i * ccw
-        text(s, x, by + 0.36, ccw - 0.15, 0.3, a, size=13, bold=True, label='comp ' + a)
-        text(s, x, by + 0.66, ccw - 0.15, 0.28, b, size=11, color=T['text2'], label='comp d ' + a)
-    footer(s, 4, note='4지(손가락 3 + 대향 엄지) 콘셉트 · 구동 방식(전동 텐던·유압·공압)은 창업 후 3개월 내 비교시험으로 결정 · 콘셉트 렌더링')
-    notes(s, '설비를 로봇에 맞게 바꾸는 대신 로봇이 기존 설비를 사용. 잡기(순응성)와 일하기(강성)는 서로 충돌하므로 '
-             '부드러운 접촉면 + 단단한 골격 + 전환 가능한 강성으로 해결. 4지(손가락 3 + 대향 엄지)는 머신텐딩 최소 구성, 5지는 Series A 이후.')
+    y0 = header(s, 'SOLUTION', 'SoftHand + Kitchen Skills: 사람용 도구를 그대로 쓰는 손', '로봇 팔에 장착하는 손(SoftHand)과 주방 조작 Skill, 기존 주방·도구·가전은 그대로')
+    cy = y0 + 0.2; ch = 4.6
+    rect(s, MX, cy, 2.75, ch, fill='EEF0F2')
+    cutout(s, REN('product.png'), MX + 0.1, cy + 0.15, 2.55, ch - 0.3)
+    sx = MX + 3.15; sw = 3.55
+    items = [('Soft Contact', '잡을 때는 부드럽게', '다양한 형상과 도구에 적응'),
+             ('Rigid Work', '사용할 때는 단단하게', '팬·손잡이·노브·레버의 힘과 반력을 버팀'),
+             ('Force · Tactile Control', '느끼면서 제어', '힘과 미끄러짐을 감지하며 작업')]
+    yy = cy
+    for en, ko, d in items:
+        hline(s, sx, yy, sw, color=T['text'], lw=1.0)
+        text(s, sx, yy + 0.14, sw, 0.24, en, size=11, bold=True, color=T['accent'])
+        text(s, sx, yy + 0.42, sw, 0.42, ko, size=20, bold=True, label='sol ' + ko)
+        text(s, sx, yy + 0.88, sw, 0.5, d, size=12.5, color=T['text2'], label='sol d ' + ko)
+        yy += 1.52
+    kx = sx + sw + 0.45; kw = W - MX - kx
+    text(s, kx, cy, kw, 0.26, 'KITCHEN ROBOTICS PLATFORM', size=11, bold=True, color=T['muted'])
+    layers = [('Application', '상업용 주방 · 가정용 주방', 'soft'),
+              ('Skill', ['집기 · 붓기 · 젓기 · 뒤집기 · 열기', '누르기 · 돌리기 · 썰기 · 담기'], 'dark'),
+              ('Manipulation', '힘·촉각 제어 · 순응 · 가변 강성 · 실패 복구', 'dark'),
+              ('Hardware', 'SoftHand', 'accent'),
+              ('Robot', '로봇 팔 · 가정용 로봇 · 주방 로봇', 'soft')]
+    ly = cy + 0.38; lh = 0.66; lg = 0.07
+    for name, cont, kind in layers:
+        fill = {'soft': T['soft'], 'dark': T['dark'], 'accent': T['accent']}[kind]
+        fc = T['text'] if kind == 'soft' else 'FFFFFF'
+        rect(s, kx, ly, kw, lh, fill=fill)
+        text(s, kx + 0.18, ly, 1.4, lh, name, size=12, bold=True, color=fc, anchor='m', label='layer n ' + name)
+        text(s, kx + 1.6, ly, kw - 1.75, lh, cont, size=15 if kind == 'accent' else 11.5, bold=kind == 'accent',
+             color=T['text2'] if kind == 'soft' else 'FFFFFF', anchor='m', label='layer ' + name)
+        ly += lh + lg
+    ly += 0.06
+    lx_ = kx
+    for col, lab in [(T['dark'], 'SoftHand가 만드는 범위'), (T['soft'], '고객·파트너·기존 로봇')]:
+        rect(s, lx_, ly + 0.06, 0.14, 0.14, fill=col, line=T['grey_bar'] if col == T['soft'] else None)
+        text(s, lx_ + 0.22, ly, 2.2, 0.26, lab, size=10.5, color=T['text2'], label='legend ' + lab[:8])
+        lx_ += 0.22 + text_w(lab, 10.5) + 0.4
+    foot(s, 4, note='4지(손가락 3 + 대향 엄지) 콘셉트 · 구동·센서·하중 상세는 부록 A3 · 콘셉트 렌더링')
+    notes(s, 'SoftHand는 세 문장으로 설명: 잡을 때는 부드럽게(형상·도구 적응), 사용할 때는 단단하게(팬·손잡이·노브·레버의 힘과 반력), '
+             '느끼면서 제어(힘·미끄러짐 감지). 회사가 만드는 것은 손 하나가 아니라 Hardware + Manipulation + Skill 계층. '
+             '로봇 팔과 주방 애플리케이션은 고객·파트너 영역.')
 
 
-# ---------------------------------------------------------------- 05 product workflow
+# ---------------------------------------------------------------- 05 workflow
 def s05(prs):
-    s = new_slide(prs, '05 product')
-    y0 = header(s, '제품', '핸드 하나로 공정 하나 완결', 'SoftHand-4 + 머신텐딩 스킬 팩, 핸드 교체 없이 6단계 처리')
-    steps = [('s1_door', '문 열기', '손잡이 파지 후 개방'), ('s2_pick', '소재 집기', '트레이에서 소재 파지'),
-             ('s3_load', '기계에 넣기', '바이스에 소재 투입'), ('s4_press', '버튼 누르기', '기존 조작 버튼 그대로'),
-             ('s5_unload', '완성품 꺼내기', '가공 완료 부품 배출'), ('s6_close', '문 닫기', '다음 사이클 시작')]
-    gap = 0.18; cw = (CW - 5 * gap) / 6; iy = y0 + 0.28; ih = 1.62
+    s = new_slide(prs, '05 workflow')
+    y0 = header(s, 'KITCHEN WORKFLOW', 'One Hand. Many Tools. Many Tasks.',
+                '핸드 하나로 재료 집기부터 플레이팅까지, 사람용 도구를 그대로 사용 (콘셉트)')
+    steps = [('lx_pick', '재료 집기', '그릇의 재료'), ('lx_lid', '용기 열기', '뚜껑 손잡이'), ('lx_drop', '팬에 투입', '재료 넣기'),
+             ('lx_tongs', '집게 사용', '사람용 집게'), ('lx_stir', '젓기', '사람용 국자'), ('lx_knob', '노브 조작', '화구 노브'),
+             ('lx_plate', '플레이팅', '집게 · 접시')]
+    gap = 0.2; pw = (CW - 3 * gap) / 4; ph = 1.58; rp = ph + 0.78
     for i, (f, a, b) in enumerate(steps):
-        x = MX + i * (cw + gap)
-        image(s, RAW(f + '_color.png'), x, iy, cw, ih, focus=(0.5, 0.5))
-        text(s, x, iy + ih + 0.14, cw, 0.3, [[(f'{i + 1}  ', {'color': T['accent']}), (a, {})]], size=14, bold=True, label='wf ' + a)
-        text(s, x, iy + ih + 0.48, cw, 0.5, b, size=11.5, color=T['text2'], label='wf note ' + a)
-    by = iy + ih + 1.18
-    hline(s, MX, by, CW, color=T['text'], lw=1.0)
-    cols = [('1', '핸드', '로봇 1대에 핸드 1개'), ('5', '작업 종류', '열기·집기·투입·조작·배출'), ('0', '핸드 교체', '툴 체인저 없이 1사이클')]
-    cw3 = CW / 3
-    for i, (n, k, d) in enumerate(cols):
-        x = MX + i * cw3 + (0.25 if i else 0)
-        if i: vline(s, MX + i * cw3 - 0.02, by + 0.25, 1.05)
-        text(s, x, by + 0.12, 1.1, 1.1, n, size=60, bold=True, color=T['accent'] if n == '0' else T['text'], line=0.9)
-        text(s, x + 1.05, by + 0.35, cw3 - 1.45, 0.34, k, size=17, bold=True)
-        text(s, x + 1.05, by + 0.74, cw3 - 1.45, 0.3, d, size=12, color=T['text2'], label='col ' + k)
-    footer(s, 5, note='개념 공정 · 창업 후 6개월 내 대표 공정 반복시험, 단계별 완료율·사람 개입 시간 분리 보고 · 콘셉트 렌더링')
-    notes(s, '6단계 = 5종 작업(열기와 닫기는 같은 스킬). 기존 방식은 그리퍼 2종 + 툴 체인저 + 자동문·I/O 개조. Seed 기간 검증 목표.')
+        r, c = divmod(i, 4)
+        x = MX + c * (pw + gap); y = y0 + 0.12 + r * rp
+        image(s, KIT(f + '.jpg'), x, y, pw, ph, focus=(0.5, 0.5))
+        text(s, x, y + ph + 0.1, pw, 0.3, [[(f'{i + 1}  ', {'color': T['accent']}), (a, {})]], size=14, bold=True, label='wf ' + a)
+        text(s, x + 0.26, y + ph + 0.42, pw - 0.26, 0.26, b, size=11, color=T['text2'], label='wf d ' + a)
+    x = MX + 3 * (pw + gap); y = y0 + 0.12 + rp
+    rect(s, x, y, pw, ph + 0.66, fill=T['dark'])
+    text(s, x + 0.25, y + 0.22, pw - 0.4, 1.8,
+         [[('핸드 1개', {'size': 22})], [('사람용 도구 여러 개', {})], [('작업 7종', {})], [('툴 교체 최소화', {'color': T['accent']})]],
+         size=15, bold=True, color=T['on_dark'], space_after=5, label='wf sum')
+    text(s, x + 0.25, y + ph + 0.3, pw - 0.4, 0.26, '툴 교체 최소화는 목표 (미검증)', size=10, color=T['on_dark2'], label='wf sum note')
+    foot(s, 5, note='콘셉트 렌더링 · Seed 기간 실제 주방 반복시험으로 단계별 완료율·사람 개입 시간 검증')
+    notes(s, '실제 주방 작업 흐름: 재료 집기 → 용기 열기 → 팬에 투입 → 집게 사용 → 젓기 → 노브 조작 → 플레이팅. '
+             '핸드 1개, 사람용 도구 여러 개, 작업 7종. 툴 교체 0회는 검증되지 않았으므로 "툴 교체 최소화"를 목표로 표기.')
 
 
-# ---------------------------------------------------------------- 06 first market
+# ---------------------------------------------------------------- 06 why now
 def s06(prs):
-    s = new_slide(prs, '06 market wedge')
-    y0 = header(s, '첫 시장', '첫 시장은 다품종 머신텐딩', '공작기계 소재 투입·배출, 기존 설비를 크게 바꾸지 않는 자동화')
-    iw, ih = 5.75, 3.3
-    image(s, RAW('overview_color.png'), MX, y0 + 0.2, iw, ih, focus=(0.5, 0.5))
-    text(s, MX, y0 + ih + 0.38, iw, 0.3, '첫 고객 (가설)', size=12, bold=True, color=T['accent'])
-    text(s, MX, y0 + ih + 0.68, iw, 0.62, '다품종 가공 라인을 운영하는 중소·중견 제조사 생산기술팀, 도입은 로봇 SI 경유. 창업 후 90일 내 고객 인터뷰 30곳으로 검증',
-         size=12, color=T['text2'], label='first buyer')
-    rx = MX + iw + 0.55; rw = W - MX - rx
-    text(s, rx, y0 + 0.2, rw, 0.32, '머신텐딩부터 시작하는 이유', size=14, bold=True, color=T['muted'])
-    yy = y0 + 0.65
-    for n, a, b in [(1, '사람용 장치가 한 셀에 집중', '문·손잡이·바이스 레버·버튼·트레이, 핸드 하나의 가치가 가장 큰 공정'),
-                    (2, '전환 비용 측정 가능', '품목 변경·엔지니어링 시간·사람 개입을 PoC에서 고객 기존 수치와 비교'),
-                    (3, 'SI가 이미 판매 중인 응용', '새 시장 개척 대신 기존 셀의 유연성 향상, SI 채널로 바로 진입')]:
-        hgt = num_item(s, rx, yy, rw, n, a, b)
-        yy += hgt + 0.28
-    py = yy + 0.05
-    hline(s, rx, py, rw, color=T['text'], lw=1.0)
-    text(s, rx, py + 0.12, rw, 0.32, '원칙: 핸드가 경제적 가치를 만드는 작업부터', size=14, bold=True, label='principle')
-    text(s, rx, py + 0.5, rw, 0.62,
-         [[('우선  ', {'bold': True, 'color': T['text']}), ('다품종 부품 핸들링, 문·손잡이, 레버·노브·래치, 설비 조작부', {})],
-          [('제외  ', {'bold': True, 'color': T['text']}), ('고속 단일 품목 반복, 고토크 체결, 진공이 유리한 평판', {})]],
-         size=12, color=T['text2'], space_after=3, label='principle list')
-    footer(s, 6, note='스크루드라이버 체결은 핵심 상용 작업이 아닌 기술 데모로 분리 (부록 A8) · 콘셉트 렌더링')
-    notes(s, '모든 공구를 핸드로 대체한다고 주장하지 않음. 핸드를 썼을 때 설비 개조와 엔드이펙터 수가 줄어드는 작업부터 자동화.')
-
-
-# ---------------------------------------------------------------- 07 customer value
-def s07(prs):
-    s = new_slide(prs, '07 value')
-    y0 = header(s, '고객 가치', '구매 이유: 품목이 바뀌어도 다시 쓰는 자동화',
-                '핸드 가격(가정 1,500만 원)의 비교 대상: 전용 툴링 + 설비 개조 + 엔지니어링 × 연간 전환 횟수')
-    fy = y0 + 0.3
-    hline(s, MX, fy, CW, color=T['text'], lw=1.0)
-    flow_row(s, MX, fy + 0.16, CW, '기존 방식', ['새 작업', '새 그리퍼', '새 핑거', '새 지그', '엔지니어링', '티칭', '검증'])
-    hline(s, MX, fy + 0.66, CW)
-    flow_row(s, MX, fy + 0.82, CW, 'SoftHand', ['새 작업', '같은 핸드', '기존 스킬 재사용 또는 새 스킬 구성', '보정', '검증'],
-             label_color=T['accent'], strong=('같은 핸드',))
-    hline(s, MX, fy + 1.32, CW)
-    text(s, MX, fy + 1.42, CW, 0.26, '엔지니어링·검증은 그대로 필요, 줄어드는 폭을 고객 현장에서 측정', size=11, color=T['muted'])
-    vy = fy + 2.0; cw3 = (CW - 0.6) / 3
-    for i, (a, b) in enumerate([('설비 개조 최소화', '설비 개조·고정구·추가 구동기를 줄일 가능성'),
-                                ('반복 엔지니어링 감소', '전용 핑거·지그·티칭·통합 작업을 줄일 가능성'),
-                                ('다음 작업에 재사용', '같은 핸드와 스킬 구조를 새 품목·다른 설비에 재사용')]):
-        num_item(s, MX + i * (cw3 + 0.3), vy, cw3, i + 1, a, b, tsize=16)
-    ky = vy + 1.32
-    rect(s, MX, ky, CW, 1.05, fill=T['soft'])
-    text(s, MX + 0.3, ky + 0.2, 2.4, 0.3, 'PoC 측정 지표', size=14, bold=True)
-    text(s, MX + 0.3, ky + 0.52, 2.4, 0.3, '고객 기존 수치 대비', size=11, color=T['text2'])
-    kpis = ['엔지니어링 시간', '전용 툴링 비용', '통합 기간', '사람 개입', '품목 전환 시간']
-    kx = MX + 2.85; kw = (CW - 2.85 - 0.2) / 5
-    for i, k in enumerate(kpis):
-        x = kx + i * kw
-        if i: vline(s, x - 0.12, ky + 0.22, 0.62, color='D5D8DC')
-        text(s, x, ky + 0.2, kw - 0.2, 0.3, k, size=13, bold=True, label='kpi ' + k)
-        text(s, x, ky + 0.52, kw - 0.2, 0.3, 'PoC에서 측정', size=11, color=T['accent'])
-    footer(s, 7, note='감소율은 고객 기존 수치 확보 전이므로 확정하지 않음 · 유료 PoC에서 지불의사 검증 = Seed 투자의 사업 실험')
-    notes(s, '고객에게 1,500만 원짜리 로봇 핸드를 파는 것이 아니라, 품목이 바뀌어도 다시 쓸 수 있는 자동화를 판다. '
-             '엔지니어링과 검증이 사라진다고 주장하지 않음. 줄어드는 폭을 PoC에서 고객 기존 수치와 비교.')
-
-
-# ---------------------------------------------------------------- 08 market size & why now
-def s08(prs):
-    s = new_slide(prs, '08 market')
-    y0 = header(s, '시장', '첫 시장은 이미 공장에 설치된 로봇', '설치된 로봇과 신규 설치 로봇 모두 핸드 장착 대상')
-    lw = 7.2
-    stats = [([('약 ', {'size': 20}), ('500만 대', {})], '전 세계 가동 중\n산업용 로봇 (2025)'), ([('60만 대+', {})], '2025년 신규 설치\n전년 대비 +11%'),
-             ([('1,220대', {})], '한국 로봇 밀도\n직원 1만 명당, 세계 1위')]
-    sws = [2.75, 2.2, 2.25]
-    x = MX
-    for i, (v, k) in enumerate(stats):
-        if i: vline(s, x - 0.18, y0 + 0.35, 1.45)
-        text(s, x, y0 + 0.25, sws[i] - 0.3, 0.75, [v], size=30, bold=True, color=T['text'], label=f'stat {i}')
-        text(s, x, y0 + 1.05, sws[i] - 0.3, 0.6, k, size=12, color=T['text2'], label=f'stat k {i}')
-        x += sws[i]
-    text(s, MX, y0 + 1.85, lw, 0.24, '출처: IFR World Robotics 2026 (2026.9), IFR 로봇 밀도 (2026.4)', size=10, color=T['muted'])
-    by = y0 + 2.45
-    hline(s, MX, by, lw, color=T['text'], lw=1.0)
-    text(s, MX, by + 0.15, lw, 0.3, '5년차 계획 규모 (기본 시나리오)', size=12, bold=True, color=T['accent'])
-    text(s, MX, by + 0.5, 2.0, 0.75, '200대', size=36, bold=True, label='200')
-    text(s, MX + 2.05, by + 0.56, lw - 2.05, 0.75, '5년차 신규 핸드 판매 계획\n국내 연간 로봇 설치(약 3만 대)의 1% 미만', size=14, color=T['text2'], label='200 d')
-    text(s, MX, by + 1.42, lw, 0.5, '장기 상한은 로봇 제조사 출하량 (OEM 탑재 시), 규모는 협의 후 산정', size=12, color=T['text2'], label='upper')
-    rx = MX + lw + 0.6; rw = W - MX - rx
-    vline(s, rx - 0.3, y0 + 0.3, 3.9)
-    text(s, rx, y0 + 0.25, rw, 0.36, '왜 지금인가', size=18, bold=True)
-    text(s, rx, y0 + 0.66, rw, 0.3, '로봇의 두뇌·눈·몸은 상용화, 남은 병목은 손', size=12, color=T['text2'], label='why sub')
-    rows = [('두뇌', 'AI·VLA 모델', '빠르게 발전'), ('눈', '비전·엣지 컴퓨팅', '상용 수준'), ('몸', '로봇 팔·협동로봇', '대규모 보급'), ('손', '현실 세계 조작', '아직 병목')]
-    yy = y0 + 1.15
-    for i, (a, b, c) in enumerate(rows):
-        hline(s, rx, yy, rw, color=T['text'] if i == 0 else T['line'], lw=1.0 if i == 0 else 0.75)
-        last = a == '손'
-        text(s, rx, yy + 0.14, 0.7, 0.32, a, size=15, bold=True, color=T['accent'] if last else T['text'])
-        text(s, rx + 0.7, yy + 0.16, 1.85, 0.3, b, size=12, color=T['text2'], label='why b ' + a)
-        text(s, rx + 2.55, yy + 0.14, rw - 2.55, 0.32, c, size=14, bold=last, color=T['accent'] if last else T['text'], align='r', label='why c ' + a)
-        yy += 0.62
-    hline(s, rx, yy, rw)
-    text(s, rx, yy + 0.14, rw, 0.5, '근거와 사례는 부록 A4', size=11, color=T['muted'])
-    footer(s, 8)
-    notes(s, 'IFR World Robotics 2026: 2025년 가동 대수 약 500만 대(+9%), 신규 설치 60만 대 이상(+11%). IFR 로봇 밀도: 한국 1,220대/직원 1만 명(세계 최고). '
-             '5년차 판매 계획 200대는 국내 연간 설치의 1% 미만. 휴머노이드를 기다리지 않고 이미 공장에 있는 로봇부터 공략.')
-
-
-# ---------------------------------------------------------------- 09 productization / not an SI company
-def s09(prs):
-    s = new_slide(prs, '09 productization')
-    y0 = header(s, '확장성', '고객 프로젝트를 표준 스킬로 축적', '2번째 고객부터 재사용, 다른 로봇에도 같은 스킬 적용 (SI 사업화 방지 구조)')
-    lx = MX; lw = 5.75
-    steps = [('고객 프로젝트', '현장별 작업 수행'), ('공통 작업 추출', '문 열기·투입·버튼 등 반복 작업 분리'), ('재사용 스킬', '로봇과 무관한 작업 정의'),
-             ('검증된 스킬 팩', '승인 작업 목록으로 판매'), ('다음 고객', '같은 스킬 재사용, 고객별 구성만 추가')]
-    sy = y0 + 0.32; step = 0.6
-    vline(s, lx + 0.05, sy + 0.12, step * 4, color=T['text'], lw=1.25)
+    s = new_slide(prs, '06 why now')
+    y0 = header(s, 'WHY NOW', "AI가 발전할수록 병목은 '손'으로 이동합니다",
+                '주방은 가장 다양한 현실 조작 환경, 손과 Skill 계층의 가치가 커지는 시점')
+    steps = [('AI · VLA 발전', '로봇이 할 일을 이해하기 시작'), ('인지·판단 향상', '보고 계획하는 능력 향상'),
+             ('로봇 팔·컴퓨팅 상용화', '몸과 연산은 이미 보급'), ('현실 조작이 새 병목', '사람용 물체·도구·손잡이를 안정적으로 다루기'),
+             ('주방 = 가장 다양한 조작 환경', '도구·형상·힘 조절, 모두 사람 손 기준'), ('손 · Skill 계층 가치 증가', 'SoftHand가 선점하려는 계층')]
+    n = 6; gap = 0.1; sw = (CW - (n - 1) * gap) / n; base = 5.42; top0 = 3.55; rise = 0.25
     for i, (a, b) in enumerate(steps):
-        yy = sy + i * step
-        dot(s, lx + 0.05, yy + 0.12, d=0.12, fill=T['accent'] if i == 4 else T['text'])
-        text(s, lx + 0.32, yy, 2.1, 0.3, a, size=14, bold=True, label='loop ' + a)
-        text(s, lx + 2.45, yy + 0.02, lw - 2.45, 0.3, b, size=12, color=T['text2'], label='loop d ' + a)
-    ry = sy + step * 4 + 0.55
-    hline(s, lx, ry, lw, color=T['text'], lw=1.0)
-    table(s, lx, ry + 0.05, lw, None,
-          [[('재사용', {'bold': True}), '핸드 · 런타임 · 기본 동작 · 작업 스킬 · 보정 도구'],
-           [('고객별 구성', {'bold': True}), '부품 형상 등록 · 셀 배치 · 안전 검증'],
-           [('운영 규칙', {'bold': True}), '승인 작업 목록 안에서만 수주, 비표준 요청은 별도 견적, 종료 시 공통 모듈 반영']],
-          col_w=[1.4, lw - 1.4], size=12, pad=0.07, label='reuse table', max_h=7.0 - (ry + 0.05))
-    rx = lx + lw + 0.55; rw = W - MX - rx
-    text(s, rx, y0 + 0.25, rw, 0.32, '로봇 2종 호환 검증', size=14, bold=True, color=T['muted'])
-    pw = (rw - 0.2) / 2; ph = pw * 0.75
-    for i, (f, lab) in enumerate([('portA_color.png', '로봇 A · 협동로봇 6축'), ('portB_color.png', '로봇 B · 다른 브랜드·링크 길이')]):
-        x = rx + i * (pw + 0.2)
-        image(s, RAW(f), x, y0 + 0.65, pw, ph, focus=(0.5, 0.45))
-        text(s, x, y0 + 0.72 + ph, pw, 0.26, lab, size=11, color=T['text2'], label='port ' + lab)
-    ky = y0 + 1.1 + ph
-    text(s, rx, ky, rw, 0.3, '같은 문 열기 스킬, 어댑터·좌표·카메라 보정만 재설정', size=12, label='port cap')
-    hline(s, rx, ky + 0.42, rw, color=T['text'], lw=1.0)
-    text(s, rx, ky + 0.55, rw, 0.32, [[('핵심 지표  ', {'color': T['accent']}), ('재사용률', {})]], size=15, bold=True)
-    text(s, rx, ky + 0.92, rw, 0.62, '신규 고객 적용 시 그대로 쓴 하드웨어·제어·스킬·소프트웨어 비중. M12 측정 시작, M24까지 상승 추세 확인 (임의 목표치 없음)',
-         size=12, color=T['text2'], label='kpi desc')
-    footer(s, 9, note='검증 가설: 로봇이 바뀔 때마다 처음부터 다시 티칭해야 하면 플랫폼이 아닌 SI 사업 · 콘셉트 렌더링')
-    notes(s, 'SI가 되지 않는 규칙: 승인 작업 목록 안에서만 수주, 비표준 요청은 별도 견적, 프로젝트 종료 시 공통 모듈을 라이브러리에 반영, 재사용 매출 비중을 경영 지표로 관리. '
-             '로봇 B 통합은 M12~M18, 이식성 검증은 M18~M24.')
+        x = MX + i * (sw + gap); top = top0 - i * rise
+        kind = 'soft' if i < 3 else ('dark' if i < 5 else 'accent')
+        fill = {'soft': 'ECEEF0', 'dark': T['dark'], 'accent': T['accent']}[kind]
+        rect(s, x, top, sw, base - top, fill=fill)
+        fc = T['text'] if kind == 'soft' else 'FFFFFF'
+        fc2 = {'soft': T['text2'], 'dark': 'B9BEC5', 'accent': 'FFE6DA'}[kind]
+        text(s, x + 0.15, top + 0.15, 0.6, 0.26, f'{i + 1:02d}', size=11, bold=True,
+             color='FFFFFF' if kind == 'accent' else T['accent'])
+        text(s, x + 0.15, top + 0.46, sw - 0.28, 0.62, a, size=14, bold=True, color=fc, label='step ' + a)
+        text(s, x + 0.15, top + 1.1, sw - 0.28, 0.7, b, size=11, color=fc2, label='step d ' + a)
+    by = base + 0.24
+    text(s, MX, by, 6, 0.26, '주방이 어려운 조작 환경인 이유', size=12, bold=True, color=T['muted'])
+    reasons = [('도구가 다양', '팬·냄비·집게·국자·칼·용기'), ('형상이 계속 바뀜', '재료·메뉴·용기마다 다름'),
+               ('접촉·힘 조절 필요', '젓기·뒤집기·누르기·돌리기'), ('사람 손 기준 설계', '손잡이·노브·버튼·문')]
+    rw4 = CW / 4
+    for i, (a, b) in enumerate(reasons):
+        x = MX + i * rw4
+        if i: vline(s, x - 0.12, by + 0.4, 0.6)
+        text(s, x, by + 0.36, rw4 - 0.25, 0.3, a, size=14, bold=True, label='why ' + a)
+        text(s, x, by + 0.68, rw4 - 0.25, 0.28, b, size=11.5, color=T['text2'], label='why d ' + a)
+    foot(s, 6, note='근거: AI·VLA, 로봇 보급, 손이 병목이라는 업계 발언과 사례는 부록 A7')
+    notes(s, '투자 논리: AI·VLA 발전 → 로봇의 인지·판단 향상 → 로봇 팔과 컴퓨팅은 이미 상용화 → 현실 세계와 접촉하는 조작이 새 병목 → '
+             '주방은 도구가 다양하고 형상이 바뀌고 힘 조절이 필요하며 모두 사람 손 기준이라 가장 다양한 조작 환경 → Kitchen Robotics가 커질수록 손과 Skill 계층의 가치 증가. '
+             '"왜 Kitchen Robotics인가"가 아니라 "왜 지금 조작 계층인가"에 대한 답.')
 
 
-# ---------------------------------------------------------------- 10 business model & GTM
+# ---------------------------------------------------------------- 07 commercial + home
+def s07(prs):
+    s = new_slide(prs, '07 markets')
+    y0 = header(s, 'MARKET', '하나의 조작 플랫폼, 두 개의 큰 시장', '상업용 주방과 가정용 주방을 같은 손과 Skill로 연결')
+    iy = y0 + 0.15; ih = 2.3; cw_ = 4.6
+    cols = [(MX, 'pro_wide.jpg', (0.5, 0.42), '상업용 주방', 'Commercial Kitchen', '식당 · 프랜차이즈 · 급식 · 호텔 · 케이터링 · 센트럴키친',
+             ['인력 부족 · 인건비 · 반복 작업', '긴 가동시간 · 다메뉴 대응', '프랜차이즈 확산 · 운영 표준화']),
+            (W - MX - cw_, 'lx_wide.jpg', (0.56, 0.5), '가정용 주방', 'Home Kitchen', '조리 · 식사 준비 · 재료 손질 · 가전 조작 · 수납 · 식기 정리',
+             ['다양한 메뉴 · 물체 · 도구', '기존 가전 · 냉장고 · 수납 사용', '가사 부담 감소 · 가정용 로봇과 결합'])]
+    for x, f, foc, ttl, en, seg, vals in cols:
+        image(s, KIT(f), x, iy, cw_, ih, focus=foc)
+        text(s, x, iy + ih + 0.14, cw_, 0.36, [[(ttl, {}), ('   ' + en, {'size': 11, 'bold': False, 'color': T['muted']})]],
+             size=18, bold=True, label='mk ' + ttl)
+        text(s, x, iy + ih + 0.56, cw_, 0.26, seg, size=11, color=T['text2'], label='mk seg ' + ttl)
+        text(s, x, iy + ih + 0.92, cw_, 0.85, vals, size=12.5, bullet='•', indent=0.17, space_after=3, label='mk vals ' + ttl)
+    cx = MX + cw_ + 0.35; cwc = W - MX - cw_ - 0.35 - cx
+    text(s, cx, iy, cwc, 0.28, '공통 조작 Skill', size=12, bold=True, color=T['accent'], align='c')
+    skills = [('집기', 'Pick'), ('열기', 'Open'), ('붓기', 'Pour'), ('젓기', 'Stir'), ('뒤집기', 'Flip'), ('돌리기', 'Turn'),
+              ('누르기', 'Press'), ('썰기', 'Cut'), ('옮기기', 'Move'), ('담기', 'Plate')]
+    yy = iy + 0.4
+    for ko, en in skills:
+        text(s, cx, yy, cwc, 0.3, [[(ko, {'bold': True}), ('  ' + en, {'size': 10.5, 'color': T['muted']})]], size=13.5, align='c', label='sk ' + ko)
+        yy += 0.345
+    am = iy + ih / 2
+    arrow(s, cx + 0.02, am, MX + cw_ + 0.06, am, color=T['accent'], lw=1.5)
+    arrow(s, cx + cwc - 0.02, am, W - MX - cw_ - 0.06, am, color=T['accent'], lw=1.5)
+    by = 6.28
+    rect(s, MX, by, CW, 0.62, fill=T['soft'])
+    text(s, MX + 0.22, by, CW - 0.44, 0.62,
+         [[('Seed 첫 실행 (검증 대상)   ', {'bold': True, 'color': T['accent']}),
+           ('두 시장 공통 작업 중 집게·팬·용기·노브·버튼·문 반복 작업부터  ·  상업용 주방 유료 PoC + 가정용 주방 환경 벤치 검증', {})],
+          [('PoC 대상 고객군 (가설)   ', {'bold': True, 'color': T['text']}),
+           ('다메뉴 조리 라인을 운영하는 외식·급식·센트럴키친, 창업 후 90일 내 고객 인터뷰 30곳으로 검증', {})]],
+         size=11, anchor='m', space_after=2, label='seed scope')
+    foot(s, 7, note='조리·식당 서비스 인력 부족률, 코로나 이전 대비 약 2배 (2023, 부록 A8) · 콘셉트 렌더링')
+    notes(s, '상업용과 가정용 모두 핵심 시장. 제품 요구조건은 다르지만 집기·열기·붓기·젓기·뒤집기·돌리기·누르기·썰기·옮기기·담기 같은 기본 조작은 공통. '
+             '두 시장을 잇는 자산은 "사람이 주방에서 하는 기본 조작 Skill". 비전은 두 시장 전체, Seed 실행은 집게·팬·용기·노브·버튼·문 반복 작업으로 좁힘 '
+             '(큰 목표 + 좁은 첫 실행). 실제 첫 적용처는 미확정이므로 검증 대상으로 표기.')
+
+
+# ---------------------------------------------------------------- 08 customer economics
+def s08(prs):
+    s = new_slide(prs, '08 economics')
+    y0 = header(s, 'CUSTOMER VALUE', '메뉴가 바뀌어도 다시 만들지 않는 자동화',
+                '고객의 비교 기준: 핸드 가격이 아닌, 메뉴·작업이 바뀔 때마다 드는 하드웨어·주방 개조·통합 비용')
+    lw_ = 1.55; gap = 0.3; n = 6; cw_ = (CW - lw_ - (n - 1) * gap) / n; chh = 0.66
+    rows = [('기존 방식', T['text'], [('새 작업·메뉴', 'soft'), ('전용 하드웨어', 'dark'), ('툴링', 'dark'), ('주방 개조', 'dark'), ('통합', 'dark'), ('검증', 'soft')]),
+            ('SoftHand', T['accent'], [('새 작업·메뉴', 'soft'), ('같은 핸드', 'accent'), ('기존 Skill 재사용', 'accent_soft'), ('필요한 Skill 추가', 'soft'), ('보정', 'soft'), ('검증', 'soft')])]
+    y = y0 + 0.32
+    for lab, lc, chips in rows:
+        text(s, MX, y, lw_, chh, lab, size=16, bold=True, color=lc, anchor='m')
+        for i, (t, k) in enumerate(chips):
+            x = MX + lw_ + i * (cw_ + gap)
+            fill = {'soft': T['soft'], 'dark': '3A3E44', 'accent': T['accent'], 'accent_soft': T['accent_soft']}[k]
+            col = 'FFFFFF' if k in ('dark', 'accent') else (T['accent'] if k == 'accent_soft' else T['text'])
+            chip(s, x, y, cw_, chh, t, fill=fill, color=col, size=12.5, label='flow ' + t)
+            if i: arrow(s, x - gap + 0.06, y + chh / 2, x - 0.06, y + chh / 2, color=T['muted'], lw=1.0)
+        y += chh + 0.36
+    text(s, MX + lw_, y - 0.26, CW - lw_, 0.26, '엔지니어링·검증은 계속 필요, 줄어드는 폭을 고객 현장에서 측정', size=11, color=T['muted'])
+    ky = y + 0.18
+    hline(s, MX, ky, CW, color=T['text'], lw=1.0)
+    text(s, MX, ky + 0.14, 4, 0.3, 'Seed PoC에서 측정할 지표', size=15, bold=True)
+    text(s, MX + 3.3, ky + 0.18, 8.5, 0.26, '고객 기존 수치 대비 · 가상의 절감률·ROI는 제시하지 않음', size=11, color=T['muted'])
+    kpis = ['인력 투입 시간', '자동화 CapEx', '메뉴 추가 비용', '통합 엔지니어링 시간', '메뉴 전환 시간', '로봇 가동률', '투자 회수기간']
+    kw = CW / 7
+    for i, k in enumerate(kpis):
+        x = MX + i * kw
+        if i: vline(s, x - 0.1, ky + 0.66, 0.95)
+        xx = x + (0.04 if i else 0)
+        text(s, xx, ky + 0.64, kw - 0.22, 0.6, k, size=14, bold=True, label='kpi ' + k)
+        text(s, xx, ky + 1.3, kw - 0.22, 0.26, 'PoC에서 측정', size=11, color=T['accent'])
+    foot(s, 8, note='감소 폭은 고객 기존 수치 확보 후 PoC 결과로 산정 · 유료 PoC 자체가 지불의사 검증')
+    notes(s, '고객은 손을 사는 것이 아니라 메뉴가 바뀌어도 다시 만들지 않는 자동화를 산다. 기존 방식은 새 메뉴마다 전용 하드웨어·툴링·주방 개조·통합·검증, '
+             'SoftHand는 같은 핸드에서 기존 Skill을 재사용하고 필요한 Skill만 추가. 실제 수치가 없으므로 절감률·ROI를 만들지 않고 PoC 측정 지표로 제시.')
+
+
+# ---------------------------------------------------------------- 09 skill platform + data flywheel
+def _flywheel(s, cx, cy, R, nodes, hi=2, nw=1.62, nh=0.56):
+    import math
+    rect(s, cx - R, cy - R, 2 * R, 2 * R, line=T['grey_bar'], lw=1.5, shape=MSO_SHAPE.OVAL)
+    n = len(nodes)
+    for i in range(n):
+        th = math.radians(-90 + (i + 0.5) * 360 / n)
+        tx, ty = cx + R * math.cos(th), cy + R * math.sin(th)
+        tri = rect(s, tx - 0.09, ty - 0.08, 0.18, 0.16, fill=T['muted'], shape=MSO_SHAPE.ISOSCELES_TRIANGLE)
+        tri.rotation = math.degrees(th) + 180
+    for i, nd in enumerate(nodes):
+        th = math.radians(-90 + i * 360 / n)
+        nx, ny = cx + R * math.cos(th), cy + R * math.sin(th)
+        ours = i == hi
+        rect(s, nx - nw / 2, ny - nh / 2, nw, nh, fill=T['accent'] if ours else 'FFFFFF', line=None if ours else T['text'], lw=1.0)
+        text(s, nx - nw / 2 + 0.06, ny - nh / 2, nw - 0.12, nh, nd, size=12, bold=True, color='FFFFFF' if ours else T['text'],
+             align='c', anchor='m', label='fw ' + nd)
+
+
+def s09(prs):
+    s = new_slide(prs, '09 skill platform')
+    y0 = header(s, 'PLATFORM', '메뉴가 늘수록 장비가 아니라 Skill이 쌓입니다', 'From Hardware Expansion to Skill Expansion')
+    lx = MX; lw = 6.3; y = y0 + 0.2
+    text(s, lx, y, 3, 0.26, '기존 자동화', size=12, bold=True, color=T['muted'])
+    pw = 0.86; aw = 0.3; pg = 0.2
+    for i, m in enumerate('ABC'):
+        x = lx + i * (2 * pw + aw + pg)
+        chip(s, x, y + 0.34, pw, 0.42, f'메뉴 {m}', fill=T['soft'], size=11.5)
+        arrow(s, x + pw + 0.04, y + 0.55, x + pw + aw - 0.04, y + 0.55)
+        chip(s, x + pw + aw, y + 0.34, pw, 0.42, f'장비 {m}', fill='5A5F66', color='FFFFFF', size=11.5)
+    y2 = y + 1.0
+    text(s, lx, y2, 3, 0.26, 'SoftHand', size=12, bold=True, color=T['accent'])
+    w1, w2 = 2.3, 1.5
+    chip(s, lx, y2 + 0.34, w1, 0.42, '핸드 1개 + Kitchen Skills', fill=T['accent'], color='FFFFFF', size=11.5)
+    arrow(s, lx + w1 + 0.05, y2 + 0.55, lx + w1 + 0.3, y2 + 0.55)
+    chip(s, lx + w1 + 0.35, y2 + 0.34, w2, 0.42, '여러 레시피', fill=T['dark'], color='FFFFFF', size=11.5)
+    arrow(s, lx + w1 + w2 + 0.4, y2 + 0.55, lx + w1 + w2 + 0.65, y2 + 0.55)
+    chip(s, lx + w1 + w2 + 0.7, y2 + 0.34, w2, 0.42, '여러 주방', fill=T['dark'], color='FFFFFF', size=11.5)
+    text(s, lx, y2 + 0.84, lw, 0.26, '집기 · 붓기 · 젓기 · 뒤집기 · 돌리기 · 담기의 조합 + 필요한 Skill 추가 (목표)', size=11, color=T['text2'], label='skill combo')
+    iy = y2 + 1.36
+    text(s, lx, iy, lw, 0.26, "같은 '집게 사용' Skill, 다른 주방", size=12, bold=True, color=T['muted'])
+    iw = (lw - 0.2) / 2; ih = 1.72
+    for i, (f, lab) in enumerate([('lx_tongs.jpg', '가정용 주방'), ('pro_tongs.jpg', '상업용 주방')]):
+        x = lx + i * (iw + 0.2)
+        image(s, KIT(f), x, iy + 0.34, iw, ih, focus=(0.5, 0.5))
+        text(s, x, iy + 0.4 + ih, iw, 0.26, lab, size=11, color=T['text2'])
+    fx = lx + lw + 0.55; fw = W - MX - fx
+    text(s, fx, y, fw, 0.26, 'DATA FLYWHEEL  ·  향후 축적될 데이터 구조', size=12, bold=True, color=T['muted'])
+    nodes = ['더 많은 주방', '더 많은 실제 작업', '조작·실패 데이터', '더 나은 Skill·복구', '더 많은 도구·레시피']
+    cyc = y + 2.05
+    _flywheel(s, fx + fw / 2, cyc, 1.42, nodes)
+    text(s, fx + fw / 2 - 0.9, cyc - 0.3, 1.8, 0.6, '배치가 늘수록\nSkill이 좋아지는 구조', size=11, color=T['text2'], align='c', label='fw center')
+    dy = cyc + 1.42 + 0.5
+    text(s, fx, dy, fw, 0.26, '축적 대상: 실패 · 미끄러짐 · 위치 오차 · 재파지 · 힘 보정 · 복구 행동', size=11.5, bold=True, label='fw data')
+    text(s, fx, dy + 0.32, fw, 0.26, '현재 보유 데이터 없음, Seed 기간 수집 시작 (목표)', size=11, color=T['accent'], label='fw now')
+    foot(s, 9, note='콘셉트 렌더링 · 데이터 계획·권리 원칙은 부록 A12')
+    notes(s, '기존 자동화는 메뉴 수만큼 장비가 늘어남. SoftHand는 같은 핸드에 Skill을 조합·추가해 여러 레시피와 여러 주방으로 확장하는 구조를 목표. '
+             'From Hardware Expansion to Skill Expansion. 배치가 늘수록 실패·미끄러짐·위치 오차·재파지·힘 보정·복구 데이터가 쌓여 Skill이 좋아지는 구조. '
+             '현재 보유 데이터는 없으며 "향후 축적될 데이터 구조"로 표기.')
+
+
+# ---------------------------------------------------------------- 10 competition + moat
 def s10(prs):
-    s = new_slide(prs, '10 business model')
-    y0 = header(s, '사업 모델', '제품 판매로 시작, 스킬과 로봇 제조사 탑재로 확장', '통합 엔지니어링 매출은 초기 진입·제품화 수단, 비중 축소 목표')
-    stages = [
-        ('1단계 · Seed (M0~M24)', 'SI와 함께 진입', '로봇 SI, 공동개발 고객, 유료 PoC', '핸드, 유료 PoC, 통합, 작업 스킬', '공동개발 고객 3곳, 유료 PoC 5건,\n재구매 고객 2곳'),
-        ('2단계 · 3~5년차', '직판 + SI 파트너', '검증된 스킬 팩을 SI 파트너망으로 판매', '재사용 스킬, 런타임·유지보수, 핸드', '재사용 매출 비중 86%\n(5년차, 기본 시나리오)'),
-        ('3단계 · 확장 계기', '로봇 제조사(OEM) 탑재', '핸드·런타임을 로봇 옵션으로 탑재', '라이선스, 내장 런타임,\n출하량 연동 로열티', 'OEM 채택(디자인 윈) 1건'),
-    ]
-    gap = 0.3; cw = (CW - 2 * gap) / 3; ty = y0 + 0.3
-    for i, (st, nm, ch, rv, goal) in enumerate(stages):
-        x = MX + i * (cw + gap)
-        text(s, x, ty, cw, 0.28, st, size=12, bold=True, color=T['accent'])
-        text(s, x, ty + 0.32, cw, 0.42, nm, size=19, bold=True, label='stage ' + nm)
-        hline(s, x, ty + 0.85, cw, color=T['text'], lw=1.0)
-        yy = ty + 0.97
-        for lab, val in [('판매', ch), ('매출', rv), ('목표', goal)]:
-            text(s, x, yy, 0.6, 0.26, lab, size=11, color=T['muted'])
-            hh = text_h(val, 13, cw - 0.62)
-            text(s, x + 0.62, yy, cw - 0.62, hh + 0.02, val, size=13, color=T['text'], label=f'stage {nm} {lab}')
-            yy += max(hh, 0.3) + 0.2
-            hline(s, x, yy - 0.1, cw)
-    fy = ty + 3.25
-    rect(s, MX, fy, CW, 1.12, fill=T['soft'])
-    text(s, MX + 0.3, fy + 0.18, 2.3, 0.3, 'OEM 매출 구조', size=14, bold=True)
-    text(s, MX + 0.3, fy + 0.5, 2.3, 0.5, '고객 한 곳씩 영업에서\n출하량 연동으로 전환', size=11, color=T['text2'])
-    parts = ['대상 로봇 출하량', '×', '옵션 채택률', '×', '대당 핸드·런타임 매출', '=', 'OEM 매출']
-    px = MX + 2.85; widths = [2.1, 0.35, 1.7, 0.35, 2.55, 0.35, 1.5]
-    for p, wd in zip(parts, widths):
-        op = p in '×='
-        text(s, px, fy + 0.2, wd, 0.4, p, size=18 if op else 14, bold=not op, color=T['muted'] if op else (T['accent'] if p == 'OEM 매출' else T['text']),
-             align='c' if op else 'l', label='oem ' + p)
-        if not op and p != 'OEM 매출':
-            text(s, px, fy + 0.6, wd, 0.26, '[OEM 협의 후 검증]', size=10, color=T['muted'])
-        px += wd
-    footer(s, 10, note='로봇 제조사는 팔·제어기에 집중, 핸드는 파트너 생태계 의존 · 경쟁자이자 판매 채널 (부록 A3)')
-    notes(s, '초기에는 제품회사처럼 돈을 벌고, 장기에는 플랫폼 수익 구조로 확장. 통합 매출을 숨기지 않되 장기 모델이 아닌 진입·제품화 수단으로 정의. '
-             'OEM 매출은 숫자를 계산하지 않고 구조만 제시 (기존 300억~1,800억 계산 삭제).')
+    s = new_slide(prs, '10 competition')
+    y0 = header(s, 'COMPETITION · MOAT', '경쟁자는 다른 로봇 손이 아니라, 작업마다 새로 만드는 전용 자동화')
+    cats = [('전용 주방 자동화', '예: 로봇 전용 주방, 튀김·패티·치킨 조리 로봇', '강점', '특정 메뉴·작업에 최적화, 높은 반복성 가능',
+             '한계', '다른 메뉴·주방으로 확장 어려움'),
+            ('전통 그리퍼 · EOAT', '예: 평행·진공·맞춤 그리퍼', '강점', '산업용 집기·놓기에 강함',
+             '한계', '사람용 도구·다양한 주방 조작부에 한계 가능'),
+            ('SoftHand + Kitchen Skills', '기존 사람용 주방·도구를 그대로 사용', '목표', '여러 작업을 하나의 조작 구조로 수행',
+             '과제', '실제 주방 검증 전, 우위는 미검증')]
+    gap = 0.34; cw_ = (CW - 2 * gap) / 3; ty = y0 + 0.32
+    for i, (nm, ex, l1, v1, l2, v2) in enumerate(cats):
+        x = MX + i * (cw_ + gap); ours = i == 2
+        if ours: rect(s, x - 0.16, ty - 0.16, cw_ + 0.32, 2.42, fill=T['accent_soft'])
+        text(s, x, ty, cw_, 0.36, nm, size=17, bold=True, color=T['accent'] if ours else T['text'], label='cat ' + nm)
+        text(s, x, ty + 0.42, cw_, 0.26, ex, size=11.5, color=T['text2'], label='cat ex ' + nm)
+        hline(s, x, ty + 0.82, cw_, color=T['text'], lw=1.0)
+        for j, (l, v) in enumerate([(l1, v1), (l2, v2)]):
+            yy = ty + 0.94 + j * 0.62
+            text(s, x, yy, 0.6, 0.26, l, size=11, color=T['muted'])
+            text(s, x + 0.6, yy - 0.02, cw_ - 0.6, 0.56, v, size=13, label=f'cat {nm} {l}')
+            if j == 0: hline(s, x, yy + 0.52, cw_)
+    my = ty + 2.5
+    text(s, MX, my, CW, 0.3, [[('SOFTHAND MOAT   ', {'color': T['accent']}),
+                               ('해자는 Hand 하나가 아니라 Hand + Skill + Runtime + Data의 누적 구조', {})]], size=14, bold=True, label='moat title')
+    moat = [('Hardware', '주방용 Soft-Rigid 조작', '설계 목표'), ('Skill Library', '반복 사용 가능한 조작 Skill', '구축 목표'),
+            ('Recovery Data', '실패와 복구 데이터', '향후 축적'), ('Cross-Robot Runtime', '다른 로봇에서 Skill 재사용', '검증 예정'),
+            ('Installed Base', '다양한 주방의 실제 작업 경험', '장기 목표')]
+    n = 5; ag = 0.3; bw = (CW - (n - 1) * ag) / n; by = my + 0.45; bh = 1.4
+    for i, (a, b, st) in enumerate(moat):
+        x = MX + i * (bw + ag)
+        rect(s, x, by, bw, bh, fill=T['dark'])
+        text(s, x + 0.18, by + 0.12, bw - 0.3, 0.56, a, size=13.5, bold=True, color='FFFFFF', label='moat ' + a)
+        text(s, x + 0.18, by + 0.68, bw - 0.3, 0.46, b, size=11, color='B9BEC5', label='moat d ' + a)
+        text(s, x + 0.18, by + bh - 0.34, bw - 0.3, 0.24, st, size=10.5, bold=True, color=T['accent'])
+        if i: arrow(s, x - ag + 0.05, by + bh / 2, x - 0.05, by + bh / 2, color=T['text'], lw=1.25)
+    foot(s, 10, note='공개 정보 기반 정성 비교, 독립 비교시험 아님 · 회사별 사례·출처는 부록 A6')
+    notes(s, '가장 큰 경쟁자는 다른 로봇 손이 아니라 작업마다 새 전용 자동화를 만드는 방식. 전용 주방 자동화(예: Moley 로봇 주방, Miso Flippy, 에니아이 알파그릴, '
+             '로보아르테)는 특정 메뉴에 강하지만 다른 메뉴·주방 확장이 어려움. 그리퍼·EOAT는 산업용 집기에 강하지만 사람용 도구 조작에 한계 가능. '
+             '다른 핸드 회사가 들어오면? 해자는 Hand + Skill Library + Recovery Data + Cross-Robot Runtime + Installed Base의 누적. 모두 현재 목표 단계.')
 
 
-# ---------------------------------------------------------------- 11 competition
+# ---------------------------------------------------------------- 11 business model + base case / scale triggers
 def s11(prs):
-    s = new_slide(prs, '11 competition')
-    y0 = header(s, '경쟁', '경쟁 기준은 설비 변경 없이 끝낸 작업 수', '구매 기준: 손가락 수보다 실제 작업 완료와 설비 변경 최소화')
-    cats = [
-        ('전통 그리퍼', '정확성·신뢰성 높음, 특정 작업 중심', '정밀·저가·고속', '작업 변경 시 핑거·지그 교체, 문·레버는 설비 개조', '한계'),
-        ('적응형 그리퍼', '다양한 형상 파지에 강점', '여러 형상을 하나로 파지', '손잡이 감아 당기기·레버 토크 제한, 결국 설비 개조', '한계'),
-        ('다지 로봇 핸드', '높은 자유도, 복잡한 조작', '사람 손에 가까운 조작', '비용·내구성·통합 난이도, 연구·휴머노이드 중심', '한계'),
-        ('SoftHand-4', '사람용 장치를 핸드 교체 없이 조작 (목표)', '부품·문·레버를 핸드 하나로', '산업 내구성·재사용 스킬, Seed 기간 검증', '과제'),
-    ]
-    gap = 0.18; cw = (CW - 3 * gap) / 4; ty = y0 + 0.3
-    for i, (nm, one, st, lim, lim_lab) in enumerate(cats):
-        x = MX + i * (cw + gap); ours = i == 3
-        if ours: rect(s, x - 0.12, ty - 0.15, cw + 0.24, 3.38, fill=T['accent_soft'])
-        text(s, x, ty, cw, 0.4, nm, size=18, bold=True, color=T['accent'] if ours else T['text'], label='cat ' + nm)
-        text(s, x, ty + 0.45, cw, 0.6, one, size=12, color=T['text2'], label='cat one ' + nm)
-        hline(s, x, ty + 1.1, cw, color=T['text'], lw=1.0)
-        text(s, x, ty + 1.22, cw, 0.24, '강점', size=11, color=T['muted'])
-        text(s, x, ty + 1.48, cw, 0.6, st, size=13, label='cat st ' + nm)
-        hline(s, x, ty + 2.08, cw)
-        text(s, x, ty + 2.2, cw, 0.24, lim_lab, size=11, color=T['muted'])
-        text(s, x, ty + 2.46, cw, 0.72, lim, size=13, label='cat lim ' + nm)
-    py = ty + 3.55
-    text(s, MX, py, CW, 0.3, 'Seed 기간 증명 항목', size=12, bold=True, color=T['accent'])
-    items = [('동일 조건 비교시험', '같은 작업·같은 로봇, 전용 그리퍼 대비'), ('승인 작업 완료율 95%+', '목표, 최초 시도·재시도 분리 보고'),
-             ('내구성 30만 회', '반복 개폐 목표, 패드 교체 주기 명시'), ('총비용 비교', '전용 그리퍼 N개 + 엔지니어링 대비')]
-    iw = CW / 4
-    for i, (a, b) in enumerate(items):
-        x = MX + i * iw
-        text(s, x, py + 0.34, iw - 0.2, 0.3, a, size=14, bold=True, label='proof ' + a)
-        text(s, x, py + 0.66, iw - 0.2, 0.3, b, size=11, color=T['text2'], label='proof d ' + a)
-    footer(s, 11, note='공개 정보 기반 정성 비교, 독립 비교시험 아님 · 회사명·상세 사양은 부록 A3')
-    notes(s, 'Adaptive Gripper는 형상 파지에 강하지만 문·레버 조작과 공구 토크는 제한적이라 결국 설비 개조가 필요. '
-             '다지 핸드는 비용·내구성 때문에 연구·휴머노이드 중심. 우리는 손가락 수가 아니라 설비 변경 없이 끝낸 작업 수로 경쟁.')
-
-
-# ---------------------------------------------------------------- 12 financials
-def s12(prs):
-    s = new_slide(prs, '12 financials')
-    B = M['base']; A = M['assumptions']
-    y0 = header(s, '재무 계획', f'5년차 매출 {B["rev"][4]:.1f}억 원, 손익분기 근접', '기본 시나리오: 주방·로봇 제조사(OEM) 매출 0원, 모든 수치는 검증 전 가정')
-    eng = B['poc_int']; reuse = [r - p for r, p in zip(B['rev'], eng)]
-    cx, cy, cw_, chh = MX, y0 + 0.95, 6.1, 3.45
-    plot = (0.02, 0.1, 0.96, 0.8); vmax = 50
-    text(s, MX, y0 + 0.2, 4, 0.3, '연도별 매출 (억 원)', size=12, bold=True, color=T['muted'])
-    lg = MX
-    for col, lab in [(T['grey_bar'], '고객별 엔지니어링 (PoC·통합)'), (T['accent'], '재사용 매출 (핸드·스킬·런타임·파트너)')]:
-        rect(s, lg, y0 + 0.6, 0.13, 0.13, fill=col)
-        text(s, lg + 0.2, y0 + 0.52, 3.2, 0.28, lab, size=11, color=T['text2'], check=False)
-        lg += 0.3 + text_w(lab, 11) + 0.35
-    column_chart(s, cx, cy, cw_, chh, ['1년차', '2년차', '3년차', '4년차', '5년차'],
-                 [('고객별 엔지니어링', eng), ('재사용 매출', reuse)], [T['grey_bar'], T['accent']], stacked=True, vmax=vmax,
-                 show_labels=False, gap=55, plot=plot, size=12)
+    s = new_slide(prs, '11 business model')
+    B = M['base']
+    y0 = header(s, 'BUSINESS MODEL', '하드웨어로 검증하고, Skill·Runtime 반복매출로 확장합니다')
+    stages = [('1 · 핵심 시장', '상업용 + 가정용 주방', '식당 · 프랜차이즈 · 급식 · 호텔\n가정 조리 · 식사 준비 · 가전 조작',
+               '초기', '유료 PoC · 하드웨어 · 통합'),
+              ('2 · 제품 확장', '도구 · Skill · 레시피', '더 많은 도구 · 더 많은 Skill\n더 많은 레시피 · 더 많은 주방',
+               '중기', 'SoftHand · Kitchen Skill 패키지 · Runtime · 유지보수'),
+              ('3 · 유통 확장', '파트너 · OEM 채널', '직접 B2B · 주방 자동화 파트너\n로봇 OEM · 가전 OEM · 스마트홈',
+               '중기~장기', '파트너 판매 · OEM · 라이선스'),
+              ('4 · 장기 Scale 채널', 'Built-in 보급 (B2B2C)', '건설사 · 디벨로퍼 · 호텔\n시니어 주거 · 주거 플랫폼',
+               '장기', '내장 Runtime · Built-in 파트너십')]
+    gap = 0.3; cw_ = (CW - 3 * gap) / 4; ty = y0 + 0.24
+    for i, (st, nm, mk, when, rv) in enumerate(stages):
+        x = MX + i * (cw_ + gap)
+        text(s, x, ty, cw_, 0.26, st, size=11.5, bold=True, color=T['accent'])
+        text(s, x, ty + 0.3, cw_, 0.36, nm, size=16, bold=True, label='bm ' + nm)
+        hline(s, x, ty + 0.74, cw_, color=T['text'], lw=1.0)
+        text(s, x, ty + 0.84, cw_, 0.5, mk, size=11.5, color=T['text2'], label='bm mk ' + nm)
+        hline(s, x, ty + 1.42, cw_)
+        text(s, x, ty + 1.52, cw_, 0.24, when + ' 매출', size=10.5, bold=True, color=T['muted'])
+        text(s, x, ty + 1.78, cw_, 0.5, rv, size=12, bold=True, label='bm rv ' + nm)
+        if i < 3: arrow(s, x + cw_ + 0.04, ty + 0.13, x + cw_ + gap - 0.06, ty + 0.13, color=T['accent'])
+    fy = 4.62; fh = 2.22
+    lw2 = 5.7
+    rect(s, MX, fy, lw2, fh, fill=T['soft'])
+    text(s, MX + 0.25, fy + 0.16, lw2 - 0.5, 0.3, [[('Base Case  ', {}), ('하방', {'color': T['accent']})]], size=15, bold=True)
+    text(s, MX + 0.25, fy + 0.52, 2.3, 0.5, '기존 계획 기반\n대규모 주방·OEM 매출 제외', size=11, color=T['text2'], label='base desc')
+    text(s, MX + 0.25, fy + 1.16, 2.3, 0.5, f'{B["rev"][4]:.1f}억 원', size=24, bold=True, label='base y5')
+    text(s, MX + 0.25, fy + 1.66, 2.3, 0.26, '5년차 매출 (가정)', size=11, color=T['text2'])
+    cx, cyy, cww, chh = MX + 2.55, fy + 0.25, lw2 - 2.75, fh - 0.4
+    plot = (0.02, 0.12, 0.96, 0.72); vmax = 52
+    column_chart(s, cx, cyy, cww, chh, ['1년', '2년', '3년', '4년', '5년'], [('매출', B['rev'])], [T['grey_bar']], vmax=vmax,
+                 show_labels=False, gap=45, plot=plot, size=10)
     px, py, pw, ph = plot
-    for i, tot in enumerate(B['rev']):
-        ccx = cx + cw_ * (px + pw * (i + 0.5) / 5)
-        top = cy + chh * (py + ph * (1 - tot / vmax))
-        text(s, ccx - 0.6, top - 0.34, 1.2, 0.3, f'{tot:.1f}', size=13, bold=True, align='c', check=False)
-    rx = MX + 6.55; rw = W - MX - rx
-    rows = [['매출 (억 원)'] + [f'{v:.1f}' for v in B['rev']],
-            ['매출총이익률'] + [f'{v * 100:.0f}%' for v in B['gm']],
-            ['영업손익 (억 원)'] + [f'{v:.1f}'.replace('-', '−') for v in B['op']],
-            ['신규 핸드 (대)'] + [str(int(v)) for v in B['hands_new']],
-            [('재사용 매출 비중', {'bold': True})] + [(f'{v * 100:.0f}%', {'bold': True, 'color': T['accent']}) for v in B['reuse_share']]]
-    table(s, rx, y0 + 0.2, rw, ['구분', '1년', '2년', '3년', '4년', '5년'], rows,
-          col_w=[1.75] + [(rw - 1.75) / 5] * 5, size=12, align=['l', 'r', 'r', 'r', 'r', 'r'], pad=0.07, label='fin table')
-    sy = y0 + 2.6
-    text(s, rx, sy, rw, 0.3, '민감도 (5년차)', size=12, bold=True, color=T['accent'])
-    sens = [('판매량 −30%', '매출 31.4억 · 영업손익 −7.1억'), ('SI 채널 1년 지연', '매출 32.3억 · 영업손익 −6.4억'),
-            ('핸드 원가 절감 지연', '영업손익 −3.1억'), ('판매량 −50%', '매출 22.4억 · 영업손익 −11.9억')]
-    table(s, rx, sy + 0.32, rw, None, [[(a, {'bold': True}), b] for a, b in sens], col_w=[1.95, rw - 1.95], size=12, pad=0.06, label='sens')
-    footer(s, 12, note='1·2년차 운영비 = Seed 집행 계획 · 미반영 상승 요인: 주방 공동 제품화, OEM 채택 · 상세 부록 A10')
-    notes(s, f'기본 시나리오: 핸드 직판 1,500만 원, 파트너 경유 1,200만 원, 스킬 300만 원, 런타임 연 150만 원, 유료 PoC 5,000만 원. 핸드 원가 950만 원에서 750만 원으로 절감 가정. '
-             f'주방·OEM 매출 0원. 기존 덱의 5년차 112억(주방 50억 포함) 대신 사업 구조와 같은 숫자로 재산정.')
+    for i, v in enumerate(B['rev']):
+        ccx = cx + cww * (px + pw * (i + 0.5) / 5)
+        top = cyy + chh * (py + ph * (1 - v / vmax))
+        text(s, ccx - 0.4, top - 0.27, 0.8, 0.24, f'{v:.1f}', size=10, bold=i == 4, align='c', check=False)
+    rx = MX + lw2 + 0.3; rw = W - MX - rx
+    rect(s, rx, fy, rw, fh, fill=T['dark'])
+    text(s, rx + 0.28, fy + 0.16, rw - 0.5, 0.3, [[('Scale Triggers  ', {'color': T['on_dark']}), ('상방 · 수치 미산정', {'color': T['accent']})]],
+         size=15, bold=True)
+    trig = ['주방 제품 검증', 'Skill 재사용', '로봇 OEM 채택', '가전사 파트너십', '가정용 주방 확장', 'Built-in 채널']
+    tw3 = (rw - 0.56) / 3
+    for i, t in enumerate(trig):
+        r, c = divmod(i, 3)
+        x = rx + 0.28 + c * tw3; yy = fy + 0.7 + r * 0.72
+        hline(s, x, yy, tw3 - 0.2, color='3A3E44')
+        text(s, x, yy + 0.1, 0.35, 0.3, f'{i + 1}', size=13, bold=True, color=T['accent'])
+        text(s, x + 0.32, yy + 0.1, tw3 - 0.55, 0.56, t, size=13, bold=True, color=T['on_dark'], label='trig ' + t)
+    foot(s, 11, note='건설사는 핵심 시장이 아닌 장기 채널 (부록 A13) · Base Case 손익·민감도 부록 A10 · 상방 매출은 산정하지 않음')
+    notes(s, f'초기에는 유료 PoC·하드웨어·통합으로 검증하고, 고객이 늘수록 Kitchen Skill 패키지·Runtime·유지보수 반복매출 비중을 높임(Base Case 재사용 매출 비중 '
+             f'5년차 {B["reuse_share"][4] * 100:.0f}%, 가정). 장기에는 로봇·가전 OEM, 라이선스, 내장 Runtime, Built-in 파트너십. 건설사는 핵심 시장이 아닌 장기 B2B2C 채널. '
+             f'Base Case(5년차 {B["rev"][4]:.1f}억 원)는 기존 계획 기반으로 대규모 주방·OEM 매출을 제외한 하방, Scale Triggers가 상방이며 상방 수치는 만들지 않음.')
 
 
-# ---------------------------------------------------------------- 13 roadmap
+# ---------------------------------------------------------------- 12 seed validation plan (what we need to prove)
+def s12(prs):
+    s = new_slide(prs, '12 validation')
+    y0 = header(s, 'SEED VALIDATION PLAN', '20억 원 · 24개월로 증명할 3가지',
+                '로봇 핸드 아이디어를 반복 판매 가능한 Kitchen Robotics Platform으로 증명')
+    by = y0 + 0.2; bh = 1.42; ag = 0.42
+    w1, w2 = 2.45, 3.55; w3 = CW - w1 - w2 - 2 * ag
+    x1 = MX; x2 = x1 + w1 + ag; x3 = x2 + w2 + ag
+    rect(s, x1, by, w1, bh, fill=T['soft'])
+    text(s, x1 + 0.22, by + 0.16, w1 - 0.4, 0.26, 'TODAY', size=11, bold=True, color=T['muted'])
+    text(s, x1 + 0.22, by + 0.46, w1 - 0.4, 0.9, ['콘셉트', '기술 구조', '초기 설계'], size=13.5, bold=True, space_after=2, label='today')
+    rect(s, x2, by, w2, bh, fill=T['accent'])
+    text(s, x2 + 0.22, by + 0.16, w2 - 0.4, 0.26, 'SEED', size=11, bold=True, color='FFE6DA')
+    text(s, x2 + 0.22, by + 0.42, w2 - 0.4, 0.42, '20억 원 · 24개월', size=21, bold=True, color='FFFFFF', label='seed amt')
+    text(s, x2 + 0.22, by + 0.88, w2 - 0.4, 0.5, '인력 9.6 · 시제품·내구 2.7 · 시험 셀·주방 PoC 2.8\nSW·품질·IP 1.7 · 운영 1.5 · 예비비 1.7 (억 원)',
+         size=10, color='FFFFFF', label='seed uof')
+    rect(s, x3, by, w3, bh, fill=T['dark'])
+    text(s, x3 + 0.22, by + 0.16, w3 - 0.4, 0.26, 'VALUE INFLECTION  ·  24개월 목표', size=11, bold=True, color=T['accent'])
+    vi = ['실제 주방 시제품', '실제 주방 조작', '유료 PoC', '재구매 고객', '재사용 Kitchen Skill', '로봇 2종 검증', '양산 가능 설계', 'Series A 준비']
+    hw = (w3 - 0.44) / 2
+    for i, v in enumerate(vi):
+        c, r = divmod(i, 4)
+        text(s, x3 + 0.22 + c * hw, by + 0.46 + r * 0.235, hw - 0.1, 0.24, v, size=11.5, bold=True, color=T['on_dark'], label='vi ' + v)
+    arrow(s, x1 + w1 + 0.05, by + bh / 2, x2 - 0.05, by + bh / 2, color=T['text'], lw=1.5)
+    arrow(s, x2 + w2 + 0.05, by + bh / 2, x3 - 0.05, by + bh / 2, color=T['text'], lw=1.5)
+    text(s, MX, by + bh + 0.08, CW, 0.26, [[('왜 지금 Seed인가   ', {'bold': True, 'color': T['accent']}),
+                                            ('아직 위험한 단계이지만, 세 가지 가설이 검증되면 가치 상승 폭이 가장 큰 시점', {})]],
+         size=11.5, color=T['text2'], label='seed timing')
+    py = by + bh + 0.46
+    proofs = [('실제 주방에서 일한다', [('검증', '검증 대상 6종 작업 실제 주방 반복시험'), ('목표', '승인 작업 완료율 95%+ · 내구 30만 회'), ('점검', 'M6 벤치 → M12 현장')]),
+              ('고객이 돈을 낸다', [('검증', '고객 기존 수치 대비 KPI 측정'), ('목표', '유료 PoC 5건 · 재구매 2곳 · 공동개발 고객 3곳'), ('점검', 'M12 첫 유료 PoC → M24 재구매')]),
+              ('Skill이 재사용된다', [('검증', '다른 메뉴·주방·로봇에 같은 Skill 적용'), ('목표', '로봇 2종 · 상업용/가정용 환경 공통 Skill'), ('점검', 'M12 재사용률 측정 → M24 이식 검증')])]
+    gap = 0.34; pcw = (CW - 2 * gap) / 3
+    for i, (t, rows) in enumerate(proofs):
+        x = MX + i * (pcw + gap)
+        text(s, x, py - 0.04, 0.5, 0.55, str(i + 1), size=30, bold=True, color=T['accent'], line=0.9)
+        text(s, x + 0.5, py + 0.04, pcw - 0.5, 0.42, t, size=18, bold=True, label='proof ' + t)
+        hline(s, x, py + 0.58, pcw, color=T['text'], lw=1.0)
+        yy = py + 0.68
+        for lab, val in rows:
+            text(s, x, yy, 0.5, 0.24, lab, size=10.5, color=T['muted'])
+            hh = text_h(val, 11.5, pcw - 0.52)
+            text(s, x + 0.52, yy - 0.01, pcw - 0.52, hh + 0.02, val, size=11.5, label=f'proof {i} {lab}')
+            yy += max(hh, 0.24) + 0.1
+    ey = 6.34
+    rect(s, MX, ey, CW, 0.5, fill=T['soft'])
+    ev = '○ 시제품   ○ 도구 조작 시험   ○ 주방 시험   ○ 고객 인터뷰   ○ 주방 운영사·SI 논의   ○ LOI   ○ 공동개발   ○ 특허 검토'
+    text(s, MX + 0.22, ey, CW - 0.44, 0.5, [[('현재 확보된 증거   ', {'bold': True, 'color': T['text']}), (ev + '   ', {}),
+                                              ('[확보 항목 ● 표시 · 정보 입력 필요]', {'color': T['accent']})]],
+         size=10.5, color=T['text2'], anchor='m', label='evidence')
+    foot(s, 12, note='모든 목표는 계획이며 실적 아님 · 증거 확보 시 이 장을 Proof 중심으로 바꿔 앞쪽에 배치 · 단계별 점검 기준 부록 A2')
+    notes(s, '20억 원으로 회사가 무엇으로 바뀌는가: 오늘은 콘셉트·기술 구조·초기 설계, 24개월 뒤 목표는 실제 주방 시제품·실제 주방 조작·유료 PoC·재구매·재사용 Skill·'
+             '로봇 2종 검증·양산 가능 설계·Series A 준비. 가장 중요한 세 가지 증명: 실제 주방에서 일한다, 고객이 돈을 낸다, 다른 메뉴·주방·로봇에서 Skill이 재사용된다. '
+             '현재 확보된 증거는 확인되지 않아 빈 칸으로 두고, 확보 시 Proof를 로드맵보다 앞에 배치.')
+
+
+# ---------------------------------------------------------------- 13 team
 def s13(prs):
-    s = new_slide(prs, '13 roadmap')
-    y0 = header(s, '로드맵', '24개월 4단계 검증 계획', '단계마다 질문 하나, 미달 시 다음 단계 자금 집행 재검토')
-    phases = [
-        ('M0~M6', '기술 검증', '핸드 하나로 대표 공정 수행', ['법인 설립·핵심 인력 합류', 'SoftHand-4 알파 시제품', '머신텐딩 대표 공정 시연', '고객 인터뷰 30곳', '공동개발 고객 후보 확보', '반복 실험 기록']),
-        ('M6~M12', '고객 검증', '고객이 돈을 낼 이유 확인', ['첫 유료 PoC', '고객 기존 수치 확보', '엔지니어링 시간 측정', '툴링 비용·통합 기간 측정', '작업 스킬 V1']),
-        ('M12~M18', '제품 검증', '반복 판매되는 제품 확인', ['설계 확정·BOM·공급사', '내구성·제조원가 검증', '첫 재구매', '첫 재사용 스킬 팩', '재사용률 측정 시작', '로봇 B 통합']),
-        ('M18~M24', '확장 검증', '확장 가능한 구조 확인', ['유료 PoC 5건+', '재구매 고객 2곳+', '재사용 스킬 다수 확보', '로봇 2종 스킬 호환', '매출총이익률 검증', 'Series A 준비']),
-    ]
-    gap = 0.25; cw = (CW - 3 * gap) / 4; ty = y0 + 0.35
-    hline(s, MX, ty + 0.05, CW, color=T['text'], lw=1.25)
-    for i, (per, nm, q, items) in enumerate(phases):
-        x = MX + i * (cw + gap)
-        dot(s, x + 0.05, ty + 0.05, d=0.12, fill=T['accent'] if i == 3 else T['text'])
-        text(s, x, ty + 0.22, cw, 0.28, per, size=12, bold=True, color=T['accent'])
-        text(s, x, ty + 0.52, cw, 0.4, nm, size=19, bold=True, label='ph ' + nm)
-        text(s, x, ty + 0.95, cw, 0.3, q, size=12, color=T['text2'], label='ph q ' + nm)
-        text(s, x, ty + 1.38, cw, 2.2, items, size=12, bullet='•', indent=0.17, space_after=4, label='ph items ' + nm)
-    gy = ty + 3.55
-    rect(s, MX, gy, CW, 0.95, fill=T['soft'])
-    text(s, MX + 0.25, gy + 0.15, 2.0, 0.3, '점검 기준', size=13, bold=True)
-    text(s, MX + 0.25, gy + 0.47, 2.0, 0.3, '미달 시 결정', size=11, color=T['text2'])
-    gates = [('M6', '토크·반복성 미확보', '핸드 구조 재검토'), ('M12', '지불의사 없음', '첫 시장·작업 재정의'),
-             ('M18', '재사용률 낮음', '플랫폼 가설 재검토'), ('M24', '재구매 없음', 'Series A 확장 보류')]
-    gx = MX + 2.2; gw = (CW - 2.2) / 4
-    for i, (m, c, d) in enumerate(gates):
-        x = gx + i * gw
-        text(s, x, gy + 0.15, gw - 0.15, 0.3, [[(m + '  ', {'color': T['accent']}), (c, {})]], size=12, bold=True, label='gate ' + m)
-        text(s, x, gy + 0.47, gw - 0.15, 0.3, d, size=12, color=T['text2'], label='gate d ' + m)
-    footer(s, 13, note='보조 일정: 주방 벤치 데모 (M19~M24) · 단계별 상세 기준 부록 A2')
-    notes(s, '투자금을 단순 R&D 소비가 아닌 가설 검증 자본으로 운영. 각 단계 점검은 이사회·투자자와 분기별 지표 리뷰로 판단.')
-
-
-# ---------------------------------------------------------------- 14 team
-def s14(prs):
-    s = new_slide(prs, '14 team')
-    y0 = header(s, '팀', '이 문제를 풀 수 있는 팀', '창업자 2명 + 핵심 인력 6명 단계 채용')
-    fx = MX; fw = 5.3
-    for i, (role, hint) in enumerate([('대표 · 사업/제품', '산업 경력·직무·기간'), ('CTO · 핸드 메카트로닉스', '시제품·연구실적·특허')]):
-        yy = y0 + 0.3 + i * 1.62
-        rect(s, fx, yy, 1.2, 1.38, fill=T['soft'])
-        text(s, fx, yy + 0.55, 1.2, 0.3, '사진', size=11, color=T['muted'], align='c')
-        text(s, fx + 1.45, yy + 0.0, fw - 1.45, 0.36, '[이름 입력 필요]', size=17, bold=True)
-        text(s, fx + 1.45, yy + 0.4, fw - 1.45, 0.28, role, size=12, bold=True, color=T['accent'])
-        text(s, fx + 1.45, yy + 0.76, fw - 1.45, 0.62, [f'{hint}: [정보 입력 필요]', '사업과 직접 연결되는 경험만 기재'], size=12,
-             color=T['text2'], space_after=3, label='founder ' + role)
-    hy = y0 + 3.62
+    s = new_slide(prs, '13 team')
+    y0 = header(s, 'TEAM', '왜 우리가 이 문제를 풀 수 있는가', '창업자 2명 + 핵심 인력 6명 단계 채용')
+    fx = MX; fw = 4.05
+    for i, role in enumerate(['대표 · 사업/제품', 'CTO · 핸드 메카트로닉스']):
+        yy = y0 + 0.25 + i * 1.55
+        rect(s, fx, yy, 1.12, 1.3, fill=T['soft'])
+        text(s, fx, yy + 0.5, 1.12, 0.3, '사진', size=11, color=T['muted'], align='c')
+        text(s, fx + 1.34, yy, fw - 1.34, 0.36, '[이름 입력 필요]', size=17, bold=True)
+        text(s, fx + 1.34, yy + 0.4, fw - 1.34, 0.28, role, size=12, bold=True, color=T['accent'])
+        text(s, fx + 1.34, yy + 0.74, fw - 1.34, 0.56, '사업과 직접 연결되는 경력 한 줄\n[정보 입력 필요]', size=11.5, color=T['text2'], label='founder ' + role)
+    hy = y0 + 3.3
     hline(s, fx, hy, fw, color=T['text'], lw=1.0)
-    text(s, fx, hy + 0.12, fw, 0.3, 'Seed 채용 계획 (6명 단계 채용)', size=12, bold=True)
-    text(s, fx, hy + 0.42, fw, 0.6, '기구·구동, 제어·임베디드, 로봇 SW·스킬, 현장 통합, 비전·AI, 설계·품질', size=12, color=T['text2'], label='hire')
+    text(s, fx, hy + 0.12, fw, 0.28, 'Seed 채용 계획 (6명 단계 채용)', size=12, bold=True)
+    text(s, fx, hy + 0.44, fw, 0.56, '기구·구동 · 제어·임베디드 · 로봇 SW·Skill\n현장 통합 · 비전·AI · 설계·품질', size=11.5, color=T['text2'], label='hire')
     rx = fx + fw + 0.55; rw = W - MX - rx
-    text(s, rx, y0 + 0.3, rw, 0.32, '투자자가 확인할 3가지', size=14, bold=True, color=T['muted'])
-    qs = [('왜 이 창업자가 이 문제를 발견했나', '창업 계기, 현장에서 직접 겪은 전환 비용 문제'),
-          ('왜 이 팀이 이 제품을 만들 수 있나', '핸드 메카트로닉스·제어·현장 통합 역량의 근거'),
-          ('왜 이 팀이 첫 고객을 확보할 수 있나', '고객 네트워크·공동개발 고객 후보·SI 관계')]
-    yy = y0 + 0.75
-    for i, (q, h_) in enumerate(qs):
+    rows = [('Problem Insight', '현장에서 문제를 직접 확인한 팀',
+             '[창업자]가 [주방·자동화 현장]에서 [직접 겪은 문제]를 확인한 경험'),
+            ('Build Capability', 'Hand · Robotics · Control · AI를 만들 수 있는 팀',
+             '[핸드·로봇·제어·AI 개발 이력, 시제품·논문·특허 중 확인된 것]'),
+            ('Market Access', '첫 주방 고객과 파트너에 닿을 수 있는 팀',
+             '[외식·급식 운영사, 주방 설비·가전, 로봇 SI 등 실제 관계]')]
+    yy = y0 + 0.25
+    for i, (en, ans, ph_) in enumerate(rows):
         hline(s, rx, yy, rw, color=T['text'] if i == 0 else T['line'], lw=1.0 if i == 0 else 0.75)
-        text(s, rx, yy + 0.13, 0.5, 0.32, f'Q{i + 1}', size=15, bold=True, color=T['accent'])
-        text(s, rx + 0.55, yy + 0.13, rw - 0.55, 0.32, q, size=15, bold=True, label='q ' + q)
-        text(s, rx + 0.55, yy + 0.48, rw - 0.55, 0.28, h_, size=12, color=T['text2'], label='q h ' + q)
-        text(s, rx + 0.55, yy + 0.76, rw - 0.55, 0.28, '[정보 입력 필요]', size=12, color=T['accent'])
-        yy += 1.1
+        text(s, rx, yy + 0.14, rw, 0.26, en, size=11.5, bold=True, color=T['accent'])
+        text(s, rx, yy + 0.44, rw, 0.36, ans, size=17, bold=True, label='team ' + en)
+        text(s, rx, yy + 0.88, rw, 0.26, [[(ph_ + '  ', {}), ('[정보 입력 필요]', {'color': T['accent']})]], size=12,
+             color=T['text2'], label='team ph ' + en)
+        yy += 1.3
     hline(s, rx, yy, rw)
-    by = H - 0.95
-    text(s, MX, by, CW, 0.26, [[('참여 조건   ', {'bold': True, 'color': T['text']}),
-                                ('전업 참여 · 자기자본 투자 · 공동창업자 · 시제품 경험 · 연구실적 · 특허 · 고객 네트워크 · 공동개발 고객 후보 · 현 직장 정리 계획  ', {}),
-                                ('[정보 입력 필요]', {'color': T['accent']})]], size=11, color=T['text2'], label='commit')
-    footer(s, 14, note='없는 정보는 만들지 않음 · 외부 제출 전 실제 정보로 교체 필요')
-    notes(s, 'Founder 장표의 목적은 이력 나열이 아니라 세 질문에 대한 답. 로봇·자동화·제조·AI·기계설계·현장 통합·고객 네트워크 중 사업과 직접 연결되는 경험만 선택.')
+    text(s, MX, 6.5, CW, 0.26, [[('참여 조건   ', {'bold': True, 'color': T['text']}),
+                                ('전업 참여 · 자기자본 투자 · 공동창업자 합류 · 현 직장 정리 계획  ', {}), ('[정보 입력 필요]', {'color': T['accent']})]],
+         size=11, color=T['text2'], label='commit')
+    foot(s, 13, note='없는 이력·성과는 만들지 않음 · 외부 제출 전 실제 정보로 교체')
+    notes(s, '세 가지만 답함. Problem Insight: 왜 이 창업자가 이 문제를 발견했는가. Build Capability: 왜 이 팀이 Hand·Robotics·Control·AI를 만들 수 있는가. '
+             'Market Access: 왜 첫 Kitchen 고객과 파트너를 확보할 수 있는가. 질문이 아닌 답을 보여주는 구조, 실제 정보가 없으므로 자리 표시만 유지.')
 
 
-# ---------------------------------------------------------------- 15 ask
-def s15(prs):
-    s = new_slide(prs, '15 ask')
-    SP = M['seed']
-    y0 = header(s, '투자 요청', 'Seed 20억 원, 24개월 사업성 검증', '18개월 핵심 운영 + 6개월 연장, 매출이 없어도 24개월 운영 가능')
-    lx = MX; lw = 3.55
-    text(s, lx, y0 + 0.2, lw, 1.02, '20억 원', size=52, bold=True, color=T['accent'], line=0.95, label='ask big')
-    text(s, lx, y0 + 1.15, lw, 0.3, 'Seed  ·  24개월', size=15, color=T['text2'])
-    yy = y0 + 1.7
-    contingency = SP['uof'][-1][1]
-    for k, v in [('18개월 핵심 운영', SP['core18']), ('6개월 연장', SP['ext6']), ('예비비·운전자본', contingency)]:
-        hline(s, lx, yy, lw, color=T['text'] if k.startswith('18') else T['line'], lw=1.0 if k.startswith('18') else 0.75)
-        text(s, lx, yy + 0.13, 2.2, 0.3, k, size=13, label='struct ' + k)
-        text(s, lx + 2.2, yy + 0.13, lw - 2.2, 0.3, f'{v:.1f}억', size=14, bold=True, align='r')
-        yy += 0.52
-    hline(s, lx, yy, lw)
-    text(s, lx, yy + 0.18, lw, 0.6, '투자 조건 (기업가치·지분율)\n[투자 조건 입력 필요]', size=12, color=T['text2'], label='terms')
-    mx_ = lx + lw + 0.5; mw = 4.35
-    text(s, mx_, y0 + 0.2, mw, 0.3, '자금 사용 계획 (억 원)', size=12, bold=True, color=T['muted'])
-    names = {'핵심 인력 (8명 단계 채용)': '핵심 인력 8명', 'Prototype · 내구시험': '시제품·내구시험', 'Robot 2종 · 시험 Cell': '로봇 2종·시험 셀',
-             '고객 PoC · 현장통합(비청구)': '고객 PoC·현장 통합', 'SW · AI · Data': 'SW·AI·데이터', '제조 · 품질 · 안전 · IP': '제조·품질·안전·IP',
-             'Kitchen Bench Demo': '주방 벤치 데모', '운영 (임차·법무·회계·보험·출장)': '운영·관리', '예비비 · 운전자본': '예비비·운전자본'}
-    uof = [(names.get(k, k), v) for k, v in SP['uof']]
-    bar_chart(s, mx_, y0 + 0.55, mw, 3.7, [k for k, _ in uof], [round(v, 2) for _, v in uof], T['grey_bar'],
-              labels=[f'{v:.1f}' for _, v in uof], colors=[T['accent']] + [T['grey_bar']] * (len(uof) - 1),
-              plot=(0.43, 0.0, 0.47, 1.0), size=11, vmax=11, gap=40)
-    rx = mx_ + mw + 0.5; rw = W - MX - rx
-    text(s, rx, y0 + 0.2, rw, 0.3, '24개월 뒤 Series A 조건 (목표)', size=12, bold=True, color=T['muted'])
-    goals = [('유료 PoC', '5건+'), ('재구매 고객', '2곳+'), ('공동개발 고객', '3곳'), ('승인 작업 완료율', '95%+'), ('내구성', '30만 회'),
-             ('로봇 2종 스킬 호환', '검증'), ('재사용률', '상승 추세'), ('핸드 원가(BOM)', '검증')]
-    table(s, rx, y0 + 0.55, rw, None, [[k, (v, {'bold': True, 'align': 'r'})] for k, v in goals], col_w=[rw - 1.15, 1.15], size=12, pad=0.075, label='goals')
-    footer(s, 15, note='정부지원금·공동개발비 제외 · 인건비: 창업자 연 5,000만 원, 엔지니어 연 7,000만 원 (+15%) · 상세 부록 A11')
-    notes(s, f'핵심 인력 8명 단계 채용 {SP["pers_total"]:.1f}억 포함. 18개월 핵심 운영 {SP["core18"]:.1f}억으로 설계 확정과 첫 재구매까지, 18개월 점검을 통과하면 6개월 연장 {SP["ext6"]:.1f}억 집행. '
-             f'매출이 없어도 24개월 뒤 예비비 {contingency:.1f}억 잔존.')
+# ---------------------------------------------------------------- 14 seed ask + vision (closing)
+def s14(prs):
+    s = new_slide(prs, '14 closing', bg='17181B')
+    image(s, KIT('lx_front.jpg'), 0, 0, W, H, focus=(0.5, 0.5))
+    text(s, MX, 0.28, CW, 0.75, '모든 주방에서 일할 수 있는 로봇', size=36, bold=True, color='FFFFFF', align='c', label='cl title')
+    text(s, MX, 0.98, CW, 0.3, 'The Robot That Can Work in Any Kitchen', size=14, color='B9BEC5', align='c', label='cl en')
+    y = 5.66
+    cols = [('상업용 주방 + 가정용 주방', 'FFFFFF'), ('SoftHand + Kitchen Skills', 'FFFFFF'), ('Seed 20억 원 · 24개월', T['accent'])]
+    cw3 = CW / 3
+    for i, (t, c) in enumerate(cols):
+        if i: vline(s, MX + i * cw3, y + 0.04, 0.3, color='4A4F57')
+        text(s, MX + i * cw3, y, cw3, 0.38, t, size=16, bold=True, color=c, align='c', label='cl col ' + t)
+    text(s, MX, y + 0.56, CW, 0.34, '사람이 사용하는 주방을 바꾸지 않고, 로봇이 그 주방에서 일하게 만든다.', size=16, color='F3F3F1', align='c', label='cl msg')
+    text(s, MX, y + 0.98, CW, 0.32, [[('전 세계 Kitchen Robotics의 표준 조작 플랫폼을 만든다', {'color': T['accent']}),
+                                       ('   Building the Manipulation Standard for Kitchen Robotics', {'size': 11, 'bold': False, 'color': 'A9AEB5'})]],
+         size=14, bold=True, align='c', label='cl vision')
+    text(s, MX, H - 0.36, CW, 0.22, '[회사명 입력 필요]  ·  [대표자명 · 이메일 · 연락처 입력 필요]  ·  [라운드 진행 상황 · 투자 조건 입력 필요]  ·  이미지: 콘셉트 렌더링', size=9, color='8C9198', align='c', check=False)
+    notes(s, '마지막 메시지. 모든 주방에서 일할 수 있는 로봇. 상업용 주방 + 가정용 주방, SoftHand + Kitchen Skills, Seed 20억 원 / 24개월. '
+             '사람이 사용하는 주방을 바꾸지 않고 로봇이 그 주방에서 일하게 만든다. 전 세계 Kitchen Robotics의 표준 조작 플랫폼을 만든다.')
 
 
-# ---------------------------------------------------------------- 16 closing
-def s16(prs):
-    s = new_slide(prs, '16 closing')
-    text(s, MX, 0.7, CW, 0.68, '공장에서 시작, 사람 손이 필요한 현장으로 확장', size=32, bold=True, label='closing title')
-    text(s, MX, 1.38, CW, 0.32, '하나의 핸드로 여러 작업 · 고객 작업을 재사용 스킬로 · 같은 스킬을 여러 로봇에서', size=15, color=T['text2'], label='closing sub')
-    cols = [('공장', '지금 · Seed', '머신텐딩 매출로 사업성 검증', ['유료 PoC · 재구매 · 재사용 스킬', '기본 시나리오 매출의 100%'], ('img', RAW('overview_color.png'), (0.5, 0.5))),
-            ('주방', '다음 · 기술 데모', '사람용 도구·설비 사용 능력 검증', ['Seed: 단일 팔 벤치 데모 (0.3억 원)', '회수기간이 가동률에 민감해 첫 매출원 제외'], ('img', RAW('kitchen_color.png'), (0.5, 0.55))),
-            ('로봇 제조사', '장기 · 확장', '핸드·스킬 기본 탑재', ['피지컬 AI의 조작 계층', '출하량 연동 매출, 규모는 협의 후 산정'], ('cut', REN('closing.png'), None))]
-    gap = 0.3; cw = (CW - 2 * gap) / 3; iy = 1.95; ih = 1.9
-    for i, (nm, when, a, b, img) in enumerate(cols):
-        x = MX + i * (cw + gap)
-        if img[0] == 'img':
-            image(s, img[1], x, iy, cw, ih, focus=img[2])
-        else:
-            rect(s, x, iy, cw, ih, fill='EEF0F2')
-            cutout(s, img[1], x, iy + 0.1, cw, ih - 0.2)
-        text(s, x, iy + ih + 0.15, cw, 0.36, [[(nm, {}), ('   ' + when, {'size': 12, 'bold': False, 'color': T['accent']})]], size=17, bold=True, label='cl ' + nm)
-        text(s, x, iy + ih + 0.55, cw, 0.3, a, size=13, bold=True, color=T['text'], label='cl a ' + nm)
-        text(s, x, iy + ih + 0.86, cw, 0.56, b, size=12, color=T['text2'], label='cl b ' + nm)
-    by = 5.62
-    rect(s, 0, by, W, H - by, fill=T['dark'])
-    text(s, MX, by + 0.38, 5.0, 0.46, 'ONE HAND. MANY TOOLS.', size=22, bold=True, color=T['on_dark'])
-    text(s, MX, by + 0.9, 5.4, 0.5, '[회사명 입력 필요]\n[대표자명 · 이메일 · 연락처 입력 필요]', size=11, color=T['on_dark2'], label='contact')
-    rx = 6.55
-    text(s, rx, by + 0.38, W - MX - rx, 0.46, [[('Seed 20억 원', {'color': T['accent']}), ('  ·  24개월', {'color': T['on_dark']})]], size=22, bold=True)
-    proofs = ['제품', '유료 고객', '반복 구매', '스킬 재사용']
-    pw = (W - MX - rx) / 4
-    for i, p in enumerate(proofs):
-        x = rx + i * pw
-        text(s, x, by + 0.92, pw - 0.1, 0.25, f'증명 {i + 1}', size=10, color=T['on_dark2'])
-        text(s, x, by + 1.16, pw - 0.1, 0.32, p, size=15, bold=True, color=T['on_dark'])
-    notes(s, '기존 생산설비에서 시작. 하나의 핸드로 여러 작업을 수행하고, 고객 프로젝트를 재사용 스킬로 제품화하고, 같은 스킬을 여러 로봇에서 쓸 수 있음을 증명. '
-             '이후 로봇 제조사로 확장해 피지컬 AI의 조작 계층이 되는 것이 장기 목표. 공장이 사업성을, 주방이 기술의 확장성을 증명.')
-
-
-MAIN = [s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13, s14, s15, s16]
+MAIN = [s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13, s14]
