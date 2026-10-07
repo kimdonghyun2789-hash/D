@@ -1,3 +1,5 @@
+> **저장소 구성** — `ARKI/`: ARKI Robotics Seed IR Package (2026.10, Draft v1: 덱 48장 · 수식 재무모델 · Investment Memo · 문서 11종) → [`ARKI/README.md`](ARKI/README.md). 아래는 기존 SoftHand Seed IR.
+
 # SoftHand — 투자유치 사업계획서 (Seed, 최종본)
 
 **사람용 도구를 잡고 사용하는 소프트 로봇핸드 개발 및 사업화**

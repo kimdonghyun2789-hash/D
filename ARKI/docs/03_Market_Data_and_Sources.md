@@ -1,0 +1,60 @@
+# 03. 사용한 시장 데이터와 Source
+
+> ARKI Robotics (가칭) · Seed Investment Proposal · Draft v1 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
+
+## 조사 방법과 한계
+
+- 조사일: 2026-10-07. 웹 검색 결과(보도·공개자료·공식 발표 인용)를 기준으로 수집. 이 실행 환경에서는 국가데이터처·국토부·KOSIS 원문 사이트에 직접 접속할 수 없어, **공식 통계는 해당 기관 발표를 인용한 보도로 확인**함.
+- 외부 제출 전 필수: S1~S6 (주택·공급 통계)는 국가데이터처 「2025 인구주택총조사 결과」(2026.7.28) 및 국토교통부 「'25년 12월 주택통계」(2026.1.30) 보도자료 원문과 대조.
+- 블로그·홍보성 기사만으로 핵심 시장숫자를 판단하지 않음. Kitchen 단독 Remodeling 가격처럼 공식 자료가 없는 항목은 FACT로 쓰지 않고 ASSUMPTION / TO BE VALIDATED로 표기.
+- 가격 Benchmark(USD)는 공개 판매가·유통가. 환율 1,400원/USD는 환산용 ASSUMPTION.
+
+## Source 목록
+
+| ID | 항목 | 값 | 기준 | Source (URL) | 사용 위치 (Slide) |
+|---|---|---|---|---|---|
+| S1 | 총주택 / 아파트 비중 / 준공 20년·30년 이상 비중 / 미거주 주택 | 2,018.1만호 / 65.8% / 56.0%·30.6% / 172.2만호 | 2025.11.1 기준 | 국가데이터처, 2025 인구주택총조사 결과 (2026.7.28 발표) — 보도: https://www.newsis.com/view/NISX20260728_0003726109 , https://www.fnnews.com/news/202607281048203456 | 05, 17, A2 |
+| S2 | 아파트 수 / 준공 20년 이상 아파트 (2023) | 1,263만호 / 639만호 (50.7%) | 2023 주택총조사 | 통계청 주택총조사 인용 보도: https://www.smarttoday.co.kr/ko-kr/articles/49322 | 17, A2 |
+| S3 | 2025 주택 준공 / 인허가 / 착공 / 공동주택 분양 | 34만2,399호 (−17.8%) / 37만9,834호 / 27만2,685호 (−10.1%) / 19만8,373호 (−14.1%) | 2025 연간 | 국토교통부, '25년 12월 주택통계 (2026.1.30): https://www.korea.kr/briefing/pressReleaseView.do?newsId=156742136 , https://www.m-economynews.com/news/article.html?no=64226 | 05, A2 |
+| S4 | 아파트 인허가 (2025) | 34만6,773가구 (2024: 39만7,904) | 2025 연간 | 국토교통부 주택통계 인용 보도: https://www.newsis.com/view/NISX20260129_0003495426 | A2 |
+| S5 | 아파트 입주 물량 | 2025 23만6,263가구 / 2026 예정 18만3,124가구 | 부동산114 REPS | https://v.daum.net/v/GCidIvCEQs | 05, 17, A2 |
+| S6 | 주택 매매거래 (2025) | 72.6만호 (+13%, 10년 평균 88.5만호) | 2025 연간, 한국부동산원 자료 | KB주택시장리뷰 2026년 2월호: https://kbthink.com/realestate/insights/research/260213-3.html | 17, A2 |
+| S7 | 국내 리모델링 시장 전망 (건축물 전체, 비주거 포함) | 2025년 37조원 → 2030년 44조원 (리모델링 23.3조 + 유지보수 13.8조, 2025) | 한국건설산업연구원 전망치 | https://m.ekn.kr/view.php?key=523568 | A3 |
+| S8 | 한샘 리하우스 스타일패키지 (전체 리모델링) | 30평대 평당 100만원대 → 약 3,000만원 | 2019 보도 (가격 시점 오래됨) | https://www.dailian.co.kr/news/view/1008108/ | 14, A3 |
+| S9 | 프리미엄 Kitchen 동향 (한샘 키친바흐·빌트인 가전 연계) | 국내 프리미엄 키친 시장 약 90%가 수입·고가 맞춤 / 키친바흐 매출 +17% (2025.6 기준) / 밀레 연계 부엌 매출 +173% (2024 대비) | 회사 발표 인용 보도 | https://www.heraldk.com/article/2025072318143590645 , https://www.heraldk.com/article/2026062223520679105 | 17, A3 |
+| S10 | 한샘 리하우스 부문 매출 | 2025 1Q 1,147억원 (−4.3%) | 분기 실적 | https://newstomato.com/ReadNews.aspx?no=1284742 | A3 |
+| S11 | 신축 유상옵션 비용 비중 | 분양가상한제 단지 7곳 평균 분양가 대비 9.7% | 수도권 분양 단지 보도 | https://www.etoday.co.kr/news/view/2392578 | 12, 13, A3 |
+| S12 | 코웨이 실적·렌탈 계정 | 2024 매출 4조3,101억원, 국내 계정 671만 / 2025 매출 4조9,636억원 | 회사 실적 발표 인용 보도 | https://news.bizwatch.co.kr/article/consumer/2025/02/14/0029 , https://dealsite.co.kr/articles/156536 | A12, A19 |
+| S13 | 가전 A/S 출장비 (소비자 부과분) | 삼성전자서비스 평절기 기본 2.8만원 (2026.1.8~) / LG전자 평절기 평일 주간 2.8만원 | 2026 | https://biz.sbs.co.kr/amp/article/20000282569 , https://biz.sbs.co.kr/amp/article/20000310315 | A13 |
+| S14 | 가사서비스 요금 | 플랫폼 4시간 59,900~64,900원 (약 1.5~1.6만원/h) / 2026 최저임금 10,320원 | 공개 요금·고시 | https://apps.apple.com/pl/app/id997730211 , https://www.activpayroll.com/news-articles/south-korea-announces-2026-minimum-wage-increase | 14 |
+| S15 | 협동로봇 가격 (Arm + Controller) | UR3e $23k~33k (공식 정가 미공개, 유통가) / Doosan E0509 약 $22k / UFACTORY xArm 6 $8,399 / FAIRINO FR5 $6,999 / UFACTORY Lite 6 Kit $4,482 (가반 0.6kg) | 유통가·공개가 (2025~2026) | https://standardbots.com/blog/universal-robot-price , https://robotomated.com/explore/manufacturing/doosan-e-series-e0509 , https://www.robotshop.com/products/xarm-6-dof-robotic-arm , https://top3dshop.com/product/fairino-fr5-robotic-arm , https://www.robotshop.com/products/ufactory-6-axis-robot-arm-lite-6-kit | A4 |
+| S16 | Gripper / Fingertip / Food-grade Suction Cup | Robotiq 2F-85 $4,999~ / OnRobot RG2 약 $3,200 / Robotiq Fingertip $175~195 / Piab Food-grade Silicone Cup £7~20 (FDA 21 CFR 177.2600) | 공개가 | https://qviro.com/product/robotiq/2f-85-robotiq/ , https://www.roboticscenter.ai/en/hardware/robotiq-2f-85 , https://automationdistribution.com/brands/Robotiq.html , https://uk.rubix.com/en/flat-suction-cups-f-silicone/p-G2010133211 | A4, A13 |
+| S17 | Depth Camera | Intel RealSense D405 $514 / D435 $538 / Orbbec Gemini 335 $384~400 | 공개가 | https://openelab.com/collections/robotic-camera , https://knoxlabs.com/products/orbbec-gemini-335-depth-camera | A4 |
+| S18 | Linear Module (소형) | HIWIN KK 계열 $73~245 (소형 모듈, Robot 7축 Rail과 다름) | 유통가 | https://qviro.com/product/hiwin/electric-linear-axis-kk-series | A4 |
+| S19 | 1X NEO (가정용 Humanoid) | $20,000 구매 또는 월 $499 구독 (최소 6개월), 2026 출하 | 회사 발표 인용 보도 | https://www.fastcompany.com/91428202/1x-technologies-home-robot-neo | 14, 20, A9 |
+| S20 | Sunday Robotics Memo | 식세기 적재·테이블 정리 시연, 2026 베타 약 50가구, 양산 시 $10k 미만 목표 | 보도 | https://euronews.com/next/2025/11/25/meet-memo-a-home-robot-that-can-grab-wine-glasses-and-load-the-dishwasher , https://sacra.com/c/sunday/ | 20, A9 |
+| S21 | LG CLOiD | CES 2026 공개, 빨래 개기·식세기 비우기 등 가사 시연 (판매가 미공개) | CES 2026 | https://www.dezeen.com/2026/01/06/lg-ai-powered-robot-ces-2026/ | 20, A9 |
+| S22 | Samsung Bot Handy | CES 2021 공개 Concept, 출시 일정 미공개 | 보도 | https://www.sammobile.com/news/meet-samsung-new-ai-powered-household-robots-ces-2021/ | A9 |
+| S23 | Moley Robotic Kitchen | Arm 포함 £248,000 / Arm 제외 £128,000~140,000 (천장 Rail 양팔) | 2021 판매 개시 보도 | https://thespoon.tech/moleys-robotic-kitchen-goes-on-sale/ | 20, A9 |
+| S24 | Posha (Countertop Cooking Robot) | $1,750 (선주문 $1,500) + 월 $15 | 2025 | https://techcrunch.com/2025/05/06/meet-posha-a-countertop-robot-that-cooks-your-meals-for-you | A9 |
+| S25 | Tesla Optimus / Figure 03 | Optimus 소비자 목표가 $20k~30k (양산 시, 2027 전후) / Figure 03 가사 시연, 가격 미공개 | 보도 | https://www.notebookcheck.net/Optimus-as-a-household-helper-Elon-Musk-plans-to-bring-Tesla-robots-into-private-homes-starting-in-2027.1212513.0.html , https://getcoai.com/news/stay-at-home-bots-figure-03-humanoid-robot-can-fold-laundry-wash-dishes | A9 |
+| S26 | IFR World Robotics 2025 — Service Robots | 소비자용 서비스로봇 약 2,000만대 (2024, +11%, 대부분 청소·잔디) / 전문 서비스로봇 약 20만대 (+9%) | 2024 판매 | https://ifr.org/ifr-press-releases/news/service-robots-see-global-growth-boom | A19 |
+| S27 | Robot Density (IFR World Robotics 2024) | 한국 제조업 근로자 1만명당 1,012대 (세계 1위, 2023) | IFR | https://www.koreaherald.com/article/10011543 | A19 |
+| S28 | ISO 10218-1/-2:2025 | 2025.2 발행. ISO/TS 15066 (PFL·SSM) 요구사항을 본문에 통합, 기능안전·Cybersecurity 강화 | 표준 | https://www.sick.com/kr/ko/w/blog-robotic-norm-iso10218 , https://www.evsint.com/industrial-robot-safety-standards-iso-10218-ce-marking-2026/ | A7 |
+| S29 | TIPS 2026 | 일반 TIPS R&D 최대 8억원·24개월 / 딥테크 TIPS 최대 15억원·36개월 (요건 별도) | 중소벤처기업부 2026 공고 | https://www.unicornfactory.co.kr/article/2026012511000214016 , https://www.venturesquare.net/announcement/1035119 | 23, A16 |
+| S30 | 식기세척기 보급률 | 2019~2020 업계 추정 10%대 초반 (최신 공식 통계 확인 안 됨 → TO BE VALIDATED) | 업계 추정 보도 | https://www.etoday.co.kr/news/view/1789343 | A3 |
+| S31 | ISO 13482 (Personal Care Robot) 국내 인증 사례 | 유진로봇 GoCart, 국내 첫 ISO 13482 인증 AMR | 회사 발표 | https://yujinrobot.com/blog/yujin-robots-gocart-becomes-koreas-first-iso-13482-safety-certified-autonomous-mobile-robot | A7 |
+| S32 | 가정용 로봇 인증 동향 | 반려로봇 KS 인증 도입 (2026.4, 정부) | 보도 | https://news.mtn.co.kr/news-detail/2026042014042480949 | A7 |
+
+## 확인하지 못한 데이터 (Data Gap)
+
+| 항목 | 상태 | 대체 방법 (Seed 90일) |
+|---|---|---|
+| Kitchen 단독 Remodeling 가격대 (일반 / Premium) | 공식 통계 없음 → ASSUMPTION (600~1,500만원 / 2,000~4,000만원) | 한샘·리바트·LX·지역 인테리어 견적 20건 수집 |
+| 연간 Kitchen 교체 세대 수 | 공식 통계 없음 → 교차검증 DERIVED (29.0만·30.3만) + ASSUMPTION 30만 | Partner 판매 Data · 업계 인터뷰로 보정 |
+| 식기세척기 가구 보급률 (최신) | 2019~2020 업계 추정 10%대만 확인 → TBV | Premium 상담 고객 조사 문항으로 직접 측정 |
+| Clean-up 소요시간 | 생활시간조사 세부 항목(설거지) 미확인 → ASSUMPTION 40분/일 | Time-diary 30세대 · 7일 |
+| 아파트 매매거래 중 아파트 비중 (2025 연간) | 월별 수치만 확인 → ASSUMPTION 70% | 부동산원 R-ONE 연간 아파트 거래량 확인 |
+| 협동로봇 국내 OEM 견적 | 공개가 없음 | OEM 3곳 RFQ (100대 기준) |
+| 로봇 안전·KC 인증 비용 | 공개 자료 없음 → ASSUMPTION 0.7억원 (Seed 범위) | 인증기관 사전상담 견적 |
+| 신축 Robot-ready Option 선택률 | 선례 없음 → ASSUMPTION 10% | 신축 계약자 10명 Interview · 옵션 박람회 Test |
