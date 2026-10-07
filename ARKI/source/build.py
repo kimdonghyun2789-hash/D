@@ -7,26 +7,24 @@ sys.path.insert(0, HERE)
 import kit
 from kit import new_prs, set_theme
 import common
-from common import OUTPUT, PREVIEW
-import slides_main
-try:
-    import slides_appx
-    APPX = slides_appx.APPX
-except ImportError:
-    APPX = []
-
+from common import OUTPUT, PREVIEW, MAIN_PDF
 common.load()
+import slides_main
+import slides_apx2
+
 set_theme('light')
 prs = new_prs()
-for f in slides_main.MAIN + APPX:
+for f in slides_main.MAIN:
     f(prs)
+N_MAIN = len(prs.slides)
+slides_apx2.build(prs)
 cp = prs.core_properties
-cp.title = 'ARKI Robotics — Seed Investment Proposal (Draft v1)'
-cp.subject = '주거공간 일체형 Robotics System · Kitchen Clean-up · 구축 Validation / 신축 Scale'
+cp.title = 'ARKI Robotics — Seed Investment Proposal (Draft v3)'
+cp.subject = 'Robot-ready Kitchen + Robot System · Kitchen Clean-up · 구축 Validation / 신축 Scale'
 cp.author = 'ARKI Robotics (가칭)'; cp.last_modified_by = ''
 cp.created = cp.modified = datetime.datetime(2026, 10, 7, 9, 0, 0)
 prs.save(OUTPUT)
-print('saved', OUTPUT, 'slides', len(prs.slides), '| fit issues', len(kit.FIT))
+print('saved', OUTPUT, 'slides', len(prs.slides), f'(main {N_MAIN})', '| fit issues', len(kit.FIT))
 for f in kit.FIT: print('  FIT', f)
 json.dump({'meta': common.META, 'log': kit.LOG}, open(os.path.join(HERE, '_deck_text.json'), 'w', encoding='utf-8'),
           ensure_ascii=False, indent=1)
@@ -34,6 +32,11 @@ if '--pdf' in sys.argv or '--png' in sys.argv:
     import to_pdf
     to_pdf.convert(OUTPUT, PREVIEW)
     print('saved', PREVIEW)
+    from pypdf import PdfReader, PdfWriter      # main-only PDF (slides 1..N_MAIN) for sharing
+    rd = PdfReader(PREVIEW); wr = PdfWriter()
+    for i in range(N_MAIN): wr.add_page(rd.pages[i])
+    with open(MAIN_PDF, 'wb') as fh: wr.write(fh)
+    print('saved', MAIN_PDF)
 if '--png' in sys.argv:
     out = os.path.join(HERE, '_png'); os.makedirs(out, exist_ok=True)
     import shutil

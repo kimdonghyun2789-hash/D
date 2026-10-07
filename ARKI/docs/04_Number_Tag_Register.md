@@ -1,6 +1,6 @@
 # 04. FACT / DERIVED / ASSUMPTION / TARGET 구분표
 
-> ARKI Robotics (가칭) · Seed Investment Proposal · Draft v1 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
+> ARKI Robotics (가칭) · Seed 투자 제안서 · Draft v3 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
 
 ## Tag 정의
 
@@ -71,7 +71,7 @@
 | ASSUMPTION | design_cost | Design·Site Adjustment 원가 (100% Custom 시) | 만원/세대 | 100 |  |
 | TARGET | smr | Standard Module 사용률 | % | C: 0.4, 0.45, 0.55, 0.62, 0.65 / B: 0.4, 0.5, 0.65, 0.75, 0.8 / U: 0.4, 0.55, 0.7, 0.8, 0.85 | Seed 종료 시 65% 이상 (Kill Criteria: M18 60% 미만) |
 | ASSUMPTION | kit_new_cost | Robot-ready Option 원가 (신축, 공장 생산) | 만원/세대 | C: 145 / B: 130 / U: 120 |  |
-| ASSUMPTION | bom | Robot Module BOM | 만원/대 | C: 1600, 1500, 1300, 1180, 1080 / B: 1600, 1450, 1150, 1000, 900 / U: 1600, 1400, 1080, 920, 800 | A4 부품 Benchmark 기반. 수량·국산화·전용 Arm으로 하락 가정 |
+| ASSUMPTION | bom | Robot Module BOM | 만원/대 | C: 1600, 1500, 1300, 1180, 1080 / B: 1600, 1450, 1150, 1000, 900 / U: 1600, 1400, 1080, 920, 800 | D5 부품 Benchmark 기반. 수량·국산화·전용 Arm으로 하락 가정 |
 | ASSUMPTION | comm_cost | 설치·Calibration 원가 (ARKI 인력) | 만원/대 | C: 120, 100, 75, 62, 55 / B: 120, 90, 60, 45, 38 / U: 120, 85, 52, 38, 30 | 설치시간 TARGET과 연동 |
 | ASSUMPTION | logistics | 물류 (프로젝트당) | 만원/세대 | 25 |  |
 | ASSUMPTION | warranty | Warranty Reserve (Robot 매출 대비) | % | C: 0.05 / B: 0.04 / U: 0.035 | 1년 무상 A/S |
@@ -115,21 +115,21 @@
 
 | Tag | 항목 | 값 | 위치 |
 |---|---|---|---|
-| DERIVED | 아파트 수 (2025) | 133만호 | 총주택 2,018.1만 × 65.8% |
-| DERIVED | Kitchen 교체 세대 교차검증 ①·② | 29.0만 · 30.3만/년 | A2 |
-| DERIVED | TAM / SAM / SOM(Y5) | 1.21조 / 3,396억 / 77.6억원 | A2·18장 |
-| DERIVED | 가치 Anchor (월) | 18만원 (Range 11~24) | 14장 |
-| DERIVED | 세대 5년 매출 / Contribution (구매, Y3·Y5) | 2,418만원 / 458·813만원 | 15장 |
-| DERIVED | Rental 월 Contribution · Payback (Y3·Y5) | 7.9·13.4만원 · 39·30개월 | A12 |
-| DERIVED | Rental Partner IRR (Base) | 13.1% (연체·해지 미반영) | A12 |
-| DERIVED | Care Margin (Y3·Y5) | 23% · 44% | A13 |
-| DERIVED | Consumables 연 매출 · Contribution / Robot | 25.2 · 16.4만원 | A13 |
-| DERIVED | Y5 매출 C / B / U | 27.8 / 77.6 / 134.0억원 | A14 |
-| DERIVED | Y5 영업이익 C / B / U | -56.4 / -36.4 / -11.9억원 | A14 |
-| DERIVED | 5년 누적 현금흐름 최저 (Base) | -128.0억원 | A14 |
-| DERIVED | 손익분기 Kitchen (연, Y5 단가·원가) | 1,340세대 | 24장 |
-| DERIVED | Seed 24개월 수정 예산 / Seed 단독 Runway | 25.8억원 / 18.6개월 | A16 |
-| DERIVED | 정상상태 Recurring / Upgrade 비중 | 15% / 14% | 19장 |
+| DERIVED | 아파트 수 (2025) | 1,328만호 | 총주택 2,018.1만 × 65.8% |
+| DERIVED | Kitchen 교체 세대 교차검증 ①·② | 29.0만 · 30.3만/년 | C1 |
+| DERIVED | TAM / SAM / SOM(Y5) | 1.21조 / 3,396억 / 77.6억원 | C01장 · C3 |
+| DERIVED | 가치 Anchor (월) | 18만원 (Range 11~24) | D1 |
+| DERIVED | 세대 5년 매출 / Contribution (구매, Y3·Y5) | 2,418만원 / 458·813만원 | D2 |
+| DERIVED | Rental 월 Contribution · Payback (Y3·Y5) | 7.9·13.4만원 · 39·30개월 | D7 |
+| DERIVED | Rental Partner IRR (Base) | 13.1% (연체·해지 미반영) | D7 |
+| DERIVED | Care Margin (Y3·Y5) | 23% · 44% | D8 |
+| DERIVED | Consumables 연 매출 · Contribution / Robot | 25.2 · 16.4만원 | D8 |
+| DERIVED | Y5 매출 C / B / U | 27.8 / 77.6 / 134.0억원 | D9 |
+| DERIVED | Y5 영업이익 C / B / U | -56.4 / -36.4 / -11.9억원 | D9 |
+| DERIVED | 5년 누적 현금흐름 최저 (Base) | -128.0억원 | D9 |
+| DERIVED | 손익분기 Kitchen (연, Y5 단가·원가) | 1,340세대 | 15장 |
+| DERIVED | Seed 24개월 수정 예산 / Seed 단독 Runway | 25.8억원 / 18.6개월 | D11 |
+| DERIVED | 정상상태 Recurring / Upgrade 비중 | 15% / 14% | C5 |
 
 ## 주요 목표값 (TARGET)
 

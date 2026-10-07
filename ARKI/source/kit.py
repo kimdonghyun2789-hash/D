@@ -61,6 +61,10 @@ FIT = []
 CUR = {'slide': ''}
 LOG = {}          # slide id -> list of text blocks drawn (for docs)
 NOLOG = {'on': False}
+XFORM = {'fn': None}   # optional text rewrite applied to every run (appendix cross-reference remap)
+
+def _x(t):
+    return XFORM['fn'](t) if XFORM['fn'] and isinstance(t, str) else t
 
 def _log(t):
     if NOLOG['on'] or not str(t).strip(): return
@@ -130,7 +134,7 @@ def text(s, x, y, w, h, paras, size=14, bold=False, color=None, align='l', ancho
         para.alignment = {'l': PP_ALIGN.LEFT, 'c': PP_ALIGN.CENTER, 'r': PP_ALIGN.RIGHT}[align]
         para.line_spacing = line
         if space_after and i < len(paras) - 1: para.space_after = Pt(space_after)
-        runs = [(p, {})] if isinstance(p, str) else p
+        runs = [(_x(p), {})] if isinstance(p, str) else [(_x(rt), ro) for rt, ro in p]
         plain = ''; big = 0; anyb = False
         for t, o in runs:
             sz = o.get('size', size); b = o.get('bold', bold)
@@ -217,9 +221,9 @@ def cutout(s, path, x, y, w, h, align='c', valign='m'):
 def _cell(cell):
     """Table cell -> (text, opts). A cell is str, (str, opts) or a list of (text, opts) runs (one paragraph)."""
     if isinstance(cell, list):
-        return ''.join(rt for rt, _ in cell), {'bold': any(ro.get('bold') for _, ro in cell)} if all(ro.get('bold') for _, ro in cell) else {}
-    if isinstance(cell, tuple): return cell
-    return cell, {}
+        return _x(''.join(rt for rt, _ in cell)), {'bold': any(ro.get('bold') for _, ro in cell)} if all(ro.get('bold') for _, ro in cell) else {}
+    if isinstance(cell, tuple): return (_x(cell[0]), cell[1])
+    return _x(cell), {}
 
 # ---------------------------------------------------------------- table (no style, horizontal rules only)
 NO_STYLE = '{2D5ABB26-0587-4C30-8999-92F81FD0307C}'
@@ -273,7 +277,7 @@ def table(s, x, y, w, header, rows, col_w=None, size=11, header_size=None, pad=0
                 para.alignment = {'l': PP_ALIGN.LEFT, 'c': PP_ALIGN.CENTER, 'r': PP_ALIGN.RIGHT}[align[ci]]
                 para.line_spacing = 1.0
                 for rt, ro in runs:
-                    rr = para.add_run(); rr.text = rt
+                    rr = para.add_run(); rr.text = _x(rt)
                     _font_runs(rr, ro.get('size', csz), ro.get('bold', cb), ro.get('color', ccol))
             else:
                 for pi, ptxt in enumerate(str(t).split('\n')):
@@ -427,7 +431,7 @@ def header(s, section, title, sub=None, size=30):
         y += 0.36
     return y
 
-def footer(s, page, left='ARKI Robotics  |  Seed Investment Proposal  ·  Draft v1', note=None):
+def footer(s, page, left='ARKI Robotics  ·  Seed Investment Proposal  ·  Draft v3', note=None):
     NOLOG['on'] = True
     text(s, MX, H - 0.45, 6, 0.22, left, size=9, color=T['muted'], check=False)
     if note:

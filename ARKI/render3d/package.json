@@ -1,0 +1,8 @@
+{
+  "name": "arki-render3d",
+  "private": true,
+  "description": "ARKI Robotics concept renders: three.js in headless Chromium (semi-realistic technical visualization)",
+  "dependencies": {
+    "three": "0.170.0"
+  }
+}

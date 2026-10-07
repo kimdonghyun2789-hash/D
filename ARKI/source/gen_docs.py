@@ -20,9 +20,11 @@ def pct(x, d=0): return f"{x * 100:.{d}f}%"
 HH = M['household']; h3, h5 = HH['purchase_direct_Y3'], HH['purchase_direct_Y5']; r3h, r5h = HH['rental_direct_Y3'], HH['rental_direct_Y5']
 R3, R5 = M['rental']['Y3'], M['rental']['Y5']; C3, C5 = M['care']['Y3'], M['care']['Y5']; CO = M['cons']
 MK = M['market']['B']; F = M['funds']; VA = M['value']; PI = M['partner_irr']
-HEADER = '> ARKI Robotics (가칭) · Seed Investment Proposal · Draft v1 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.\n'
+HEADER = '> ARKI Robotics (가칭) · Seed 투자 제안서 · Draft v3 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.\n'
 
 def write(name, body):
+    if name[:2] not in ('00', '01', '02'):      # hand-written docs still cite v1 slide numbers -> current locations (본문 쪽 / 부록 코드)
+        body = common.remap(body)
     with open(os.path.join(DOCS, name), 'w', encoding='utf-8') as f:
         f.write(body.strip() + '\n')
     print('wrote', name)
@@ -35,7 +37,7 @@ def md_table(header, rows):
 
 # ---------------------------------------------------------------- 01 / 02 deck scripts
 def deck_script(appendix):
-    meta = [m for m in DT['meta'] if (str(m['no']).startswith('A') == appendix)]
+    meta = [m for m in DT['meta'] if ((not isinstance(m['no'], int)) == appendix)]
     out = []
     for m in meta:
         no = m['no'] if appendix else f"{m['no']:02d}"
@@ -43,32 +45,30 @@ def deck_script(appendix):
         if m['q']:
             out.append('**답하는 투자 질문**: ' + ' · '.join(f"Q{q}" for q in m['q']) + '\n')
         lines = [t for t in DT['log'].get(m['id'], []) if not re.fullmatch(r'Q\d', t.strip())]
-        out.append('**Slide 실제 문구** (화면 표기 순서)\n')
+        out.append('**화면 문구** (표기 순서)\n')
         out.append('```text')
         out.extend(lines)
         out.append('```\n')
-        out.append(f"**Visual 구성**: {m['visual']}\n")
-        out.append(f"**Chart / Diagram**: {m['chart']}\n")
-        out.append(f"**Speaker Note**: {m['note']}\n")
+        out.append(f"**그림 구성**: {m['visual']}\n")
+        out.append(f"**도표**: {m['chart']}\n")
+        out.append(f"**발표 메모**: {m['note']}\n")
     return '\n'.join(out)
 
 Q6 = '\n'.join(f"{i}. {q}" for i, q in enumerate(['누가 가장 먼저 돈을 내는가?', '고객이 얼마까지 지불할 가능성이 있는가?', '한 세대 설치 시 회사가 얼마를 버는가?',
                                                    '집마다 다른 주방을 얼마나 표준화할 수 있는가?', '설치대수가 늘어날수록 반복매출과 Gross Margin이 개선되는가?',
                                                    'Seed 20억원 이후 어떤 핵심 Risk가 제거되는가?'], 1))
-write('01_Main_Deck_Script.md', f"""# 01. Main IR Deck — Slide 문구 · Visual · Chart · Speaker Note (24장)
+write('01_Main_Deck_Script.md', f"""# 01. 본문 IR 덱 — 장별 문구 · 그림 · 발표 메모 (15장)
 
 {HEADER}
-- 파일: `ARKI/ARKI_Robotics_Seed_IR_Deck.pptx` (본문 01~24 + 부록 A0~A23, 16:9) · 검토용 PDF `ARKI_Robotics_Seed_IR_Deck_preview.pdf`
-- 아래 "Slide 실제 문구"는 덱 생성 코드가 화면에 그린 텍스트를 그대로 추출한 것 (표는 `|`로 열 구분, `[TAG]`는 Number Tag Chip).
-- 모든 Slide는 아래 6개 투자 질문 중 하나 이상에 답함 (Slide 우측 상단 Q 표시).
-
-{Q6}
+- 파일: `ARKI/ARKI_Robotics_Seed_IR_Deck.pptx` (본문 1~15쪽 + 부록 A~F, 16:9) · 본문만 PDF `ARKI_Robotics_Seed_IR_Deck_Main15.pdf` · 전체 검토용 PDF `ARKI_Robotics_Seed_IR_Deck_preview.pdf`
+- 아래 "화면 문구"는 덱 생성 코드가 화면에 그린 텍스트를 그대로 추출한 것 (표는 `|`로 열 구분, `[TAG]`는 숫자 태그).
+- 3D 그림은 `ARKI/render3d`에서 생성 (충돌검사 결과는 각 PNG 옆 JSON의 `ik.pen`, 관통 cm).
 
 ---
 
 {deck_script(False)}""")
 
-write('02_Appendix_Script.md', f"""# 02. Appendix — Slide 문구 · Visual · Chart · Speaker Note (A0~A23)
+write('02_Appendix_Script.md', f"""# 02. 부록 — 장별 문구 · 그림 · 발표 메모 (A~F)
 
 {HEADER}
 ---
@@ -113,7 +113,7 @@ for d in M['inputs']:
     same = vals['C'] == vals['B'] == vals['U']
     inrows.append([d['tag'], d['key'], d['desc'], d['unit'], f(vals['B']) if same else f"C: {f(vals['C'])} / B: {f(vals['B'])} / U: {f(vals['U'])}", d['src']])
 outrows = [
-    ['DERIVED', '아파트 수 (2025)', f"{MK['apt'] / 100:,.0f}만호", '총주택 2,018.1만 × 65.8%'],
+    ['DERIVED', '아파트 수 (2025)', f"{MK['apt'] / 10:,.0f}만호", '총주택 2,018.1만 × 65.8%'],
     ['DERIVED', 'Kitchen 교체 세대 교차검증 ①·②', f"{MK['tri1'] / 10:.1f}만 · {MK['tri2'] / 10:.1f}만/년", 'A2'],
     ['DERIVED', 'TAM / SAM / SOM(Y5)', f"{MK['tam'] / 1e4:.2f}조 / {MK['sam']:,.0f}억 / {MK['som']:.1f}억원", 'A2·18장'],
     ['DERIVED', '가치 Anchor (월)', f"{VA['value']:.0f}만원 (Range {VA['lo']:.0f}~{VA['hi']:.0f})", '14장'],
@@ -672,24 +672,108 @@ write('00_Index.md', f"""# ARKI Robotics — Seed IR Package Index
 {HEADER}
 | # | 요청 산출물 | 위치 |
 |---|---|---|
-| 1 | Main IR Deck | `ARKI_Robotics_Seed_IR_Deck.pptx` 01~24장 (검토용 `..._preview.pdf`) |
-| 2 | Appendix | 같은 파일 A0~A23 |
-| 3 | 모든 Slide 실제 문구 | `docs/01_Main_Deck_Script.md` · `docs/02_Appendix_Script.md` |
-| 4 | 각 Slide Visual 구성 | 같은 문서 "Visual 구성" |
-| 5 | Chart / Diagram 제안 | 같은 문서 "Chart / Diagram" |
-| 6 | Speaker Note | 같은 문서 "Speaker Note" + pptx 발표자 노트 |
-| 7 | 시장 데이터와 Source | `docs/03_Market_Data_and_Sources.md` · xlsx `Sources` · 덱 A23 |
-| 8 | FACT / DERIVED / ASSUMPTION / TARGET 구분표 | `docs/04_Number_Tag_Register.md` · xlsx `Inputs` · 덱 A1 |
-| 9 | 5-Year Financial Model | `ARKI_Robotics_Financial_Model.xlsx` · `docs/05_Financial_Model_5Y.md` · 덱 A14 |
-| 10 | Household Unit Economics | `docs/06_...` §2·§7 · xlsx `Household` · 덱 15장·A11 |
-| 11 | Rental Economics | `docs/06_...` §4 · xlsx `Unit_Economics` · 덱 A12 |
-| 12 | Care / Consumables Economics | `docs/06_...` §5·§6 · 덱 A13 |
-| 13 | Seed Use of Funds 검증 | `docs/07_Seed_Use_of_Funds_Review.md` · xlsx `Use_of_Funds` · 덱 24장·A16 |
-| 14 | IP / Patent Portfolio | `docs/08_IP_Patent_Portfolio.md` · 덱 21장·A10 |
-| 15 | VC 예상질문 | `docs/09_VC_RedTeam_QA.md` · 덱 A20~A21 |
+| 1 | 본문 IR 덱 | `ARKI_Robotics_Seed_IR_Deck.pptx` 1~15쪽 · 본문만 `..._Main15.pdf` (전체 검토용 `..._preview.pdf`) |
+| 2 | 부록 | 같은 파일 부록 A~F (목차 포함, v1 본문 · 부록 전체 유지) |
+| 3 | 장별 화면 문구 | `docs/01_Main_Deck_Script.md` · `docs/02_Appendix_Script.md` |
+| 4 | 장별 그림 구성 | 같은 문서 "그림 구성" · 3D는 `ARKI/render3d` (README 참고) |
+| 5 | 도표 | 같은 문서 "도표" |
+| 6 | 발표 메모 | 같은 문서 "발표 메모" + pptx 발표자 노트 |
+| 7 | 시장 데이터와 출처 | `docs/03_Market_Data_and_Sources.md` · xlsx `Sources` · 덱 부록 F2 |
+| 8 | FACT / DERIVED / ASSUMPTION / TARGET 구분표 | `docs/04_Number_Tag_Register.md` · xlsx `Inputs` · 덱 부록 F1 |
+| 9 | 5개년 재무모델 | `ARKI_Robotics_Financial_Model.xlsx` · `docs/05_Financial_Model_5Y.md` · 덱 본문 12쪽 · 부록 D9 |
+| 10 | 세대당 경제성 | `docs/06_...` §2·§7 · xlsx `Household` · 덱 본문 9쪽 · 부록 D2 · D6 |
+| 11 | 렌탈 경제성 | `docs/06_...` §4 · xlsx `Unit_Economics` · 덱 부록 D7 |
+| 12 | 관리 · 소모품 경제성 | `docs/06_...` §5·§6 · 덱 부록 D8 |
+| 13 | Seed 자금 용도 검증 | `docs/07_Seed_Use_of_Funds_Review.md` · xlsx `Use_of_Funds` · 덱 본문 15쪽 · 부록 D11 |
+| 14 | 특허 후보 | `docs/08_IP_Patent_Portfolio.md` · 덱 부록 E1 · E2 |
+| 15 | 예상 질문과 답 | `docs/09_VC_RedTeam_QA.md` · 덱 부록 E5~E6 |
 | 16 | Investment Memo | `docs/10_Investment_Memo.md` |
 | 17 | 현재 부족한 Evidence | `docs/11_...` §1 |
 | 18 | Founder 입력 필요정보 | `docs/11_...` §2 |
 | 19 | 90일 실행계획 | `docs/11_...` §3 |
-| 20 | Top 5 Evidence | `docs/11_...` §4 · 덱 A22 |
+| 20 | Top 5 Evidence | `docs/11_...` §4 · 덱 부록 A4 |
 """)
+
+# ---------------------------------------------------------------- README (deck table generated from the deck text log)
+_main = [m for m in DT['meta'] if isinstance(m['no'], int)]
+_deck_rows = '\n'.join(f"| {m['no']:02d} | {m['title']} |" for m in _main)
+_h3 = M['household']['purchase_direct_Y3']; _h5 = M['household']['purchase_direct_Y5']
+README = f"""# ARKI Robotics — Seed IR Package (Draft v3, 2026.10)
+
+**설거지 정리를 맡는 로봇 주방 · 첫 시장 구축 아파트 주방 리모델링 → 신축 옵션**
+
+> Concept 단계 자료. 시제품 · 고객 · 계약 · LOI · 파트너 · 매출 없음. 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET (+ CONCEPT · TO BE VALIDATED · FUTURE)로 구분. Founder 정보는 `[Founder 정보 필요]`로 비워 둠. 평면은 사용자 제공 도면이며 단지명은 표기하지 않음.
+
+## 산출물
+
+| 파일 | 내용 |
+|---|---|
+| `ARKI_Robotics_Seed_IR_Deck.pptx` | IR 덱 (본문 15쪽 + 부록 A~F), 16:9, 발표자 노트 포함 |
+| `ARKI_Robotics_Seed_IR_Deck_Main15.pdf` | 본문 15쪽만 (공유용) |
+| `ARKI_Robotics_Seed_IR_Deck_preview.pdf` | 전체 검토용 PDF |
+| `ARKI_Robotics_Financial_Model.xlsx` | 수식 기반 5개년 모델 (Inputs → 3개 시나리오 · Household · Unit_Economics · Market · Sensitivity · Use_of_Funds · Sources) |
+| `docs/00~11` | 장별 문구 · 그림 · 발표 메모, 시장 데이터 · 출처, 숫자 태그 구분표, 재무 · 세대 경제성, 자금 용도, 특허 후보, 예상 질문, 투자 메모 (WATCH), Evidence 공백 |
+| `render3d/` | 3D 그림 생성기 (three.js + Playwright) · 충돌검사 · 보관/전개 경로 계획 · 평면 JSON |
+| `assets/renders/` | 덱에 들어간 3D 그림 PNG + 앵커 · 충돌검사 결과 JSON |
+
+## 본문 구성 (15쪽)
+
+| 쪽 | 메시지 |
+|---|---|
+{_deck_rows}
+
+부록: A 투자 판단 요약 · B 제품 · 표준화 (B5 받은 평면 5종 상태, B6 구축 2Bay A 원래 평면 → ARKI, B7 구축 2Bay B 3D, B8~B10 이전 콘셉트 모델) · C 시장 · 사업화 · D 경제성 · 재무 · E 진입장벽 · 리스크 · 예상 질문 · F 숫자 표기 원칙 · 출처. v1 본문 · 부록은 삭제 없이 부록으로 옮김.
+
+## 로봇 주방 설계 (3D 모델 기준, CONCEPT)
+
+- 한 줄 모듈: 로봇 보관함 45 · 내려놓는 곳 70~80 · 싱크 80 · 로봇용 서랍 60 · 식기세척기 60cm. 조리기구는 이 줄에 두지 않음 (로봇 금지 구역).
+- 레일: 상부장 바로 아래 (높이 139cm). 로봇은 레일에 매달려 이동, 바닥을 쓰지 않음.
+- 보관함: 조리대 위 끝 (W45 × D62 × H137cm), 앞판 + 15cm 꺾인 판으로 된 여닫이 문 1짝 (왼쪽 경첩). 오른쪽 아래(상부장 하단선 아래)는 레일 통로. 평소 로봇은 위로 접혀 안에 있음.
+- 나오는 순서: 문 열림 → 팔이 문 앞쪽으로 펴지며 레일 아래로 → 레일 방향 이동 자세 → 통로로 이동. 경로는 RRT-Connect로 찾고 짧게 다듬음. 펼칠 때 팔이 조리대 앞으로 최대 약 26cm 나옴.
+- 낮은 곳: 일반 빌트인 식기세척기 하단 랙을 44cm 당겨 위에서 넣음 (집게 끝 최저 약 37cm). 서랍도 열어서 위에서 넣음.
+- 충돌검사: 로봇 링크 = 캡슐, 가구 = 상자. 모든 작업 자세 · 보관 · 전개 경로 (관절 보간 0.015rad) · 레일 이동 (1cm 간격) · 레일/캐리지 · 로봇 자기충돌 · 조리대 위 식기까지 검사, 관통 0cm. 결과는 `assets/renders/*.json`의 `ik`.
+
+## 실제 평면 (사용자 제공 5종)
+
+| 평면 | 상태 |
+|---|---|
+| 구축 2Bay A (12,390 × 11,670, 코어 포함) | 3D 완료 · 원본과 겹쳐 확인 · ARKI 한 줄 3,150mm 배치 · 문 90° 조건 충돌검사 0cm (본문 6쪽 · 부록 B6) |
+| 구축 2Bay B (10,940 × 8,500) | 3D 완료 · 원본과 겹쳐 확인 · ARKI 배치 검토 중 (부록 B7) |
+| 신축 2 · 3 · 4Bay | 디지털화 진행 중 (부록 B5) |
+
+## 핵심 결과 (기본 시나리오, 전부 DERIVED from ASSUMPTION)
+
+- 세대 경제성 (구축 · 구매 · 5년): 매출 {_h3['rev5']:,.0f}만원, 기여이익 {_h3['contrib5']:,.0f}만원 (Y3 원가) → {_h5['contrib5']:,.0f}만원 (Y5 원가). 설치 시점 매출 {_h3['y0'] / _h3['rev5']:.0%}.
+- 가격 위험: 가치 기준 월 약 11~24만원 < 렌탈 원가 하한 월 24~31만원 → 지불의사 검증이 Seed 1순위.
+- 5개년: Y5 매출 77.6억원 · 매출총이익률 36% · 영업이익 −36.4억원 · 5년 누적 현금 최저 약 −128억원 · 손익분기 연 약 1,340세대 (6년차 이후).
+- Seed 20억원 / 24개월 → 재산정 25.8억원 (부족 5.8억원, 20억원 단독 약 19개월) → TIPS R&D(최대 8억원) 연계 또는 25억원 / M18 브리지.
+- Seed 판단: **WATCH** — 조건: 창업팀 역량 · 목업 검증 · 지불의사 신호 · 평면 표준안 · 실제 파트너 실증 합의.
+
+## 다시 만들기
+
+```bash
+pip install python-pptx openpyxl pillow lxml pypdf      # LibreOffice: PDF · xlsx 재계산
+python3 ARKI/source/model.py          # 가정 · 계산 → model.json
+python3 ARKI/source/xlsx_model.py     # 수식 기반 xlsx
+python3 ARKI/source/check_xlsx.py     # xlsx 값 ↔ model.py 교차검증
+cd ARKI/render3d && npm install three@0.170.0 && bash render_v2.sh && bash render_plans.sh   # 3D 그림 + 충돌검사 (Playwright Chromium)
+node shot.js stowsearch out/stow.png 64 64 "railz=30"    # 보관/전개 경로 다시 계획 → 결과를 web/stow_poses.json으로
+python3 ARKI/source/build.py --pdf    # 덱 + 본문 PDF + 전체 PDF (--png: 미리보기)
+python3 ARKI/source/gen_docs.py       # docs/*.md + 이 README
+```
+
+- 단일 원천: `source/model.py` 입력 (태그 · 출처 포함)이 덱 · xlsx · 문서의 숫자를 만듦. 덱 문구 기본값은 `slides_main.py`, 검토를 거친 문구는 `source/_copy_v3.json`.
+- 평면 JSON: `render3d/plans/*.json` (mm, 치수선 기준). 원본 겹침 확인 스크립트는 작업 메모 참고.
+
+## 외부 제출 전 입력 · 확인
+
+| 항목 | 위치 |
+|---|---|
+| Founder 정보 7항목 · 회사 정보 · 연락처 | 본문 1 · 14 · 15쪽 |
+| 투자 조건 (형태 · 기업가치 · 지분 · TIPS 운영사) | 본문 15쪽 · 부록 D11 |
+| 신축 평면 3종 디지털화 · ARKI 배치 | 부록 B5 |
+| 공식 통계 원문 대조 | 부록 C1 · F2 |
+"""
+with open(os.path.join(ROOT, 'README.md'), 'w', encoding='utf-8') as f:
+    f.write(README)
+print('wrote README.md')

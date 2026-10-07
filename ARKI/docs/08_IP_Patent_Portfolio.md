@@ -1,6 +1,6 @@
 # 08. IP / Patent Portfolio (후보)
 
-> ARKI Robotics (가칭) · Seed Investment Proposal · Draft v1 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
+> ARKI Robotics (가칭) · Seed 투자 제안서 · Draft v3 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
 
 > 등록 가능성을 주장하지 않음. 아래 10개 Family는 **출원 후보**이며 전부 TO BE VALIDATED (선행기술조사 필요). 특정 특허번호는 조사 전이므로 기재하지 않음.
 
@@ -35,4 +35,4 @@
 
 ## Moat에서 IP의 위치
 
-IP는 7개 Moat Layer 중 L5. 경쟁사가 Hardware를 확보해도 복제하기 어려운 것은 **Kitchen Template Library (L2) · Installation Standard (L3) · Care/Service Data (L6) · Installed Base (L7)**라는 가설이며, 특허는 이를 보완하는 수단 (21장).
+IP는 7개 Moat Layer 중 L5. 경쟁사가 Hardware를 확보해도 복제하기 어려운 것은 **Kitchen Template Library (L2) · Installation Standard (L3) · Care/Service Data (L6) · Installed Base (L7)**라는 가설이며, 특허는 이를 보완하는 수단 (E1).

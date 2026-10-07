@@ -1,0 +1,482 @@
+{
+  "plan_id": "old2b",
+  "label": "구축 2Bay B (10940x8500, 전면 발코니 미확장)",
+  "source_image": "/root/.claude/uploads/eb682737-0d56-5382-8d5d-bf640f48be64/0de2465b-image.jpg",
+  "overall": {
+    "width": 10940,
+    "depth": 8500
+  },
+  "dims": {
+    "top": [
+      10940
+    ],
+    "top_inner": [
+      1500,
+      3830,
+      1630,
+      780,
+      3200
+    ],
+    "bottom": [
+      10940
+    ],
+    "bottom_inner": [
+      1500,
+      6540,
+      2900
+    ],
+    "left": [
+      8500
+    ],
+    "left_inner": [
+      4400,
+      4100
+    ],
+    "right": [
+      8500
+    ],
+    "right_inner": [
+      3170,
+      1550,
+      3780
+    ]
+  },
+  "scale": {
+    "px_per_mm_x": 0.07563,
+    "px_per_mm_y": 0.076862,
+    "origin_px": [
+      135.97,
+      121.62
+    ],
+    "method": "Dimension ticks found from dark-pixel profiles just below/beside each dimension line (top inner ticks x=134.87,242.74,534.54,657.02,719.13,963.52; bottom 134.89,243.67,747.85,965.82; left y=118.91,458.17,775.75; right 119.14,363.55,486.38,774.84). Wall bands measured with half-level edge detection (all walls are drawn ~7.2 px = ~95 mm thick); every tick lies within 0-3.5 px (<=45 mm) of a wall CENTRELINE, so the dims are centre-to-centre and walls were snapped to the grid. origin_px is the centre corner of the top and left exterior walls (outer dimension frame ticks at 134.99,118.94). px_per_mm_x/y = overall centre-to-centre ratios. The balcony strip is drawn ~8 px narrower than its 1500 dimension (106.7 px = ~1400 mm at the main-body scale); elsewhere an affine fit has residuals <=31 mm (x, 0.07646 px/mm for x>=1500) and <=28 mm (y, 0.07689 px/mm). Off-grid positions were therefore mapped piecewise-linearly between the bounding grid walls: x anchors px->mm 135.97->0, 242.67->1500, 537.03->5330, 660.47->6960, 721.88->7740, 746.16->8040, 963.36->10940; y anchors 121.62->0, 366.07->3170, 460.06->4400, 487.33->4720 (right zone only), 774.95->8500. Depths of wall-backed items were measured from the drawn wall face (px / 0.07634 x, / 0.07686 y) and re-attached to the model wall face, so counter/fixture depths are preserved despite the thicker model walls. Values rounded to 5 mm."
+  },
+  "front_side": "left",
+  "bay_count_front": 2,
+  "rooms": [
+    {
+      "name": "발코니",
+      "kind": "balcony",
+      "rects": [
+        [
+          0,
+          0,
+          1500,
+          8500
+        ]
+      ]
+    },
+    {
+      "name": "침실1(안방)",
+      "kind": "bedroom",
+      "rects": [
+        [
+          1500,
+          0,
+          5330,
+          4400
+        ]
+      ]
+    },
+    {
+      "name": "욕실1(안방욕실)",
+      "kind": "bath",
+      "rects": [
+        [
+          5330,
+          0,
+          6960,
+          1575
+        ],
+        [
+          6960,
+          660,
+          7740,
+          1575
+        ]
+      ]
+    },
+    {
+      "name": "PS(설비샤프트)",
+      "kind": "utility",
+      "rects": [
+        [
+          6960,
+          0,
+          7740,
+          660
+        ]
+      ]
+    },
+    {
+      "name": "욕실2(공용욕실)",
+      "kind": "bath",
+      "rects": [
+        [
+          5330,
+          1575,
+          7740,
+          3170
+        ]
+      ]
+    },
+    {
+      "name": "침실2",
+      "kind": "bedroom",
+      "rects": [
+        [
+          7740,
+          0,
+          10940,
+          3170
+        ]
+      ]
+    },
+    {
+      "name": "현관",
+      "kind": "entry",
+      "rects": [
+        [
+          9665,
+          3170,
+          10940,
+          4720
+        ]
+      ]
+    },
+    {
+      "name": "복도(홀)",
+      "kind": "corridor",
+      "rects": [
+        [
+          5330,
+          3170,
+          9665,
+          4400
+        ],
+        [
+          8040,
+          4400,
+          9665,
+          4720
+        ]
+      ]
+    },
+    {
+      "name": "거실",
+      "kind": "living",
+      "rects": [
+        [
+          1500,
+          4400,
+          5330,
+          8500
+        ]
+      ]
+    },
+    {
+      "name": "주방/식당",
+      "kind": "kitchen",
+      "rects": [
+        [
+          5330,
+          4400,
+          8040,
+          8500
+        ]
+      ]
+    },
+    {
+      "name": "침실3",
+      "kind": "bedroom",
+      "rects": [
+        [
+          8040,
+          4720,
+          10940,
+          8500
+        ]
+      ]
+    }
+  ],
+  "walls": [
+    {
+      "x1": 0,
+      "y1": 0,
+      "x2": 10940,
+      "y2": 0,
+      "t": 200,
+      "exterior": true
+    },
+    {
+      "x1": 0,
+      "y1": 8500,
+      "x2": 10940,
+      "y2": 8500,
+      "t": 200,
+      "exterior": true
+    },
+    {
+      "x1": 0,
+      "y1": 0,
+      "x2": 0,
+      "y2": 8500,
+      "t": 200,
+      "exterior": true
+    },
+    {
+      "x1": 10940,
+      "y1": 0,
+      "x2": 10940,
+      "y2": 8500,
+      "t": 200,
+      "exterior": true
+    },
+    {
+      "x1": 1500,
+      "y1": 0,
+      "x2": 1500,
+      "y2": 8500,
+      "t": 200,
+      "exterior": true
+    },
+    {
+      "x1": 1500,
+      "y1": 4400,
+      "x2": 5330,
+      "y2": 4400,
+      "t": 180,
+      "exterior": false
+    },
+    {
+      "x1": 5330,
+      "y1": 0,
+      "x2": 5330,
+      "y2": 4400,
+      "t": 180,
+      "exterior": false
+    },
+    {
+      "x1": 5330,
+      "y1": 1575,
+      "x2": 7740,
+      "y2": 1575,
+      "t": 100,
+      "exterior": false
+    },
+    {
+      "x1": 5330,
+      "y1": 3170,
+      "x2": 10940,
+      "y2": 3170,
+      "t": 180,
+      "exterior": false
+    },
+    {
+      "x1": 7740,
+      "y1": 0,
+      "x2": 7740,
+      "y2": 3170,
+      "t": 180,
+      "exterior": false
+    },
+    {
+      "x1": 6960,
+      "y1": 0,
+      "x2": 6960,
+      "y2": 660,
+      "t": 100,
+      "exterior": false
+    },
+    {
+      "x1": 6960,
+      "y1": 660,
+      "x2": 7740,
+      "y2": 660,
+      "t": 100,
+      "exterior": false
+    },
+    {
+      "x1": 8040,
+      "y1": 4720,
+      "x2": 8040,
+      "y2": 8500,
+      "t": 180,
+      "exterior": false
+    },
+    {
+      "x1": 8040,
+      "y1": 4720,
+      "x2": 10940,
+      "y2": 4720,
+      "t": 180,
+      "exterior": false
+    }
+  ],
+  "doors": [
+    {
+      "x1": 5330,
+      "y1": 925,
+      "x2": 5330,
+      "y2": 1510,
+      "kind": "swing"
+    },
+    {
+      "x1": 5330,
+      "y1": 3565,
+      "x2": 5330,
+      "y2": 4295,
+      "kind": "swing"
+    },
+    {
+      "x1": 6995,
+      "y1": 3170,
+      "x2": 7590,
+      "y2": 3170,
+      "kind": "swing"
+    },
+    {
+      "x1": 7870,
+      "y1": 3170,
+      "x2": 8605,
+      "y2": 3170,
+      "kind": "swing"
+    },
+    {
+      "x1": 8130,
+      "y1": 4720,
+      "x2": 8870,
+      "y2": 4720,
+      "kind": "swing"
+    },
+    {
+      "x1": 10940,
+      "y1": 3800,
+      "x2": 10940,
+      "y2": 4535,
+      "kind": "swing"
+    },
+    {
+      "x1": 1500,
+      "y1": 465,
+      "x2": 1500,
+      "y2": 3845,
+      "kind": "sliding"
+    },
+    {
+      "x1": 1500,
+      "y1": 4725,
+      "x2": 1500,
+      "y2": 8110,
+      "kind": "sliding"
+    }
+  ],
+  "windows": [
+    {
+      "x1": 10940,
+      "y1": 345,
+      "x2": 10940,
+      "y2": 2745
+    },
+    {
+      "x1": 10940,
+      "y1": 5400,
+      "x2": 10940,
+      "y2": 7895
+    }
+  ],
+  "kitchen": {
+    "counters": [
+      {
+        "x0": 7400,
+        "y0": 5770,
+        "x1": 7950,
+        "y1": 8400,
+        "back": "right",
+        "role": "sink_run"
+      },
+      {
+        "x0": 5855,
+        "y0": 7870,
+        "x1": 7400,
+        "y1": 8400,
+        "back": "bottom",
+        "role": "cooktop_run"
+      }
+    ],
+    "sink": {
+      "x": 7690,
+      "y": 6640
+    },
+    "cooktop": {
+      "x": 6370,
+      "y": 8125
+    },
+    "fridge": {
+      "x0": 7400,
+      "y0": 5105,
+      "x1": 7950,
+      "y1": 5770
+    },
+    "upper_cabinets": [
+      {
+        "x0": 7600,
+        "y0": 5770,
+        "x1": 7950,
+        "y1": 8400
+      },
+      {
+        "x0": 5855,
+        "y0": 8050,
+        "x1": 7600,
+        "y1": 8400
+      }
+    ],
+    "window_over_sink": false,
+    "notes": "ㄱ-shaped counter open to the living room (no wall between 거실 and 주방/식당). Sink run: along the bed3 wall (x=8040, back=right), from the fridge box down to the bottom party wall, depth ~551 mm as drawn; it owns the inside corner. Cooktop run: along the bottom party wall (y=8500, back=bottom), free end at x=5855, depth ~532 mm as drawn. Sink = rounded basin with faucet dot + drainer lines just above it (toward the fridge). Cooktop = 2-burner symbol. Fridge = box with X at the top (living-room) end of the sink run, flush with the counter front (drawn ~550 x 660, i.e. small/old-type). Both backing walls are solid (no window in the bed3 wall or the bottom party wall) -> window_over_sink=false. Upper cabinets are NOT drawn on the plan; assumed 350 mm deep over both runs because both backing walls are windowless (range hood would sit in the cooktop-run uppers). No peninsula/island."
+  },
+  "fixtures": [
+    {
+      "kind": "toilet",
+      "x0": 5710,
+      "y0": 100,
+      "x1": 5940,
+      "y1": 605
+    },
+    {
+      "kind": "washbasin",
+      "x0": 6280,
+      "y0": 100,
+      "x1": 6730,
+      "y1": 590
+    },
+    {
+      "kind": "bathtub",
+      "x0": 5420,
+      "y0": 1625,
+      "x1": 6045,
+      "y1": 3080
+    },
+    {
+      "kind": "washbasin",
+      "x0": 6240,
+      "y0": 1625,
+      "x1": 6670,
+      "y1": 2115
+    },
+    {
+      "kind": "toilet",
+      "x0": 7000,
+      "y0": 1625,
+      "x1": 7245,
+      "y1": 2140
+    },
+    {
+      "kind": "shoe_cabinet",
+      "x0": 9665,
+      "y0": 3260,
+      "x1": 10840,
+      "y1": 3620
+    }
+  ],
+  "notes": "Orientation kept as drawn: front = LEFT (unexpanded 1500 balcony strip, full height 0..8500). Front bays = 침실1(안방) (y 0-4400) + 거실 (y 4400-8500) -> 2Bay. Rear (right, x=10940) = corridor/stair side with the entrance door and the windows of 침실2/침실3. Top (y=0) and bottom (y=8500) walls carry no openings (party/side walls). Dimension ticks = wall centrelines; grid x 0/1500/5330/6960/7740/8040/10940, y 0/3170/4400/4720/8500. Off-grid wall lines measured: bath1/bath2 partition y=1575, PS south wall y=660. Wall thickness is drawn uniformly (~95 mm) so t is assigned by role, not measured: envelope 200 (incl. the x=1500 room/balcony wall, the original facade line of an unexpanded balcony), long interior room walls 180 (likely RC bearing walls of a wall-type structure, not confirmable from this plan), bath partition and PS walls 100. Openings: all glazing (balcony side and rear) is drawn with the same double-line 2-panel sliding-sash symbol (one meeting-rail mark each). The two x=1500 openings (침실1 and 거실 to the balcony) are listed in doors with kind=sliding: in a Korean unexpanded-balcony unit they are floor-level glazed sliding doors (분합문) and the only access to the balcony, so they must render without a sill (glazed, ~2100 head). The rear openings of 침실2/침실3 in x=10940 are ordinary windows. The balcony's outer edge (x=0) is drawn as a solid line with no sash marks, so no window is listed there (physically: parapet + balcony sash). Doors, with swing and hinge: 침실1 door in x=5330 from the hall, swings into 침실1, hinge at the south jamb. 욕실1 is the 안방 ensuite: door in x=5330 from 침실1, swings into the bath, hinge at the south jamb. 욕실2 door in y=3170 from the hall, swings into the bath, hinge at the east jamb. 침실2 door in y=3170, swings into 침실2, hinge at the west jamb. 침실3 door in y=4720, swings into 침실3, hinge at the west jamb. The entrance door in x=10940 swings OUT, hinge at the south jamb. Door widths are as drawn (~730-745 rooms, ~590 baths, ~735 entrance); entrance and bath doors are narrower than usual. PS = fully enclosed 780x660 box (no door) in the NE corner of 욕실1, read as a pipe shaft. 현관 = tiled zone x>=9665 (no wall on its west side, a floor-finish change/step) with a shoe cabinet (box + diagonal) along its north wall. 거실, 주방/식당 and 복도(홀) are ONE open wood-floored space; their split lines (x=5330 extended, y=4400) are notional. Bath fixtures: symbol sizes are schematic (WC drawn ~240x500, basins ~420 round); both baths have a ~200 mm ledge (젠다이) along the north wall behind the WC/basin, which is not listed as a fixture. No beds, wardrobes or sofas are drawn."
+}

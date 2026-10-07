@@ -1,6 +1,6 @@
 # 07. Seed Use of Funds 검증
 
-> ARKI Robotics (가칭) · Seed Investment Proposal · Draft v1 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
+> ARKI Robotics (가칭) · Seed 투자 제안서 · Draft v3 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
 
 ## 결론
 
@@ -24,7 +24,7 @@
 ## 항목별 현실성 검토
 
 1. **인건비 (가장 큰 차이)**: Draft 8억원 = 24개월 평균 약 4.7명 (인당 8,500만원 기준). Robot 제어·Perception·Mechatronics·주방/건축 Integration·Embedded/Safety·현장 설치·BD를 동시에 수행할 수 없음. 수정안은 평균 7.5명 (Y1 6 → Y2 9).
-2. **Prototype**: Draft 4억원은 과다 가능. 구매형 Arm(공개가 $7~8k급) 기반 Prototype이면 2년 3억원 내외로 가능 (A4). 단, 전용 Arm 개발은 Series A 이후.
+2. **Prototype**: Draft 4억원은 과다 가능. 구매형 Arm(공개가 $7~8k급) 기반 Prototype이면 2년 3억원 내외로 가능 (D5). 단, 전용 Arm 개발은 Series A 이후.
 3. **Mock-up 공간**: Full-scale Kitchen Mock-up 2식은 최소 30~50평 필요. 경기 남부 지식산업센터·공장형 임차 가정 (임대료 ASSUMPTION, 견적 필요).
 4. **Pilot**: Home Pilot 5세대는 할인 유료 (실현율 50%) → Robot·Kitchen 원가 대비 손실 발생. 고객 조사(Panel n≥300 Conjoint) 비용 포함.
 5. **인증**: 로봇 KC·EMC·안전 본인증 비용은 공개 자료 없음 (ASSUMPTION). Seed에는 예비시험·Risk Assessment만 반영.

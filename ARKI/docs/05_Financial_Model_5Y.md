@@ -1,6 +1,6 @@
 # 05. 5-Year Financial Model (Bottom-up · 3 Scenario)
 
-> ARKI Robotics (가칭) · Seed Investment Proposal · Draft v1 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
+> ARKI Robotics (가칭) · Seed 투자 제안서 · Draft v3 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
 
 - 수식 모델: `ARKI/ARKI_Robotics_Financial_Model.xlsx` (Inputs → FM_Conservative / FM_Base / FM_Upside → Scenario_Summary). 1,778개 수식, LibreOffice 재계산 오류 0, `model.py`와 836개 값 교차검증 일치.
 - 단위: 억원 (수량 제외). Year 정의: Y1 = Seed 후 M0~M12, Y2 = M12~M24, Y3 = Series A 이후 첫 해.

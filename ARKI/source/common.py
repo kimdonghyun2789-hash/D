@@ -9,6 +9,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..'))
 OUTPUT = os.path.join(ROOT, 'ARKI_Robotics_Seed_IR_Deck.pptx')
 PREVIEW = os.path.join(ROOT, 'ARKI_Robotics_Seed_IR_Deck_preview.pdf')
+MAIN_PDF = os.path.join(ROOT, 'ARKI_Robotics_Seed_IR_Deck_Main15.pdf')
 M = {}
 META = []          # one dict per slide, in deck order
 
@@ -42,8 +43,45 @@ def inp(key, s='B'):
     raise KeyError(key)
 
 # ---------------------------------------------------------------- slide scaffolding
+# ---------------------------------------------------------------- appendix mode (v2 deck: legacy slides re-coded A~F)
+APX = {'on': False}
+SECTION = {'A': '투자 판단 요약', 'B': '제품 · 표준화', 'C': '시장 · 사업화', 'D': '경제성 · 재무',
+           'E': '진입장벽 · 리스크 · Q&A', 'F': '참고'}
+SID2CODE = {   # legacy main-slide ids and old appendix codes -> v2 appendix codes
+    'thesis': 'A1', 'proof': 'A2', 'integration': 'B1', 'system': 'B2', 'product': 'B3', 'architecture': 'B4',
+    'layouts': 'B11', 'housing': 'B12', 'standard': 'B13', 'robotready': 'B15', 'channels': 'C4', 'market': 'C3',
+    'gtm': 'C5', 'competition': 'C6', 'pricing': 'D1', 'household': 'D2', 'bm': 'D3', 'unit': 'D4', 'moat': 'E1',
+    'milestone': 'E3',
+    'A1': 'F1', 'A2': 'C1', 'A3': 'C2', 'A4': 'D5', 'A5': 'B14', 'A6': 'B16', 'A7': 'B17', 'A8': 'B18', 'A9': 'C7',
+    'A10': 'E2', 'A11': 'D6', 'A12': 'D7', 'A13': 'D8', 'A14': 'D9', 'A15': 'D10', 'A16': 'D11', 'A17': 'C8',
+    'A18': 'A3', 'A19': 'E4', 'A20': 'E5', 'A21': 'E6', 'A22': 'A4', 'A23': 'F2'}
+OLD_MAIN = {1: '01', 2: 'A1', 3: 'A2', 4: '02', 5: 'B1', 6: 'B12', 7: 'B2', 8: 'B3', 9: 'B4', 10: 'B11', 11: 'B13',
+            12: 'C4', 13: 'B15', 14: 'D1', 15: 'D2', 16: 'D3', 17: 'D4', 18: 'C3', 19: 'C5', 20: 'C6', 21: 'E1',
+            22: 'E3', 23: '14', 24: '15'}
+
+def remap(t):
+    """Rewrite v1 cross-references ("A16", "(16·19장)", "09장 #07") to v2 codes."""
+    import re
+    def a_sub(m):
+        a = SID2CODE.get('A' + m.group(1), 'A' + m.group(1))
+        return a + ('~' + SID2CODE.get('A' + m.group(2), m.group(2)) if m.group(2) else '')
+    t = re.sub(r'(?<![A-Za-z0-9#])A(\d{1,2})(?:~(\d{1,2}))?(?![0-9A-Fa-f]{3}|\d)', a_sub, t)
+    def ch_sub(m):
+        outs = [OLD_MAIN.get(int(n), n) for n in m.group(1).split('·')]
+        return ' · '.join(o + '장' if o.isdigit() else o for o in outs)
+    return re.sub(r'(?<!\d)(\d{1,2}(?:·\d{1,2})*)장', ch_sub, t)
+
+def _legacy_text(t):
+    from glossary import plain
+    return plain(remap(t))
+
 def start(prs, sid, no, title, q=None, visual='', chart='', note='', bg=None):
     """New slide + metadata record. q = list of investor questions (1..6) the slide answers."""
+    legacy = APX['on'] and sid in SID2CODE
+    if APX['on']:
+        no = SID2CODE.get(sid, no); q = []
+    kit.XFORM['fn'] = _legacy_text if legacy else None
+    if legacy: note, visual, title = _legacy_text(note), _legacy_text(visual), _legacy_text(title)
     s = new_slide(prs, sid, bg=bg)
     META.append(dict(id=sid, no=no, title=title, q=q or [], visual=visual, chart=chart, note=note))
     if note: notes(s, note)
@@ -53,7 +91,10 @@ def head(s, section, title, sub=None, q=None, size=26):
     """Section label (+ question chips) + headline. Returns y below."""
     if q is None and META: q = META[-1]['q']
     y = 0.55
-    text(s, MX, y, 7.5, 0.28, section, size=11, bold=True, color=T['accent'], label='section')
+    if APX['on']:
+        code = str(META[-1]['no']); q = []
+        section = f"APPENDIX {code}  ·  {SECTION.get(code[0], '')}" if code[0] in SECTION else section
+    text(s, MX, y, 7.5, 0.28, section, size=11, bold=True, color=T['muted'] if APX['on'] else T['accent'], label='section')
     if q:
         x = W - MX
         labs = [f'Q{n}' for n in q]
@@ -73,7 +114,10 @@ def head(s, section, title, sub=None, q=None, size=26):
     return y + 0.12
 
 def foot(s, page, note=None):
-    footer(s, page, note=note)
+    if APX['on']:
+        footer(s, META[-1]['no'], left='ARKI Robotics  ·  Seed 투자 제안서  ·  Draft v3  ·  부록', note=note)
+    else:
+        footer(s, page, note=note)
 
 def note_line(s, txt, y=None, size=10, color=None):
     hh = text_h(txt, size, CW)
