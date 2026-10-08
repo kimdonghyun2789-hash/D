@@ -1,13 +1,13 @@
-# 10. Investment Memo — ARKI Robotics (가칭) Seed
+# 10. Investment Memo — ARKI Robotics (가칭) · TIPS 운영사 검토용
 
-> ARKI Robotics (가칭) · Seed 투자 제안서 · Draft v3 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
+> ARKI Robotics (가칭) · TIPS 창업기업 IR · Draft v4 · 2026-10-08 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·파트너·투자유치 없음.
 
 | 항목 | 내용 |
 |---|---|
 | 회사 | ARKI Robotics (아키로보틱스, 가칭) — Residential Built-in Robotics |
 | 제품 | ARKI Kitchen System (Robot-ready Kitchen + Robot Module + Software + Installation + Care/Consumables) · 첫 제품 ARKI Kitchen Assist V1 (Kitchen Clean-up) |
 | 첫 시장 | 구축 아파트 Premium Kitchen Remodeling (Validation) → 신축 Robot-ready Option (Scale) |
-| 요청 | Seed 20억원 (가설) + TIPS 연계 · 24개월 |
+| 요청 | 운영사 투자 3억원 (가설) + TIPS R&D 최대 8억원 · 24개월 (회사 전체 지출 약 15.7억원, 후속 투자 5억원 목표) |
 | 단계 | Concept. Prototype · 고객 · Partner · 특허 · 매출 없음. Founder 정보 미입력 |
 | **판단** | **WATCH** (아래 근거) |
 
@@ -17,15 +17,15 @@
 2. **AI가 아닌 공간으로 난이도를 낮추는 접근**: Robot Home · Rail/Dock · Human Zone 분리 · 식세기 상향 배치 등 공간 설계 규칙으로 Task 조건을 고정 → 범용 Mobile/Humanoid와 다른 경로.
 3. **한국 공동주택이라는 Test Market**: 아파트 65.8% (FACT) · 준공 20년 이상 주택 56.0% (FACT) · 반복 평면 → Template 표준화 가설에 유리.
 4. **채널 순서가 논리적**: 구축 Premium Remodeling으로 WTP·설치를 직접 검증하고, 신축 유상옵션(분양가의 9.7%가 옵션인 시장, FACT)으로 Project 단위 Scale.
-5. **공사업체화를 피하는 역할 분담과 Kill Criteria가 사전에 설계됨**: M6·M9·M12·M18·M24 판정 기준 → Seed 자금이 끝까지 소진되기 전 실패 확인 가능.
+5. **공사업체화를 피하는 역할 분담과 Kill Criteria가 사전에 설계됨**: M6·M9·M12·M18·M24 판정 기준 → 자금이 끝까지 소진되기 전 실패 확인 가능.
 
 ## 2. Investment Risks
 
-1. **Team 공백**: Founder 정보 없음 — Seed 판단의 1순위 항목이 비어 있음.
+1. **Team 공백**: Founder 정보 없음 — 투자 · TIPS 판단의 1순위 항목이 비어 있음.
 2. **WTP Gap**: 가치 Anchor 월 11~24만원 (DERIVED) < 원가 기반 Rental 월 24~31만원. Clean-up 단일 Task로 Robot 1,490만원을 정당화할 수 있는지 불명확.
 3. **Hardware 원가 의존**: Y3 BOM 1,150만원 기준 세대 Contribution Margin 18.9% — BOM 하락(Y5 900만원)이 전제. Arm 450만원은 공격적 가정.
 4. **경쟁 속도**: 1X NEO ($20k 또는 월 $499), Sunday Memo, LG CLOiD가 식세기 작업을 시연 (FACT). 범용 Robot 가격이 빠르게 내려오면 Built-in 고정형의 가치가 희석될 수 있음.
-5. **자본 집약**: Base 5년 누적 현금 최저 -128.0억원, 5년 내 흑자 없음. 신축 매출 2년 Lag. 가구사·가전사의 직접 진입 위험.
+5. **자본 집약**: Base 5년 누적 현금 최저 -120.2억원, 5년 내 흑자 없음. 신축 매출 2년 Lag. 가구사·가전사의 직접 진입 위험.
 
 ## 3. Key Assumptions
 
@@ -52,10 +52,10 @@
 | 세대 5년 매출 / Contribution (구매·Y3 → Y5 원가) | 2,418만원 / 458 → 813만원 | DERIVED |
 | Rental Payback (Y3 → Y5) | 39 → 30개월 | DERIVED |
 | Care Margin (Y3 → Y5) | 23% → 44% | DERIVED |
-| Base 매출 Y3 / Y5 | 7.5 / 77.6억원 | DERIVED |
+| Base 매출 Y3 / Y5 | 7.4 / 77.5억원 | DERIVED |
 | Base 매출총이익률 Y3 / Y5 | 25% / 36% | DERIVED |
-| Base 영업이익 Y5 · 5년 누적현금 최저 | -36.4억원 · -128.0억원 | DERIVED |
-| Seed 24개월 수정 예산 · 20억 단독 Runway | 25.8억원 · 18.6개월 | DERIVED |
+| Base 영업이익 Y5 · 5년 누적현금 최저 | -36.4억원 · -120.2억원 | DERIVED |
+| TIPS 24개월 지출 · 후속 투자 없을 때 자금 지속 | 15.7억원 · 17.7개월 | DERIVED |
 | 손익분기 (연 Kitchen) | 약 1,340세대 | DERIVED |
 
 ## 5. Critical Milestones
@@ -63,7 +63,7 @@
 | 시점 | Milestone (TARGET) | Kill Criteria |
 |---|---|---|
 | M3 | 평면 30개 수집 · Interview 30 · Time-diary 30 · 선행기술조사 | — |
-| M6 | 84㎡ Full-scale Mock-up · Robot Architecture 선정 · Dish Handling Test | 주거동선과 Robot Reach 양립 실패 → Architecture 변경 |
+| M6 | 실물 크기 목업 (대표 평면 기준) · Robot Architecture 선정 · Dish Handling Test | 주거동선과 Robot Reach 양립 실패 → Architecture 변경 |
 | M9 | Dishwasher Integration · 성공률 측정 (200 cycle) | Clean-up 성공률 70% 미만 → Task Scope 축소 |
 | M12 | Clean-up Integrated Demo · Template 3개 · PSM/Conjoint · BOM v1 | WTP 중앙값 < 목표가 60% → B2C 전략 재검토 |
 | M18 | Real-home Pilot 3~5세대 · 설치시간·Service 원가 실측 | Standard Module 사용률 60% 미만 → Productization 재검토 |
@@ -86,7 +86,7 @@
 1. 문제·첫 Task·채널 순서가 좁고 검증 가능하게 정의됨 (과도한 TAM·완전자율 Cooking 주장 없음).
 2. 공간 설계로 Robot 난이도를 낮추는 접근은 한국 공동주택의 반복 평면과 유상옵션 관행에 맞물림.
 3. Robot-ready Kitchen을 독립 상품으로 두어 Robot 구매 없이도 설치기반(Land)을 확보하는 구조.
-4. Kill Criteria가 사전 정의되어 Seed 자본이 "Option 매입"으로 작동 — 실패를 일찍 확인 가능.
+4. Kill Criteria가 사전 정의되어 초기 자금이 "Option 매입"으로 작동 — 실패를 일찍 확인 가능.
 5. 성공 시 Template Library · 설치 Standard · Care Network가 Laundry · Storage 등 Residential Robotics Infrastructure로 확장될 수 있는 구조 (장기 Option, 현재 미검증).
 
 ## 8. Reasons Not to Invest
@@ -114,14 +114,14 @@
 | Recurring Revenue | 2 | 3 | 구조 설계됨. 비중 Y5 4% · 정상상태 약 15% |
 | Distribution | 1 | 3 | Partner 접촉 없음. Partner 역할·수수료 구조만 설계 |
 | Team | 1 | TBV | [Founder 정보 필요] — 평가 불가 |
-| Capital Efficiency | 2 | 3 | 20억 단독 약 19개월. 5년 누적 현금소요 약 128억 (Base) |
+| Capital Efficiency | 2 | 3 | TIPS 24개월 지출 약 15.7억 · 후속 투자 없으면 약 18개월. 5년 누적 현금소요 약 120억 (Base) |
 | 합계 | 17/50 | 33/50 |  |
 
-## 11. 판단: 내가 실제 Seed VC라면 — **WATCH**
+## 11. 판단: TIPS 운영사 심사역이라면 — **WATCH**
 
 **근거**
 - 진입 방식(구축 Validation → 신축 Scale), Kill Criteria, BM 구조, 역할 분담은 IC에 올릴 만큼 명확함. 접근의 차별점(공간으로 Task 조건 고정)도 논리적임.
-- 그러나 Seed 판단의 핵심 4요소 — **Team · Customer Demand · Standardization · Channel** — 의 Evidence가 모두 0. 현재 자료로 20억원을 집행하면 "아이디어와 가설"에 투자하는 것이며, Robotics Hardware Seed의 일반 기준(Founder 역량 + 최소 기술 Proof)에 미달.
+- 그러나 투자 판단의 핵심 4요소 — **Team · Customer Demand · Standardization · Channel** — 의 Evidence가 모두 0. 현재 자료로 운영사 투자 · TIPS 추천을 하면 "아이디어와 가설"에 투자하는 것이며, 로봇 하드웨어 초기 투자의 일반 기준(Founder 역량 + 최소 기술 Proof)에 미달.
 - PASS가 아닌 이유: 문제 정의·검증 설계가 구체적이어서 **90일 안에 아래 5개 Evidence를 만들 수 있는 구조**이고, 이 Evidence가 나오면 판단이 바뀔 수 있음.
 
 **INVEST로 바뀌기 위해 반드시 필요한 Evidence (최대 5개)**

@@ -253,7 +253,7 @@ def a10(prs):
             ['9', 'Robot Cleaning / Sanitizing Dock', 'Garage 내 EE 세척·건조', '중간 (위생)', '낮음~중간'],
             ['10', 'Layout 기반 Robot Module Selection', '평면 분류 → Architecture·Module 자동 선택 Software', '중간 (표준화)', '낮음~중간 — 설계 자동화 SW']]
     table_slide(prs, 'A10', 'A10', 'APPENDIX A10', 'IP / Patent Portfolio 후보 (10 Family)', ['#', 'Family', 'Protectable Core', 'Business Relevance', 'Prior Art Risk (선행기술조사 필요)'], rows,
-                [0.35, 2.75, 3.3, 1.65, 3.78], sub='등록 가능성 주장 없음. Seed M3까지 선행기술조사 (KIPRIS · USPTO · EPO) → 5~8건 출원 우선순위 결정. 전체 = TBV',
+                [0.35, 2.75, 3.3, 1.65, 3.78], sub='등록 가능성 주장 없음. M3까지 선행기술조사 (KIPRIS · USPTO · EPO) → TIPS 24개월 출원 5건 우선순위 결정. 전체 = TBV',
                 size=9.5, takeaway='출원 우선순위 가설: ② Interface Module · ⑦ Auto Calibration · ⑧ Dishwasher Interface — 사업 핵심이면서 선행 위험이 상대적으로 낮을 것으로 추정 (TBV)',
                 note='특허 후보 열 개를 사업 관련성과 선행기술 위험으로 정리했습니다. Rail 일체형 구조는 Moley나 삼성 Bot Chef 같은 선례가 있어 선행기술 위험이 높습니다. 표준 Interface, 자동 Calibration, 식기세척기 Interface가 사업 핵심이면서 상대적으로 위험이 낮을 것으로 보지만, 모두 선행기술조사 후 판단합니다.')
 
@@ -422,37 +422,41 @@ def a15(prs):
     note_line(s, 'Robot Attach Rate · Standard Module 사용률 · Failure Rate는 중위권. Rental 비중은 P&L보다 현금(자산) 영향이 큼 (A12). 회사 기준 민감도는 model.py 산출 (xlsx Sensitivity 하단 정적 표).', y=6.45)
     foot(s, 'A15')
 
-# ---------------------------------------------------------------- A16 use of funds
+# ---------------------------------------------------------------- A16 TIPS-period funding detail
 @apx
 def a16(prs):
-    F = M['funds']; a = {d['key']: d['vals']['B'] for d in M['inputs']}
-    s = start(prs, 'A16', 'A16', 'Seed Use of Funds 검증 (24개월)', visual='좌측 Draft vs 수정안 상세 표 (산식 포함). 우측 판단: 20억원 적정성, Plan A/B, 비용 절감 옵션.',
+    TP = M['tips']; a = {d['key']: d['vals']['B'] for d in M['inputs']}; L = M['scenarios']['B']
+    two = lambda k: [a[k][0], a[k][1]]
+    ppl = [a['fte'][t] * a['loaded'] for t in (0, 1)]
+    lines = [('인건비', ppl, f"평균 {a['fte'][0]:.1f}명 · {a['fte'][1]:.0f}명 × 연 {a['loaded']:,}만원 (4대보험 · 퇴직급여 포함)"),
+             ('시제품 (로봇 · 주방)', two('proto'), '1차 2식 + 목업 주방 2식 (Y1) · 2차 개선 부품 (Y2)'),
+             ('목업 공간', two('space'), '약 30평 임차 + 목업 시공'),
+             ('비전 · SW · 데이터', two('swdata'), 'GPU · 클라우드 · 데이터 라벨링'),
+             ('안전 · 시험 · 특허', two('cert_ip'), '선행기술조사 · 출원 5건 · 공인기관 사전시험'),
+             ('관리비', two('ga'), '법무 · 회계 · 보험 · 사무')]
+    known = [sum(v[t] for _, v, _ in lines) for t in (0, 1)]
+    lines.append(('고객 검증 · 실증', [TP['spend'][t] - known[t] for t in (0, 1)], f"인터뷰 · 지불의사 조사 · 가정 실증 {a['rd'][1]}세대 (실증 매출 차감)"))
+    s = start(prs, 'A16', 'A16', 'TIPS 기간 자금 계획 상세 (24개월)', visual='좌측 회사 전체 지출 표 (Y1 · Y2 · 합계, 근거). 우측: 재원 · TIPS 과제 예산과의 관계 · 후속 투자 없을 때.',
               chart='표',
-              note=(f"사용자 초안의 20억원 배분을 실제 비용 구조로 다시 계산했습니다. 가장 큰 차이는 인건비입니다. 초안 8억원은 24개월 기준 평균 4~5명 수준인데, 로봇·비전·기구·주방통합·안전·현장 인력을 고려하면 평균 7.5명이 필요하고 약 12.8억원이 됩니다. "
-                    f"전체로는 약 {F['revised_total'] / 1e4:.1f}억원이 필요해 20억원으로는 {F['months_equity_only']:.0f}개월 정도입니다. 그래서 TIPS 연계를 기본안으로 하고, 안 되면 증액이나 Bridge를 제안합니다."))
-    y = head(s, 'APPENDIX A16', 'Seed Use of Funds 검증 (24개월)',
-             sub='수정안 = 재무모델 Base Y1+Y2 (xlsx Use_of_Funds 시트 연동). 인당 연 8,500만원 = 평균 연봉 약 7,100만원 × 1.2 (4대보험·퇴직급여) ASSUMPTION.')
-    rev = dict(F['revised']); dr = dict(F['draft'])
-    rows = [['Core Development Team', f"{dr['Core Development Team'] / 1e4:.1f}", f"{rev['Core Development Team'] / 1e4:.1f}", f"평균 {(a['fte'][0] + a['fte'][1]) / 2:.1f}명 × 2년 × 8,500만원"],
-            ['Robot / Kitchen Prototype', f"{dr['Robot / Kitchen Prototype'] / 1e4:.1f}", f"{rev['Robot / Kitchen Prototype'] / 1e4:.1f}", 'Arm 3~4대 · Rail 2식 · EE 반복 (BOM A4)'],
-            ['Mock-up / Installation Dev.', f"{dr['Mock-up / Installation Development'] / 1e4:.1f}", f"{rev['Mock-up / Installation Development'] / 1e4:.1f}", '50평 임차 24개월 + Full-scale Mock-up 2식'],
-            ['Vision / Software / Data', f"{dr['Vision / Software / Data'] / 1e4:.1f}", f"{rev['Vision / Software / Data'] / 1e4:.1f}", 'GPU · Cloud · Data 수집·Annotation'],
-            ['Pilot / Customer Validation', f"{dr['Pilot / Customer Validation'] / 1e4:.1f}", f"{rev['Pilot / Customer Validation'] / 1e4:.1f}", 'Interview·Conjoint + Pilot 5세대 손실 + Marketing'],
-            ['Safety / Certification / IP', f"{dr['Safety / Certification / IP'] / 1e4:.1f}", f"{rev['Safety / Certification / IP'] / 1e4:.1f}", '예비시험 · Risk Assessment · 출원 5~8건'],
-            ['Operations / Contingency', f"{dr['Operations / Contingency'] / 1e4:.1f}", f"{(rev['Operations (G&A)'] + rev['Contingency (10%)']) / 1e4:.1f}", 'G&A 1.8 + Contingency 10%'],
-            [('합계', {'bold': True}), (f"{F['draft_total'] / 1e4:.1f}", {'bold': True}), (f"{F['revised_total'] / 1e4:.1f}", {'bold': True, 'color': T['accent']}), '']]
-    lw = 7.6
-    table(s, MX, y, lw, ['억원', 'Draft', '수정안', '근거'], rows, col_w=[2.3, 0.75, 0.85, lw - 3.9], size=9.5, align=['l', 'r', 'r', 'l'], label='uof2', max_h=4.0)
+              note=(f"TIPS 24개월 동안 회사 전체 지출은 약 {TP['spend_total'] / 1e4:.1f}억원입니다. 이 중 {TP['total'] / 1e4:.0f}억원이 TIPS 과제 예산이고, 나머지는 과제에 넣지 않는 인건비 일부와 관리비, 고객 조사 비용입니다. "
+                    f"재원은 TIPS 정부지원 {TP['gov'] / 1e4:.0f}억원, 운영사 투자 {a['op_invest'] / 1e4:.0f}억원, 12개월 점검 뒤 후속 투자 {a['followon'] / 1e4:.0f}억원입니다. 후속 투자가 없으면 약 {TP['runway_no_followon']:.0f}개월까지 가능합니다."))
+    y = head(s, 'APPENDIX A16', 'TIPS 기간 자금 계획 상세 (24개월)',
+             sub='회사 전체 지출 = 재무모델 Base Y1 + Y2 (xlsx TIPS_Budget 시트 연동). TIPS 과제 예산은 이 지출의 일부. 모든 값 ASSUMPTION · DERIVED.')
+    rows = [[lab, f"{v[0] / 1e4:.2f}", f"{v[1] / 1e4:.2f}", f"{(v[0] + v[1]) / 1e4:.2f}", why] for lab, v, why in lines]
+    rows.append([('합계', {'bold': True}), (f"{TP['spend'][0] / 1e4:.2f}", {'bold': True}), (f"{TP['spend'][1] / 1e4:.2f}", {'bold': True}),
+                 (f"{TP['spend_total'] / 1e4:.2f}", {'bold': True, 'color': T['accent']}), ''])
+    lw = 8.0
+    table(s, MX, y, lw, ['억원', 'Y1', 'Y2', '합계', '근거'], rows, col_w=[1.75, 0.6, 0.6, 0.7, lw - 3.65], size=9.5, align=['l', 'r', 'r', 'r', 'l'], label='tipsuof', max_h=4.0)
     rx = MX + lw + 0.3; rw = W - MX - rx
     rect(s, rx, y, rw, 4.0, fill=T['soft'])
-    text(s, rx + 0.18, y + 0.12, rw - 0.36, 0.3, '판단', size=12, bold=True)
-    text(s, rx + 0.18, y + 0.5, rw - 0.36, 3.45, [f"20억원 단독: 약 {F['months_equity_only']:.1f}개월 → 24개월 Milestone 미달 Risk",
-                                                 f"Plan A: Seed 20억 + TIPS R&D 최대 8억 = 28억 (여유 {(F['with_tips'] - F['revised_total']) / 1e4:.1f}억). TIPS 선정은 미확정",
-                                                 'Plan B: Seed 25억 또는 M18 Bridge (M12 Evidence 기반)',
-                                                 '절감 옵션: Arm 구매형 Prototype · Mock-up 공간 공유 · 채용 3개월 순연 (−2~3억, 일정 Risk 증가)',
-                                                 'Draft 8억 인건비 = 평균 4.7명 수준 → Robot·Vision·기구·주방통합·안전·현장 동시 수행 불가'],
+    text(s, rx + 0.18, y + 0.12, rw - 0.36, 0.3, '재원과 판단', size=12, bold=True)
+    text(s, rx + 0.18, y + 0.5, rw - 0.36, 3.45, [f"재원: TIPS {TP['gov'] / 1e4:.0f} + 운영사 {a['op_invest'] / 1e4:.0f} + 후속 {a['followon'] / 1e4:.0f} = {TP['src_total'] / 1e4:.0f}억원 (여유 {TP['buffer'] / 1e4:.1f}억원)",
+                                                 f"TIPS 과제 예산 {TP['total'] / 1e4:.0f}억원 (정부 {TP['gov'] / 1e4:.0f} · 민간 {TP['private'] / 1e4:.0f}) ⊂ 회사 전체 지출 {TP['spend_total'] / 1e4:.1f}억원",
+                                                 f"후속 투자 없을 때: 약 {TP['runway_no_followon']:.0f}개월 → 2차 시제품 · 실증 범위 축소",
+                                                 f"창업사업화 연계 최대 {TP['biz_link'] / 1e4:.0f}억원 (선정 뒤 별도 신청)은 미반영",
+                                                 '절감 옵션: 로봇 팔 구매형 시제품 · 목업 공간 공유 · 채용 3개월 순연 (일정 위험 증가)'],
          size=9.5, color=T['text2'], bullet='–', space_after=4)
-    statement(s, MX, 6.0, CW, f"결론: 20억원은 '과다'가 아니라 24개월 기준 약 {F['gap_vs_seed'] / 1e4:.1f}억원 부족 → TIPS 연계를 기본 구조로, 미선정 시 25억원 또는 Bridge. 인증 본비용은 Series A로 이연",
+    statement(s, MX, 6.0, CW, f"결론: TIPS 단계는 기술 검증 (시제품 · 목업 · 가정 실증 · 공인시험)까지. 판매 · 파트너 확장과 본인증은 후속 투자 (3년차~)로 넘김",
               size=10.5)
     foot(s, 'A16')
 
@@ -471,14 +475,13 @@ def a17(prs):
             ['PSM + Gabor-Granger', 'n≥300 (Panel)', 'Robot 가격 · Rental 월 요금 · Care 요금 Range', 'M4~M6'],
             ['Choice-based Conjoint', 'n≥300', '가격 × Task 범위 × 노출/은폐 × 소음 × 설치일수 × Care', 'M6~M9'],
             ['Smoke Test', 'Mock-up Demo 방문자', '환불가능 예약금 전환율', 'M9~M12'],
-            ['Paid Pilot', '3~5세대', '실제 결제 · 사용 Log · 해지 의향', 'M12~M24']]
+            ['Paid Pilot', '3세대 (TIPS 가정 실증)', '실제 결제 · 사용 Log · 해지 의향', 'M13~M24']]
     table(s, MX, y, lw, ['방법', '표본', '확인 항목', '시점'], rows, col_w=[1.4, 1.8, lw - 4.0, 0.8], size=9, label='cv', max_h=4.2)
     rx = MX + lw + 0.3; rw = W - MX - rx
-    kp = [['Task Success Rate (Approved Task)', '85%', '95%'], ['Cycle Time (식기 1개 Pick→Place)', '25초', '15초'],
-          ['Human Intervention', '20개당 1회 이하', '100개당 1회 이하'], ['Object Coverage (표준 한식 식기)', '60%', '80%'],
-          ['Recovery Rate (Grasp 실패 자동복구)', '50%', '70%'], ['Noise (1m)', '측정', '55dB(A) 이하'],
-          ['Safety Stop (Zone 진입)', '100% 정지', '100% · 오정지 1일 1회 이하'], ['Calibration · Installation Time', '측정', '2시간 · 1일 2인']]
-    table(s, rx, y, rw, ['기술 KPI (TARGET)', 'M12 Mock-up', 'M24 Real Home'], kp, col_w=[rw - 2.4, 1.15, 1.25], size=9, label='tkpi', max_h=4.2)
+    import slides_main as SMK        # same KPI list as the main-deck TIPS goal slide (single source)
+    kp = [[k['name'].split('\n')[0] + (f" ({k['unit']})" if k['unit'] else ''), k['y1'], k['goal']] for k in SMK.TIPS['kpi'] if k['name'][:4] != '표준 한']
+    kp += [['그립 실패 자동 복구율 (%)', '50', '70'], ['소음 (1m, dB(A))', '측정', '55 이하']]
+    table(s, rx, y, rw, ['기술 KPI (TARGET)', '1차년도 (목업)', '최종 (가정 실증)'], kp, col_w=[rw - 2.5, 1.2, 1.3], size=9, label='tkpi', max_h=4.2)
     statement(s, MX, 6.0, CW, 'Kill 연동: M9 성공률 70% 미만 → Task Scope 축소 (Unloading·Storage 우선)  |  M12 WTP 중앙값이 목표가의 60% 미만 → B2C 재검토 (신축 B2B2C·Rental 중심)',
               size=10.5)
     foot(s, 'A17')
@@ -574,7 +577,7 @@ def score():
          ('Recurring Revenue', 2, 3, f"구조 설계됨. 비중 Y5 {rs:.0%} · 정상상태 약 {M['steady']['rec_share']:.0%}"),
          ('Distribution', 1, 3, 'Partner 접촉 없음. Partner 역할·수수료 구조만 설계'),
          ('Team', 1, None, '[Founder 정보 필요] — 평가 불가'),
-         ('Capital Efficiency', 2, 3, f"20억 단독 약 {M['funds']['months_equity_only']:.0f}개월. 5년 누적 현금소요 약 {-Bm['min_cum_cash'] / 1e4:.0f}억 (Base)")]
+         ('Capital Efficiency', 2, 3, f"TIPS 24개월 지출 약 {M['tips']['spend_total'] / 1e4:.1f}억 · 후속 투자 없으면 약 {M['tips']['runway_no_followon']:.0f}개월. 5년 누적 현금소요 약 {-Bm['min_cum_cash'] / 1e4:.0f}억 (Base)")]
 
 @apx
 def a22(prs):
@@ -604,7 +607,7 @@ def a22(prs):
     tot_c = sum(c for _, c, _, _ in SCORE); tot_t = sum((t or c) for _, c, t, _ in SCORE)
     rx = MX + lw + 0.3; rw = W - MX - rx
     rect(s, rx, y, rw, 0.95, fill=T['text'])
-    text(s, rx + 0.2, y + 0.06, rw - 0.4, 0.3, 'SEED VC 판단', size=10, bold=True, color='A9AEB5')
+    text(s, rx + 0.2, y + 0.06, rw - 0.4, 0.3, '운영사 관점 판단 (작성자 의견)', size=10, bold=True, color='A9AEB5')
     text(s, rx + 0.2, y + 0.33, rw - 0.4, 0.55, 'WATCH', size=26, bold=True, color=T['accent'])
     text(s, rx + 1.9, y + 0.42, rw - 2.1, 0.45, f"현재 {tot_c}/50 → Target {tot_t}/50", size=10, color='FFFFFF')
     text(s, rx, y + 1.1, rw, 0.3, 'INVEST 전환 조건 (최대 5개)', size=11.5, bold=True)
@@ -617,7 +620,7 @@ def a22(prs):
         cy = y + 1.42 + i * 0.55
         text(s, rx, cy, 0.3, 0.5, str(i + 1), size=12, bold=True, color=T['accent'], anchor='m')
         text(s, rx + 0.32, cy, rw - 0.32, 0.55, c, size=9.5, anchor='m')
-    statement(s, MX, 6.25, CW, '판단 근거: 진입 방식(구축 Validation → 신축 Scale)·Kill Criteria·BM 구조는 명확. 그러나 Founder·고객·표준화·Channel Evidence가 모두 공백 → 현 시점 20억원 집행 근거 부족',
+    statement(s, MX, 6.25, CW, '판단 근거: 진입 방식(구축 Validation → 신축 Scale)·Kill Criteria·BM 구조는 명확. 그러나 Founder·고객·표준화·Channel Evidence가 모두 공백 → 현 시점 투자 · TIPS 추천 근거 부족 (WATCH)',
               size=10.5)
     foot(s, 'A22')
 

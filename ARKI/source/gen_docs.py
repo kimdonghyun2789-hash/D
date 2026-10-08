@@ -19,12 +19,28 @@ def man(x, d=0): return f"{x:,.{d}f}"
 def pct(x, d=0): return f"{x * 100:.{d}f}%"
 HH = M['household']; h3, h5 = HH['purchase_direct_Y3'], HH['purchase_direct_Y5']; r3h, r5h = HH['rental_direct_Y3'], HH['rental_direct_Y5']
 R3, R5 = M['rental']['Y3'], M['rental']['Y5']; C3, C5 = M['care']['Y3'], M['care']['Y5']; CO = M['cons']
-MK = M['market']['B']; F = M['funds']; VA = M['value']; PI = M['partner_irr']
-HEADER = '> ARKI Robotics (가칭) · Seed 투자 제안서 · Draft v3 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.\n'
+MK = M['market']['B']; TP = M['tips']; VA = M['value']; PI = M['partner_irr']
+HEADER = '> ARKI Robotics (가칭) · TIPS 창업기업 IR · Draft v4 · 2026-10-08 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·파트너·투자유치 없음.\n'
+
+TIPSIFY = [('내가 실제 Seed VC라면', 'TIPS 운영사 심사역이라면'), ('현재 자료로 20억원을 집행하면', '현재 자료로 운영사 투자 · TIPS 추천을 하면'),
+           ('Robotics Hardware Seed의 일반 기준', '로봇 하드웨어 초기 투자의 일반 기준'), ('Seed Close 또는 범위 수정', '운영사 투자 · TIPS 신청 또는 범위 수정'),
+           ('실제 Seed 심사역 관점의', '운영사 심사역 · TIPS 평가위원 관점의'), ('Seed 판단의 핵심 4요소', '투자 판단의 핵심 4요소'),
+           ('Seed 판단의 1순위', '투자 · TIPS 판단의 1순위'), ('Seed 판단 1순위', '투자 · TIPS 판단 1순위'), ('Seed 자금이 끝까지 소진되기 전', '자금이 끝까지 소진되기 전'),
+           ('Seed 자본이 "Option 매입"으로', '초기 자금이 "Option 매입"으로'), ('Seed 90일', '과제 첫 90일'), ('(Seed 범위)', '(TIPS 기간)'), ('Seed M0~M3', '과제 M0~M3'),
+           ('Seed 기간 또는 이후 목표', 'TIPS 기간 또는 이후 목표'), ('Seed 기간', 'TIPS 기간'), ('Seed에는', 'TIPS 기간에는'), ('Seed는', '초기에는'),
+           ('84㎡ Full-scale Mock-up', '실물 크기 목업 (대표 평면 기준)'), ('84㎡ 11자 Full-scale Mock-up', '대표 평면 기준 실물 크기 목업'),
+           ('Seed', '초기')]
+
+def tipsify(t):
+    for a, b in TIPSIFY:
+        t = t.replace(a, b)
+    return t
 
 def write(name, body):
     if name[:2] not in ('00', '01', '02'):      # hand-written docs still cite v1 slide numbers -> current locations (본문 쪽 / 부록 코드)
         body = common.remap(body)
+    if name[:2] not in ('00', '01', '02', '07'):
+        body = tipsify(body)
     with open(os.path.join(DOCS, name), 'w', encoding='utf-8') as f:
         f.write(body.strip() + '\n')
     print('wrote', name)
@@ -56,11 +72,13 @@ def deck_script(appendix):
 
 Q6 = '\n'.join(f"{i}. {q}" for i, q in enumerate(['누가 가장 먼저 돈을 내는가?', '고객이 얼마까지 지불할 가능성이 있는가?', '한 세대 설치 시 회사가 얼마를 버는가?',
                                                    '집마다 다른 주방을 얼마나 표준화할 수 있는가?', '설치대수가 늘어날수록 반복매출과 Gross Margin이 개선되는가?',
-                                                   'Seed 20억원 이후 어떤 핵심 Risk가 제거되는가?'], 1))
-write('01_Main_Deck_Script.md', f"""# 01. 본문 IR 덱 — 장별 문구 · 그림 · 발표 메모 (15장)
+                                                   'TIPS 24개월 뒤 어떤 핵심 위험이 제거되는가?'], 1))
+_NM = sum(1 for m in DT['meta'] if isinstance(m['no'], int))
+write('01_Main_Deck_Script.md', f"""# 01. 본문 IR 덱 — 장별 문구 · 그림 · 발표 메모 ({_NM}장)
 
 {HEADER}
-- 파일: `ARKI/ARKI_Robotics_Seed_IR_Deck.pptx` (본문 1~15쪽 + 부록 A~F, 16:9) · 본문만 PDF `ARKI_Robotics_Seed_IR_Deck_Main15.pdf` · 전체 검토용 PDF `ARKI_Robotics_Seed_IR_Deck_preview.pdf`
+- 파일: `ARKI/ARKI_Robotics_TIPS_IR_Deck.pptx` (본문 1~{_NM}쪽 + 부록 A~F, 16:9) · 본문만 PDF `ARKI_Robotics_TIPS_IR_Deck_Main.pdf` · 전체 검토용 PDF `ARKI_Robotics_TIPS_IR_Deck_preview.pdf`
+- 구성: 1~14쪽 = IR (TIPS 연구개발계획서 별첨 6항목: 문제 · 솔루션 / 시장 / 경쟁 / 비즈니스 모델 / 팀 / 사업화 로드맵 · 매출 목표) · 15~{_NM}쪽 = TIPS 과제 요약 (본문1 항목: 목표 · 성과지표 / 연차 목표 · 일정 / 개발 방법 · 선행 개발 / 추진 체계 · 지식재산 · 안전 / 연구개발비 · 자금)
 - 아래 "화면 문구"는 덱 생성 코드가 화면에 그린 텍스트를 그대로 추출한 것 (표는 `|`로 열 구분, `[TAG]`는 숫자 태그).
 - 3D 그림은 `ARKI/render3d`에서 생성 (충돌검사 결과는 각 PNG 옆 JSON의 `ik.pen`, 관통 cm).
 
@@ -126,12 +144,13 @@ outrows = [
     ['DERIVED', 'Y5 영업이익 C / B / U', f"{eok(S['C']['op'][4])} / {eok(B['op'][4])} / {eok(S['U']['op'][4])}억원", 'A14'],
     ['DERIVED', '5년 누적 현금흐름 최저 (Base)', f"{eok(B['min_cum_cash'])}억원", 'A14'],
     ['DERIVED', '손익분기 Kitchen (연, Y5 단가·원가)', f"{M['breakeven_kitchens']:,.0f}세대", '24장'],
-    ['DERIVED', 'Seed 24개월 수정 예산 / Seed 단독 Runway', f"{eok(F['revised_total'])}억원 / {F['months_equity_only']:.1f}개월", 'A16'],
+    ['DERIVED', 'TIPS 24개월 회사 전체 지출 / 후속 투자 없을 때 자금 지속', f"{eok(TP['spend_total'])}억원 / {TP['runway_no_followon']:.1f}개월", 'A16'],
+    ['ASSUMPTION', 'TIPS 과제 예산 (정부 · 민간 현금 · 현물)', f"{eok(TP['total'])}억원 ({eok(TP['gov'])} · {eok(TP['private_cash'], 2)} · {eok(TP['inkind'], 2)})", '본문 19쪽'],
     ['DERIVED', '정상상태 Recurring / Upgrade 비중', f"{pct(M['steady']['rec_share'])} / {pct(M['steady']['upg_share'])}", '19장'],
 ]
 tgt = [['TARGET', '평면 분석', '30개 이상 (신축 15 · 구축 15)'], ['TARGET', 'Layout Family / Robot Architecture', '3~5 / 2~3'],
-       ['TARGET', 'Standard Module 사용률', '65% (Y3) · 80% (Y5) · Kill: M18 60% 미만'], ['TARGET', 'Approved Task', '3개 이상 (M12)'],
-       ['TARGET', 'Task Success Rate', '85% (M12 Mock-up) · 95% (M24 Real Home)'], ['TARGET', 'Consumer Interview / Conjoint', '50명 / n≥300'],
+       ['TARGET', 'Standard Module 사용률', '65% (Y3) · 80% (Y5) · Kill: M18 60% 미만'], ['TARGET', '식기 정리 성공률 (사람 개입 없이)', '70% (M9 목업) · 90% (M24 가정 실증)'],
+       ['TARGET', '특허 출원', '24개월 5건 (Y1 2 · Y2 3, 등록 미정)'], ['TARGET', 'Consumer Interview / Conjoint', '50명 / n≥300'],
        ['TARGET', 'Home Pilot', '3~5세대 (Paid Pilot 포함)'], ['TARGET', 'Installation · Calibration Time', '1일·2인 · 2시간 (M24)'],
        ['TARGET', 'Patent 출원', '5~8건 (선행기술조사 후)'], ['TARGET', 'Volume (Base)', f"구축 직접 {v('rd')} · Partner {v('rp')} · 신축 Project {v('projects')}"]]
 write('04_Number_Tag_Register.md', f"""# 04. FACT / DERIVED / ASSUMPTION / TARGET 구분표
@@ -187,7 +206,7 @@ write('05_Financial_Model_5Y.md', f"""# 05. 5-Year Financial Model (Bottom-up ·
 
 {HEADER}
 - 수식 모델: `ARKI/ARKI_Robotics_Financial_Model.xlsx` (Inputs → FM_Conservative / FM_Base / FM_Upside → Scenario_Summary). 1,778개 수식, LibreOffice 재계산 오류 0, `model.py`와 836개 값 교차검증 일치.
-- 단위: 억원 (수량 제외). Year 정의: Y1 = Seed 후 M0~M12, Y2 = M12~M24, Y3 = Series A 이후 첫 해.
+- 단위: 억원 (수량 제외). Year 정의: Y1 = TIPS 과제 M1~M12, Y2 = M13~M24 (TIPS 기간, 대표 + 연구원 4~5명), Y3 = 후속 투자 이후 첫 해.
 - 전부 DERIVED (from ASSUMPTION · TARGET). 실적 아님.
 
 ## Driver 구조
@@ -233,7 +252,7 @@ write('05_Financial_Model_5Y.md', f"""# 05. 5-Year Financial Model (Bottom-up ·
 ## 해석
 
 - Base Y5 매출 {eok(B['rev'][4])}억원, 매출총이익률 {pct(B['gm'][4])}, Contribution {eok(B['contrib'][4])}억원, 영업이익 {eok(B['op'][4])}억원 → **5년 내 흑자 전환 없음** (Hardware 회사의 일반 경로). 손익분기는 Y5 단가·원가 기준 연 약 {M['breakeven_kitchens']:,.0f}세대 (Y6 이후, 신축 Backlog 설치 시점).
-- 5년 누적 현금흐름 최저점 (Base): {eok(B['min_cum_cash'])}억원 → 필요 외부자본 = Seed 20억 + TIPS(최대 8억) + Series A 약 80~100억 (Y3~Y4 영업손실 {eok(-(B['op'][2] + B['op'][3]))}억원 + Buffer) + Series B.
+- 5년 누적 현금흐름 최저점 (Base): {eok(B['min_cum_cash'])}억원 → 필요 외부자본 = TIPS 24개월 (정부지원 {eok(TP['gov'], 0)}억 + 운영사 투자 {eok(v('op_invest'), 0)}억 + 후속 투자 {eok(v('followon'), 0)}억) + Series A 약 80~100억 (Y3~Y4 영업손실 {eok(-(B['op'][2] + B['op'][3]))}억원 + Buffer) + Series B.
 - Conservative: Y5 Contribution {eok(S['C']['contrib'][4])}억원 ≈ 0 → 가격·BOM 가정이 깨지면 물량을 늘려도 가치가 생기지 않음 → **Kill Criteria M24 (Scale 투자 보류)** 시나리오.
 - Upside: 가격 동일, Partner 물량·표준화·설치원가 차이만으로 Y5 매출 {eok(S['U']['rev'][4])}억원, 영업이익 {eok(S['U']['op'][4])}억원.
 - 신축은 계약 후 2년 Lag로 5년 매출 기여가 Y5에 한정 (Base Y5 {B['ni'][4]:.0f}세대). Y5 말 Backlog {B['backlog'][4]:.0f}세대가 Y6~Y7 매출로 이어짐.
@@ -365,43 +384,54 @@ write('06_Unit_Economics_Household_Rental_Care.md', f"""# 06. Household · Renta
 {md_table(['변수', '불리 Δ (억원)', '유리 Δ (억원)'], [[d['name'], f"{d['lo'] / 1e4:,.1f}", f"+{d['hi'] / 1e4:,.1f}"] for d in scn['items']])}
 """)
 
-# ---------------------------------------------------------------- 07 use of funds
-rev = dict(F['revised']); dr = dict(F['draft'])
-write('07_Seed_Use_of_Funds_Review.md', f"""# 07. Seed Use of Funds 검증
+# ---------------------------------------------------------------- 07 TIPS budget plan
+_a = {d['key']: d['vals']['B'] for d in M['inputs']}
+_ppl = [_a['fte'][t] * _a['loaded'] for t in (0, 1)]
+_sp = [('인건비', _ppl, f"평균 {_a['fte'][0]:.1f}명 · {_a['fte'][1]:.0f}명 × 연 {_a['loaded']:,}만원"),
+       ('시제품 (로봇 · 주방)', [_a['proto'][0], _a['proto'][1]], '1차 2식 + 목업 주방 2식 (Y1) · 2차 개선 부품 (Y2)'),
+       ('목업 공간', [_a['space'][0], _a['space'][1]], '약 30평 임차 + 목업 시공'),
+       ('비전 · SW · 데이터', [_a['swdata'][0], _a['swdata'][1]], 'GPU · 클라우드 · 데이터 라벨링'),
+       ('안전 · 시험 · 특허', [_a['cert_ip'][0], _a['cert_ip'][1]], '선행기술조사 · 출원 5건 · 공인기관 사전시험'),
+       ('관리비', [_a['ga'][0], _a['ga'][1]], '법무 · 회계 · 보험 · 사무')]
+_known = [sum(x[1][t] for x in _sp) for t in (0, 1)]
+_sp.append(('고객 검증 · 실증', [TP['spend'][t] - _known[t] for t in (0, 1)], f"인터뷰 · 지불의사 조사 · 가정 실증 {_a['rd'][1]}세대 (실증 매출 차감)"))
+write('07_TIPS_Budget_Plan.md', f"""# 07. TIPS 기간 (24개월) 연구개발비 · 자금 계획
 
 {HEADER}
 ## 결론
 
-- **20억원은 과다가 아니라 24개월 기준 약 {F['gap_vs_seed'] / 1e4:.1f}억원 부족**. 실제 인건비·Prototype·Mock-up 공간·Pilot 손실을 반영한 수정안은 {F['revised_total'] / 1e4:.1f}억원, 20억원 단독 Runway는 약 {F['months_equity_only']:.1f}개월.
-- 권고 구조: **Plan A = Seed 20억 + TIPS R&D(일반, 최대 8억·24개월) = 28억** (여유 {(F['with_tips'] - F['revised_total']) / 1e4:.1f}억). TIPS는 운영사 투자·선정 절차가 필요하며 미확정. **Plan B = Seed 25억원 또는 M18 Bridge** (M12 Evidence 기반).
-- 인증 본비용(KC 본인증 · ISO 13482 적용 등)은 Series A로 이연. Seed는 Risk Assessment · 예비시험 · 설계 기준 적용까지.
+- TIPS 과제 예산 **{TP['total'] / 1e4:.1f}억원** = 정부지원금 {TP['gov'] / 1e4:.0f}억원 (2026 일반 트랙 최대, 선정 미확정) + 민간부담 {TP['private'] / 1e4:.1f}억원 (현금 {TP['private_cash'] / 1e4:.2f} · 현물 {TP['inkind'] / 1e4:.2f}억원).
+- 과제 밖 비용까지 더한 **24개월 회사 전체 지출은 약 {TP['spend_total'] / 1e4:.1f}억원** (Y1 {TP['spend'][0] / 1e4:.1f} · Y2 {TP['spend'][1] / 1e4:.1f}억원).
+- 재원: TIPS {TP['gov'] / 1e4:.0f} + 운영사 투자 {_a['op_invest'] / 1e4:.0f} (요청, ASSUMPTION) + 후속 투자 {_a['followon'] / 1e4:.0f}억원 (M12 점검 뒤, TARGET) = {TP['src_total'] / 1e4:.0f}억원 → 여유 {TP['buffer'] / 1e4:.1f}억원.
+- 후속 투자가 없으면 약 **{TP['runway_no_followon']:.0f}개월**까지 → 2차 시제품 · 가정 실증 범위를 줄여야 함. 창업사업화 연계 (최대 {TP['biz_link'] / 1e4:.0f}억원, 선정 뒤 별도 신청)는 미반영.
+- 이전 Seed 안 (20억원 · 24개월, 재산정 25.8억원)은 TIPS 계획으로 대체: 팀을 평균 6 → 9명에서 {_a['fte'][0]:.1f} → {_a['fte'][1]:.0f}명으로 줄이고, 판매 · 파트너 확장과 본인증은 후속 투자 단계 (3년차~)로 넘김.
 
-## Draft vs 수정안 (억원, 24개월)
+## TIPS 과제 예산 (비목별, 억원)
 
-{md_table(['항목', 'Draft', '수정안', '근거 (ASSUMPTION)'], [
-    ['Core Development Team', f"{dr['Core Development Team'] / 1e4:.1f}", f"{rev['Core Development Team'] / 1e4:.1f}", f"평균 인원 Y1 {v('fte')[0]}명·Y2 {v('fte')[1]}명 × 인당 연 {v('loaded'):,}만원 (평균 연봉 약 7,100만원 × 1.2)"],
-    ['Robot / Kitchen Prototype', f"{dr['Robot / Kitchen Prototype'] / 1e4:.1f}", f"{rev['Robot / Kitchen Prototype'] / 1e4:.1f}", 'Arm 3~4대 (FR5·xArm 급 공개가 $7~8k) · Rail 2식 · End-effector 반복 · Garage 기구'],
-    ['Mock-up / Installation Development', f"{dr['Mock-up / Installation Development'] / 1e4:.1f}", f"{rev['Mock-up / Installation Development'] / 1e4:.1f}", '약 50평 임차 24개월 + Full-scale Kitchen Mock-up 2식 (11자·ㄷ자) + 재시공'],
-    ['Vision / Software / Data', f"{dr['Vision / Software / Data'] / 1e4:.1f}", f"{rev['Vision / Software / Data'] / 1e4:.1f}", 'GPU·Cloud · Data 수집·Annotation · Depth Camera'],
-    ['Pilot / Customer Validation', f"{dr['Pilot / Customer Validation'] / 1e4:.1f}", f"{rev['Pilot / Customer Validation'] / 1e4:.1f}", 'Interview·Time-diary·PSM·Conjoint(n≥300) + Home Pilot 5세대 매출총손실 + Pilot 획득비용 + Marketing'],
-    ['Safety / Certification / IP', f"{dr['Safety / Certification / IP'] / 1e4:.1f}", f"{rev['Safety / Certification / IP'] / 1e4:.1f}", 'Risk Assessment · 예비시험 · 선행기술조사 · 출원 5~8건 (KR) + PCT 1~2건'],
-    ['Operations / Contingency', f"{dr['Operations / Contingency'] / 1e4:.1f}", f"{(rev['Operations (G&A)'] + rev['Contingency (10%)']) / 1e4:.1f}", f"G&A {rev['Operations (G&A)'] / 1e4:.1f} (법무·회계·보험·사무) + Contingency 10% {rev['Contingency (10%)'] / 1e4:.1f}"],
-    ['**합계**', f"**{F['draft_total'] / 1e4:.1f}**", f"**{F['revised_total'] / 1e4:.1f}**", ''],
-])}
+{md_table(['비목', '내용', '구분', '1차년도', '2차년도', '합계'],
+          [[r['cat'], r['item'], r['kind'], f"{r['y1'] / 1e4:.2f}", f"{r['y2'] / 1e4:.2f}", f"{r['total'] / 1e4:.2f}"] for r in TP['rows']]
+          + [['**합계**', f"정부 {TP['gov'] / 1e4:.0f} · 민간 {TP['private'] / 1e4:.2f}", '', f"**{TP['year_total'][0] / 1e4:.2f}**", f"**{TP['year_total'][1] / 1e4:.2f}**", f"**{TP['total'] / 1e4:.2f}**"]])}
 
-## 항목별 현실성 검토
+- 가정 (ASSUMPTION): 정부지원 비율 {_a['tips_gov_ratio']:.0%} 이내 · 민간 현금 {_a['tips_cash_ratio']:.0%} 이상 — 2026 공고 원문으로 최종 확인 필요. 간접비는 직접비 대비 약 {TP['indirect_rate']:.1%}.
+- 인건비: 연 {_a['loaded']:,}만원/인 (평균 연봉 약 7,100만원 × 1.2, 4대보험 · 퇴직급여 포함) × 참여 개월 × 과제 참여율.
 
-1. **인건비 (가장 큰 차이)**: Draft 8억원 = 24개월 평균 약 4.7명 (인당 8,500만원 기준). Robot 제어·Perception·Mechatronics·주방/건축 Integration·Embedded/Safety·현장 설치·BD를 동시에 수행할 수 없음. 수정안은 평균 7.5명 (Y1 6 → Y2 9).
-2. **Prototype**: Draft 4억원은 과다 가능. 구매형 Arm(공개가 $7~8k급) 기반 Prototype이면 2년 3억원 내외로 가능 (A4). 단, 전용 Arm 개발은 Series A 이후.
-3. **Mock-up 공간**: Full-scale Kitchen Mock-up 2식은 최소 30~50평 필요. 경기 남부 지식산업센터·공장형 임차 가정 (임대료 ASSUMPTION, 견적 필요).
-4. **Pilot**: Home Pilot 5세대는 할인 유료 (실현율 50%) → Robot·Kitchen 원가 대비 손실 발생. 고객 조사(Panel n≥300 Conjoint) 비용 포함.
-5. **인증**: 로봇 KC·EMC·안전 본인증 비용은 공개 자료 없음 (ASSUMPTION). Seed에는 예비시험·Risk Assessment만 반영.
-6. **Runway 관리**: M12에 Evidence Review (WTP·Template·Task 성공률) → Bridge 또는 Series A 조기 착수 판단.
+## TIPS 기간 팀 (채용 계획, ASSUMPTION)
 
-## 절감 옵션 (일정 Risk 증가)
+{md_table(['역할', '시작', '인건비 구분', '과제 참여율', 'Y1 인·월', 'Y2 인·월'],
+          [[t['role'], f"M{t['start']}", t['kind'], (f"{t['part']:.0%}" if t['part'] else '과제 외'), t['pm_y1'], t['pm_y2']] for t in TP['team']])}
 
-- 채용 3개월 순연 (−1.5~2억) · Mock-up 공간 공유 (가구 Partner 공장·쇼룸 활용, −0.5억) · Prototype 1식 축소 (−0.5~1억).
-- 절감 시 M12 Clean-up Integrated Demo 지연 가능성 → Kill Criteria 일정 재조정 필요.
+대표 외 인원은 모두 신규 채용 계획. 창업팀 정보는 `[Founder 정보 필요]`.
+
+## 회사 전체 지출 (24개월, 억원) — 재무모델 Base Y1 + Y2
+
+{md_table(['항목', 'Y1', 'Y2', '합계', '근거'], [[lab, f"{x[0] / 1e4:.2f}", f"{x[1] / 1e4:.2f}", f"{(x[0] + x[1]) / 1e4:.2f}", why] for lab, x, why in _sp]
+          + [['**합계**', f"**{TP['spend'][0] / 1e4:.2f}**", f"**{TP['spend'][1] / 1e4:.2f}**", f"**{TP['spend_total'] / 1e4:.2f}**", '= −현금흐름 (FM_Base)']])}
+
+## 점검과 범위 조정
+
+- M9 목업 정리 성공률 70% · M12 지불의사 (중앙값 ≥ 목표가 60%)가 후속 투자 판단 자료. 미달 시 작업 범위 축소 · B2C 재검토 (본문 16쪽).
+- 절감 옵션 (일정 위험 증가): 로봇 팔 구매형 시제품 유지 · 목업 공간 공유 (가구 파트너 공장 · 쇼룸) · 채용 3개월 순연.
+- xlsx `TIPS_Budget` 시트에서 정부지원 비율 · 민간 현금 비율 충족 여부를 수식으로 확인.
 """)
 
 # ---------------------------------------------------------------- 08 IP
@@ -438,7 +468,7 @@ write('08_IP_Patent_Portfolio.md', f"""# 08. IP / Patent Portfolio (후보)
 - 1순위 (사업 핵심 + 선행 위험 상대적 낮음 추정): ② Interface Module · ⑦ Auto Calibration · ⑧ Dishwasher Interface.
 - 2순위: ① Rail·Dock·Storage 일체 구조 (선행 위험 높음 → 구조체 정착 Frame·Garage 조합으로 범위 설계) · ④ Zone Safety.
 - 3순위: ③ · ⑤ · ⑥ · ⑨ · ⑩ (Prototype 이후 실제 구조 확정 시).
-- Seed 목표: KR 출원 5~8건 + PCT 1~2건 (비용은 Use of Funds Safety/Certification/IP 항목에 포함, ASSUMPTION).
+- TIPS 24개월 목표: KR 출원 5건 (Y1 2 · Y2 3) + PCT는 후속 투자 단계에서 검토 (비용은 TIPS 과제 연구활동비 · 안전 · 시험 · 특허 항목에 포함, ASSUMPTION).
 
 ## Moat에서 IP의 위치
 
@@ -465,7 +495,7 @@ write('09_VC_RedTeam_QA.md', f"""# 09. VC 예상질문 · Red-Team 답변
 | 가치 Anchor(월 11~24만원) < 원가 기반 Rental(월 24~31만원) | 14장 Gap Statement · 02장 Q2 |
 | Rental Payback Y3 39개월 > 36개월 | 17장 하단 · A12 결론 |
 | Care는 Y3에 Profit Center 아님 | 17장 · A13 |
-| Seed 20억원 24개월 부족 | 24장 · A16 |
+| TIPS 이후 후속 투자 의존 (후속 없으면 약 18개월) | 본문 19쪽 · D11 |
 | 신축 매출 2년 Lag | 12장 Timing |
 | Founder 정보 공백 | 03장 · 23장 · A22 |
 | 범용 Humanoid의 월 $499 구독가 | 20장 · A9 시사점 |
@@ -474,7 +504,7 @@ write('09_VC_RedTeam_QA.md', f"""# 09. VC 예상질문 · Red-Team 답변
 # ---------------------------------------------------------------- 10 investment memo
 SC = SA.score()
 tot_c = sum(c for _, c, _, _ in SC); tot_t = sum((t or c) for _, c, t, _ in SC)
-write('10_Investment_Memo.md', f"""# 10. Investment Memo — ARKI Robotics (가칭) Seed
+write('10_Investment_Memo.md', f"""# 10. Investment Memo — ARKI Robotics (가칭) · TIPS 운영사 검토용
 
 {HEADER}
 | 항목 | 내용 |
@@ -482,7 +512,7 @@ write('10_Investment_Memo.md', f"""# 10. Investment Memo — ARKI Robotics (가�
 | 회사 | ARKI Robotics (아키로보틱스, 가칭) — Residential Built-in Robotics |
 | 제품 | ARKI Kitchen System (Robot-ready Kitchen + Robot Module + Software + Installation + Care/Consumables) · 첫 제품 ARKI Kitchen Assist V1 (Kitchen Clean-up) |
 | 첫 시장 | 구축 아파트 Premium Kitchen Remodeling (Validation) → 신축 Robot-ready Option (Scale) |
-| 요청 | Seed 20억원 (가설) + TIPS 연계 · 24개월 |
+| 요청 | 운영사 투자 {v('op_invest') / 1e4:.0f}억원 (가설) + TIPS R&D 최대 {TP['gov'] / 1e4:.0f}억원 · 24개월 (회사 전체 지출 약 {TP['spend_total'] / 1e4:.1f}억원, 후속 투자 {v('followon') / 1e4:.0f}억원 목표) |
 | 단계 | Concept. Prototype · 고객 · Partner · 특허 · 매출 없음. Founder 정보 미입력 |
 | **판단** | **WATCH** (아래 근거) |
 
@@ -529,7 +559,7 @@ write('10_Investment_Memo.md', f"""# 10. Investment Memo — ARKI Robotics (가�
     ['Base 매출 Y3 / Y5', f"{eok(B['rev'][2])} / {eok(B['rev'][4])}억원", 'DERIVED'],
     ['Base 매출총이익률 Y3 / Y5', f"{pct(B['gm'][2])} / {pct(B['gm'][4])}", 'DERIVED'],
     ['Base 영업이익 Y5 · 5년 누적현금 최저', f"{eok(B['op'][4])}억원 · {eok(B['min_cum_cash'])}억원", 'DERIVED'],
-    ['Seed 24개월 수정 예산 · 20억 단독 Runway', f"{eok(F['revised_total'])}억원 · {F['months_equity_only']:.1f}개월", 'DERIVED'],
+    ['TIPS 24개월 지출 · 후속 투자 없을 때 자금 지속', f"{eok(TP['spend_total'])}억원 · {TP['runway_no_followon']:.1f}개월", 'DERIVED'],
     ['손익분기 (연 Kitchen)', f"약 {M['breakeven_kitchens']:,.0f}세대", 'DERIVED'],
 ])}
 
@@ -622,23 +652,23 @@ write('11_Evidence_Gaps_Founder_Inputs_90Day.md', f"""# 11. 현재 부족한 Evi
 덱에서 `[Founder 정보 필요]` 또는 `[입력 필요]`로 남긴 항목. 임의 생성하지 않음.
 
 {md_table(['항목', '내용', '위치'], [
-    ['Founder Background', '학력·주요 경력 (기간·조직·역할)', '23장'],
-    ['Relevant Engineering Experience', 'Robot 제어·Manipulation·Vision·Mechatronics 실적 (논문·제품·특허·코드)', '23장'],
-    ['Product Development Experience', '하드웨어 제품 출시·양산·인증 경험', '23장'],
-    ['Construction / Kitchen Understanding', '주방가구·인테리어·건설 설계/시공 경험 (공동주택 Kitchen 이해)', '23장'],
-    ['Robot Experience', 'Cobot·Service Robot 개발/운영 경험', '23장'],
-    ['Customer / Partner Network', '인테리어·가구사·건설사·렌탈사 접점 (실명 가능 범위)', '23장 · 19장'],
-    ['Full-time Commitment', 'Full-time 전환 시점 · 지분 구조 · Vesting', '23장'],
-    ['회사 정보', '법인 설립 여부 · 상호(ARKI 가칭) 상표 검색 결과 · 소재지', '01장'],
-    ['투자 조건', '투자 형태 (보통주·RCPS·SAFE 등) · Pre-money · 지분율 · 라운드 구성 · TIPS 운영사', '24장'],
+    ['Founder Background', '학력·주요 경력 (기간·조직·역할)', '본문 14쪽'],
+    ['Relevant Engineering Experience', 'Robot 제어·Manipulation·Vision·Mechatronics 실적 (논문·제품·특허·코드)', '본문 14쪽'],
+    ['Product Development Experience', '하드웨어 제품 출시·양산·인증 경험', '본문 14쪽'],
+    ['Construction / Kitchen Understanding', '주방가구·인테리어·건설 설계/시공 경험 (공동주택 Kitchen 이해)', '본문 14쪽'],
+    ['Robot Experience', 'Cobot·Service Robot 개발/운영 경험', '본문 14쪽'],
+    ['Customer / Partner Network', '인테리어·가구사·건설사·렌탈사 접점 (실명 가능 범위)', '본문 14 · 12쪽'],
+    ['Full-time Commitment', 'Full-time 전환 시점 · 지분 구조 · Vesting', '본문 14쪽'],
+    ['회사 정보', '법인 설립 여부 · 상호(ARKI 가칭) 상표 검색 결과 · 소재지', '본문 1쪽'],
+    ['투자 조건', '투자 형태 (보통주·RCPS·SAFE 등) · Pre-money · 지분율 · 라운드 구성 · TIPS 운영사', '본문 19쪽'],
     ['현재 Evidence', '보유 설계자료 · Prototype · 인터뷰 · Partner 미팅 · 특허 (있으면 03장 CURRENT EVIDENCE 갱신)', '03장'],
-    ['연락처', 'IR 담당자 연락처', '01 · 24장'],
+    ['연락처', 'IR 담당자 연락처', '본문 1 · 19쪽'],
 ])}
 
 ## 3. 90일 실행계획 (Evidence Pack v1)
 
 {md_table(['주차', '실행', '산출물 (Evidence)', '담당 역량'], [
-    ['W1~W2', 'Founding Team 확정 · 역할·지분 · Founder 정보 정리 · ARKI 상표 선행 검색', 'Team Slide 완성 (23장)', 'CEO'],
+    ['W1~W2', 'Founding Team 확정 · 역할·지분 · Founder 정보 정리 · ARKI 상표 선행 검색', '팀 슬라이드 완성 (본문 14쪽)', 'CEO'],
     ['W1~W4', 'Kitchen 견적 20건 (한샘·리바트·LX·지역 인테리어, 일반/Premium/빌트인 포함)', 'A3 ASSUMPTION → 견적 Data 대체', 'BD'],
     ['W1~W6', '입주자모집공고 평면 30개 수집 · 분석 Template (치수·설비·Robot Home 후보)', 'Layout Family 초안 · Coverage %', 'Kitchen·건축'],
     ['W2~W6', 'Time-diary 30세대 (7일) · Interview 30명 (Premium 상담 고객, 인테리어 업체 협조)', 'Pain 크기 · 수용성 · 우려 Top 5', 'BD·Research'],
@@ -648,7 +678,7 @@ write('11_Evidence_Gaps_Founder_Inputs_90Day.md', f"""# 11. 현재 부족한 Evi
     ['W4~W10', 'Arm OEM 3곳·Rail·Gripper·Vision RFQ (100대 기준)', 'BOM v1 (A4 갱신)', 'Mechatronics'],
     ['W6~W10', '주방가구·인테리어 사업자 10곳 미팅', 'Pilot 협력 합의 1곳 (실재)', 'BD'],
     ['W8~W12', '84㎡ 11자 Full-scale Mock-up 설계·발주 · Risk Assessment 초안 · 인증기관 사전상담', 'Mock-up 설계도 · 안전 요구사항 목록', 'Kitchen·Safety'],
-    ['W10~W12', 'PSM 1차 (n≈300 Panel) · TIPS 운영사 접촉 · IR Deck v2 (Evidence 반영)', 'WTP Range · 투자 구조 확정', 'CEO'],
+    ['W10~W12', 'PSM 1차 (n≈300 Panel) · TIPS 운영사 접촉 · IR 덱 v5 (Evidence 반영)', 'WTP Range · 운영사 투자 · TIPS 추천 구조 확정', 'CEO'],
 ])}
 
 **Day 90 판정**: Evidence Pack v1 (견적 20 · 평면 30 · Interview 30 · Time-diary 30 · Rig Log · BOM v1 · 선행조사 · Partner 1) → Seed Close 또는 범위 수정.
@@ -667,12 +697,12 @@ write('11_Evidence_Gaps_Founder_Inputs_90Day.md', f"""# 11. 현재 부족한 Evi
 """)
 
 # ---------------------------------------------------------------- 00 index
-write('00_Index.md', f"""# ARKI Robotics — Seed IR Package Index
+write('00_Index.md', f"""# ARKI Robotics — TIPS IR Package Index
 
 {HEADER}
 | # | 요청 산출물 | 위치 |
 |---|---|---|
-| 1 | 본문 IR 덱 | `ARKI_Robotics_Seed_IR_Deck.pptx` 1~15쪽 · 본문만 `..._Main15.pdf` (전체 검토용 `..._preview.pdf`) |
+| 1 | 본문 IR 덱 (TIPS) | `ARKI_Robotics_TIPS_IR_Deck.pptx` 1~{_NM}쪽 (1~14 IR · 15~{_NM} TIPS 과제 요약) · 본문만 `..._Main.pdf` (전체 검토용 `..._preview.pdf`) |
 | 2 | 부록 | 같은 파일 부록 A~F (목차 포함, v1 본문 · 부록 전체 유지) |
 | 3 | 장별 화면 문구 | `docs/01_Main_Deck_Script.md` · `docs/02_Appendix_Script.md` |
 | 4 | 장별 그림 구성 | 같은 문서 "그림 구성" · 3D는 `ARKI/render3d` (README 참고) |
@@ -680,11 +710,11 @@ write('00_Index.md', f"""# ARKI Robotics — Seed IR Package Index
 | 6 | 발표 메모 | 같은 문서 "발표 메모" + pptx 발표자 노트 |
 | 7 | 시장 데이터와 출처 | `docs/03_Market_Data_and_Sources.md` · xlsx `Sources` · 덱 부록 F2 |
 | 8 | FACT / DERIVED / ASSUMPTION / TARGET 구분표 | `docs/04_Number_Tag_Register.md` · xlsx `Inputs` · 덱 부록 F1 |
-| 9 | 5개년 재무모델 | `ARKI_Robotics_Financial_Model.xlsx` · `docs/05_Financial_Model_5Y.md` · 덱 본문 12쪽 · 부록 D9 |
-| 10 | 세대당 경제성 | `docs/06_...` §2·§7 · xlsx `Household` · 덱 본문 9쪽 · 부록 D2 · D6 |
+| 9 | 5개년 재무모델 | `ARKI_Robotics_Financial_Model.xlsx` · `docs/05_Financial_Model_5Y.md` · 덱 본문 13쪽 · 부록 D9 |
+| 10 | 세대당 경제성 | `docs/06_...` §2·§7 · xlsx `Household` · 덱 본문 11쪽 · 부록 D2 · D6 |
 | 11 | 렌탈 경제성 | `docs/06_...` §4 · xlsx `Unit_Economics` · 덱 부록 D7 |
 | 12 | 관리 · 소모품 경제성 | `docs/06_...` §5·§6 · 덱 부록 D8 |
-| 13 | Seed 자금 용도 검증 | `docs/07_Seed_Use_of_Funds_Review.md` · xlsx `Use_of_Funds` · 덱 본문 15쪽 · 부록 D11 |
+| 13 | TIPS 연구개발비 · 자금 계획 | `docs/07_TIPS_Budget_Plan.md` · xlsx `TIPS_Budget` · 덱 본문 19쪽 · 부록 D11 |
 | 14 | 특허 후보 | `docs/08_IP_Patent_Portfolio.md` · 덱 부록 E1 · E2 |
 | 15 | 예상 질문과 답 | `docs/09_VC_RedTeam_QA.md` · 덱 부록 E5~E6 |
 | 16 | Investment Memo | `docs/10_Investment_Memo.md` |
@@ -694,35 +724,65 @@ write('00_Index.md', f"""# ARKI Robotics — Seed IR Package Index
 | 20 | Top 5 Evidence | `docs/11_...` §4 · 덱 부록 A4 |
 """)
 
+# ---------------------------------------------------------------- facts sheet: TIPS / 재무 / 팀 sections regenerated from model.json
+def _facts_sections():
+    a = {d['key']: d['vals']['B'] for d in M['inputs']}; Bf = M['scenarios']['B']; Sf = M['scenarios']
+    eo = lambda x, d=1: f"{x / 1e4:.{d}f}"
+    fin = (f"## 재무 (Base, 억원)\n- 매출 Y1 {eo(Bf['rev'][0])} / Y2 {eo(Bf['rev'][1])} / Y3 {eo(Bf['rev'][2])} / Y4 {eo(Bf['rev'][3])} / Y5 {eo(Bf['rev'][4])} [DERIVED from ASSUMPTION/TARGET]\n"
+           f"- 매출총이익률 Y1 0% / Y2 {Bf['gm'][1]:.0%} / Y3 {Bf['gm'][2]:.0%} / Y4 {Bf['gm'][3]:.0%} / Y5 {Bf['gm'][4]:.0%}\n"
+           f"- 영업이익 Y1 {eo(Bf['op'][0])} / Y2 {eo(Bf['op'][1])} / Y3 {eo(Bf['op'][2])} / Y4 {eo(Bf['op'][3])} / Y5 {eo(Bf['op'][4])}\n"
+           f"- 5년 누적 현금 최저 약 {eo(Bf['min_cum_cash'], 0)}억원; 손익분기 연 약 {M['breakeven_kitchens']:,.0f}세대 (Y5 단가·원가, Y6 이후)\n"
+           f"- 시나리오 Y5 매출: 보수 {eo(Sf['C']['rev'][4])} / 기본 {eo(Bf['rev'][4])} / 상향 {eo(Sf['U']['rev'][4])}억원\n"
+           f"- Y1~Y2 = TIPS 과제 기간 (평균 인원 {a['fte'][0]}명 → {a['fte'][1]}명), Y2 가정 실증 {a['rd'][1]}세대 (실증 할인 50%) [ASSUMPTION/TARGET]\n"
+           f"## TIPS 요청 · 자금 (2026 팁스 창업기업 일반 트랙)\n"
+           f"- TIPS R&D 정부지원금 최대 {eo(a['tips'], 0)}억원 · 최대 {a['tips_months']}개월 [FACT, 2026 공고] · 선정 미확정. 정부지원 비율 {a['tips_gov_ratio']:.0%} 이내 · 민간 현금 {a['tips_cash_ratio']:.0%} 이상 (inputs 출처 참조)\n"
+           f"- TIPS 과제 예산 {eo(TP['total'])}억원 = 정부 {eo(TP['gov'], 0)} + 민간 {eo(TP['private'], 2)} (현금 {eo(TP['private_cash'], 2)} · 현물 {eo(TP['inkind'], 2)} = 대표 인건비 참여 50%) [ASSUMPTION]\n"
+           f"- 비목 (억원, 1차년도/2차년도/합계): " + ' · '.join(f"{r['cat']}({r['kind']}) {eo(r['y1'], 2)}/{eo(r['y2'], 2)}/{eo(r['total'], 2)}" for r in TP['rows']) + f" · 간접비율 직접비 대비 {TP['indirect_rate']:.1%}\n"
+           f"- 24개월 회사 전체 지출 약 {eo(TP['spend_total'])}억원 (Y1 {eo(TP['spend'][0])} · Y2 {eo(TP['spend'][1])}) = TIPS 과제 {eo(TP['total'])} + 과제 밖 {eo(TP['non_rnd'])} [DERIVED]\n"
+           f"- 재원: TIPS {eo(TP['gov'], 0)} + 운영사 투자 {eo(a['op_invest'], 0)} (요청, ASSUMPTION) + 후속 투자 {eo(a['followon'], 0)} (M12 점검 뒤, TARGET) = {eo(TP['src_total'], 0)}억원 → 여유 {eo(TP['buffer'])}억원; 후속 투자 없으면 약 {TP['runway_no_followon']:.0f}개월 [DERIVED]\n"
+           f"- 창업사업화 연계 최대 {eo(TP['biz_link'], 0)}억원 (선정 뒤 별도 신청) 미반영. 투자유치 실적 없음 [FACT]. 운영사 · 투자 조건 미정 ([운영사 협의 후 기재])\n"
+           "- 이전 Seed 안 (20억원 · 재산정 25.8억원)은 TIPS 계획으로 대체됨\n"
+           "- 24개월 목표 [TARGET]: 실물 크기 목업 주방 2식 · 시제품 1차 2식 → 2차 · 가정 실증 3세대 (유료 목표) · 성과지표는 본문 TIPS 과제 ① 표 (slides_main.TIPS['kpi']) · 평면 30개 분석 → 표준형 · 단축형 한 줄, 적용 60% (M18) · 인터뷰 50명 · 지불의사 n≥300 · 특허 출원 5건 (Y1 2 · Y2 3, 등록 미정) · 공인기관 성능 · 안전 사전시험\n"
+           "- 점검 · 중단 기준 [TARGET]: M6 목업에서 사람 동선과 로봇 동작범위 양립 실패→구조 변경 / M9 정리 성공률 70% 미만→작업 범위 축소 / M12 지불의사 중앙값 < 목표가 60%→B2C 재검토 / M18 표준 한 줄 적용 60% 미만→표준화 재검토 / M24 가정 실증 · 공인시험 실패→확장 투자 보류\n")
+    team = ("## 팀\n- Founder 정보 미제공 → 창업자 · R&D 역량 8항목 (학력·경력 / 엔지니어링·제품 개발 / 로봇 / 건설·주방 / 보유 특허 / 논문·수상 / 고객·파트너 네트워크 / 전업 여부) 모두 [Founder 정보 필요]. TIPS 기간 팀 [ASSUMPTION]: "
+            + ' · '.join(f"{t['role']} M{t['start']}~ ({'과제 외' if not t['part'] else format(t['part'], '.0%')})" for t in TP['team'])
+            + f". 평균 인원 Y1 {a['fte'][0]}명 → Y2 {a['fte'][1]}명. 대표 외 전원 신규 채용 계획.\n")
+    p_ = os.path.join(HERE, '_facts_sheet.md'); s_ = open(p_, encoding='utf-8').read()
+    i0 = s_.index('## 재무 (Base, 억원)'); i1 = s_.index('## 경쟁·사례'); s_ = s_[:i0] + fin + s_[i1:]
+    i0 = s_.index('## 팀'); i1 = s_.index('## 금지'); s_ = s_[:i0] + team + s_[i1:]
+    s_ = re.sub(r'- Y5 계획 매출 [0-9.]+억원 = SAM', f"- Y5 계획 매출 {eo(Bf['rev'][4])}억원 = SAM", s_)
+    open(p_, 'w', encoding='utf-8').write(s_); print('wrote _facts_sheet.md (TIPS · 재무 · 팀)')
+_facts_sections()
+
 # ---------------------------------------------------------------- README (deck table generated from the deck text log)
 _main = [m for m in DT['meta'] if isinstance(m['no'], int)]
 _deck_rows = '\n'.join(f"| {m['no']:02d} | {m['title']} |" for m in _main)
-_h3 = M['household']['purchase_direct_Y3']; _h5 = M['household']['purchase_direct_Y5']
-README = f"""# ARKI Robotics — Seed IR Package (Draft v3, 2026.10)
+_h3 = M['household']['purchase_direct_Y3']; _h5 = M['household']['purchase_direct_Y5']; B5r = M['scenarios']['B']; _av = {d['key']: d['vals']['B'] for d in M['inputs']}
+README = f"""# ARKI Robotics — TIPS IR Package (Draft v4, 2026.10)
 
 **설거지 정리를 맡는 로봇 주방 · 첫 시장 구축 아파트 주방 리모델링 → 신축 옵션**
 
-> Concept 단계 자료. 시제품 · 고객 · 계약 · LOI · 파트너 · 매출 없음. 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET (+ CONCEPT · TO BE VALIDATED · FUTURE)로 구분. Founder 정보는 `[Founder 정보 필요]`로 비워 둠. 평면은 사용자 제공 도면이며 단지명은 표기하지 않음.
+> Concept 단계 자료. 시제품 · 고객 · 계약 · LOI · 파트너 · 매출 · 투자유치 없음. 2026 TIPS 창업기업 (일반 트랙) 지원용 IR. 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET (+ CONCEPT · TO BE VALIDATED · FUTURE)로 구분. Founder 정보는 `[Founder 정보 필요]`로 비워 둠. 평면은 사용자 제공 도면이며 단지명은 표기하지 않음.
 
 ## 산출물
 
 | 파일 | 내용 |
 |---|---|
-| `ARKI_Robotics_Seed_IR_Deck.pptx` | IR 덱 (본문 15쪽 + 부록 A~F), 16:9, 발표자 노트 포함 |
-| `ARKI_Robotics_Seed_IR_Deck_Main15.pdf` | 본문 15쪽만 (공유용) |
-| `ARKI_Robotics_Seed_IR_Deck_preview.pdf` | 전체 검토용 PDF |
-| `ARKI_Robotics_Financial_Model.xlsx` | 수식 기반 5개년 모델 (Inputs → 3개 시나리오 · Household · Unit_Economics · Market · Sensitivity · Use_of_Funds · Sources) |
-| `docs/00~11` | 장별 문구 · 그림 · 발표 메모, 시장 데이터 · 출처, 숫자 태그 구분표, 재무 · 세대 경제성, 자금 용도, 특허 후보, 예상 질문, 투자 메모 (WATCH), Evidence 공백 |
+| `ARKI_Robotics_TIPS_IR_Deck.pptx` | TIPS IR 덱 (본문 {len(_main)}쪽 = IR 14쪽 + TIPS 과제 요약 {len(_main) - 14}쪽, 부록 A~F), 16:9, 발표자 노트 포함 |
+| `ARKI_Robotics_TIPS_IR_Deck_Main.pdf` | 본문만 (TIPS 연구개발계획서 IR 별첨 · 운영사 공유용) |
+| `ARKI_Robotics_TIPS_IR_Deck_preview.pdf` | 전체 검토용 PDF |
+| `ARKI_Robotics_Financial_Model.xlsx` | 수식 기반 5개년 모델 (Inputs → 3개 시나리오 · Household · Unit_Economics · Market · Sensitivity · TIPS_Budget · Sources) |
+| `docs/00~11` | 장별 문구 · 그림 · 발표 메모, 시장 데이터 · 출처, 숫자 태그 구분표, 재무 · 세대 경제성, TIPS 연구개발비 · 자금 계획, 특허 후보, 예상 질문, 투자 메모 (WATCH), Evidence 공백 |
 | `render3d/` | 3D 그림 생성기 (three.js + Playwright) · 충돌검사 · 보관/전개 경로 계획 · 평면 JSON |
 | `assets/renders/` | 덱에 들어간 3D 그림 PNG + 앵커 · 충돌검사 결과 JSON |
 
-## 본문 구성 (15쪽)
+## 본문 구성 ({len(_main)}쪽: 1~14 IR · 15~{len(_main)} TIPS 과제 요약)
 
 | 쪽 | 메시지 |
 |---|---|
 {_deck_rows}
 
-부록: A 투자 판단 요약 · B 제품 · 표준화 (B5 받은 평면 5종 상태, B6 구축 2Bay A 원래 평면 → ARKI, B7 구축 2Bay B 3D, B8~B10 이전 콘셉트 모델) · C 시장 · 사업화 · D 경제성 · 재무 · E 진입장벽 · 리스크 · 예상 질문 · F 숫자 표기 원칙 · 출처. v1 본문 · 부록은 삭제 없이 부록으로 옮김.
+부록: A 투자 판단 요약 · B 제품 · 표준화 (B5 받은 평면 5종 상태, B6 구축 2Bay A 원래 평면 → ARKI) · C 시장 · 사업화 · D 경제성 · 재무 (D11 TIPS 기간 자금 계획 상세) · E 진입장벽 · 리스크 · 예상 질문 · F 숫자 표기 원칙 · 출처. 그림은 대표 평면 1종 (구축 2Bay A)만 사용. v1 본문 · 부록은 삭제 없이 부록으로 옮김.
 
 ## 로봇 주방 설계 (3D 모델 기준, CONCEPT)
 
@@ -737,17 +797,19 @@ README = f"""# ARKI Robotics — Seed IR Package (Draft v3, 2026.10)
 
 | 평면 | 상태 |
 |---|---|
-| 구축 2Bay A (12,390 × 11,670, 코어 포함) | 3D 완료 · 원본과 겹쳐 확인 · ARKI 한 줄 3,150mm 배치 · 문 90° 조건 충돌검사 0cm (본문 6쪽 · 부록 B6) |
-| 구축 2Bay B (10,940 × 8,500) | 3D 완료 · 원본과 겹쳐 확인 · ARKI 배치 검토 중 (부록 B7) |
-| 신축 2 · 3 · 4Bay | 디지털화 진행 중 (부록 B5) |
+| 구축 2Bay A (12,390 × 11,670, 코어 포함) | 3D 완료 · 원본과 겹쳐 확인 · ARKI 한 줄 3,150mm 배치 · 문 90° 조건 충돌검사 0cm (본문 7쪽 · 부록 B6) — 덱 대표 평면 |
+| 구축 2Bay B (10,940 × 8,500) | 3D 완료 · 원본과 겹쳐 확인 · 싱크 줄 약 2.6m (냉장고 이전 시 약 3.3m) → 미적용 |
+| 신축 3Bay (12,400 × 10,550) | 3D 완료 · 원본과 겹쳐 확인 · 싱크 줄 약 2.6m → 단축형 한 줄 검토 |
+| 신축 4Bay (14,700 × 9,780) | 3D 완료 · 원본과 겹쳐 확인 · 싱크 줄 약 2.8m → 단축형 한 줄 검토 |
+| 신축 2Bay 탑상형 (15,120 × 10,730) | 미착수 (TIPS 1차년도 평면 30개 분석에 포함) |
 
 ## 핵심 결과 (기본 시나리오, 전부 DERIVED from ASSUMPTION)
 
 - 세대 경제성 (구축 · 구매 · 5년): 매출 {_h3['rev5']:,.0f}만원, 기여이익 {_h3['contrib5']:,.0f}만원 (Y3 원가) → {_h5['contrib5']:,.0f}만원 (Y5 원가). 설치 시점 매출 {_h3['y0'] / _h3['rev5']:.0%}.
-- 가격 위험: 가치 기준 월 약 11~24만원 < 렌탈 원가 하한 월 24~31만원 → 지불의사 검증이 Seed 1순위.
-- 5개년: Y5 매출 77.6억원 · 매출총이익률 36% · 영업이익 −36.4억원 · 5년 누적 현금 최저 약 −128억원 · 손익분기 연 약 1,340세대 (6년차 이후).
-- Seed 20억원 / 24개월 → 재산정 25.8억원 (부족 5.8억원, 20억원 단독 약 19개월) → TIPS R&D(최대 8억원) 연계 또는 25억원 / M18 브리지.
-- Seed 판단: **WATCH** — 조건: 창업팀 역량 · 목업 검증 · 지불의사 신호 · 평면 표준안 · 실제 파트너 실증 합의.
+- 가격 위험: 가치 기준 월 약 11~24만원 < 렌탈 원가 하한 월 24~31만원 → 지불의사 검증이 1순위 (M12 점검).
+- 5개년: Y5 매출 {B5r['rev'][4] / 1e4:.1f}억원 · 매출총이익률 {B5r['gm'][4]:.0%} · 영업이익 {B5r['op'][4] / 1e4:.1f}억원 · 5년 누적 현금 최저 약 {B5r['min_cum_cash'] / 1e4:.0f}억원 · 손익분기 연 약 {M['breakeven_kitchens']:,.0f}세대 (6년차 이후).
+- TIPS 24개월: 과제 예산 {TP['total'] / 1e4:.1f}억원 (정부 {TP['gov'] / 1e4:.0f} · 민간 {TP['private'] / 1e4:.1f}) ⊂ 회사 전체 지출 약 {TP['spend_total'] / 1e4:.1f}억원 ← TIPS {TP['gov'] / 1e4:.0f} + 운영사 투자 {_av['op_invest'] / 1e4:.0f} + 후속 투자 {_av['followon'] / 1e4:.0f}억원 (후속 없으면 약 {TP['runway_no_followon']:.0f}개월).
+- 운영사 관점 판단: **WATCH** — 조건: 창업팀 역량 · 목업 검증 · 지불의사 신호 · 평면 표준안 · 실제 파트너 실증 합의.
 
 ## 다시 만들기
 
@@ -755,6 +817,7 @@ README = f"""# ARKI Robotics — Seed IR Package (Draft v3, 2026.10)
 pip install python-pptx openpyxl pillow lxml pypdf      # LibreOffice: PDF · xlsx 재계산
 python3 ARKI/source/model.py          # 가정 · 계산 → model.json
 python3 ARKI/source/xlsx_model.py     # 수식 기반 xlsx
+python3 /mnt/skills/public/xlsx/scripts/recalc.py ARKI/ARKI_Robotics_Financial_Model.xlsx 120   # LibreOffice 재계산
 python3 ARKI/source/check_xlsx.py     # xlsx 값 ↔ model.py 교차검증
 cd ARKI/render3d && npm install three@0.170.0 && bash render_v2.sh && bash render_plans.sh   # 3D 그림 + 충돌검사 (Playwright Chromium)
 node shot.js stowsearch out/stow.png 64 64 "railz=30"    # 보관/전개 경로 다시 계획 → 결과를 web/stow_poses.json으로
@@ -762,16 +825,17 @@ python3 ARKI/source/build.py --pdf    # 덱 + 본문 PDF + 전체 PDF (--png: �
 python3 ARKI/source/gen_docs.py       # docs/*.md + 이 README
 ```
 
-- 단일 원천: `source/model.py` 입력 (태그 · 출처 포함)이 덱 · xlsx · 문서의 숫자를 만듦. 덱 문구 기본값은 `slides_main.py`, 검토를 거친 문구는 `source/_copy_v3.json`.
+- 단일 원천: `source/model.py` 입력 (태그 · 출처 포함)과 `tips_plan()`이 덱 · xlsx · 문서의 숫자를 만듦. 덱 문구와 TIPS 과제 내용 (성과지표 · 일정 · 기술 · 지식재산)은 `slides_main.py`의 `TIPS`.
 - 평면 JSON: `render3d/plans/*.json` (mm, 치수선 기준). 원본 겹침 확인 스크립트는 작업 메모 참고.
 
 ## 외부 제출 전 입력 · 확인
 
 | 항목 | 위치 |
 |---|---|
-| Founder 정보 7항목 · 회사 정보 · 연락처 | 본문 1 · 14 · 15쪽 |
-| 투자 조건 (형태 · 기업가치 · 지분 · TIPS 운영사) | 본문 15쪽 · 부록 D11 |
-| 신축 평면 3종 디지털화 · ARKI 배치 | 부록 B5 |
+| Founder · R&D 역량 8항목 · 회사 정보 · 연락처 | 본문 1 · 14쪽 |
+| 운영사명 · 투자 조건 (형태 · 기업가치 · 지분) · 운영사 연계 계획 | 본문 19쪽 · 부록 D11 |
+| TIPS 공고 원문 대조 (정부지원 비율 · 민간 현금 비율 · 간접비 · 운영사 투자 요건) | 본문 19쪽 · docs/07 |
+| 성과지표 세계 최고 수준 출처 · 평가 기관 확정 | 본문 15쪽 |
 | 공식 통계 원문 대조 | 부록 C1 · F2 |
 """
 with open(os.path.join(ROOT, 'README.md'), 'w', encoding='utf-8') as f:

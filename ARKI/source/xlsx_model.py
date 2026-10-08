@@ -49,15 +49,15 @@ def fmt_for(unit):
 ws = wb.active; ws.title = 'README'
 setw(ws, [3, 110])
 lines = [
-    ('ARKI Robotics — Seed Financial Model (Draft v1, 2026-10)', TITLE),
+    ('ARKI Robotics — TIPS IR Financial Model (Draft v4, 2026-10)', TITLE),
     ('', None),
-    ('목적: Seed IR Deck의 모든 사업 수치를 하나의 수식 모델로 관리. 단위는 별도 표기가 없으면 만원 (KRW 10,000). 억원 = 만원 / 10,000.', None),
+    ('목적: TIPS IR 덱의 모든 사업 수치를 하나의 수식 모델로 관리. 단위는 별도 표기가 없으면 만원 (KRW 10,000). 억원 = 만원 / 10,000.', None),
     ('주의: 실적·계약·고객·Partner 데이터 없음. 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET Tag로 구분.', BOLD),
     ('', None),
     ('Color code', BOLD),
     ('  파란 글자 = 입력값 (Inputs, Inputs_Yearly에서만 수정) · 검은 글자 = 수식 · 녹색 글자 = 다른 Sheet 참조 · 노란 바탕 = 핵심 가정 (WTP·BOM·Volume)', None),
     ('Tag', BOLD),
-    ('  FACT = 공식 통계·공개자료 확인값 · DERIVED = FACT 기반 계산값 · ASSUMPTION = 현재 사업가설 · TARGET = Seed 이후 목표', None),
+    ('  FACT = 공식 통계·공개자료 확인값 · DERIVED = FACT 기반 계산값 · ASSUMPTION = 현재 사업가설 · TARGET = TIPS 과제 · 이후 목표', None),
     ('Sheets', BOLD),
     ('  Inputs: 단일값 가정 (시나리오별 Conservative / Base / Upside 열)', None),
     ('  Inputs_Yearly: 연도별 가정 (Volume, BOM, Standard Module 사용률, 인원 등)', None),
@@ -67,10 +67,10 @@ lines = [
     ('  Unit_Economics: Rental 월 원가 Build-up·Payback, Care·Consumables 단위 경제성', None),
     ('  Market: Bottom-up TAM / SAM / SOM', None),
     ('  Sensitivity: 세대 Contribution 민감도 (수식) + 회사 Y5 Contribution 민감도 (model.py 정적 결과)', None),
-    ('  Use_of_Funds: Seed 사용안 Draft vs 검증 수정안 (FM_Base Y1~Y2 연동)', None),
+    ('  TIPS_Budget: TIPS 기간 24개월 — 회사 전체 지출 (FM_Base Y1~Y2 연동) · TIPS 과제 예산 (비목) · 재원 vs 지출', None),
     ('  Sources: FACT 출처', None),
     ('', None),
-    ('Year 정의: Y1 = Seed 투자 후 M0~M12, Y2 = M12~M24, Y3 = Series A 이후 첫 해. 신축 Option은 계약 2년 후 입주·설치로 인식.', None),
+    ('Year 정의: Y1 = TIPS 과제 M1~M12, Y2 = M13~M24, Y3 = 후속 투자 이후 첫 해. 신축 Option은 계약 2년 후 입주·설치로 인식.', None),
     ('재현: python3 ARKI/source/model.py → python3 ARKI/source/xlsx_model.py (LibreOffice 재계산 후 model.py와 교차검증)', None),
 ]
 for i, (t, f) in enumerate(lines):
@@ -616,44 +616,79 @@ for d in M['sens_company']['items']:
         c = ws.cell(row=r, column=col, value=round(v, 1)); c.font = BLUE; c.number_format = NUM
     r += 1
 
-# ---------------------------------------------------------------- Use_of_Funds
-ws = wb.create_sheet('Use_of_Funds')
-setw(ws, [44, 16, 16, 56])
-ws['A1'] = 'Seed Use of Funds — Draft vs 검증 수정안 (만원, 24개월)'; ws['A1'].font = TITLE
-hdr(ws, 3, ['항목', 'Draft (사용자 가설)', '수정안 (FM_Base Y1+Y2)', '산식'])
-fb = lambda n, t: fmref('B', n, t)
-yb2 = lambda k: f"{Y(k, 'B', 0)}+{Y(k, 'B', 1)}"
-UF = [
-    ('Core Development Team', 80000, f"=({Y('fte', 'B', 0)}+{Y('fte', 'B', 1)})*{b('loaded')}", '평균 인원 × 인당 인건비'),
-    ('Robot / Kitchen Prototype', 40000, f"={yb2('proto')}", ''),
-    ('Mock-up / Installation Development', 25000, f"={yb2('space')}", ''),
-    ('Vision / Software / Data', 15000, f"={yb2('swdata')}", ''),
-    ('Pilot / Customer Validation', 15000, f"={yb2('research')}-({fb('gp', 0)}+{fb('gp', 1)})+{fb('ch_cac', 1)}+{yb2('mkt')}", 'Research + Pilot 매출총손실 + Pilot 획득비용 + Marketing'),
-    ('Safety / Certification / IP', 10000, f"={yb2('cert_ip')}", ''),
-    ('Operations (G&A)', 15000, f"={yb2('ga')}", 'Draft는 Contingency 포함 1.5억'),
-]
-for i, (lab, dv, fs, note) in enumerate(UF):
+# ---------------------------------------------------------------- TIPS_Budget
+ws = wb.create_sheet('TIPS_Budget')
+setw(ws, [64, 14, 14, 14, 58])
+TPj = M['tips']
+ws['A1'] = 'TIPS 기간 24개월 자금 계획 (만원) — 회사 전체 지출 · TIPS 과제 예산 · 재원'; ws['A1'].font = TITLE
+hdr(ws, 3, ['A. 회사 전체 지출 (FM_Base 연동)', 'Y1', 'Y2', '합계', '산식'])
+SPL = [('인건비', lambda t: f"={fmref('B', 'op_people', t)}", '평균 인원 × 인당 인건비'),
+       ('그 밖의 운영비 (시제품 · 공간 · SW · 시험 · 특허 · 고객 검증 · 관리)', lambda t: f"={fmref('B', 'op_other', t)}", 'Inputs_Yearly'),
+       ('실증 · 판매 관련 순비용 (실증 매출총손실 · 획득비용 · Rental 자산 − 감가)', lambda t: f"=-{fmref('B', 'cash', t)}-{fmref('B', 'opex', t)}", '−현금흐름 − Opex')]
+for i, (lab, f, note) in enumerate(SPL):
     r = 4 + i
     ws.cell(row=r, column=1, value=lab).font = BLACK
-    c = ws.cell(row=r, column=2, value=dv); c.font = BLUE; c.number_format = NUM
-    c = ws.cell(row=r, column=3, value=fs); c.font = BLACK; c.number_format = NUM
-    ws.cell(row=r, column=4, value=note).font = BLACK
-r = 4 + len(UF)
-ws.cell(row=r, column=1, value='Contingency (10%)').font = BLACK
-ws.cell(row=r, column=2, value=0).font = BLUE
-ws[f'C{r}'] = f"=ROUND(SUM(C4:C{r - 1})*0.1,-3)"; ws[f'C{r}'].number_format = NUM; ws[f'C{r}'].font = BLACK
-r += 1
-ws.cell(row=r, column=1, value='합계').font = BOLD
-ws[f'B{r}'] = f"=SUM(B4:B{r - 1})"; ws[f'C{r}'] = f"=SUM(C4:C{r - 1})"
-for col in 'BC': ws[f'{col}{r}'].number_format = NUM; ws[f'{col}{r}'].font = BOLD
-tot_r = r; r += 2
-for lab, fs, nf in [('Seed (가설)', f"={b('seed')}", NUM), ('TIPS R&D (최대, 선정 시)', f"={b('tips')}", NUM),
-                    ('수정안 − Seed (부족분)', f"=C{tot_r}-{b('seed')}", NUM),
-                    ('Seed 단독 Runway (개월, 수정안 소진속도)', f"=24*{b('seed')}/C{tot_r}", NUM1),
-                    ('Seed + TIPS − 수정안 (여유)', f"={b('seed')}+{b('tips')}-C{tot_r}", NUM)]:
-    ws.cell(row=r, column=1, value=lab).font = BOLD
-    c = ws.cell(row=r, column=3, value=fs); c.font = BLACK; c.number_format = nf
+    for t, col in ((0, 'B'), (1, 'C')):
+        ws[f'{col}{r}'] = f(t); ws[f'{col}{r}'].number_format = NUM; ws[f'{col}{r}'].font = GREEN
+    ws[f'D{r}'] = f"=B{r}+C{r}"; ws[f'D{r}'].number_format = NUM; ws[f'D{r}'].font = BLACK
+    ws.cell(row=r, column=5, value=note).font = BLACK
+SPEND_R = 4 + len(SPL)
+ws.cell(row=SPEND_R, column=1, value='회사 전체 지출 합계 (= −현금흐름)').font = BOLD
+for col in 'BCD':
+    ws[f'{col}{SPEND_R}'] = f"=SUM({col}4:{col}{SPEND_R - 1})"; ws[f'{col}{SPEND_R}'].number_format = NUM; ws[f'{col}{SPEND_R}'].font = BOLD
+r = SPEND_R + 2
+hdr(ws, r, ['B. TIPS 과제 예산 (비목 · 내용 · 현금/현물)', '1차년도', '2차년도', '합계', '근거']); r += 1
+B0 = r
+for d in TPj['rows']:
+    ws.cell(row=r, column=1, value=f"{d['cat']} — {d['item']} [{d['kind']}]").font = BLACK
+    for col, v in (('B', d['y1']), ('C', d['y2'])):
+        c = ws[f'{col}{r}']; c.value = round(v, 1); c.font = BLUE; c.number_format = NUM
+    ws[f'D{r}'] = f"=B{r}+C{r}"; ws[f'D{r}'].number_format = NUM; ws[f'D{r}'].font = BLACK
+    ws.cell(row=r, column=5, value='model.py TIPS_TEAM · TIPS_OTHER · TIPS_YEAR (ASSUMPTION)').font = BLACK
     r += 1
+RND_R = r
+ws.cell(row=r, column=1, value='TIPS 과제 예산 합계').font = BOLD
+for col in 'BCD':
+    ws[f'{col}{r}'] = f"=SUM({col}{B0}:{col}{r - 1})"; ws[f'{col}{r}'].number_format = NUM; ws[f'{col}{r}'].font = BOLD
+r += 1
+inkind_rows = [B0 + i for i, d in enumerate(TPj['rows']) if d['kind'] == '현물']
+inkind_f = '+'.join(f'D{x}' for x in inkind_rows) or '0'
+CHK = [('정부지원금 (Inputs)', f"={b('tips')}", NUM, ''),
+       ('정부지원 비율 (= 정부지원금 / 과제 합계)', f"={b('tips')}/D{RND_R}", PCT, '상한 = Inputs tips_gov_ratio'),
+       ('정부지원 비율 상한 충족 (1 = 예)', f"=IF({b('tips')}/D{RND_R}<={b('tips_gov_ratio')}+0.0001,1,0)", NUM, ''),
+       ('민간부담 (= 과제 합계 − 정부지원금)', f"=D{RND_R}-{b('tips')}", NUM, ''),
+       ('민간부담 중 현물', f"={inkind_f}", NUM, '대표 인건비 참여분'),
+       ('민간부담 중 현금', f"=D{RND_R}-{b('tips')}-({inkind_f})", NUM, ''),
+       ('민간 현금 비율 하한 충족 (1 = 예)', f"=IF((D{RND_R}-{b('tips')}-({inkind_f}))/(D{RND_R}-{b('tips')})>={b('tips_cash_ratio')}-0.0001,1,0)", NUM, '기관부담 중 현금 ≥ Inputs tips_cash_ratio')]
+CHK_R = {}
+for lab, fs, nf, note in CHK:
+    ws.cell(row=r, column=1, value=lab).font = BLACK
+    c = ws[f'D{r}']; c.value = fs; c.number_format = nf; c.font = BLACK
+    ws.cell(row=r, column=5, value=note).font = BLACK
+    CHK_R[lab] = r; r += 1
+r += 1
+hdr(ws, r, ['C. 재원 vs 지출 (24개월)', '', '', '금액', '비고']); r += 1
+SRC = [('TIPS R&D 정부지원금 (선정 시)', f"={b('tips')}", 'FACT (2026 공고 최대) · 선정 미확정'),
+       ('운영사 투자 (요청)', f"={b('op_invest')}", 'ASSUMPTION'),
+       ('후속 투자 (M12 목표)', f"={b('followon')}", 'TARGET')]
+S0 = r
+for lab, fs, note in SRC:
+    ws.cell(row=r, column=1, value=lab).font = BLACK
+    c = ws[f'D{r}']; c.value = fs; c.number_format = NUM; c.font = GREEN
+    ws.cell(row=r, column=5, value=note).font = BLACK; r += 1
+ws.cell(row=r, column=1, value='재원 합계').font = BOLD
+ws[f'D{r}'] = f"=SUM(D{S0}:D{r - 1})"; ws[f'D{r}'].number_format = NUM; ws[f'D{r}'].font = BOLD; SRC_R = r; r += 1
+for lab, fs, nf, note in [('회사 전체 지출 (A)', f"=D{SPEND_R}", NUM, ''),
+                          ('여유 (재원 − 지출)', f"=D{SRC_R}-D{SPEND_R}", NUM, ''),
+                          ('과제 밖 지출 (A − B)', f"=D{SPEND_R}-D{RND_R}", NUM, '인건비 일부 · 관리 · 고객 조사 · 실증 순비용'),
+                          ('회사 부담 필요액 (A − 정부지원금)', f"=D{SPEND_R}-{b('tips')}", NUM, '운영사 투자 + 후속 투자로 충당')]:
+    ws.cell(row=r, column=1, value=lab).font = BOLD if '여유' in lab else BLACK
+    c = ws[f'D{r}']; c.value = fs; c.number_format = nf; c.font = BLACK
+    ws.cell(row=r, column=5, value=note).font = BLACK; r += 1
+ws.cell(row=r, column=1, value='후속 투자 없을 때 자금 지속 (개월) — STATIC: model.py tips_plan()').font = BLACK
+c = ws[f'D{r}']; c.value = round(TPj['runway_no_followon'], 1); c.font = BLUE; c.number_format = NUM1
+ws.cell(row=r, column=5, value='정부지원금 연차 초 지급 · 월 지출 균등 가정').font = BLACK
+TIPS_ROWS = dict(spend=SPEND_R, rnd=RND_R, src=SRC_R, **{k: v for k, v in CHK_R.items()})
 
 # ---------------------------------------------------------------- Sources
 ws = wb.create_sheet('Sources')
@@ -668,4 +703,4 @@ for i, d in enumerate(src):
 
 wb.save(OUT)
 print('saved', OUT)
-json.dump({'fm_rows': FM_ROW, 'hh_rows': hrow, 'ue_rows': ue_row, 'ue_extra': UE_EXTRA}, open(os.path.join(HERE, '_xlsx_rows.json'), 'w'))
+json.dump({'fm_rows': FM_ROW, 'hh_rows': hrow, 'ue_rows': ue_row, 'ue_extra': UE_EXTRA, 'tips_rows': TIPS_ROWS}, open(os.path.join(HERE, '_xlsx_rows.json'), 'w'))

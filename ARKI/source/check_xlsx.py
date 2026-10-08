@@ -41,9 +41,13 @@ for col in 'BCD':
 ws = wb['Market']; mk = M['market']['B']
 for row, key in ((22, 'tam'), (25, 'sam'), (26, 'som'), (13, 'fit'), (7, 'tri1'), (8, 'tri2')):
     cmp('market.' + key, ws[f'B{row}'].value, mk[key])
-ws = wb['Use_of_Funds']
-F = M['funds']
-cmp('funds.total', ws['C12'].value, F['revised_total'], tol=0.5)
+ws = wb['TIPS_Budget']; TR = R['tips_rows']; TP = M['tips']
+cmp('tips.spend_total', ws[f"D{TR['spend']}"].value, TP['spend_total'])
+cmp('tips.rnd_total', ws[f"D{TR['rnd']}"].value, TP['total'])
+cmp('tips.src_total', ws[f"D{TR['src']}"].value, TP['src_total'])
+cmp('tips.gov_ratio_ok', ws[f"D{TR['정부지원 비율 상한 충족 (1 = 예)']}"].value, 1)
+cmp('tips.cash_ok', ws[f"D{TR['민간 현금 비율 하한 충족 (1 = 예)']}"].value, 1)
+cmp('tips.private_cash', ws[f"D{TR['민간부담 중 현금']}"].value, TP['private_cash'])
 ws = wb['Sensitivity']
 cmp('sens.base', ws['M5'].value, M['sens_household']['base'])
 print(f'checked {n} values, mismatches {bad}')

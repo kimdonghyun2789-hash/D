@@ -1,8 +1,8 @@
 # 09. VC 예상질문 · Red-Team 답변
 
-> ARKI Robotics (가칭) · Seed 투자 제안서 · Draft v3 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
+> ARKI Robotics (가칭) · TIPS 창업기업 IR · Draft v4 · 2026-10-08 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·파트너·투자유치 없음.
 
-실제 Seed 심사역 관점의 25개 질문. "답의 강도"가 약한 항목은 본문에서 숨기지 않고 표기했고, Investment Memo의 Reasons Not to Invest와 연결됨.
+운영사 심사역 · TIPS 평가위원 관점의 25개 질문. "답의 강도"가 약한 항목은 본문에서 숨기지 않고 표기했고, Investment Memo의 Reasons Not to Invest와 연결됨.
 
 | # | 질문 | 답 (근거 Slide) | 답의 강도 | 보완 Evidence |
 |---|---|---|---|---|
@@ -15,17 +15,17 @@
 | 7 | Rental은 얼마여야 하는가? | 원가 기반 마진 20% 요금: Y3 31만원 · Y5 24만원. 가설 33만원. Partner Payback 36개월 위해 BOM ≤ 1,060만원 (D7). | 보통 | — |
 | 8 | Care는 왜 필요한가? | Calibration·Rail·Vision 점검과 위생 관리가 안전·성능 유지 조건. Software 구독 아님 (D8). | 보통 | — |
 | 9 | Consumables는 실제로 얼마나? | 가설 연 36만원 List, 구매율 70% → 25만원. 교체주기 미실측 (D8). | 약함 | Pilot 세대 Kit 교체주기 실측 |
-| 10 | Robot 고장 시 Kitchen 사용 가능한가? | 설계 Requirement: Garage 복귀·수동 해제·일반 Kitchen 기능 유지 (B4 #07, B17). | 보통 | — |
-| 11 | 머리 위 Robot은 안전한가? | 사람 위 운반 금지 · Zone 진입 정지 · 1.5kg 이하 · ISO 10218:2025 · 13482 검토. 인증은 Series A (B17). | 보통 | — |
-| 12 | 집마다 다른데 표준화 가능한가? | 가설. 4단계 분류 + 평면 30개로 M12 판정, Standard Module 60% 미만 시 재검토 (B13). | 약함 | 평면 30개 분석 결과 |
-| 13 | Bay보다 Geometry가 중요한가? | Robot 설치는 주방 Run·설비 위치·Aisle이 결정, Bay는 거실·침실 배치 변수 (B12). | 강함 | — |
+| 10 | Robot 고장 시 Kitchen 사용 가능한가? | 설계 Requirement: Garage 복귀·수동 해제·일반 Kitchen 기능 유지 (B4 #07, B13). | 보통 | — |
+| 11 | 머리 위 Robot은 안전한가? | 사람 위 운반 금지 · Zone 진입 정지 · 1.5kg 이하 · ISO 10218:2025 · 13482 검토. 인증은 Series A (B13). | 보통 | — |
+| 12 | 집마다 다른데 표준화 가능한가? | 가설. 4단계 분류 + 평면 30개로 M12 판정, Standard Module 60% 미만 시 재검토 (B9). | 약함 | 평면 30개 분석 결과 |
+| 13 | Bay보다 Geometry가 중요한가? | Robot 설치는 주방 Run·설비 위치·Aisle이 결정, Bay는 거실·침실 배치 변수 (B8). | 강함 | — |
 | 14 | 공사업체가 되는 것 아닌가? | 철거·가구·전기·배관 = Partner. ARKI = Module·Calibration·Safety QA. KPI: Build 비중 Y5 29% (C5). | 보통 | — |
 | 15 | 왜 구축부터인가? | 이미 철거·시공하는 고객 → 추가 Integration 비용 최소 · 가격·설치 직접 검증 · 신축은 2년 Lag (C4). | 강함 | — |
 | 16 | 왜 신축이 Scale Channel인가? | Project당 수백 세대 · 설계 단계 표준 Spec · 유상옵션 관행 (분양가 9.7%). 단, 매출 인식 지연 (C4). | 보통 | — |
 | 17 | 건설사가 직접 하면? | 건설사는 Robot·SW·A/S 운영 역량보다 유통 역할. ARKI Spec을 Option으로 채택하는 Distribution 관계 (C6). | 보통 | — |
 | 18 | Kitchen Furniture 회사가 직접 하면? | 가장 현실적 위협. Module·Channel Partner로 협력하되 Template·설치 Data·Calibration SW로 차별 (미검증). | 약함 | 가구사 2~3곳 Partner 조건 탐색 · 독점/비독점 구조 |
 | 19 | Robot OEM이 직접 하면? | OEM은 Arm 판매가 목적, 주거 설치·A/S·가구 Interface는 비핵심 → Supplier 관계 (C6). | 보통 | — |
-| 20 | Rental Asset 부담은? | Seed는 소량 Pilot만 ARKI 보유. Y4부터 Rental Partner가 자산 보유, Partner IRR 약 13% (연체 미반영, D7). | 보통 | — |
+| 20 | Rental Asset 부담은? | 초기에는 소량 Pilot만 ARKI 보유. Y4부터 Rental Partner가 자산 보유, Partner IRR 약 13% (연체 미반영, D7). | 보통 | — |
 | 21 | A/S 비용은? | Y3 Robot당 연 36.8만원 (방문 2회 × 11만원 + 고장 0.6회) → Y5 26.8만원 (D8). | 보통 | — |
 | 22 | Care가 Profit Center가 될 수 있는가? | Y3 Margin 23% → 아님. 방문 1.5회 이하·원가 9만원 이하에서 Y5 44%. Route Density 의존. | 보통 | — |
 | 23 | 20억원이 충분한가? | 아니오. 24개월 수정안 약 25.8억원 → TIPS 8억 연계 또는 25억원 / M18 Bridge (D11). | 약함 | TIPS 운영사 접촉 · Plan B 확정 |
@@ -39,7 +39,7 @@
 | 가치 Anchor(월 11~24만원) < 원가 기반 Rental(월 24~31만원) | D1 Gap Statement · A1 Q2 |
 | Rental Payback Y3 39개월 > 36개월 | D4 하단 · D7 결론 |
 | Care는 Y3에 Profit Center 아님 | D4 · D8 |
-| Seed 20억원 24개월 부족 | 15장 · D11 |
+| TIPS 이후 후속 투자 의존 (후속 없으면 약 18개월) | 본문 19쪽 · D11 |
 | 신축 매출 2년 Lag | C4 Timing |
 | Founder 정보 공백 | A2 · 14장 · A4 |
 | 범용 Humanoid의 월 $499 구독가 | C6 · C7 시사점 |

@@ -431,7 +431,7 @@ def header(s, section, title, sub=None, size=30):
         y += 0.36
     return y
 
-def footer(s, page, left='ARKI Robotics  ·  Seed Investment Proposal  ·  Draft v3', note=None):
+def footer(s, page, left='ARKI Robotics  ·  TIPS 창업기업 IR  ·  Draft v4', note=None):
     NOLOG['on'] = True
     text(s, MX, H - 0.45, 6, 0.22, left, size=9, color=T['muted'], check=False)
     if note:

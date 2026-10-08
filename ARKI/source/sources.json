@@ -1,34 +1,314 @@
 [
- {"id": "S1", "item": "총주택 / 아파트 비중 / 준공 20년·30년 이상 비중 / 미거주 주택", "value": "2,018.1만호 / 65.8% / 56.0%·30.6% / 172.2만호", "basis": "2025.11.1 기준", "source": "국가데이터처, 2025 인구주택총조사 결과 (2026.7.28 발표) — 보도: https://www.newsis.com/view/NISX20260728_0003726109 , https://www.fnnews.com/news/202607281048203456", "used_in": "05, 17, A2"},
- {"id": "S2", "item": "아파트 수 / 준공 20년 이상 아파트 (2023)", "value": "1,263만호 / 639만호 (50.7%)", "basis": "2023 주택총조사", "source": "통계청 주택총조사 인용 보도: https://www.smarttoday.co.kr/ko-kr/articles/49322", "used_in": "17, A2"},
- {"id": "S3", "item": "2025 주택 준공 / 인허가 / 착공 / 공동주택 분양", "value": "34만2,399호 (−17.8%) / 37만9,834호 / 27만2,685호 (−10.1%) / 19만8,373호 (−14.1%)", "basis": "2025 연간", "source": "국토교통부, '25년 12월 주택통계 (2026.1.30): https://www.korea.kr/briefing/pressReleaseView.do?newsId=156742136 , https://www.m-economynews.com/news/article.html?no=64226", "used_in": "05, A2"},
- {"id": "S4", "item": "아파트 인허가 (2025)", "value": "34만6,773가구 (2024: 39만7,904)", "basis": "2025 연간", "source": "국토교통부 주택통계 인용 보도: https://www.newsis.com/view/NISX20260129_0003495426", "used_in": "A2"},
- {"id": "S5", "item": "아파트 입주 물량", "value": "2025 23만6,263가구 / 2026 예정 18만3,124가구", "basis": "부동산114 REPS", "source": "https://v.daum.net/v/GCidIvCEQs", "used_in": "05, 17, A2"},
- {"id": "S6", "item": "주택 매매거래 (2025)", "value": "72.6만호 (+13%, 10년 평균 88.5만호)", "basis": "2025 연간, 한국부동산원 자료", "source": "KB주택시장리뷰 2026년 2월호: https://kbthink.com/realestate/insights/research/260213-3.html", "used_in": "17, A2"},
- {"id": "S7", "item": "국내 리모델링 시장 전망 (건축물 전체, 비주거 포함)", "value": "2025년 37조원 → 2030년 44조원 (리모델링 23.3조 + 유지보수 13.8조, 2025)", "basis": "한국건설산업연구원 전망치", "source": "https://m.ekn.kr/view.php?key=523568", "used_in": "A3"},
- {"id": "S8", "item": "한샘 리하우스 스타일패키지 (전체 리모델링)", "value": "30평대 평당 100만원대 → 약 3,000만원", "basis": "2019 보도 (가격 시점 오래됨)", "source": "https://www.dailian.co.kr/news/view/1008108/", "used_in": "14, A3"},
- {"id": "S9", "item": "프리미엄 Kitchen 동향 (한샘 키친바흐·빌트인 가전 연계)", "value": "국내 프리미엄 키친 시장 약 90%가 수입·고가 맞춤 / 키친바흐 매출 +17% (2025.6 기준) / 밀레 연계 부엌 매출 +173% (2024 대비)", "basis": "회사 발표 인용 보도", "source": "https://www.heraldk.com/article/2025072318143590645 , https://www.heraldk.com/article/2026062223520679105", "used_in": "17, A3"},
- {"id": "S10", "item": "한샘 리하우스 부문 매출", "value": "2025 1Q 1,147억원 (−4.3%)", "basis": "분기 실적", "source": "https://newstomato.com/ReadNews.aspx?no=1284742", "used_in": "A3"},
- {"id": "S11", "item": "신축 유상옵션 비용 비중", "value": "분양가상한제 단지 7곳 평균 분양가 대비 9.7%", "basis": "수도권 분양 단지 보도", "source": "https://www.etoday.co.kr/news/view/2392578", "used_in": "12, 13, A3"},
- {"id": "S12", "item": "코웨이 실적·렌탈 계정", "value": "2024 매출 4조3,101억원, 국내 계정 671만 / 2025 매출 4조9,636억원", "basis": "회사 실적 발표 인용 보도", "source": "https://news.bizwatch.co.kr/article/consumer/2025/02/14/0029 , https://dealsite.co.kr/articles/156536", "used_in": "A12, A19"},
- {"id": "S13", "item": "가전 A/S 출장비 (소비자 부과분)", "value": "삼성전자서비스 평절기 기본 2.8만원 (2026.1.8~) / LG전자 평절기 평일 주간 2.8만원", "basis": "2026", "source": "https://biz.sbs.co.kr/amp/article/20000282569 , https://biz.sbs.co.kr/amp/article/20000310315", "used_in": "A13"},
- {"id": "S14", "item": "가사서비스 요금", "value": "플랫폼 4시간 59,900~64,900원 (약 1.5~1.6만원/h) / 2026 최저임금 10,320원", "basis": "공개 요금·고시", "source": "https://apps.apple.com/pl/app/id997730211 , https://www.activpayroll.com/news-articles/south-korea-announces-2026-minimum-wage-increase", "used_in": "14"},
- {"id": "S15", "item": "협동로봇 가격 (Arm + Controller)", "value": "UR3e $23k~33k (공식 정가 미공개, 유통가) / Doosan E0509 약 $22k / UFACTORY xArm 6 $8,399 / FAIRINO FR5 $6,999 / UFACTORY Lite 6 Kit $4,482 (가반 0.6kg)", "basis": "유통가·공개가 (2025~2026)", "source": "https://standardbots.com/blog/universal-robot-price , https://robotomated.com/explore/manufacturing/doosan-e-series-e0509 , https://www.robotshop.com/products/xarm-6-dof-robotic-arm , https://top3dshop.com/product/fairino-fr5-robotic-arm , https://www.robotshop.com/products/ufactory-6-axis-robot-arm-lite-6-kit", "used_in": "A4"},
- {"id": "S16", "item": "Gripper / Fingertip / Food-grade Suction Cup", "value": "Robotiq 2F-85 $4,999~ / OnRobot RG2 약 $3,200 / Robotiq Fingertip $175~195 / Piab Food-grade Silicone Cup £7~20 (FDA 21 CFR 177.2600)", "basis": "공개가", "source": "https://qviro.com/product/robotiq/2f-85-robotiq/ , https://www.roboticscenter.ai/en/hardware/robotiq-2f-85 , https://automationdistribution.com/brands/Robotiq.html , https://uk.rubix.com/en/flat-suction-cups-f-silicone/p-G2010133211", "used_in": "A4, A13"},
- {"id": "S17", "item": "Depth Camera", "value": "Intel RealSense D405 $514 / D435 $538 / Orbbec Gemini 335 $384~400", "basis": "공개가", "source": "https://openelab.com/collections/robotic-camera , https://knoxlabs.com/products/orbbec-gemini-335-depth-camera", "used_in": "A4"},
- {"id": "S18", "item": "Linear Module (소형)", "value": "HIWIN KK 계열 $73~245 (소형 모듈, Robot 7축 Rail과 다름)", "basis": "유통가", "source": "https://qviro.com/product/hiwin/electric-linear-axis-kk-series", "used_in": "A4"},
- {"id": "S19", "item": "1X NEO (가정용 Humanoid)", "value": "$20,000 구매 또는 월 $499 구독 (최소 6개월), 2026 출하", "basis": "회사 발표 인용 보도", "source": "https://www.fastcompany.com/91428202/1x-technologies-home-robot-neo", "used_in": "14, 20, A9"},
- {"id": "S20", "item": "Sunday Robotics Memo", "value": "식세기 적재·테이블 정리 시연, 2026 베타 약 50가구, 양산 시 $10k 미만 목표", "basis": "보도", "source": "https://euronews.com/next/2025/11/25/meet-memo-a-home-robot-that-can-grab-wine-glasses-and-load-the-dishwasher , https://sacra.com/c/sunday/", "used_in": "20, A9"},
- {"id": "S21", "item": "LG CLOiD", "value": "CES 2026 공개, 빨래 개기·식세기 비우기 등 가사 시연 (판매가 미공개)", "basis": "CES 2026", "source": "https://www.dezeen.com/2026/01/06/lg-ai-powered-robot-ces-2026/", "used_in": "20, A9"},
- {"id": "S22", "item": "Samsung Bot Handy", "value": "CES 2021 공개 Concept, 출시 일정 미공개", "basis": "보도", "source": "https://www.sammobile.com/news/meet-samsung-new-ai-powered-household-robots-ces-2021/", "used_in": "A9"},
- {"id": "S23", "item": "Moley Robotic Kitchen", "value": "Arm 포함 £248,000 / Arm 제외 £128,000~140,000 (천장 Rail 양팔)", "basis": "2021 판매 개시 보도", "source": "https://thespoon.tech/moleys-robotic-kitchen-goes-on-sale/", "used_in": "20, A9"},
- {"id": "S24", "item": "Posha (Countertop Cooking Robot)", "value": "$1,750 (선주문 $1,500) + 월 $15", "basis": "2025", "source": "https://techcrunch.com/2025/05/06/meet-posha-a-countertop-robot-that-cooks-your-meals-for-you", "used_in": "A9"},
- {"id": "S25", "item": "Tesla Optimus / Figure 03", "value": "Optimus 소비자 목표가 $20k~30k (양산 시, 2027 전후) / Figure 03 가사 시연, 가격 미공개", "basis": "보도", "source": "https://www.notebookcheck.net/Optimus-as-a-household-helper-Elon-Musk-plans-to-bring-Tesla-robots-into-private-homes-starting-in-2027.1212513.0.html , https://getcoai.com/news/stay-at-home-bots-figure-03-humanoid-robot-can-fold-laundry-wash-dishes", "used_in": "A9"},
- {"id": "S26", "item": "IFR World Robotics 2025 — Service Robots", "value": "소비자용 서비스로봇 약 2,000만대 (2024, +11%, 대부분 청소·잔디) / 전문 서비스로봇 약 20만대 (+9%)", "basis": "2024 판매", "source": "https://ifr.org/ifr-press-releases/news/service-robots-see-global-growth-boom", "used_in": "A19"},
- {"id": "S27", "item": "Robot Density (IFR World Robotics 2024)", "value": "한국 제조업 근로자 1만명당 1,012대 (세계 1위, 2023)", "basis": "IFR", "source": "https://www.koreaherald.com/article/10011543", "used_in": "A19"},
- {"id": "S28", "item": "ISO 10218-1/-2:2025", "value": "2025.2 발행. ISO/TS 15066 (PFL·SSM) 요구사항을 본문에 통합, 기능안전·Cybersecurity 강화", "basis": "표준", "source": "https://www.sick.com/kr/ko/w/blog-robotic-norm-iso10218 , https://www.evsint.com/industrial-robot-safety-standards-iso-10218-ce-marking-2026/", "used_in": "A7"},
- {"id": "S29", "item": "TIPS 2026", "value": "일반 TIPS R&D 최대 8억원·24개월 / 딥테크 TIPS 최대 15억원·36개월 (요건 별도)", "basis": "중소벤처기업부 2026 공고", "source": "https://www.unicornfactory.co.kr/article/2026012511000214016 , https://www.venturesquare.net/announcement/1035119", "used_in": "23, A16"},
- {"id": "S30", "item": "식기세척기 보급률", "value": "2019~2020 업계 추정 10%대 초반 (최신 공식 통계 확인 안 됨 → TO BE VALIDATED)", "basis": "업계 추정 보도", "source": "https://www.etoday.co.kr/news/view/1789343", "used_in": "A3"},
- {"id": "S31", "item": "ISO 13482 (Personal Care Robot) 국내 인증 사례", "value": "유진로봇 GoCart, 국내 첫 ISO 13482 인증 AMR", "basis": "회사 발표", "source": "https://yujinrobot.com/blog/yujin-robots-gocart-becomes-koreas-first-iso-13482-safety-certified-autonomous-mobile-robot", "used_in": "A7"},
- {"id": "S32", "item": "가정용 로봇 인증 동향", "value": "반려로봇 KS 인증 도입 (2026.4, 정부)", "basis": "보도", "source": "https://news.mtn.co.kr/news-detail/2026042014042480949", "used_in": "A7"}
+ {
+  "id": "S1",
+  "item": "총주택 / 아파트 비중 / 준공 20년·30년 이상 비중 / 미거주 주택",
+  "value": "2,018.1만호 / 65.8% / 56.0%·30.6% / 172.2만호",
+  "basis": "2025.11.1 기준",
+  "source": "국가데이터처, 2025 인구주택총조사 결과 (2026.7.28 발표) — 보도: https://www.newsis.com/view/NISX20260728_0003726109 , https://www.fnnews.com/news/202607281048203456",
+  "used_in": "05, 17, A2"
+ },
+ {
+  "id": "S2",
+  "item": "아파트 수 / 준공 20년 이상 아파트 (2023)",
+  "value": "1,263만호 / 639만호 (50.7%)",
+  "basis": "2023 주택총조사",
+  "source": "통계청 주택총조사 인용 보도: https://www.smarttoday.co.kr/ko-kr/articles/49322",
+  "used_in": "17, A2"
+ },
+ {
+  "id": "S3",
+  "item": "2025 주택 준공 / 인허가 / 착공 / 공동주택 분양",
+  "value": "34만2,399호 (−17.8%) / 37만9,834호 / 27만2,685호 (−10.1%) / 19만8,373호 (−14.1%)",
+  "basis": "2025 연간",
+  "source": "국토교통부, '25년 12월 주택통계 (2026.1.30): https://www.korea.kr/briefing/pressReleaseView.do?newsId=156742136 , https://www.m-economynews.com/news/article.html?no=64226",
+  "used_in": "05, A2"
+ },
+ {
+  "id": "S4",
+  "item": "아파트 인허가 (2025)",
+  "value": "34만6,773가구 (2024: 39만7,904)",
+  "basis": "2025 연간",
+  "source": "국토교통부 주택통계 인용 보도: https://www.newsis.com/view/NISX20260129_0003495426",
+  "used_in": "A2"
+ },
+ {
+  "id": "S5",
+  "item": "아파트 입주 물량",
+  "value": "2025 23만6,263가구 / 2026 예정 18만3,124가구",
+  "basis": "부동산114 REPS",
+  "source": "https://v.daum.net/v/GCidIvCEQs",
+  "used_in": "05, 17, A2"
+ },
+ {
+  "id": "S6",
+  "item": "주택 매매거래 (2025)",
+  "value": "72.6만호 (+13%, 10년 평균 88.5만호)",
+  "basis": "2025 연간, 한국부동산원 자료",
+  "source": "KB주택시장리뷰 2026년 2월호: https://kbthink.com/realestate/insights/research/260213-3.html",
+  "used_in": "17, A2"
+ },
+ {
+  "id": "S7",
+  "item": "국내 리모델링 시장 전망 (건축물 전체, 비주거 포함)",
+  "value": "2025년 37조원 → 2030년 44조원 (리모델링 23.3조 + 유지보수 13.8조, 2025)",
+  "basis": "한국건설산업연구원 전망치",
+  "source": "https://m.ekn.kr/view.php?key=523568",
+  "used_in": "A3"
+ },
+ {
+  "id": "S8",
+  "item": "한샘 리하우스 스타일패키지 (전체 리모델링)",
+  "value": "30평대 평당 100만원대 → 약 3,000만원",
+  "basis": "2019 보도 (가격 시점 오래됨)",
+  "source": "https://www.dailian.co.kr/news/view/1008108/",
+  "used_in": "14, A3"
+ },
+ {
+  "id": "S9",
+  "item": "프리미엄 Kitchen 동향 (한샘 키친바흐·빌트인 가전 연계)",
+  "value": "국내 프리미엄 키친 시장 약 90%가 수입·고가 맞춤 / 키친바흐 매출 +17% (2025.6 기준) / 밀레 연계 부엌 매출 +173% (2024 대비)",
+  "basis": "회사 발표 인용 보도",
+  "source": "https://www.heraldk.com/article/2025072318143590645 , https://www.heraldk.com/article/2026062223520679105",
+  "used_in": "17, A3"
+ },
+ {
+  "id": "S10",
+  "item": "한샘 리하우스 부문 매출",
+  "value": "2025 1Q 1,147억원 (−4.3%)",
+  "basis": "분기 실적",
+  "source": "https://newstomato.com/ReadNews.aspx?no=1284742",
+  "used_in": "A3"
+ },
+ {
+  "id": "S11",
+  "item": "신축 유상옵션 비용 비중",
+  "value": "분양가상한제 단지 7곳 평균 분양가 대비 9.7%",
+  "basis": "수도권 분양 단지 보도",
+  "source": "https://www.etoday.co.kr/news/view/2392578",
+  "used_in": "12, 13, A3"
+ },
+ {
+  "id": "S12",
+  "item": "코웨이 실적·렌탈 계정",
+  "value": "2024 매출 4조3,101억원, 국내 계정 671만 / 2025 매출 4조9,636억원",
+  "basis": "회사 실적 발표 인용 보도",
+  "source": "https://news.bizwatch.co.kr/article/consumer/2025/02/14/0029 , https://dealsite.co.kr/articles/156536",
+  "used_in": "A12, A19"
+ },
+ {
+  "id": "S13",
+  "item": "가전 A/S 출장비 (소비자 부과분)",
+  "value": "삼성전자서비스 평절기 기본 2.8만원 (2026.1.8~) / LG전자 평절기 평일 주간 2.8만원",
+  "basis": "2026",
+  "source": "https://biz.sbs.co.kr/amp/article/20000282569 , https://biz.sbs.co.kr/amp/article/20000310315",
+  "used_in": "A13"
+ },
+ {
+  "id": "S14",
+  "item": "가사서비스 요금",
+  "value": "플랫폼 4시간 59,900~64,900원 (약 1.5~1.6만원/h) / 2026 최저임금 10,320원",
+  "basis": "공개 요금·고시",
+  "source": "https://apps.apple.com/pl/app/id997730211 , https://www.activpayroll.com/news-articles/south-korea-announces-2026-minimum-wage-increase",
+  "used_in": "14"
+ },
+ {
+  "id": "S15",
+  "item": "협동로봇 가격 (Arm + Controller)",
+  "value": "UR3e $23k~33k (공식 정가 미공개, 유통가) / Doosan E0509 약 $22k / UFACTORY xArm 6 $8,399 / FAIRINO FR5 $6,999 / UFACTORY Lite 6 Kit $4,482 (가반 0.6kg)",
+  "basis": "유통가·공개가 (2025~2026)",
+  "source": "https://standardbots.com/blog/universal-robot-price , https://robotomated.com/explore/manufacturing/doosan-e-series-e0509 , https://www.robotshop.com/products/xarm-6-dof-robotic-arm , https://top3dshop.com/product/fairino-fr5-robotic-arm , https://www.robotshop.com/products/ufactory-6-axis-robot-arm-lite-6-kit",
+  "used_in": "A4"
+ },
+ {
+  "id": "S16",
+  "item": "Gripper / Fingertip / Food-grade Suction Cup",
+  "value": "Robotiq 2F-85 $4,999~ / OnRobot RG2 약 $3,200 / Robotiq Fingertip $175~195 / Piab Food-grade Silicone Cup £7~20 (FDA 21 CFR 177.2600)",
+  "basis": "공개가",
+  "source": "https://qviro.com/product/robotiq/2f-85-robotiq/ , https://www.roboticscenter.ai/en/hardware/robotiq-2f-85 , https://automationdistribution.com/brands/Robotiq.html , https://uk.rubix.com/en/flat-suction-cups-f-silicone/p-G2010133211",
+  "used_in": "A4, A13"
+ },
+ {
+  "id": "S17",
+  "item": "Depth Camera",
+  "value": "Intel RealSense D405 $514 / D435 $538 / Orbbec Gemini 335 $384~400",
+  "basis": "공개가",
+  "source": "https://openelab.com/collections/robotic-camera , https://knoxlabs.com/products/orbbec-gemini-335-depth-camera",
+  "used_in": "A4"
+ },
+ {
+  "id": "S18",
+  "item": "Linear Module (소형)",
+  "value": "HIWIN KK 계열 $73~245 (소형 모듈, Robot 7축 Rail과 다름)",
+  "basis": "유통가",
+  "source": "https://qviro.com/product/hiwin/electric-linear-axis-kk-series",
+  "used_in": "A4"
+ },
+ {
+  "id": "S19",
+  "item": "1X NEO (가정용 Humanoid)",
+  "value": "$20,000 구매 또는 월 $499 구독 (최소 6개월), 2026 출하",
+  "basis": "회사 발표 인용 보도",
+  "source": "https://www.fastcompany.com/91428202/1x-technologies-home-robot-neo",
+  "used_in": "14, 20, A9"
+ },
+ {
+  "id": "S20",
+  "item": "Sunday Robotics Memo",
+  "value": "식세기 적재·테이블 정리 시연, 2026 베타 약 50가구, 양산 시 $10k 미만 목표",
+  "basis": "보도",
+  "source": "https://euronews.com/next/2025/11/25/meet-memo-a-home-robot-that-can-grab-wine-glasses-and-load-the-dishwasher , https://sacra.com/c/sunday/",
+  "used_in": "20, A9"
+ },
+ {
+  "id": "S21",
+  "item": "LG CLOiD",
+  "value": "CES 2026 공개, 빨래 개기·식세기 비우기 등 가사 시연 (판매가 미공개)",
+  "basis": "CES 2026",
+  "source": "https://www.dezeen.com/2026/01/06/lg-ai-powered-robot-ces-2026/",
+  "used_in": "20, A9"
+ },
+ {
+  "id": "S22",
+  "item": "Samsung Bot Handy",
+  "value": "CES 2021 공개 Concept, 출시 일정 미공개",
+  "basis": "보도",
+  "source": "https://www.sammobile.com/news/meet-samsung-new-ai-powered-household-robots-ces-2021/",
+  "used_in": "A9"
+ },
+ {
+  "id": "S23",
+  "item": "Moley Robotic Kitchen",
+  "value": "Arm 포함 £248,000 / Arm 제외 £128,000~140,000 (천장 Rail 양팔)",
+  "basis": "2021 판매 개시 보도",
+  "source": "https://thespoon.tech/moleys-robotic-kitchen-goes-on-sale/",
+  "used_in": "20, A9"
+ },
+ {
+  "id": "S24",
+  "item": "Posha (Countertop Cooking Robot)",
+  "value": "$1,750 (선주문 $1,500) + 월 $15",
+  "basis": "2025",
+  "source": "https://techcrunch.com/2025/05/06/meet-posha-a-countertop-robot-that-cooks-your-meals-for-you",
+  "used_in": "A9"
+ },
+ {
+  "id": "S25",
+  "item": "Tesla Optimus / Figure 03",
+  "value": "Optimus 소비자 목표가 $20k~30k (양산 시, 2027 전후) / Figure 03 가사 시연, 가격 미공개",
+  "basis": "보도",
+  "source": "https://www.notebookcheck.net/Optimus-as-a-household-helper-Elon-Musk-plans-to-bring-Tesla-robots-into-private-homes-starting-in-2027.1212513.0.html , https://getcoai.com/news/stay-at-home-bots-figure-03-humanoid-robot-can-fold-laundry-wash-dishes",
+  "used_in": "A9"
+ },
+ {
+  "id": "S26",
+  "item": "IFR World Robotics 2025 — Service Robots",
+  "value": "소비자용 서비스로봇 약 2,000만대 (2024, +11%, 대부분 청소·잔디) / 전문 서비스로봇 약 20만대 (+9%)",
+  "basis": "2024 판매",
+  "source": "https://ifr.org/ifr-press-releases/news/service-robots-see-global-growth-boom",
+  "used_in": "A19"
+ },
+ {
+  "id": "S27",
+  "item": "Robot Density (IFR World Robotics 2024)",
+  "value": "한국 제조업 근로자 1만명당 1,012대 (세계 1위, 2023)",
+  "basis": "IFR",
+  "source": "https://www.koreaherald.com/article/10011543",
+  "used_in": "A19"
+ },
+ {
+  "id": "S28",
+  "item": "ISO 10218-1/-2:2025",
+  "value": "2025.2 발행. ISO/TS 15066 (PFL·SSM) 요구사항을 본문에 통합, 기능안전·Cybersecurity 강화",
+  "basis": "표준",
+  "source": "https://www.sick.com/kr/ko/w/blog-robotic-norm-iso10218 , https://www.evsint.com/industrial-robot-safety-standards-iso-10218-ce-marking-2026/",
+  "used_in": "A7"
+ },
+ {
+  "id": "S29",
+  "item": "TIPS 2026",
+  "value": "일반 TIPS R&D 최대 8억원·24개월 / 딥테크 TIPS 최대 15억원·36개월 (요건 별도)",
+  "basis": "중소벤처기업부 2026 공고",
+  "source": "https://www.unicornfactory.co.kr/article/2026012511000214016 , https://www.venturesquare.net/announcement/1035119",
+  "used_in": "23, A16"
+ },
+ {
+  "id": "S30",
+  "item": "식기세척기 보급률",
+  "value": "2019~2020 업계 추정 10%대 초반 (최신 공식 통계 확인 안 됨 → TO BE VALIDATED)",
+  "basis": "업계 추정 보도",
+  "source": "https://www.etoday.co.kr/news/view/1789343",
+  "used_in": "A3"
+ },
+ {
+  "id": "S31",
+  "item": "ISO 13482 (Personal Care Robot) 국내 인증 사례",
+  "value": "유진로봇 GoCart, 국내 첫 ISO 13482 인증 AMR",
+  "basis": "회사 발표",
+  "source": "https://yujinrobot.com/blog/yujin-robots-gocart-becomes-koreas-first-iso-13482-safety-certified-autonomous-mobile-robot",
+  "used_in": "A7"
+ },
+ {
+  "id": "S32",
+  "item": "가정용 로봇 인증 동향",
+  "value": "반려로봇 KS 인증 도입 (2026.4, 정부)",
+  "basis": "보도",
+  "source": "https://news.mtn.co.kr/news-detail/2026042014042480949",
+  "used_in": "A7"
+ },
+ {
+  "id": "S33",
+  "item": "2026 TIPS 일반트랙 규정 (R&D)",
+  "value": "정부지원 최대 8억원 · 24개월 · 정부 75% 이내 / 기관부담 25% 이상 (그중 현금 10% 이상) · 운영사 투자 수도권 2억원 이상 · 비수도권 1억원 이상 · 대표 포함 창업팀 2인 이상 지분 60% 이상 · 운영사 30% 이하 · 정부지원 5억원당 청년 1명 신규 채용 · 업력 7년 이내 (신산업 10년) · 분기별 접수 연 3회 (IRIS)",
+  "basis": "중소벤처기업부 공고 제2026-40호 (2026.1.26) — 공고 사본 · 운용사 정리 · 집계 사이트 기준 (원문 대조 필요)",
+  "source": "https://www.kakao.vc/blog/2026-tips-what-changed , https://app.rndcircle.io/gov-grant/de57c07b-23b7-4eca-a812-90fb66a88b56 , https://grant-documents.thevc.kr/288079_(%EC%B5%9C%EC%A2%85)_2026%EB%85%84_%ED%8C%81%EC%8A%A4_%EC%B0%BD%EC%97%85%EA%B8%B0%EC%97%85_%EC%A7%80%EC%9B%90%EA%B3%84%ED%9A%8D_%EA%B3%B5%EA%B3%A0.pdf",
+  "used_in": "본문 2 · 14 · 18 · 19, D11"
+ },
+ {
+  "id": "S34",
+  "item": "2026 TIPS 비R&D 연계 (창업사업화 · 해외마케팅)",
+  "value": "각 10개월 최대 1.5억원, 합산 3억원 · 정부 70% 이내 (기업 30% 이상: 현금 10% 이상 · 현물 20% 이하)",
+  "basis": "공고 제2026-40호 사본 · 집계 사이트",
+  "source": "https://app.rndcircle.io/gov-grant/4a69b298-641c-445a-9dac-66cf5dd0ee72",
+  "used_in": "본문 19, D11"
+ },
+ {
+  "id": "S35",
+  "item": "TIPS 일반트랙 선정평가 배점 (비공식)",
+  "value": "기술성 40 · 사업성 40 (글로벌 성장 가능성 포함) · 사업수행 역량 20 (창업기업 전문성 · 운영사 지원계획) / 2026 가점 최대 5점",
+  "basis": "특허사무소 · 운용사 블로그 정리 (적용 연도 · 원문 미확인)",
+  "source": "https://www.pinepat.com/ko/insights/columns/tips-application-guide , https://www.kakao.vc/blog/2026-tips-what-changed",
+  "used_in": "덱 구성 점검"
+ },
+ {
+  "id": "S36",
+  "item": "식기세척기 적재 연구 (Voysey · Thuruthel · Iida)",
+  "value": "트레이 25개 실험에서 식기 58.7% 정리 (one-shot, preprint 기준) · 비교 대회 시스템 49~79%",
+  "basis": "Engineering Reports 2021 (DOI 10.1002/eng2.12321), 실험실 주방",
+  "source": "https://onlinelibrary.wiley.com/doi/10.1002/eng2.12321 , https://www.researchgate.net/publication/342426874",
+  "used_in": "본문 15 (세계 최고 수준)"
+ },
+ {
+  "id": "S37",
+  "item": "Dobb-E (가정 조작 학습)",
+  "value": "뉴욕 10가구 · 단순 가사 과제 109종 · 과제당 10회 평균 성공률 81%",
+  "basis": "Shafiullah et al., arXiv 2311.16098 (2023)",
+  "source": "https://arxiv.org/abs/2311.16098",
+  "used_in": "본문 15 (세계 최고 수준)"
+ },
+ {
+  "id": "S38",
+  "item": "TidyBot · π0.5 (가정 정리)",
+  "value": "TidyBot 실물 정리 85% (배치 기준, 2023) · π0.5 처음 보는 가정 주방 · 침실 정리, 부분 점수 기준 자체 보고 (2025)",
+  "basis": "arXiv 2305.05658 · arXiv 2504.16054",
+  "source": "https://arxiv.org/abs/2305.05658 , https://arxiv.org/abs/2504.16054",
+  "used_in": "본문 15 (참고)"
+ },
+ {
+  "id": "S39",
+  "item": "협동로봇 안전 기준 값",
+  "value": "ISO 10218-2:2025 감속 기능 접근 가능한 가동부 250mm/s 이하 · 부속서 M (구 ISO/TS 15066) 손 · 손가락 준정적 접촉력 140N",
+  "basis": "표준 원문 미확인 — 제조사 · 인증 컨설팅 · 연구 정리",
+  "source": "https://blog.robotiq.com/compliance-of-the-hand-e-gripper-with-iso-10218-22025 , https://www.ibf-solutions.com/en/seminars-and-news/news/new-standards-for-industrial-robots-en-iso-10218-1-and-2",
+  "used_in": "본문 15 · 18"
+ }
 ]

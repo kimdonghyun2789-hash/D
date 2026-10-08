@@ -1,6 +1,6 @@
 # 08. IP / Patent Portfolio (후보)
 
-> ARKI Robotics (가칭) · Seed 투자 제안서 · Draft v3 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
+> ARKI Robotics (가칭) · TIPS 창업기업 IR · Draft v4 · 2026-10-08 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·파트너·투자유치 없음.
 
 > 등록 가능성을 주장하지 않음. 아래 10개 Family는 **출원 후보**이며 전부 TO BE VALIDATED (선행기술조사 필요). 특정 특허번호는 조사 전이므로 기재하지 않음.
 
@@ -19,7 +19,7 @@
 | 9 | Robot Cleaning / Sanitizing Dock | Garage 내 End-effector 세척·건조·위생 관리 | 중간 — 위생·식품접촉 | 낮음~중간 | A47L · B08B (확인 필요) |
 | 10 | Kitchen Layout 기반 Robot Module Selection | 평면·치수 입력 → Layout Family 분류 → Architecture·Module 자동 선택 Software | 중간 — 표준화·Design Lead Time | 낮음~중간 — 설계 자동화 SW (SW 특허 적격성 검토 필요) | G06F 30 · G06Q (확인 필요) |
 
-## 선행기술조사 계획 (Seed M0~M3)
+## 선행기술조사 계획 (과제 M0~M3)
 
 1. 검색 DB: KIPRIS · Google Patents · Espacenet · USPTO.
 2. 검색 축: (a) Kitchen + Robot Arm + Rail/Gantry/Ceiling (b) Robot + Dishwasher Loading/Unloading (c) Cabinet-integrated / Retractable Robot (d) Zone-based Safety + Domestic Robot (e) Robot Installation Calibration + Furniture.
@@ -31,7 +31,7 @@
 - 1순위 (사업 핵심 + 선행 위험 상대적 낮음 추정): ② Interface Module · ⑦ Auto Calibration · ⑧ Dishwasher Interface.
 - 2순위: ① Rail·Dock·Storage 일체 구조 (선행 위험 높음 → 구조체 정착 Frame·Garage 조합으로 범위 설계) · ④ Zone Safety.
 - 3순위: ③ · ⑤ · ⑥ · ⑨ · ⑩ (Prototype 이후 실제 구조 확정 시).
-- Seed 목표: KR 출원 5~8건 + PCT 1~2건 (비용은 Use of Funds Safety/Certification/IP 항목에 포함, ASSUMPTION).
+- TIPS 24개월 목표: KR 출원 5건 (Y1 2 · Y2 3) + PCT는 후속 투자 단계에서 검토 (비용은 TIPS 과제 연구활동비 · 안전 · 시험 · 특허 항목에 포함, ASSUMPTION).
 
 ## Moat에서 IP의 위치
 

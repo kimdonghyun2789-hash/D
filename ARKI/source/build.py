@@ -19,10 +19,10 @@ for f in slides_main.MAIN:
 N_MAIN = len(prs.slides)
 slides_apx2.build(prs)
 cp = prs.core_properties
-cp.title = 'ARKI Robotics — Seed Investment Proposal (Draft v3)'
+cp.title = 'ARKI Robotics — TIPS Startup IR Deck (Draft v4)'
 cp.subject = 'Robot-ready Kitchen + Robot System · Kitchen Clean-up · 구축 Validation / 신축 Scale'
 cp.author = 'ARKI Robotics (가칭)'; cp.last_modified_by = ''
-cp.created = cp.modified = datetime.datetime(2026, 10, 7, 9, 0, 0)
+cp.created = cp.modified = datetime.datetime(2026, 10, 8, 9, 0, 0)
 prs.save(OUTPUT)
 print('saved', OUTPUT, 'slides', len(prs.slides), f'(main {N_MAIN})', '| fit issues', len(kit.FIT))
 for f in kit.FIT: print('  FIT', f)

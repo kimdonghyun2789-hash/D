@@ -7,7 +7,7 @@ GLOSS = [
     ('Validation Channel', '검증 시장'), ('Scale Channel', '확장 시장'), ('VALIDATION', '검증'), ('SCALE', '확장'),
     ('Land & Expand', '설치 후 추가 판매'), ('Integration Layer', '공간 · 로봇 통합 영역'),
     ('Installed Base Flywheel', '설치 기반 선순환'), ('Installed Base', '설치 기반'), ('Operational\nFlywheel', '운영\n선순환'), ('Flywheel', '선순환'),
-    ('Moat', '진입장벽'), ('Evidence Pack', '증빙 자료'), ('CURRENT EVIDENCE', '현재 보유 근거'), ('SEED TARGET', 'Seed 목표'),
+    ('Moat', '진입장벽'), ('Evidence Pack', '증빙 자료'), ('CURRENT EVIDENCE', '현재 보유 근거'), ('SEED TARGET', 'M24 목표'),
     ('Investment Proof', '투자 근거'), ('Investment Scorecard', '투자 평가표'), ('Investment Milestone', '투자 마일스톤'),
     ('Red-Team Q&A', '예상 질문과 답'), ('VC Red-Team Q&A', '예상 질문과 답'), ('Red-Team', '반론 검토'),
     ('Productization', '제품화'), ('Standardization', '표준화'), ('Site Adjustment', '현장 조정'),
@@ -26,6 +26,15 @@ GLOSS = [
     ('Use of Funds', '자금 사용 계획'), ('Seed Ask', '투자 요청'), ('Risk Register', '리스크 관리표'),
     ('Approved Task', '승인된 작업'), ('Task Success Rate', '작업 성공률'), ('Mock-up', '목업'),
     ('Robot-ready Kitchen', 'Robot-ready 주방'), ('Concept Layout', '콘셉트 배치'), ('Concept Model', '콘셉트 모델'),
+    # v4: the deck is a TIPS IR — Seed-stage wording in the kept appendix slides is mapped to the TIPS / 24-month frame
+    ('Seed 20억원 이후', '24개월 이후'), ('Seed 20억원으로', '초기 24개월 자금으로'), ('Seed 20억원', '초기 24개월 자금'),
+    ('Seed 투자 판단', '투자 판단'), ('Seed 판단', '투자 판단'), ('Seed 심사역', '투자 심사역'), ('Seed 투자', '초기 투자'),
+    ('Seed 기간', 'TIPS 기간'), ('Seed 첫 90일', '과제 첫 90일'), ('Seed 첫 3개월', '과제 첫 3개월'), ('Seed M0~M3', 'M0~M3'),
+    ('Seed M3까지', 'M3까지'), ('Seed 24개월', 'TIPS 24개월'), ('Seed 이전', '지금'), ('Seed 이후', '24개월 후'), ('Seed 범위', '24개월 범위'),
+    ('Seed 채용계획', '채용계획'), ('Seed Capital', '초기 자금'), ('Seed 목표', 'M24 목표'), ('Seed 검증', '24개월 검증'),
+    ('Seed 부족분', '자금 부족분'), ('Seed 금액', '투자 금액'), ('Seed·Series A', 'TIPS · 후속 투자'), ('Seed/Scale', '초기/확장'),
+    ('Seed (Y1~Y3)', '초기 (Y1~Y3)'), ('(Seed)', '(24개월)'), ('Seed:', '24개월:'), ('Seed는', '초기에는'), ('Seed의', '초기 단계의'),
+    ('Seed', '초기'),
 ]
 # escape + word-ish boundaries (ASCII letters only; Hangul next to a term is fine)
 _PAT = [(re.compile(r'(?<![A-Za-z])' + re.escape(a) + r'(?![A-Za-z])'), b) for a, b in GLOSS]

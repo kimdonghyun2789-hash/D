@@ -1,0 +1,969 @@
+{
+ "plan_id": "new3",
+ "label": "신축 3Bay (12400x10550)",
+ "source_image": "/root/.claude/uploads/eb682737-0d56-5382-8d5d-bf640f48be64/bb08cf92-image.jpg",
+ "overall": {
+  "width": 12400,
+  "depth": 10550
+ },
+ "dims": {
+  "top": [
+   8960
+  ],
+  "top_inner": [
+   1830,
+   3160,
+   3970
+  ],
+  "bottom": [
+   12400
+  ],
+  "bottom_inner": [
+   1300,
+   3600,
+   4500,
+   3000
+  ],
+  "left": [
+   10550
+  ],
+  "left_inner": [
+   1830,
+   790,
+   2350,
+   1160,
+   3230,
+   680,
+   510
+  ],
+  "right": [
+   7450
+  ],
+  "right_inner": [
+   810,
+   2350,
+   2940,
+   1350
+  ]
+ },
+ "scale": {
+  "method": "Wall bands found as dark runs in row/column profiles (walls.py), centrelines sub-px. Ticks of the TOP inner chain (1830/3160/3970) and of the BOTTOM inner chain (1300/3600/4500/3000) and of the LEFT inner chain (1830/790/2350/1160/3230/680/510) snapped to the nearest wall centreline; all other positions piecewise-linear between snapped walls. x: rear/top chain for y_px < 452 (y_mm < 6155), front/bottom chain below. y: one chain (left) for the whole plan.",
+  "piecewise_x_rear_top_chain": [
+   [
+    183.44,
+    0
+   ],
+   [
+    301.01,
+    1830
+   ],
+   [
+    511.94,
+    4990
+   ],
+   [
+    715.24,
+    8960
+   ],
+   [
+    766.06,
+    9400
+   ],
+   [
+    958.48,
+    12400
+   ]
+  ],
+  "piecewise_x_front_bottom_chain": [
+   [
+    183.44,
+    0
+   ],
+   [
+    257.94,
+    1300
+   ],
+   [
+    502.28,
+    4900
+   ],
+   [
+    766.06,
+    9400
+   ],
+   [
+    958.48,
+    12400
+   ]
+  ],
+  "piecewise_y_left_chain": [
+   [
+    85.34,
+    0
+   ],
+   [
+    191.87,
+    1830
+   ],
+   [
+    213.56,
+    2620
+   ],
+   [
+    371.92,
+    4970
+   ],
+   [
+    450.55,
+    6130
+   ],
+   [
+    656.05,
+    9360
+   ],
+   [
+    695.46,
+    10040
+   ],
+   [
+    738.0,
+    10550
+   ]
+  ],
+  "piecewise_y_right_chain": [
+   [
+    85.34,
+    0
+   ],
+   [
+    191.87,
+    1830
+   ],
+   [
+    213.56,
+    2620
+   ],
+   [
+    371.92,
+    4970
+   ],
+   [
+    450.55,
+    6130
+   ],
+   [
+    656.05,
+    9360
+   ],
+   [
+    695.46,
+    10040
+   ],
+   [
+    738.0,
+    10550
+   ]
+  ],
+  "y_split_px": 452.0,
+  "y_split_mm": 6155,
+  "px_per_mm_x": 0.062503,
+  "px_per_mm_y": 0.061864,
+  "origin_px": [
+   183.44,
+   85.34
+  ]
+ },
+ "front_side": "bottom",
+ "bay_count_front": 3,
+ "rooms": [
+  {
+   "name": "발코니(다용도)",
+   "kind": "balcony",
+   "rects": [
+    [
+     4670,
+     0,
+     6290,
+     690
+    ],
+    [
+     3680,
+     690,
+     6290,
+     1830
+    ]
+   ]
+  },
+  {
+   "name": "PS1",
+   "kind": "utility",
+   "rects": [
+    [
+     3680,
+     0,
+     4670,
+     690
+    ]
+   ]
+  },
+  {
+   "name": "주방/식당",
+   "kind": "kitchen",
+   "rects": [
+    [
+     6290,
+     0,
+     8960,
+     1830
+    ],
+    [
+     4990,
+     1830,
+     8960,
+     5105
+    ]
+   ]
+  },
+  {
+   "name": "거실",
+   "kind": "living",
+   "rects": [
+    [
+     4900,
+     6320,
+     9400,
+     10040
+    ],
+    [
+     4900,
+     5105,
+     8960,
+     6320
+    ],
+    [
+     3835,
+     4970,
+     4900,
+     6130
+    ],
+    [
+     4900,
+     4970,
+     4990,
+     5105
+    ]
+   ]
+  },
+  {
+   "name": "복도",
+   "kind": "corridor",
+   "rects": [
+    [
+     8960,
+     5105,
+     10715,
+     6320
+    ]
+   ]
+  },
+  {
+   "name": "현관",
+   "kind": "entry",
+   "rects": [
+    [
+     8960,
+     3205,
+     10715,
+     5105
+    ]
+   ]
+  },
+  {
+   "name": "PS2",
+   "kind": "utility",
+   "rects": [
+    [
+     10715,
+     3205,
+     12400,
+     4010
+    ]
+   ]
+  },
+  {
+   "name": "욕실2",
+   "kind": "bath",
+   "rects": [
+    [
+     10715,
+     4010,
+     12400,
+     6320
+    ]
+   ]
+  },
+  {
+   "name": "침실3",
+   "kind": "bedroom",
+   "rects": [
+    [
+     9400,
+     6320,
+     12400,
+     10040
+    ]
+   ]
+  },
+  {
+   "name": "침실2",
+   "kind": "bedroom",
+   "rects": [
+    [
+     1830,
+     1830,
+     4990,
+     4970
+    ]
+   ]
+  },
+  {
+   "name": "욕실1",
+   "kind": "bath",
+   "rects": [
+    [
+     595,
+     2620,
+     1830,
+     3575
+    ],
+    [
+     0,
+     3575,
+     1830,
+     4970
+    ]
+   ]
+  },
+  {
+   "name": "PS3",
+   "kind": "utility",
+   "rects": [
+    [
+     0,
+     1830,
+     595,
+     3575
+    ],
+    [
+     595,
+     1830,
+     1830,
+     2620
+    ]
+   ]
+  },
+  {
+   "name": "드레스룸",
+   "kind": "dress",
+   "rects": [
+    [
+     1830,
+     4970,
+     3240,
+     6130
+    ]
+   ]
+  },
+  {
+   "name": "붙박이장",
+   "kind": "closet",
+   "rects": [
+    [
+     3240,
+     4970,
+     3835,
+     6130
+    ]
+   ]
+  },
+  {
+   "name": "침실1",
+   "kind": "bedroom",
+   "rects": [
+    [
+     0,
+     4970,
+     1830,
+     6130
+    ],
+    [
+     0,
+     6130,
+     4900,
+     9360
+    ]
+   ]
+  },
+  {
+   "name": "실외기실",
+   "kind": "outdoor_unit",
+   "rects": [
+    [
+     0,
+     9360,
+     1300,
+     10550
+    ]
+   ]
+  },
+  {
+   "name": "대피공간",
+   "kind": "evac",
+   "rects": [
+    [
+     1300,
+     9360,
+     2790,
+     10550
+    ]
+   ]
+  },
+  {
+   "name": "발코니(전면)",
+   "kind": "balcony",
+   "rects": [
+    [
+     2790,
+     9360,
+     4900,
+     10550
+    ]
+   ]
+  }
+ ],
+ "walls": [
+  {
+   "x1": 3680,
+   "y1": 0,
+   "x2": 8960,
+   "y2": 0,
+   "t": 200,
+   "exterior": true
+  },
+  {
+   "x1": 3680,
+   "y1": 690,
+   "x2": 4670,
+   "y2": 690,
+   "t": 100,
+   "exterior": false
+  },
+  {
+   "x1": 0,
+   "y1": 1830,
+   "x2": 3680,
+   "y2": 1830,
+   "t": 200,
+   "exterior": true
+  },
+  {
+   "x1": 3680,
+   "y1": 1830,
+   "x2": 6290,
+   "y2": 1830,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 595,
+   "y1": 2620,
+   "x2": 1830,
+   "y2": 2620,
+   "t": 100,
+   "exterior": false
+  },
+  {
+   "x1": 8960,
+   "y1": 3205,
+   "x2": 12400,
+   "y2": 3205,
+   "t": 200,
+   "exterior": true
+  },
+  {
+   "x1": 0,
+   "y1": 3575,
+   "x2": 1240,
+   "y2": 3575,
+   "t": 100,
+   "exterior": false
+  },
+  {
+   "x1": 10715,
+   "y1": 4010,
+   "x2": 12400,
+   "y2": 4010,
+   "t": 100,
+   "exterior": false
+  },
+  {
+   "x1": 0,
+   "y1": 4970,
+   "x2": 4990,
+   "y2": 4970,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 8960,
+   "y1": 5105,
+   "x2": 9320,
+   "y2": 5105,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 1785,
+   "y1": 6130,
+   "x2": 3835,
+   "y2": 6130,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 3835,
+   "y1": 6130,
+   "x2": 4845,
+   "y2": 6130,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 9400,
+   "y1": 6320,
+   "x2": 12400,
+   "y2": 6320,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 0,
+   "y1": 9360,
+   "x2": 4900,
+   "y2": 9360,
+   "t": 200,
+   "exterior": true
+  },
+  {
+   "x1": 4900,
+   "y1": 10040,
+   "x2": 12400,
+   "y2": 10040,
+   "t": 200,
+   "exterior": true
+  },
+  {
+   "x1": 0,
+   "y1": 10550,
+   "x2": 4900,
+   "y2": 10550,
+   "t": 200,
+   "exterior": true
+  },
+  {
+   "x1": 0,
+   "y1": 1830,
+   "x2": 0,
+   "y2": 10550,
+   "t": 200,
+   "exterior": true
+  },
+  {
+   "x1": 595,
+   "y1": 1830,
+   "x2": 595,
+   "y2": 3575,
+   "t": 100,
+   "exterior": false
+  },
+  {
+   "x1": 1300,
+   "y1": 9360,
+   "x2": 1300,
+   "y2": 10550,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 1830,
+   "y1": 1830,
+   "x2": 1830,
+   "y2": 6130,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 2790,
+   "y1": 9360,
+   "x2": 2790,
+   "y2": 10550,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 3240,
+   "y1": 4970,
+   "x2": 3240,
+   "y2": 6130,
+   "t": 100,
+   "exterior": false
+  },
+  {
+   "x1": 3835,
+   "y1": 4970,
+   "x2": 3835,
+   "y2": 6130,
+   "t": 100,
+   "exterior": false
+  },
+  {
+   "x1": 3680,
+   "y1": 0,
+   "x2": 3680,
+   "y2": 1830,
+   "t": 200,
+   "exterior": true
+  },
+  {
+   "x1": 4670,
+   "y1": 0,
+   "x2": 4670,
+   "y2": 690,
+   "t": 100,
+   "exterior": false
+  },
+  {
+   "x1": 4900,
+   "y1": 6130,
+   "x2": 4900,
+   "y2": 10550,
+   "t": 200,
+   "exterior": false
+  },
+  {
+   "x1": 4990,
+   "y1": 1830,
+   "x2": 4990,
+   "y2": 4970,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 6290,
+   "y1": 0,
+   "x2": 6290,
+   "y2": 1830,
+   "t": 60,
+   "exterior": false
+  },
+  {
+   "x1": 8960,
+   "y1": 0,
+   "x2": 8960,
+   "y2": 3205,
+   "t": 200,
+   "exterior": true
+  },
+  {
+   "x1": 8960,
+   "y1": 3205,
+   "x2": 8960,
+   "y2": 5105,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 9400,
+   "y1": 6320,
+   "x2": 9400,
+   "y2": 10040,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 10715,
+   "y1": 3205,
+   "x2": 10715,
+   "y2": 6320,
+   "t": 150,
+   "exterior": false
+  },
+  {
+   "x1": 12400,
+   "y1": 3205,
+   "x2": 12400,
+   "y2": 10040,
+   "t": 200,
+   "exterior": true
+  }
+ ],
+ "doors": [
+  {
+   "x1": 9460,
+   "y1": 3205,
+   "x2": 10165,
+   "y2": 3205,
+   "kind": "swing"
+  },
+  {
+   "x1": 1160,
+   "y1": 4970,
+   "x2": 1815,
+   "y2": 4970,
+   "kind": "swing"
+  },
+  {
+   "x1": 4240,
+   "y1": 4970,
+   "x2": 4885,
+   "y2": 4970,
+   "kind": "swing"
+  },
+  {
+   "x1": 1830,
+   "y1": 5310,
+   "x2": 1830,
+   "y2": 5975,
+   "kind": "sliding"
+  },
+  {
+   "x1": 4135,
+   "y1": 6130,
+   "x2": 4810,
+   "y2": 6130,
+   "kind": "swing"
+  },
+  {
+   "x1": 2980,
+   "y1": 9360,
+   "x2": 4220,
+   "y2": 9360,
+   "kind": "sliding"
+  },
+  {
+   "x1": 1300,
+   "y1": 9810,
+   "x2": 1300,
+   "y2": 10360,
+   "kind": "swing"
+  },
+  {
+   "x1": 2790,
+   "y1": 9810,
+   "x2": 2790,
+   "y2": 10360,
+   "kind": "swing"
+  },
+  {
+   "x1": 10715,
+   "y1": 5500,
+   "x2": 10715,
+   "y2": 6155,
+   "kind": "swing"
+  },
+  {
+   "x1": 9460,
+   "y1": 6320,
+   "x2": 10165,
+   "y2": 6320,
+   "kind": "swing"
+  },
+  {
+   "x1": 6290,
+   "y1": 765,
+   "x2": 6290,
+   "y2": 1730,
+   "kind": "sliding"
+  }
+ ],
+ "windows": [
+  {
+   "x1": 4885,
+   "y1": 0,
+   "x2": 5930,
+   "y2": 0
+  },
+  {
+   "x1": 6710,
+   "y1": 0,
+   "x2": 7880,
+   "y2": 0
+  },
+  {
+   "x1": 2160,
+   "y1": 1830,
+   "x2": 3450,
+   "y2": 1830
+  },
+  {
+   "x1": 5460,
+   "y1": 10040,
+   "x2": 9040,
+   "y2": 10040
+  },
+  {
+   "x1": 10115,
+   "y1": 10040,
+   "x2": 11565,
+   "y2": 10040
+  },
+  {
+   "x1": 375,
+   "y1": 10550,
+   "x2": 1160,
+   "y2": 10550
+  },
+  {
+   "x1": 1595,
+   "y1": 10550,
+   "x2": 2510,
+   "y2": 10550
+  },
+  {
+   "x1": 2950,
+   "y1": 10550,
+   "x2": 4205,
+   "y2": 10550
+  },
+  {
+   "x1": 6290,
+   "y1": 45,
+   "x2": 6290,
+   "y2": 735
+  }
+ ],
+ "kitchen": {
+  "counters": [
+   {
+    "x0": 6360,
+    "y0": 100,
+    "x1": 8860,
+    "y1": 750,
+    "back": "top",
+    "role": "sink_run"
+   },
+   {
+    "x0": 8210,
+    "y0": 750,
+    "x1": 8860,
+    "y1": 3530,
+    "back": "right",
+    "role": "cooktop_run"
+   },
+   {
+    "x0": 6945,
+    "y0": 2970,
+    "x1": 8210,
+    "y1": 3530,
+    "back": "none",
+    "role": "peninsula"
+   }
+  ],
+  "sink": {
+   "x": 7005,
+   "y": 430
+  },
+  "cooktop": {
+   "x": 8535,
+   "y": 1620
+  },
+  "fridge": null,
+  "upper_cabinets": [
+   {
+    "x0": 6360,
+    "y0": 100,
+    "x1": 6710,
+    "y1": 450
+   },
+   {
+    "x0": 7880,
+    "y0": 100,
+    "x1": 8860,
+    "y1": 450
+   },
+   {
+    "x0": 8510,
+    "y0": 750,
+    "x1": 8860,
+    "y1": 2125
+   }
+  ],
+  "window_over_sink": true
+ },
+ "fixtures": [
+  {
+   "kind": "washbasin",
+   "x0": 40,
+   "y0": 3680,
+   "x1": 505,
+   "y1": 4350
+  },
+  {
+   "kind": "toilet",
+   "x0": 40,
+   "y0": 4380,
+   "x1": 695,
+   "y1": 4925
+  },
+  {
+   "kind": "bathtub",
+   "x0": 10770,
+   "y0": 4050,
+   "x1": 12360,
+   "y1": 4795
+  },
+  {
+   "kind": "washbasin",
+   "x0": 11720,
+   "y0": 4850,
+   "x1": 12360,
+   "y1": 5500
+  },
+  {
+   "kind": "toilet",
+   "x0": 11580,
+   "y0": 5530,
+   "x1": 12360,
+   "y1": 6245
+  },
+  {
+   "kind": "wardrobe",
+   "x0": 10725,
+   "y0": 6355,
+   "x1": 12375,
+   "y1": 7125
+  },
+  {
+   "kind": "wardrobe",
+   "x0": 40,
+   "y0": 5000,
+   "x1": 660,
+   "y1": 6090
+  },
+  {
+   "kind": "shoe_cabinet",
+   "x0": 8985,
+   "y0": 3250,
+   "x1": 9305,
+   "y1": 5060
+  },
+  {
+   "kind": "utility_sink",
+   "x0": 4720,
+   "y0": 45,
+   "x1": 6220,
+   "y1": 665
+  }
+ ],
+ "notes": "Wall centrelines from the raster; walls referenced by a dimension snapped to the written value, others interpolated between them. The drawing is not uniformly scaled and its dimensions are not mutually consistent: the top chain gives 4990 and the bottom chain 4900 for walls ~10 px apart; the 790 band (PS strip over bath 1) is drawn ~350 mm deep; the right chain (810/2350/2940/1350 = 7450 from the right block top to the facade) disagrees with the left chain by ~600 mm, so the right block is placed with the left chain (bath 2 bottom ~6320, facade 10040). The 680/510 split tick (714 px) hits no wall; 10040 is taken as the living-room facade. Kitchen: sink run on the top wall from the glazed balcony partition to the right wall (~2.6 m), cooktop run on the right wall, peninsula at the bottom; no fridge drawn. Upper cabinets assumed. Utility sink in the balcony as a fixture."
+}

@@ -1,6 +1,6 @@
 # 06. Household · Rental · Care · Consumables Economics
 
-> ARKI Robotics (가칭) · Seed 투자 제안서 · Draft v3 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
+> ARKI Robotics (가칭) · TIPS 창업기업 IR · Draft v4 · 2026-10-08 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·파트너·투자유치 없음.
 
 수식: xlsx `Household` · `Unit_Economics` · `Sensitivity` 시트. 전부 DERIVED (from ASSUMPTION). 단위 만원.
 
@@ -15,7 +15,7 @@
 | 가격 가설 (Rental) | Robot-ready 450 + 설치 80 + 월 33만원 × 60개월 (Care Basic · Grip Kit 포함) | ASSUMPTION |
 | WTP Test Point | Robot 990 / 1,290 / 1,490 / 1,790만원 · Rental 월 19 / 25 / 29 / 33 / 39만원 | TARGET (조사 설계) |
 
-**핵심 Gap**: 가치 Anchor(월 11~24만원) < 원가 기반 Rental(월 24~31만원). V1 단일 Task의 "가사 대체 가치"만으로는 가격 정당화가 어려움 → (1) Premium Kitchen Amenity로서의 가치 (2) V2 Task 확장 (3) BOM 절감이 필요하며, WTP 검증이 Seed 1순위.
+**핵심 Gap**: 가치 Anchor(월 11~24만원) < 원가 기반 Rental(월 24~31만원). V1 단일 Task의 "가사 대체 가치"만으로는 가격 정당화가 어려움 → (1) Premium Kitchen Amenity로서의 가치 (2) V2 Task 확장 (3) BOM 절감이 필요하며, WTP 검증이 초기 1순위.
 
 ## 2. Household Economics — 구축 Premium 1세대 · 5년 · 직접판매
 
@@ -76,7 +76,7 @@
 | Payback (개월, 금융 제외) | 39.1 | 29.8 |
 | 36개월 Payback 최대 BOM | 1,059 | 1,089 |
 
-- 구조: Seed = ARKI 직접 Rental Pilot (소량) · Scale(Y4~) = Rental / Capital Partner가 Robot을 ASP의 88%(1,311만원)에 매입하고 월 27만원 순유입 · 잔존 197만원 → Partner IRR 약 13.1% (Conservative 12.4%). 연체·중도해지·회수비용 미반영.
+- 구조: 초기 = ARKI 직접 Rental Pilot (소량) · Scale(Y4~) = Rental / Capital Partner가 Robot을 ASP의 88%(1,311만원)에 매입하고 월 27만원 순유입 · 잔존 197만원 → Partner IRR 약 13.1% (Conservative 12.4%). 연체·중도해지·회수비용 미반영.
 - 결론: Y3 원가로는 Payback 39개월 > 36개월 → **Rental은 BOM ≤ 1,059만원 달성 전까지 Pilot 규모로 제한**.
 
 ## 5. Care Economics

@@ -11,7 +11,7 @@ def N():
     hh3 = M['household']['purchase_direct_Y3']; hh5 = M['household']['purchase_direct_Y5']
     rt3 = M['household']['rental_direct_Y3']; rt5 = M['household']['rental_direct_Y5']
     return dict(hh3=hh3, hh5=hh5, rt3=rt3, rt5=rt5, r3=M['rental']['Y3'], r5=M['rental']['Y5'],
-                c3=M['care']['Y3'], c5=M['care']['Y5'], mk=M['market']['B'], v=M['value'], F=M['funds'])
+                c3=M['care']['Y3'], c5=M['care']['Y5'], mk=M['market']['B'], v=M['value'], F=M['tips'])
 
 # ---------------------------------------------------------------- 01 cover
 def s01(prs):
@@ -51,7 +51,7 @@ def s02(prs):
     y = head(s, '01  투자 판단 요약', 'Seed 투자 판단을 위한 6개 질문과 현재 답',
              sub='본문 위치: Q1 → 07 · 10  /  Q2 → 09 · D1  /  Q3 → 09 · D2  /  Q4 → 05 · 06  /  Q5 → 09 · 12  /  Q6 → 13 · 15. 현재 답은 가설, Seed 기간에 Evidence로 전환.')
     rows = [
-        ['Q1', '누가 가장 먼저 돈을 내는가?', '구축 아파트 Premium Kitchen Remodeling 세대 (철거·가구 신규 시공 예정 세대)', ttxt('ASSUMPTION'), 'Interview 50명 · 유료 Pilot 3~5세대'],
+        ['Q1', '누가 가장 먼저 돈을 내는가?', '구축 아파트 Premium Kitchen Remodeling 세대 (철거·가구 신규 시공 예정 세대)', ttxt('ASSUMPTION'), 'Interview 50명 · 유료 실증 3세대'],
         ['Q2', '얼마까지 지불할 가능성이 있는가?', f"Robot-ready 증분 {mann(inp('p_rr'))} + Robot {mann(inp('p_robot'))}만원 또는 월 {mann(inp('p_rent'))}만원 Rental.\n가치 Anchor 월 {n['v']['lo']:.0f}~{n['v']['hi']:.0f}만원과 Gap 존재", ttxt('ASSUMPTION'), 'PSM · Conjoint (n≥300) · 예약금 Test'],
         ['Q3', '한 세대에서 회사가 얼마를 버는가?', f"5년 매출 {mann(hh3['rev5'])}만원, Lifetime Contribution {mann(hh3['contrib5'])}만원 (Y3 원가) → {mann(hh5['contrib5'])}만원 (Y5 원가)", ttxt('DERIVED'), 'BOM · 설치시간 · Service 원가 실측'],
         ['Q4', '집마다 다른 주방을 얼마나 표준화하는가?', 'Kitchen Geometry 5종 × Robot Architecture 4종 → Template 3~5개로 주요 평면 Cover 가설', ttxt('ASSUMPTION'), '실제 평면 30개 분석 · Standard Module 사용률 65%'],
@@ -76,7 +76,7 @@ def s03(prs):
              sub='현재 Evidence와 Seed Target을 혼합하지 않음. 존재하지 않는 항목은 "없음"으로 표기.')
     cw = (CW - 0.4) / 2
     rect(s, MX, y, cw, 0.42, fill=T['text']); text(s, MX + 0.15, y, cw, 0.42, 'CURRENT EVIDENCE  (2026.10 기준)', size=12, bold=True, color='FFFFFF', anchor='m')
-    rect(s, MX + cw + 0.4, y, cw, 0.42, fill=T['accent']); text(s, MX + cw + 0.55, y, cw, 0.42, 'SEED TARGET  (M24까지)', size=12, bold=True, color='FFFFFF', anchor='m')
+    rect(s, MX + cw + 0.4, y, cw, 0.42, fill=T['accent']); text(s, MX + cw + 0.55, y, cw, 0.42, '24개월 목표  (TIPS 기간)', size=12, bold=True, color='FFFFFF', anchor='m')
     cur = [('Founder Experience', '[Founder 정보 필요]', 'TBV'),
            ('실제 Kitchen 설계자료 · 평면 분석', '공개 평면 5건 예비 관찰 (정성, B5) · 설계자료 없음', 'TBV'),
            ('Prototype · Demo', '없음', '없음'),
@@ -90,11 +90,11 @@ def s03(prs):
            ('실제 평면 30개 분석 · Kitchen Template 3~5개', 'M3~M12'),
            ('Approved Task 3개 이상 · Clean-up Integrated Demo', 'M9~M12'),
            ('Consumer Interview 50명 · WTP Test (PSM·Conjoint)', 'M3~M12'),
-           ('Home Pilot 3~5세대 (Paid Pilot 포함)', 'M12~M24'),
+           ('Home Pilot 3세대 (유료 목표)', 'M13~M24'),
            ('Validated BOM · 설치비 · 설치시간', 'M12~M24'),
            ('Rental · Care · Consumables Economics 실측', 'M18~M24'),
            ('Kitchen 가구·Interior Partner Pilot 협의', 'M12~M24'),
-           ('Patent 출원 5~8건 (선행기술조사 후)', 'M3~M18')]
+           ('Patent 출원 5건 (선행기술조사 후)', 'M3~M24')]
     rh = 0.43; yy = y + 0.5
     for i, (a, b, tg) in enumerate(cur):
         ry = yy + i * rh
@@ -920,11 +920,11 @@ def s22(prs):
                     '투자자 입장에서는 돈이 끝까지 소진되기 전에 실패를 확인할 수 있는 구조입니다.'))
     y = head(s, '21  Roadmap · Milestone', '24개월 Investment Milestone과 Kill Criteria',
              sub='Roadmap이 아닌 기업가치 상승 Evidence 중심. 기준 미달 시 구조 변경 · 범위 축소 · Scale 보류. 모든 기준 = TARGET.')
-    ph = [('M0 ~ M6', ['Layout Study (평면 30개)', '84㎡ 중심 Full-scale Mock-up', 'Robot Architecture 선정', 'Dish Handling Test'],
+    ph = [('M0 ~ M6', ['Layout Study (평면 30개)', '대표 평면 기준 Full-scale Mock-up', 'Robot Architecture 선정', 'Dish Handling Test'],
            'Reach × 동선 양립 확인', 'M6: 주거동선과 Robot Reach 양립 실패 → Architecture 변경'),
           ('M6 ~ M12', ['Kitchen Clean-up Demo', 'Dishwasher Integration', 'Robot-ready Storage · Template Study', 'BOM v1 · Consumer Research'],
            'Approved Task 3개 · Template 3개', 'M9: Clean-up 성공률 70% 미만 → Task Scope 축소\nM12: WTP 중앙값 < 목표가 60% → B2C 재검토'),
-          ('M12 ~ M18', ['Real-home Pilot 3~5세대', 'Installation Process · Safety', 'Price · Rental · Care Economics', 'Design Partner'],
+          ('M12 ~ M18', ['Real-home Pilot 3세대', 'Installation Process · Safety', 'Price · Rental · Care Economics', 'Design Partner'],
            '실제 주방 설치 · 설치시간 실측', 'M18: Standard Module 사용률 60% 미만 → Productization 재검토'),
           ('M18 ~ M24', ['Paid Pilot', 'Template Standardization', '설치비 · Service 원가 확정', 'Partner Pilot 협의'],
            'Series A Evidence Pack', 'M24: Paid Pilot · Partner 확보 실패 → Scale 투자 보류')]

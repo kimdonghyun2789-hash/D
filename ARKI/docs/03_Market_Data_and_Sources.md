@@ -1,6 +1,6 @@
 # 03. 사용한 시장 데이터와 Source
 
-> ARKI Robotics (가칭) · Seed 투자 제안서 · Draft v3 · 2026-10-07 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·Partner 없음.
+> ARKI Robotics (가칭) · TIPS 창업기업 IR · Draft v4 · 2026-10-08 · 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET 표기. 실적·계약·고객·파트너·투자유치 없음.
 
 ## 조사 방법과 한계
 
@@ -40,15 +40,22 @@
 | S25 | Tesla Optimus / Figure 03 | Optimus 소비자 목표가 $20k~30k (양산 시, 2027 전후) / Figure 03 가사 시연, 가격 미공개 | 보도 | https://www.notebookcheck.net/Optimus-as-a-household-helper-Elon-Musk-plans-to-bring-Tesla-robots-into-private-homes-starting-in-2027.1212513.0.html , https://getcoai.com/news/stay-at-home-bots-figure-03-humanoid-robot-can-fold-laundry-wash-dishes | C7 |
 | S26 | IFR World Robotics 2025 — Service Robots | 소비자용 서비스로봇 약 2,000만대 (2024, +11%, 대부분 청소·잔디) / 전문 서비스로봇 약 20만대 (+9%) | 2024 판매 | https://ifr.org/ifr-press-releases/news/service-robots-see-global-growth-boom | E4 |
 | S27 | Robot Density (IFR World Robotics 2024) | 한국 제조업 근로자 1만명당 1,012대 (세계 1위, 2023) | IFR | https://www.koreaherald.com/article/10011543 | E4 |
-| S28 | ISO 10218-1/-2:2025 | 2025.2 발행. ISO/TS 15066 (PFL·SSM) 요구사항을 본문에 통합, 기능안전·Cybersecurity 강화 | 표준 | https://www.sick.com/kr/ko/w/blog-robotic-norm-iso10218 , https://www.evsint.com/industrial-robot-safety-standards-iso-10218-ce-marking-2026/ | B17 |
+| S28 | ISO 10218-1/-2:2025 | 2025.2 발행. ISO/TS 15066 (PFL·SSM) 요구사항을 본문에 통합, 기능안전·Cybersecurity 강화 | 표준 | https://www.sick.com/kr/ko/w/blog-robotic-norm-iso10218 , https://www.evsint.com/industrial-robot-safety-standards-iso-10218-ce-marking-2026/ | B13 |
 | S29 | TIPS 2026 | 일반 TIPS R&D 최대 8억원·24개월 / 딥테크 TIPS 최대 15억원·36개월 (요건 별도) | 중소벤처기업부 2026 공고 | https://www.unicornfactory.co.kr/article/2026012511000214016 , https://www.venturesquare.net/announcement/1035119 | 23, D11 |
 | S30 | 식기세척기 보급률 | 2019~2020 업계 추정 10%대 초반 (최신 공식 통계 확인 안 됨 → TO BE VALIDATED) | 업계 추정 보도 | https://www.etoday.co.kr/news/view/1789343 | C2 |
-| S31 | ISO 13482 (Personal Care Robot) 국내 인증 사례 | 유진로봇 GoCart, 국내 첫 ISO 13482 인증 AMR | 회사 발표 | https://yujinrobot.com/blog/yujin-robots-gocart-becomes-koreas-first-iso-13482-safety-certified-autonomous-mobile-robot | B17 |
-| S32 | 가정용 로봇 인증 동향 | 반려로봇 KS 인증 도입 (2026.4, 정부) | 보도 | https://news.mtn.co.kr/news-detail/2026042014042480949 | B17 |
+| S31 | ISO 13482 (Personal Care Robot) 국내 인증 사례 | 유진로봇 GoCart, 국내 첫 ISO 13482 인증 AMR | 회사 발표 | https://yujinrobot.com/blog/yujin-robots-gocart-becomes-koreas-first-iso-13482-safety-certified-autonomous-mobile-robot | B13 |
+| S32 | 가정용 로봇 인증 동향 | 반려로봇 KS 인증 도입 (2026.4, 정부) | 보도 | https://news.mtn.co.kr/news-detail/2026042014042480949 | B13 |
+| S33 | 2026 TIPS 일반트랙 규정 (R&D) | 정부지원 최대 8억원 · 24개월 · 정부 75% 이내 / 기관부담 25% 이상 (그중 현금 10% 이상) · 운영사 투자 수도권 2억원 이상 · 비수도권 1억원 이상 · 대표 포함 창업팀 2인 이상 지분 60% 이상 · 운영사 30% 이하 · 정부지원 5억원당 청년 1명 신규 채용 · 업력 7년 이내 (신산업 10년) · 분기별 접수 연 3회 (IRIS) | 중소벤처기업부 공고 제2026-40호 (2026.1.26) — 공고 사본 · 운용사 정리 · 집계 사이트 기준 (원문 대조 필요) | https://www.kakao.vc/blog/2026-tips-what-changed , https://app.rndcircle.io/gov-grant/de57c07b-23b7-4eca-a812-90fb66a88b56 , https://grant-documents.thevc.kr/288079_(%EC%B5%9C%EC%C1%85)_2026%EB%85%84_%ED%8C%81%EC%8A%D5_%EC%B0%BD%EC%97%85%EA%B8%B0%EC%97%85_%EC%B13%80%EC%9B%90%EA%B3%84%ED%9A%8D_%EA%B3%B5%EA%B3%A0.pdf | 본문 2 · 14 · 18 · 19, D11 |
+| S34 | 2026 TIPS 비R&D 연계 (창업사업화 · 해외마케팅) | 각 10개월 최대 1.5억원, 합산 3억원 · 정부 70% 이내 (기업 30% 이상: 현금 10% 이상 · 현물 20% 이하) | 공고 제2026-40호 사본 · 집계 사이트 | https://app.rndcircle.io/gov-grant/4a69b298-641c-445a-9dac-66cf5dd0ee72 | 본문 19, D11 |
+| S35 | TIPS 일반트랙 선정평가 배점 (비공식) | 기술성 40 · 사업성 40 (글로벌 성장 가능성 포함) · 사업수행 역량 20 (창업기업 전문성 · 운영사 지원계획) / 2026 가점 최대 5점 | 특허사무소 · 운용사 블로그 정리 (적용 연도 · 원문 미확인) | https://www.pinepat.com/ko/insights/columns/tips-application-guide , https://www.kakao.vc/blog/2026-tips-what-changed | 덱 구성 점검 |
+| S36 | 식기세척기 적재 연구 (Voysey · Thuruthel · Iida) | 트레이 25개 실험에서 식기 58.7% 정리 (one-shot, preprint 기준) · 비교 대회 시스템 49~79% | Engineering Reports 2021 (DOI 10.1002/eng2.12321), 실험실 주방 | https://onlinelibrary.wiley.com/doi/10.1002/eng2.12321 , https://www.researchgate.net/publication/342426874 | 본문 15 (세계 최고 수준) |
+| S37 | Dobb-E (가정 조작 학습) | 뉴욕 10가구 · 단순 가사 과제 109종 · 과제당 10회 평균 성공률 81% | Shafiullah et al., arXiv 2311.16098 (2023) | https://arxiv.org/abs/2311.16098 | 본문 15 (세계 최고 수준) |
+| S38 | TidyBot · π0.5 (가정 정리) | TidyBot 실물 정리 85% (배치 기준, 2023) · π0.5 처음 보는 가정 주방 · 침실 정리, 부분 점수 기준 자체 보고 (2025) | arXiv 2305.05658 · arXiv 2504.16054 | https://arxiv.org/abs/2305.05658 , https://arxiv.org/abs/2504.16054 | 본문 15 (참고) |
+| S39 | 협동로봇 안전 기준 값 | ISO 10218-2:2025 감속 기능 접근 가능한 가동부 250mm/s 이하 · 부속서 M (구 ISO/TS 15066) 손 · 손가락 준정적 접촉력 140N | 표준 원문 미확인 — 제조사 · 인증 컨설팅 · 연구 정리 | https://blog.robotiq.com/compliance-of-the-hand-e-gripper-with-iso-10218-22025 , https://www.ibf-solutions.com/en/seminars-and-news/news/new-standards-for-industrial-robots-en-iso-10218-1-and-2 | 본문 15 · 18 |
 
 ## 확인하지 못한 데이터 (Data Gap)
 
-| 항목 | 상태 | 대체 방법 (Seed 90일) |
+| 항목 | 상태 | 대체 방법 (과제 첫 90일) |
 |---|---|---|
 | Kitchen 단독 Remodeling 가격대 (일반 / Premium) | 공식 통계 없음 → ASSUMPTION (600~1,500만원 / 2,000~4,000만원) | 한샘·리바트·LX·지역 인테리어 견적 20건 수집 |
 | 연간 Kitchen 교체 세대 수 | 공식 통계 없음 → 교차검증 DERIVED (29.0만·30.3만) + ASSUMPTION 30만 | Partner 판매 Data · 업계 인터뷰로 보정 |
@@ -56,5 +63,5 @@
 | Clean-up 소요시간 | 생활시간조사 세부 항목(설거지) 미확인 → ASSUMPTION 40분/일 | Time-diary 30세대 · 7일 |
 | 아파트 매매거래 중 아파트 비중 (2025 연간) | 월별 수치만 확인 → ASSUMPTION 70% | 부동산원 R-ONE 연간 아파트 거래량 확인 |
 | 협동로봇 국내 OEM 견적 | 공개가 없음 | OEM 3곳 RFQ (100대 기준) |
-| 로봇 안전·KC 인증 비용 | 공개 자료 없음 → ASSUMPTION 0.7억원 (Seed 범위) | 인증기관 사전상담 견적 |
+| 로봇 안전·KC 인증 비용 | 공개 자료 없음 → ASSUMPTION 0.7억원 (TIPS 기간) | 인증기관 사전상담 견적 |
 | 신축 Robot-ready Option 선택률 | 선례 없음 → ASSUMPTION 10% | 신축 계약자 10명 Interview · 옵션 박람회 Test |

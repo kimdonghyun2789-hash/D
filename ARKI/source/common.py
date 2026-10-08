@@ -7,9 +7,9 @@ from pptx.enum.shapes import MSO_SHAPE
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..'))
-OUTPUT = os.path.join(ROOT, 'ARKI_Robotics_Seed_IR_Deck.pptx')
-PREVIEW = os.path.join(ROOT, 'ARKI_Robotics_Seed_IR_Deck_preview.pdf')
-MAIN_PDF = os.path.join(ROOT, 'ARKI_Robotics_Seed_IR_Deck_Main15.pdf')
+OUTPUT = os.path.join(ROOT, 'ARKI_Robotics_TIPS_IR_Deck.pptx')
+PREVIEW = os.path.join(ROOT, 'ARKI_Robotics_TIPS_IR_Deck_preview.pdf')
+MAIN_PDF = os.path.join(ROOT, 'ARKI_Robotics_TIPS_IR_Deck_Main.pdf')
 M = {}
 META = []          # one dict per slide, in deck order
 
@@ -49,14 +49,14 @@ SECTION = {'A': '투자 판단 요약', 'B': '제품 · 표준화', 'C': '시장
            'E': '진입장벽 · 리스크 · Q&A', 'F': '참고'}
 SID2CODE = {   # legacy main-slide ids and old appendix codes -> v2 appendix codes
     'thesis': 'A1', 'proof': 'A2', 'integration': 'B1', 'system': 'B2', 'product': 'B3', 'architecture': 'B4',
-    'layouts': 'B11', 'housing': 'B12', 'standard': 'B13', 'robotready': 'B15', 'channels': 'C4', 'market': 'C3',
+    'layouts': 'B7', 'housing': 'B8', 'standard': 'B9', 'robotready': 'B11', 'channels': 'C4', 'market': 'C3',
     'gtm': 'C5', 'competition': 'C6', 'pricing': 'D1', 'household': 'D2', 'bm': 'D3', 'unit': 'D4', 'moat': 'E1',
     'milestone': 'E3',
-    'A1': 'F1', 'A2': 'C1', 'A3': 'C2', 'A4': 'D5', 'A5': 'B14', 'A6': 'B16', 'A7': 'B17', 'A8': 'B18', 'A9': 'C7',
+    'A1': 'F1', 'A2': 'C1', 'A3': 'C2', 'A4': 'D5', 'A5': 'B10', 'A6': 'B12', 'A7': 'B13', 'A8': 'B14', 'A9': 'C7',
     'A10': 'E2', 'A11': 'D6', 'A12': 'D7', 'A13': 'D8', 'A14': 'D9', 'A15': 'D10', 'A16': 'D11', 'A17': 'C8',
     'A18': 'A3', 'A19': 'E4', 'A20': 'E5', 'A21': 'E6', 'A22': 'A4', 'A23': 'F2'}
-OLD_MAIN = {1: '01', 2: 'A1', 3: 'A2', 4: '02', 5: 'B1', 6: 'B12', 7: 'B2', 8: 'B3', 9: 'B4', 10: 'B11', 11: 'B13',
-            12: 'C4', 13: 'B15', 14: 'D1', 15: 'D2', 16: 'D3', 17: 'D4', 18: 'C3', 19: 'C5', 20: 'C6', 21: 'E1',
+OLD_MAIN = {1: '01', 2: 'A1', 3: 'A2', 4: '02', 5: 'B1', 6: 'B8', 7: 'B2', 8: 'B3', 9: 'B4', 10: 'B7', 11: 'B9',
+            12: 'C4', 13: 'B11', 14: 'D1', 15: 'D2', 16: 'D3', 17: 'D4', 18: 'C3', 19: 'C5', 20: 'C6', 21: 'E1',
             22: 'E3', 23: '14', 24: '15'}
 
 def remap(t):
@@ -115,7 +115,7 @@ def head(s, section, title, sub=None, q=None, size=26):
 
 def foot(s, page, note=None):
     if APX['on']:
-        footer(s, META[-1]['no'], left='ARKI Robotics  ·  Seed 투자 제안서  ·  Draft v3  ·  부록', note=note)
+        footer(s, META[-1]['no'], left='ARKI Robotics  ·  TIPS 창업기업 IR  ·  Draft v4  ·  부록', note=note)
     else:
         footer(s, page, note=note)
 

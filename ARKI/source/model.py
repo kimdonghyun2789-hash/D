@@ -1,5 +1,5 @@
-# ARKI Robotics — Seed IR model (single source of truth for the deck, the xlsx and the docs)
-# Units: 만원 (KRW 10,000) unless a unit says otherwise.  Year Y1 = Seed M0~M12.
+# ARKI Robotics — TIPS IR model (single source of truth for the deck, the xlsx and the docs)
+# Units: 만원 (KRW 10,000) unless a unit says otherwise.  Year Y1 = TIPS 과제 M1~M12, Y2 = M13~M24, Y3 = 후속 투자 이후.
 # Every input carries a tag: FACT / DERIVED / ASSUMPTION / TARGET.
 #   python3 ARKI/source/model.py   -> ARKI/source/model.json (+ sanity asserts)
 import json, os, copy
@@ -120,7 +120,7 @@ inp('payback_hurdle', 'cost', 'Rental Partner 요구 Payback', '개월', 'ASSUMP
 
 # --- volumes
 inp('rd', 'volume', '구축 직접판매 Kitchen', '세대', 'TARGET',
-    {'C': [0, 4, 20, 35, 40], 'B': [0, 5, 30, 50, 60], 'U': [0, 5, 35, 60, 70]}, 'Y2 = Home Pilot')
+    {'C': [0, 3, 20, 35, 40], 'B': [0, 3, 30, 50, 60], 'U': [0, 3, 35, 60, 70]}, 'Y2 = 가정 실증 3세대 (TIPS 과제, 유료 목표)')
 inp('rp', 'volume', '구축 Partner 경유 Kitchen', '세대', 'TARGET',
     {'C': [0, 0, 10, 60, 150], 'B': [0, 0, 20, 130, 340], 'U': [0, 0, 30, 220, 600]}, 'Kitchen 가구·인테리어 Partner')
 inp('attach', 'volume', 'Robot Attach Rate (구축, 설치 시점)', '%', 'ASSUMPTION',
@@ -136,19 +136,28 @@ inp('option_rate', 'volume', '신축 Robot-ready Option 선택률', '%', 'ASSUMP
 inp('new_attach', 'volume', '신축 입주 시 Robot Attach', '%', 'ASSUMPTION', {'C': 0.15, 'B': 0.25, 'U': 0.30}, '')
 
 # --- fixed opex (same plan in all scenarios)
-inp('fte', 'opex', '평균 인원', '명', 'ASSUMPTION', [6, 9, 20, 32, 42], 'Y3부터 Series A 전제')
+inp('fte', 'opex', '평균 인원', '명', 'ASSUMPTION', [4.4, 7, 20, 32, 42],
+    'Y1~Y2 = TIPS 기간 (대표 + 신규 연구원 4명 → Y2 실증 엔지니어 · 사업개발 추가, TIPS_TEAM). Y3부터 후속 투자 전제')
 inp('loaded', 'opex', '인당 연 인건비 (4대보험·퇴직급여 포함)', '만원/년', 'ASSUMPTION', 8500, '평균 연봉 약 7,100만원 × 1.2')
-inp('proto', 'opex', 'Robot·Kitchen Prototype (H/W)', '만원', 'ASSUMPTION', [20000, 10000, 30000, 35000, 40000], '')
-inp('swdata', 'opex', 'Vision·Software·Data (GPU·Cloud·Annotation)', '만원', 'ASSUMPTION', [5000, 5000, 10000, 15000, 20000], '')
-inp('space', 'opex', 'Full-scale Mock-up·공간', '만원', 'ASSUMPTION', [12000, 6000, 10000, 12000, 15000], '50평 임차 + Mock-up 2식')
-inp('cert_ip', 'opex', 'Safety·Certification·IP', '만원', 'ASSUMPTION', [3000, 7000, 20000, 10000, 10000], 'Y3 본인증')
-inp('research', 'opex', 'Pilot·Customer Validation', '만원', 'ASSUMPTION', [3000, 12000, 5000, 5000, 5000], 'Interview·Conjoint·Pilot 보조')
-inp('mkt', 'opex', 'Marketing·Partner Enablement', '만원', 'ASSUMPTION', [0, 2000, 30000, 50000, 70000], '')
-inp('ga', 'opex', 'G&A (법무·회계·보험·사무)', '만원', 'ASSUMPTION', [8000, 10000, 30000, 40000, 50000], '')
+inp('proto', 'opex', 'Robot·Kitchen Prototype (H/W)', '만원', 'ASSUMPTION', [12000, 4000, 30000, 35000, 40000],
+    'Y1 시제품 1차 2식 + 실물 크기 목업 주방 2식 · Y2 2차 개선 부품 (실증 3세대 하드웨어는 원가에 반영)')
+inp('swdata', 'opex', 'Vision·Software·Data (GPU·Cloud·Annotation)', '만원', 'ASSUMPTION', [2000, 3000, 10000, 15000, 20000], '')
+inp('space', 'opex', 'Full-scale Mock-up·공간', '만원', 'ASSUMPTION', [6000, 4000, 10000, 12000, 15000], 'Y1~Y2: 목업 공간 약 30평 임차 + 목업 시공')
+inp('cert_ip', 'opex', 'Safety·Certification·IP', '만원', 'ASSUMPTION', [2500, 6000, 20000, 10000, 10000],
+    'Y1 선행기술조사 · 특허 출원 2건 / Y2 공인시험 · 안전 사전시험 · 특허 3건 / Y3 본인증')
+inp('research', 'opex', 'Pilot·Customer Validation', '만원', 'ASSUMPTION', [2000, 3500, 5000, 5000, 5000],
+    'Y1 인터뷰 50명 · 정리 시간 기록 30세대 / Y2 지불의사 조사 n≥300 · 실증 가정 지원')
+inp('mkt', 'opex', 'Marketing·Partner Enablement', '만원', 'ASSUMPTION', [0, 1000, 30000, 50000, 70000], '')
+inp('ga', 'opex', 'G&A (법무·회계·보험·사무)', '만원', 'ASSUMPTION', [5000, 6000, 30000, 40000, 50000], '')
 
-# --- funding
-inp('seed', 'funding', 'Seed 투자 (가설)', '만원', 'ASSUMPTION', 200000, '')
-inp('tips', 'funding', 'TIPS R&D (일반 트랙 최대 8억, 24개월)', '만원', 'FACT', 80000, '중소벤처기업부 2026 TIPS 공고. 선정은 미확정')
+# --- funding (TIPS 기간 24개월). 규정 값 = 2026 TIPS 공고 (sources.json), 선정은 미확정
+inp('tips', 'funding', 'TIPS R&D 정부지원금 (일반 트랙 최대)', '만원', 'FACT', 80000, '중소벤처기업부 공고 제2026-40호 (2026.1.26) 팁스 창업기업 지원계획. 선정 미확정')
+inp('tips_months', 'funding', 'TIPS R&D 기간 (최대)', '개월', 'FACT', 24, '공고 제2026-40호')
+inp('tips_gov_ratio', 'funding', '정부지원연구개발비 비율 상한 (총 연구개발비 대비)', '%', 'FACT', 0.75, '공고 제2026-40호 (사본 · 운용사 정리 기준: 정부 75% 이내, 기관부담 25% 이상)')
+inp('tips_cash_ratio', 'funding', '기관부담연구개발비 중 현금 최소 비율', '%', 'FACT', 0.10, '공고 제2026-40호 (사본 · 운용사 정리 기준)')
+inp('op_invest', 'funding', '운영사 투자 (요청액, TIPS 추천 전제)', '만원', 'ASSUMPTION', 30000, '요건: 수도권 2억원 이상 · 비수도권 1억원 이상 (2026). 조건 (형태 · 기업가치 · 지분)은 협의')
+inp('followon', 'funding', '후속 투자 (M12 목표, 공동투자 · Pre-A)', '만원', 'TARGET', 50000, 'M9 · M12 점검 결과 기반')
+inp('biz_link', 'funding', '비R&D 연계 (창업사업화 · 해외마케팅) 각 최대 (선정 뒤 별도 신청, 기본안 미반영)', '만원', 'FACT', 15000, '공고 제2026-40호: 각 10개월 최대 1.5억원, 합산 3억원, 정부 70% 이내')
 
 # ---------------------------------------------------------------- helpers
 def V(s, ov=None):
@@ -402,30 +411,62 @@ def sens_company():
     out.sort(key=lambda d: -(abs(d['lo']) + abs(d['hi'])))
     return dict(base=base, items=out)
 
-# ---------------------------------------------------------------- use of funds
-DRAFT_FUNDS = [('Core Development Team', 80000), ('Robot / Kitchen Prototype', 40000),
-               ('Mock-up / Installation Development', 25000), ('Vision / Software / Data', 15000),
-               ('Pilot / Customer Validation', 15000), ('Safety / Certification / IP', 10000),
-               ('Operations / Contingency', 15000)]
+# ---------------------------------------------------------------- TIPS 기간 (24개월) 자금 계획
+# 팀 (ASSUMPTION): (역할, 시작 월, 인건비 구분, TIPS 과제 참여율). 대표 외 인원은 모두 신규 채용 계획 (Founder 정보 미제공).
+TIPS_TEAM = [('대표 (과제책임자)', 1, '현물', 0.5), ('로봇 제어 · 조작 연구원', 1, '현금', 0.8), ('비전 · ML 연구원', 2, '현금', 0.8),
+             ('메카트로닉스 · 기구 연구원', 2, '현금', 0.8), ('임베디드 · 전기 · 안전 연구원', 6, '현금', 0.8),
+             ('설치 · 실증 엔지니어', 13, '현금', 0.5), ('사업개발 · 고객 조사', 13, '과제 외', 0.0)]
+# R&D 과제 예산 중 인건비 외 비목 (ASSUMPTION, 만원): (비목, 내용, Y1, Y2)
+TIPS_OTHER = [('연구재료비', '시제품 1차 2식 · 실물 크기 목업 주방 2식 (Y1) / 실증용 하드웨어 · 2차 개선 부품 (Y2)', 12000, 6500),
+              ('연구활동비', '외주 가공 · SW · 연구실 운영 · 특허 2건 (Y1) / 공인시험 · 안전 사전시험 · 특허 3건 (Y2)', 6000, 9200),
+              ('연구수당', '참여 연구원 (인건비 대비 약 5%)', 1400, 1800)]
+TIPS_Y1 = 50000                  # R&D 과제 1차년도 총액 (ASSUMPTION); 2차년도 = 총액 − 1차년도, 간접비 = 연차 총액 − 직접비
 
-def use_of_funds():
+def tips_plan():
     a = V('B'); L = run('B')
-    two = lambda k: yr(a[k], 0) + yr(a[k], 1)
-    pilot_net = -(L['gp'][0] + L['gp'][1])          # Y1~Y2 Pilot 매출총손실 (Pilot Robot·Kitchen 원가 − 매출)
-    rows = [('Core Development Team', (a['fte'][0] + a['fte'][1]) * a['loaded']),
-            ('Robot / Kitchen Prototype', two('proto')),
-            ('Mock-up / Installation Development', two('space')),
-            ('Vision / Software / Data', two('swdata')),
-            ('Pilot / Customer Validation', two('research') + pilot_net + L['ch_cac'][1] + two('mkt')),
-            ('Safety / Certification / IP', two('cert_ip')),
-            ('Operations (G&A)', two('ga'))]
-    sub = sum(v for _, v in rows)
-    cont = round(sub * 0.10 / 1000) * 1000
-    rows.append(('Contingency (10%)', cont))
-    total = sub + cont
-    return dict(draft=DRAFT_FUNDS, draft_total=sum(v for _, v in DRAFT_FUNDS), revised=rows, revised_total=total,
-                gap_vs_seed=total - a['seed'], with_tips=a['seed'] + a['tips'],
-                months_equity_only=24 * a['seed'] / total)
+    mo = a['loaded'] / 12
+    pm = []                       # person-months per member and year
+    for role, m0, kind, part in TIPS_TEAM:
+        y1 = max(0, 12 - (m0 - 1)) if m0 <= 12 else 0
+        y2 = 12 if m0 <= 13 else max(0, 24 - (m0 - 1))
+        pm.append((role, m0, kind, part, y1, y2))
+    fte = [sum(p[4] for p in pm) / 12, sum(p[5] for p in pm) / 12]
+    assert abs(round(fte[0], 1) - a['fte'][0]) < 1e-9 and abs(fte[1] - a['fte'][1]) < 1e-9, ('TIPS team vs fte', fte)
+    pay = lambda kind, t: sum(p[4 + t] * p[3] * mo for p in pm if p[2] == kind)
+    rows = [('인건비', f"신규 연구원 {sum(1 for p in pm if p[2] == '현금')}명 (참여율 50~80%)", pay('현금', 0), pay('현금', 1), '현금'),
+            ('인건비', '대표 (과제책임자, 참여율 50%)', pay('현물', 0), pay('현물', 1), '현물')]
+    rows += [(c, d, y1, y2, '현금') for c, d, y1, y2 in TIPS_OTHER]
+    direct = [sum(r[2 + t] for r in rows) for t in (0, 1)]
+    total = a['tips'] / a['tips_gov_ratio']          # 정부지원금 최대를 쓰는 총 연구개발비
+    year_total = (TIPS_Y1, total - TIPS_Y1)
+    rows.append(('간접비', '연구개발 지원 · 성과활용 (직접비 대비)', year_total[0] - direct[0], year_total[1] - direct[1], '현금'))
+    inkind = sum(r[2] + r[3] for r in rows if r[4] == '현물')
+    private = total - a['tips']; private_cash = private - inkind
+    assert private_cash >= a['tips_cash_ratio'] * private - 1e-6, ('cash share of 기관부담', private_cash)
+    assert all(r[2] >= 0 and r[3] >= 0 for r in rows)
+    gov_y = [year_total[t] * a['tips_gov_ratio'] for t in (0, 1)]
+    spend = [-L['cash'][0], -L['cash'][1]]           # 회사 전체 지출 (실증 매출 차감 후, TIPS 과제 외 비용 포함)
+    spend_total = sum(spend)
+    srcs = [('TIPS R&D 정부지원금', a['tips'], 'FACT'), ('운영사 투자 (요청)', a['op_invest'], 'ASSUMPTION'),
+            ('후속 투자 (M12 목표)', a['followon'], 'TARGET')]
+    src_total = sum(v for _, v, _ in srcs)
+    # runway without the follow-on round: monthly burn flat within a year, grant paid at the start of each year
+    avail = lambda m: a['op_invest'] + gov_y[0] + (gov_y[1] if m > 12 else 0)
+    used = lambda m: spend[0] * min(m, 12) / 12 + (spend[1] * (m - 12) / 12 if m > 12 else 0)
+    runway = 24.0
+    for k in range(1, 241):
+        m = k / 10
+        if used(m) > avail(m) + 1e-6:
+            runway = m - 0.1; break
+    # what the R&D budget covers inside the company spend (for the uses chart)
+    people = sum(r[2] + r[3] for r in rows if r[0] in ('인건비', '연구수당'))
+    return dict(team=[dict(role=p[0], start=p[1], kind=p[2], part=p[3], pm_y1=p[4], pm_y2=p[5]) for p in pm], fte=fte,
+                rows=[dict(cat=r[0], item=r[1], y1=r[2], y2=r[3], kind=r[4], total=r[2] + r[3]) for r in rows],
+                year_total=list(year_total), total=total, gov=a['tips'], gov_y=gov_y, private=private, private_cash=private_cash,
+                inkind=inkind, indirect_rate=(total - sum(direct)) / sum(direct), people_rnd=people,
+                spend=spend, spend_total=spend_total, non_rnd=spend_total - total, company_need=spend_total - a['tips'],
+                sources=[dict(name=n, value=v, tag=t) for n, v, t in srcs], src_total=src_total, buffer=src_total - spend_total,
+                runway_no_followon=runway, biz_link=a['biz_link'], months=a['tips_months'])
 
 
 # ---------------------------------------------------------------- BOM breakdown (ASSUMPTION, 만원/대) — sums equal Base bom Y1 / Y3 / Y5
@@ -472,7 +513,7 @@ def main():
     M['value'] = value_anchor('B')
     M['sens_household'] = sens_household()
     M['sens_company'] = sens_company()
-    M['funds'] = use_of_funds()
+    M['tips'] = tips_plan()
     M['bom_breakdown'] = BOM_BREAKDOWN
     bb = V('B')['bom']
     for col, t in ((1, 0), (2, 2), (3, 4)):
@@ -500,7 +541,6 @@ def main():
             assert abs(parts - L['rev'][t]) < 1e-6
             assert abs(L['pl'][t] - L['rpl'][t] - L['pp'][t]) < 1e-9
             assert L['pool'][t] >= -1e-9
-    assert sum(v for _, v in DRAFT_FUNDS) == 200000
     assert M['scenarios']['C']['rev'][4] < M['scenarios']['B']['rev'][4] < M['scenarios']['U']['rev'][4]
     with open(OUT, 'w', encoding='utf-8') as f:
         json.dump(M, f, ensure_ascii=False, indent=1)
@@ -524,8 +564,9 @@ if __name__ == '__main__':
     print('value', M['value'])
     print('sens hh', M['sens_household']['base'], [(d['name'], round(d['lo']), round(d['hi'])) for d in M['sens_household']['items']])
     print('sens co', round(M['sens_company']['base']), [(d['name'], round(d['lo']), round(d['hi'])) for d in M['sens_company']['items']])
-    F = M['funds']
-    print('funds', [(n, v) for n, v in F['revised']], F['revised_total'], 'gap', F['gap_vs_seed'], 'months', round(F['months_equity_only'], 1))
+    TP = M['tips']
+    print('tips rows', [(r['cat'], round(r['y1']), round(r['y2']), r['kind']) for r in TP['rows']], 'total', TP['total'], 'cash', round(TP['private_cash']), 'inkind', round(TP['inkind']), 'indirect', round(TP['indirect_rate'] * 100, 1))
+    print('tips spend', [round(x) for x in TP['spend']], round(TP['spend_total']), 'need', round(TP['company_need']), 'sources', TP['src_total'], 'buffer', round(TP['buffer']), 'runway w/o follow-on', TP['runway_no_followon'], 'fte', TP['fte'])
     print('breakeven kitchens', round(M['breakeven_kitchens']), 'cpk', round(M['contrib_per_kitchen_y5']))
     print('steady', M['steady'])
     print('partner irr', {k: round(v['irr_y'] * 100, 1) for k, v in M['partner_irr'].items()})
