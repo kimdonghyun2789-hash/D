@@ -1,7 +1,6 @@
 # 14. 24개월 Roadmap
 
-> MH Robotics · Seed 투자 · TIPS 운영사 검토용 IR · Draft v5 · 2026-10-08  
-> Concept 단계: 시제품 · 고객 · 계약 · LOI · 파트너 · 매출 없음 (FACT). 숫자는 FACT / DERIVED / ASSUMPTION / TARGET, 그림은 CONCEPT로 표기.
+> MH Robotics · Seed · TIPS IR · 최종본 · 2026.10
 
 ## 구간별 실행 (TARGET)
 
@@ -21,7 +20,7 @@
 | M18 | 주방 3종 Transfer · Calibration 시간 · WTP n ≥ 300 · 예약금 Test · 인증 사전상담 | 하락 ≤ 10%p · Calibration ≤ 4시간 · WTP ≥ 30% (1,490만원) | Retrofit 보류 · Remodeling 집중 / 가격 · 구성 재설계 |
 | M24 | 가정 3세대 실증 · 유료 전환 · BOM · 설치 · Service 원가 실측 · Partner 조건 · 출원 5건 | 가정 ≥ 90% · 유료 전환 ≥ 2세대 · 원가가 가정 범위 안 | Bridge 또는 범위 축소 후 재검증 (Series A 연기) |
 
-각 Gate는 "계속 · 범위 축소 · 전환" 중 하나를 결정. 중단 기준이 있어야 초기 자금이 Option 매입으로 작동함.
+Gate별 판단: 계속 · 범위 축소 · 전환
 
 ## WP 일정
 
@@ -34,7 +33,7 @@
 | WP5 | Human-Robot Safety | M4~M24 |
 | WP6 | Integrated CLEAN 실증 | M9~M24 |
 
-## 채용 계획 (ASSUMPTION, 인물 정보 없음)
+## 채용 계획 (ASSUMPTION)
 
 | 역할 | 구분 | 시작 | Y1 인건비 (만원) | Y2 인건비 (만원) |
 |---|---|:---:|---:|---:|
@@ -53,7 +52,7 @@
 | Skill · Data 엔지니어 | R&D | M16 | 0 | 5,850 |
 | 현장 서비스 Technician | 현장 | M19 | 0 | 2,700 |
 
-평균 FTE 7.0 (Y1) → 12.8 (Y2) · 24개월 차 약 14명. Lean안: Hand 센싱 · Skill/Data · 현장 Technician 제외, 시험 인력 M19로 연기 (24개월 차 약 10명).
+평균 FTE 7.0 (Y1) → 12.8 (Y2) · 24개월 차 약 14명. Lean안: Hand 센싱 · Skill/Data · 현장 Technician 제외, 시험 인력 M19로 연기 (24개월 차 약 10명)
 
 ## 24개월 Value Creation
 

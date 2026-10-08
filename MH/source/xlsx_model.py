@@ -508,7 +508,9 @@ for lab, fs, nf, note in [
         ('월 순유입 (요금 − MH 서비스료)', f"={b('p_rent')}-{b('partner_fee')}", NUM1, ''),
         ('잔존가치 (매입가 × 잔존율)', f"=B{pr0}*{b('residual')}", NUM1, ''),
         ('월 IRR', f"=RATE({b('rent_months')},B{pr0 + 1},-B{pr0},B{pr0 + 2})", '0.00%', 'RATE(기간, 월 유입, −매입가, 잔존가치)'),
-        ('연 IRR (연체·해지 미반영)', f"=(1+B{pr0 + 3})^12-1", PCT, '')]:
+        ('연 IRR (연체·해지 미반영)', f"=(1+B{pr0 + 3})^12-1", PCT, ''),
+        ('단순 회수기간 (개월)', f"=B{pr0}/B{pr0 + 1}", NUM1, '매입가 ÷ 월 순유입'),
+        ('Partner 요구 Payback (가정, 개월)', f"={b('payback_hurdle')}", NUM1, '회수기간 > 요구치이면 매입가율 · 서비스료 · 기간 협의 필요')]:
     ws.cell(row=r, column=1, value=lab).font = BOLD if '연 IRR' in lab else BLACK
     c = ws.cell(row=r, column=2, value=fs); c.font = BLACK; c.number_format = nf
     ws.cell(row=r, column=4, value=note).font = BLACK

@@ -1,7 +1,6 @@
 # 08. FACT / DERIVED / ASSUMPTION / TARGET 구분표
 
-> MH Robotics · Seed 투자 · TIPS 운영사 검토용 IR · Draft v5 · 2026-10-08  
-> Concept 단계: 시제품 · 고객 · 계약 · LOI · 파트너 · 매출 없음 (FACT). 숫자는 FACT / DERIVED / ASSUMPTION / TARGET, 그림은 CONCEPT로 표기.
+> MH Robotics · Seed · TIPS IR · 최종본 · 2026.10
 
 ## Tag 정의
 
@@ -15,11 +14,11 @@
 | TBV (To Be Validated) | 검증 방법이 정해진 미확인 사실 | 식세기 보급률 · 인증 적용 범위 |
 | FUTURE | 현재 없는 제품 · 기능 | COOK · Upgrade |
 
-재무모델 입력 108개: ASSUMPTION 83개 · FACT 17개 · TARGET 5개 · DERIVED 3개. 같은 표가 xlsx `Inputs` 시트에 있음 (Tag · 출처 포함).
+재무모델 입력 108개: ASSUMPTION 84개 · FACT 17개 · TARGET 5개 · DERIVED 2개. 같은 표가 xlsx `Inputs` 시트에 있음 (Tag · 출처 포함)
 
 ## 1. 재무모델 입력 전체 (Scenario별 값, `=`은 Base와 같음)
 
-연도별 값은 Y1 / Y2 / Y3 / Y4 / Y5 순서.
+연도별 값은 Y1 / Y2 / Y3 / Y4 / Y5 순서
 
 ### 시장 (23)
 
@@ -44,9 +43,9 @@
 | `a_fit_rate` | Remodeling 적용 가능률 (구조 · 전원 · 평면) | % | ASSUMPTION | = | 60% | = | 평면 30개 분석으로 검증 |
 | `a_prem_stock` | Premium 세대 비중 (아파트 재고 기준) | % | ASSUMPTION | = | 10% | = | Retrofit 대상. 소득 · 주택가격 기준 정의 필요 |
 | `a_dw_premium` | Premium 세대 식기세척기 보유율 | % | ASSUMPTION | = | 60% | = | 공식 보급률 통계 확인 안 됨 (2019~20 업계 추정 10%대 초반 · 전체 가구) → TO BE VALIDATED |
-| `a_retro_fit` | Retrofit 호환률 (주방 형태 · 식세기 위치 · 상부장) | % | ASSUMPTION | = | 40% | = | 받은 평면 5종 중 2종만 기본 배치 수용 (표본 작음) → 평면 30개로 검증 |
+| `a_retro_fit` | Retrofit 호환률 (주방 형태 · 식세기 위치 · 상부장) | % | ASSUMPTION | = | 40% | = | 가설. 확보 평면 5종 (Remodeling 기본 배치 수용 1 · 미수용 3 · 미검토 1)으로는 판단 불가 → 평면 30개 · 상담 주방 실측으로 검증 |
 | `a_retro_conv` | Retrofit 연간 전환율 (호환 세대 중, 제품 성숙 후) | % | ASSUMPTION | = | 0.5% | = | 가설. Phase 2 시작 전 검증 |
-| `a_new_supply` | 연간 신규 아파트 입주 (평균) | 천/년 | DERIVED | = | 200 | = | 2025 실적 23.6만 · 2026 예정 18.3만 → 20만 |
+| `a_new_supply` | 연간 신규 아파트 입주 (평균) | 천/년 | ASSUMPTION | = | 200 | = | 2025 실적 23.6만 · 2026 예정 18.3만 (평균 21.0만) → 보수적으로 20만 |
 | `a_premium_project` | Premium 단지 비중 (신축) | % | ASSUMPTION | = | 15% | = | 브랜드 · 분양가 기준 정의 필요 |
 
 ### 고객 가치 (4)
@@ -198,7 +197,7 @@
 | `rt` | Existing Kitchen Retrofit (호환 주방, Partner 설치) | 0 / 0 / 0 / 20 / 80 | Phase 2. Y4 시작 |
 | `projects` | 신축 Interface Option 계약 Project | 0 / 0 / 1 / 2 / 3 | 계약 2년 후 입주 · 설치 |
 
-기술 KPI 목표 (M6~M24)는 [12_Technical_KPI.md](12_Technical_KPI.md).
+기술 KPI 목표 (M6~M24)는 [12_Technical_KPI.md](12_Technical_KPI.md)
 
 ## 4. CONCEPT · FUTURE
 

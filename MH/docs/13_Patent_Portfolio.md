@@ -1,15 +1,14 @@
 # 13. Patent Portfolio (출원 후보)
 
-> MH Robotics · Seed 투자 · TIPS 운영사 검토용 IR · Draft v5 · 2026-10-08  
-> Concept 단계: 시제품 · 고객 · 계약 · LOI · 파트너 · 매출 없음 (FACT). 숫자는 FACT / DERIVED / ASSUMPTION / TARGET, 그림은 CONCEPT로 표기.
+> MH Robotics · Seed · TIPS IR · 최종본 · 2026.10
 
-## 원칙
+## 출원 전략
 
-- **등록 가능성은 단정하지 않음.** 현재 출원 0건 · 선행기술조사 전 (M3 예정) · 청구항은 변리사 검토 전.
-- 식기 로봇 · 주방 Rail Arm · 수납장 로봇 · 교체형 Gripper 부품 관련 선행특허가 있어 **넓은 청구는 어렵고**, 구체적인 구조 · 방법 청구를 목표.
-- 실제 방어력은 특허 단독이 아니라 Grasp Data · Skill Library · Calibration 절차 · Interface 표준 · Installed Base Data의 축적 (모두 구축 전).
+- 현재 출원 0건 · 선행기술조사 M3 · 청구항 변리사 검토 예정 · 등록 가능성 미정
+- 식기 로봇 · 주방 Rail Arm · 수납장 로봇 · 교체형 Gripper 부품 선행특허 존재 → 넓은 청구 대신 구체 구조 · 방법 청구
+- 방어력 = 특허 + Grasp Data · Skill Library · Calibration 절차 · Interface 표준 · Installed Base Data 축적 (TARGET)
 
-## 출원 후보 12개 묶음 (Spec 23 영역)
+## 출원 후보 12개 묶음 (기술 영역별)
 
 | 영역 | 출원 후보 (Family) | 사업 중요도 | 차별성 | Prior Art Risk (참고) | 우선순위 | 시점 |
 |---|---|---|---|---|---|---|
@@ -28,7 +27,7 @@
 
 ## 출원 계획
 
-24개월 국내 출원 5건 (1순위 2건 M6~M9 · 2순위 3건 M12~M18) + PCT 1건 (M18, 1순위 중 1건). M3 선행기술조사 (KIPRIS · USPTO · EPO · Google Patents) · 청구항은 변리사 검토. 등록 가능성은 미정.
+24개월 국내 출원 5건 (1순위 2건 M6~M9 · 2순위 3건 M12~M18) + PCT 1건 (M18, 1순위 중 1건) · M3 선행기술조사 (KIPRIS · USPTO · EPO · Google Patents) · 청구항 변리사 검토 · 등록 가능성 미정
 
 | 시점 | 내용 |
 |---|---|
@@ -37,7 +36,7 @@
 | M12~M18 | 2순위 5개 후보 중 3건 출원 (Robot Home · Appliance Interface · Kitchen Object Handling · Kitchen Mapping · Adaptive Finger 중, 실시예 확보 순) |
 | M18 | PCT 1건 (1순위 중 1건) |
 
-24개월 IP 예산 4,500만원 (선행조사 · 국내 5건 · PCT 1건, ASSUMPTION) — TIPS 연구활동비 편성 대상.
+24개월 IP 예산 4,500만원 (선행조사 · 국내 5건 · PCT 1건, ASSUMPTION) — TIPS 연구활동비 편성 대상
 
 ## 참고 선행기술 (청구항 미검토)
 
@@ -50,7 +49,7 @@
 
 ## 우선순위 판단 기준
 
-1. **사업 중요도**: 소모품 매출 · 설치시간 · 반복설치에 직접 연결되는가 (Food-contact Module · Coordinate Calibration · Robot Home).
-2. **차별성**: 주방 · 식기 · 가전 기준점이라는 구체 조건에서만 성립하는 구조 · 절차인가.
-3. **Prior Art Risk**: 일반 Gripper · Tool Changer · 협동로봇 안전 기술과 겹치는 정도.
-4. **시점**: Hand v1 (M4) · 목업 CLEAN (M12) 결과로 실시예가 생긴 뒤 출원.
+1. **사업 중요도**: 소모품 매출 · 설치시간 · 반복설치에 직접 연결되는가 (Food-contact Module · Coordinate Calibration · Robot Home)
+2. **차별성**: 주방 · 식기 · 가전 기준점이라는 구체 조건에서만 성립하는 구조 · 절차인가
+3. **Prior Art Risk**: 일반 Gripper · Tool Changer · 협동로봇 안전 기술과 겹치는 정도
+4. **시점**: Hand v1 (M4) · 목업 CLEAN (M12) 결과로 실시예가 생긴 뒤 출원

@@ -1,11 +1,10 @@
 # 16. 투자심사 예상질문 20개
 
-> MH Robotics · Seed 투자 · TIPS 운영사 검토용 IR · Draft v5 · 2026-10-08  
-> Concept 단계: 시제품 · 고객 · 계약 · LOI · 파트너 · 매출 없음 (FACT). 숫자는 FACT / DERIVED / ASSUMPTION / TARGET, 그림은 CONCEPT로 표기.
+> MH Robotics · IR 내부 검토용 (제출 제외) · 2026.10
 
-매우 비판적인 Seed VC · TIPS 운영사 관점. Spec 34의 21개 질문 중 "상용 Gripper를 쓰면 안 되는가?"와 "왜 자체 Hand가 필요한가?"는 같은 판단 (Buy vs Build)이라 Q6 하나로 묶음.
+- Q6 = 상용 Gripper 비교 · 자체 Hand 필요성 병합 (같은 Buy vs Build 판단)
 
-| # | 질문 | 심사역이 확인하려는 것 | 답하는 위치 (본문 쪽 · 부록) | Spec 34 원문 (병합 시) |
+| # | 질문 | 확인 포인트 | 답하는 위치 (본문 쪽 · 부록) | 병합 질문 원문 |
 |---|---|---|---|---|
 | Q1 | 왜 Kitchen인가? | 첫 적용 공간이 기술 · 사업 검증 순서로 합리적인지 (유행 · 감성 선택이 아닌지) | 03 | - |
 | Q2 | 왜 Robot Arm인가? | Form Factor가 작업범위 · 원가 · 안전에 맞는지 (이동형 · 전용기계 대비) | 08 · B6 | - |
@@ -28,4 +27,4 @@
 | Q19 | 24개월 뒤 어떤 Evidence가 있어야 후속투자가 가능한가? | Milestone 정의와 Series A 준비도 | 16 · 18 | - |
 | Q20 | Founder가 왜 적합한가? | Founder-Market Fit (팀이 이 문제를 풀 수 있는가) | 17 | - |
 
-방어논리 · 근거 · 약한 부분: [17_Defense_Logic.md](17_Defense_Logic.md). 부록 E3~E5에 같은 표.
+방어논리: [17_Defense_Logic.md](17_Defense_Logic.md) · 내부 검토 자료 I1~I3

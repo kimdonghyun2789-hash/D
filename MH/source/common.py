@@ -7,9 +7,11 @@ from pptx.enum.shapes import MSO_SHAPE
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..'))
-OUTPUT = os.path.join(ROOT, 'MH_Robotics_Seed_TIPS_IR_Deck.pptx')
-PREVIEW = os.path.join(ROOT, 'MH_Robotics_Seed_TIPS_IR_Deck_preview.pdf')
-MAIN_PDF = os.path.join(ROOT, 'MH_Robotics_Seed_TIPS_IR_Deck_Main.pdf')
+OUTPUT = os.path.join(ROOT, 'MH_Robotics_Seed_TIPS_IR_Final.pptx')            # 제출용: 본문 + 부록
+PREVIEW = os.path.join(ROOT, 'MH_Robotics_Seed_TIPS_IR_Final.pdf')
+MAIN_PDF = os.path.join(ROOT, 'MH_Robotics_Seed_TIPS_IR_Final_Main.pdf')       # 본문만
+INTERNAL = os.path.join(ROOT, 'MH_Robotics_IR_Internal_QA.pptx')              # 내부 검토용 (제출 제외)
+INTERNAL_PDF = os.path.join(ROOT, 'MH_Robotics_IR_Internal_QA.pdf')
 M = {}
 META = []          # one dict per slide, in deck order
 
@@ -44,9 +46,9 @@ def inp(key, s='B'):
 
 # ---------------------------------------------------------------- slide scaffolding
 # ---------------------------------------------------------------- appendix mode (v2 deck: legacy slides re-coded A~F)
-APX = {'on': False}
+APX = {'on': False, 'pack': 'main'}      # pack: main | appendix | internal
 SECTION = {'A': 'TIPS 과제 상세', 'B': '제품 · 기술', 'C': '시장 · 경쟁', 'D': '경제성 · 재무',
-           'E': 'IP · 리스크 · Q&A', 'F': '참고'}
+           'E': 'IP · 리스크', 'F': '출처', 'I': '내부 검토용 (제출 제외)'}
 SID2CODE = {   # legacy main-slide ids and old appendix codes -> v2 appendix codes
     'thesis': 'A1', 'proof': 'A2', 'integration': 'B1', 'system': 'B2', 'product': 'B3', 'architecture': 'B4',
     'layouts': 'B7', 'housing': 'B8', 'standard': 'B9', 'robotready': 'B11', 'channels': 'C4', 'market': 'C3',
@@ -83,7 +85,7 @@ def start(prs, sid, no, title, q=None, visual='', chart='', note='', bg=None):
     kit.XFORM['fn'] = _legacy_text if legacy else None
     if legacy: note, visual, title = _legacy_text(note), _legacy_text(visual), _legacy_text(title)
     s = new_slide(prs, sid, bg=bg)
-    META.append(dict(id=sid, no=no, title=title, q=q or [], visual=visual, chart=chart, note=note))
+    META.append(dict(id=sid, no=no, title=title, q=q or [], visual=visual, chart=chart, note=note, pack=APX.get('pack', 'main')))
     if note: notes(s, note)
     return s
 
@@ -93,7 +95,9 @@ def head(s, section, title, sub=None, q=None, size=26):
     y = 0.55
     if APX['on']:
         code = str(META[-1]['no']); q = []
-        section = f"APPENDIX {code}  ·  {SECTION.get(code[0], '')}" if code[0] in SECTION else section
+        lab = 'INTERNAL' if APX.get('pack') == 'internal' else 'APPENDIX'
+        sec_code = len(code) > 1 and code[0] in SECTION and code[1].isdigit()     # 'A1' · 'I0' (not 'Index')
+        section = f"{lab} {code}  ·  {SECTION[code[0]]}" if sec_code else section
     text(s, MX, y, 7.5, 0.28, section, size=11, bold=True, color=T['muted'] if APX['on'] else T['accent'], label='section')
     if q:
         x = W - MX
@@ -115,7 +119,8 @@ def head(s, section, title, sub=None, q=None, size=26):
 
 def foot(s, page, note=None):
     if APX['on']:
-        footer(s, META[-1]['no'], left='MH Robotics  ·  Seed · TIPS IR  ·  Draft v5  ·  부록', note=note)
+        left = 'MH Robotics  ·  내부 검토용 (제출 제외)' if APX.get('pack') == 'internal' else 'MH Robotics  ·  Seed · TIPS IR  ·  부록'
+        footer(s, META[-1]['no'], left=left, note=note)
     else:
         footer(s, page, note=note)
 
@@ -129,7 +134,7 @@ def statement(s, x, y, w, txt, size=15, h=None, fill=None, color=None, bold=True
     """Accent-bar statement block (single key message)."""
     hh = h or text_h(txt, size, w - 0.35, bold=bold) + 0.24
     rect(s, x, y, w, hh, fill=fill or T['soft'])
-    rect(s, x, y, 0.06, hh, fill=T['accent'])
+    rect(s, x, y, 0.06, hh, fill=T['text'])      # ink bar: orange is reserved for robot zone · path · key numbers
     text(s, x + 0.22, y, w - 0.32, hh, txt, size=size, bold=bold, color=color or T['text'], anchor='m', label='stmt')
     return hh
 

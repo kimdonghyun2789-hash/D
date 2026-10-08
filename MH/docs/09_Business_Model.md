@@ -1,11 +1,10 @@
 # 09. Business Model
 
-> MH Robotics · Seed 투자 · TIPS 운영사 검토용 IR · Draft v5 · 2026-10-08  
-> Concept 단계: 시제품 · 고객 · 계약 · LOI · 파트너 · 매출 없음 (FACT). 숫자는 FACT / DERIVED / ASSUMPTION / TARGET, 그림은 CONCEPT로 표기.
+> MH Robotics · Seed · TIPS IR · 최종본 · 2026.10
 
 ## 한 줄 정의
 
-Robot System과 설치로 시작해 (INSTALL), 쓰는 동안 Rental · Care · 소모품 반복매출을 받고 (OPERATE), 같은 Platform에 Skill · Tool을 더해 확장매출을 만든다 (EXPAND). Installed Base가 커질수록 반복 · 확장 매출 비중이 커지는 구조 (가설).
+INSTALL (Robot System · Interface · 설치) → OPERATE (Rental · Care · 소모품 반복매출) → EXPAND (같은 Platform에 Skill · Tool 추가). Installed Base 증가 → 반복 · 확장 매출 비중 확대 구조 (가설)
 
 ## 3층 구조 (가격 = ASSUMPTION, VAT 별도)
 
@@ -32,7 +31,7 @@ Robot System과 설치로 시작해 (INSTALL), 쓰는 동안 Rental · Care · �
 | Care | 연 48만원 | 원가 Y3 36.8 → Y5 26.8만원 | LG 구독 정기관리 포함 (가격 구조 비공개) | 안전 · 성능 유지 |
 | Consumables | 연 36만원 (List) | 원가율 35% | Robotiq Fingertip $175~195 · 식품용 실리콘 컵 £7~20 | 위생 · 마모 교체 |
 
-**가치 Gap (솔직한 약점)**: CLEAN만의 가사 대체 가치는 월 약 18만원 (정리 40분/일 × 60% 자동화 × 가사서비스 1.5만원/h, 범위 11~24만원) < Rental 월 33만원. → Premium Remodeling 고객부터, ASSIST 확장 · 위생 · 편의 가치를 묶어 WTP 조사 (n ≥ 300 · 예약금, M18).
+**가치 Gap**: CLEAN만의 가사 대체 가치 = 월 약 18만원 (정리 40분/일 × 60% 자동화 × 가사서비스 1.5만원/h, 범위 11~24만원) < Rental 월 33만원. → Premium Remodeling 고객부터, ASSIST 확장 · 위생 · 편의 가치를 묶어 WTP 조사 (n ≥ 300 · 예약금, M18)
 
 ## 설치 경로별 1세대 경제성 (구매, 5년, 만원)
 
@@ -48,10 +47,11 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
 
 ## Rental 구조 (초기 부담 완화 수단)
 
-- **Pilot (Y2~Y3)**: MH가 직접 보유 · 운영 (실증 3세대 + 초기 고객).
-- **Scale (Y4~)**: Rental · Capital Partner가 Robot 자산을 ASP의 88%에 매입 · 보유, 고객은 Partner에 월 33만원, MH는 Product · SW · Care 담당 + 서비스료 월 6만원.
-- Partner 관점: 매입가 1,311만원 · 월 순유입 27만원 · 60개월 · 잔존 15% → 연 IRR 약 13.1% (DERIVED). 렌탈 · 캐피탈사 요구 수익률과의 비교는 협의로 확인 (Partner 계약 없음).
-- 원칙: MH Balance Sheet에 Rental 자산이 과도하게 쌓이지 않게 함.
+- **Pilot (Y2~Y3)**: MH가 직접 보유 · 운영 (실증 3세대 + 초기 고객)
+- **Scale (Y4~)**: Rental · Capital Partner가 Robot 자산을 ASP의 88%에 매입 · 보유, 고객은 Partner에 월 33만원, MH는 Product · SW · Care 담당 + 서비스료 월 6만원
+- Partner 관점: 매입가 1,311만원 · 월 순유입 27만원 · 60개월 · 잔존 15% → 연 IRR 약 13.1% · 단순 회수 약 49개월 (DERIVED)
+- 회수 약 49개월 > Partner 요구 36개월 (ASSUMPTION) → 매입가율 · 서비스료 · 계약기간 조건 협의 필요 (M24 Partner 조건)
+- MH Balance Sheet의 Rental 자산 누적 지양 (Scale 단계 Partner 보유)
 
 | Rental 월 단위 (만원) | Y3 | Y5 |
 |---|---:|---:|
@@ -67,7 +67,7 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
 
 ## Care = Robot Lifecycle Maintenance (Software 구독 아님)
 
-포함: 정기 안전점검 · Calibration · 원격진단 · Robot / Rail 상태점검 · Vision Calibration · SW Update · Consumables Check · A/S.
+포함: 정기 안전점검 · Calibration · 원격진단 · Robot / Rail 상태점검 · Vision Calibration · SW Update · Consumables Check · A/S
 
 | Care (만원/대 · 년) | Y3 | Y5 |
 |---|---:|---:|
@@ -78,7 +78,7 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
 | **원가 합계** | 36.8 | 26.8 |
 | **마진** | 23% | 44% |
 
-선례 (FACT, MH와 무관): 코웨이 국내 렌탈 계정 748만 (2026 1Q) · LG 가전 구독 매출 2조원+ · 케어매니저 약 4,000명 (2025) [S12 · S41].
+선례: 코웨이 국내 렌탈 계정 748만 (2026 1Q) · LG 가전 구독 매출 2조원+ · 케어매니저 약 4,000명 (2025) [S12 · S41]
 
 ## Consumables = 실제 마모 · 위생 기반 (억지 Lock-in 아님)
 
@@ -89,7 +89,7 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
 | Protection Kit | 4.0 | 2 | 8 |
 | List 합계 |  |  | 36 |
 
-후보: Grip Pad · Finger Pad · Food-contact Tip · Suction Seal · Cleaning Pad · Protective Cover. 교체주기는 Pad 수명 가속시험 (목표 ≥ 5,475회 파지, M18~M24)으로 확정. 식품 접촉 부품은 「기구 및 용기 · 포장의 기준 및 규격」 대응 [S48].
+후보: Grip Pad · Finger Pad · Food-contact Tip · Suction Seal · Cleaning Pad · Protective Cover. 교체주기는 Pad 수명 가속시험 (목표 ≥ 5,475회 파지, M18~M24)으로 확정. 식품 접촉 부품은 「기구 및 용기 · 포장의 기준 및 규격」 대응 [S48]
 
 ## 회사 매출 구성 (Base Plan, 억원, TARGET / ASSUMPTION)
 
@@ -101,7 +101,7 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
 | 매출 합계 | 0.0 | 0.3 | 7.4 | 35.9 | 91.5 |
 | OPERATE + EXPAND 비중 | 0% | 9% | 5% | 4% | 4% |
 
-초기 5년은 설치 물량이 빠르게 늘어 INSTALL 비중이 큼. Installed Base가 연 설치의 6배인 정상 상태에서 OPERATE + EXPAND 비중 약 29% (DERIVED).
+반복매출 (OPERATE) Y3 0.4 → Y5 3.5억원 (Installed Base 663대) · Y5 매출 중 OPERATE + EXPAND 4% = 설치 초기 구조 (Installed Base 누적 후 비중 확대, DERIVED)
 
 ## MH Core vs Partner (Product Company 구조)
 
@@ -113,4 +113,4 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
 | Interface Standard | (신축) 건설사 · 주방가구사 |
 | Safety · Commissioning · QA | (Rental) 렌탈 · 캐피탈사 |
 
-Installation Volume 증가 ≠ 본사 현장인력 동일비율 증가. 현장 인력은 설치 엔지니어 · Technician (24개월 차 2명) 중심, 설치 인시는 Calibration 기술로 Y2 약 27 → Y5 약 12인시 목표 (TARGET).
+Installation Volume 증가 ≠ 본사 현장인력 동일비율 증가. 현장 인력은 설치 엔지니어 · Technician (24개월 차 2명) 중심, 설치 인시는 Calibration 기술로 Y2 약 27 → Y5 약 12인시 목표 (TARGET)

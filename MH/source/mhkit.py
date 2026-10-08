@@ -19,7 +19,7 @@ SOFT = 'F4F5F6'
 SOFT2 = 'ECEEF0'
 ACC = 'E2571B'
 ACC_SOFT = 'FBEDE6'
-FOOT_LEFT = 'MH Robotics  ·  Seed · TIPS 운영사 검토용 IR  ·  Draft v5  ·  2026.10'
+FOOT_LEFT = 'MH Robotics  ·  Seed · TIPS IR  ·  2026.10'
 MT_LABEL = {'TBV': 'TO BE VALIDATED', 'FUTURE': 'FUTURE CONCEPT'}
 PAGE = {'n': 0}
 

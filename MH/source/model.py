@@ -118,9 +118,9 @@ inp('a_premium_share', 'market', 'Premium Kitchen 비중 (교체 세대 중)', '
 inp('a_fit_rate', 'market', 'Remodeling 적용 가능률 (구조 · 전원 · 평면)', '%', 'ASSUMPTION', 0.60, '평면 30개 분석으로 검증')
 inp('a_prem_stock', 'market', 'Premium 세대 비중 (아파트 재고 기준)', '%', 'ASSUMPTION', 0.10, 'Retrofit 대상. 소득 · 주택가격 기준 정의 필요')
 inp('a_dw_premium', 'market', 'Premium 세대 식기세척기 보유율', '%', 'ASSUMPTION', 0.60, '공식 보급률 통계 확인 안 됨 (2019~20 업계 추정 10%대 초반 · 전체 가구) → TO BE VALIDATED')
-inp('a_retro_fit', 'market', 'Retrofit 호환률 (주방 형태 · 식세기 위치 · 상부장)', '%', 'ASSUMPTION', 0.40, '받은 평면 5종 중 2종만 기본 배치 수용 (표본 작음) → 평면 30개로 검증')
+inp('a_retro_fit', 'market', 'Retrofit 호환률 (주방 형태 · 식세기 위치 · 상부장)', '%', 'ASSUMPTION', 0.40, '가설. 확보 평면 5종 (Remodeling 기본 배치 수용 1 · 미수용 3 · 미검토 1)으로는 판단 불가 → 평면 30개 · 상담 주방 실측으로 검증')
 inp('a_retro_conv', 'market', 'Retrofit 연간 전환율 (호환 세대 중, 제품 성숙 후)', '%', 'ASSUMPTION', 0.005, '가설. Phase 2 시작 전 검증')
-inp('a_new_supply', 'market', '연간 신규 아파트 입주 (평균)', '천/년', 'DERIVED', 200, '2025 실적 23.6만 · 2026 예정 18.3만 → 20만')
+inp('a_new_supply', 'market', '연간 신규 아파트 입주 (평균)', '천/년', 'ASSUMPTION', 200, '2025 실적 23.6만 · 2026 예정 18.3만 (평균 21.0만) → 보수적으로 20만')
 inp('a_premium_project', 'market', 'Premium 단지 비중 (신축)', '%', 'ASSUMPTION', 0.15, '브랜드 · 분양가 기준 정의 필요')
 
 # --- value anchor
@@ -522,7 +522,7 @@ def sens_household():
         ('Care 방문 원가 ±30%', {'visit_cost': lambda v: [x * 1.3 for x in v]}, {'visit_cost': lambda v: [x * 0.7 for x in v]}),
         ('Interface 표준부품 사용률 -15pp/+15pp', {'smr': lambda v: [x - 0.15 for x in v]}, {'smr': lambda v: [x + 0.15 for x in v]}),
         ('설치 · Calibration 원가 ±50%', {'comm_cost': lambda v: [x * 1.5 for x in v]}, {'comm_cost': lambda v: [x * 0.5 for x in v]}),
-        ('Failure Rate 0.3 ↔ 1.2회', {'corrective': 1.2, 'warranty': 0.06}, {'corrective': 0.3, 'warranty': 0.025}),
+        ('Failure Rate 1.2 ↔ 0.3회', {'corrective': 1.2, 'warranty': 0.06}, {'corrective': 0.3, 'warranty': 0.025}),
         ('Consumables 구매율 50% ↔ 90%', {'cons_attach': 0.5}, {'cons_attach': 0.9}),
     ]
     out = []
@@ -545,10 +545,10 @@ def sens_company():
         ('설치 · Calibration 원가 ±50%', {'comm_cost': lambda v: [x * 1.5 for x in v], 'comm_cost_rt': lambda v: [x * 1.5 for x in v]},
          {'comm_cost': lambda v: [x * 0.5 for x in v], 'comm_cost_rt': lambda v: [x * 0.5 for x in v]}),
         ('Care 방문 원가 ±30%', {'visit_cost': lambda v: [x * 1.3 for x in v]}, {'visit_cost': lambda v: [x * 0.7 for x in v]}),
-        ('Failure Rate 0.3 ↔ 1.2회', {'corrective': 1.2, 'warranty': 0.06}, {'corrective': 0.3, 'warranty': 0.025}),
+        ('Failure Rate 1.2 ↔ 0.3회', {'corrective': 1.2, 'warranty': 0.06}, {'corrective': 0.3, 'warranty': 0.025}),
         ('Retrofit 물량 0 ↔ 2배', {'rt': lambda v: [0] * 5}, {'rt': lambda v: [x * 2 for x in v]}),
         ('신축 Option 선택률 5% ↔ 15%', {'option_rate': 0.05}, {'option_rate': 0.15}),
-        ('Rental 비중 20% ↔ 60%', {'rental_share': lambda v: [0, .3, .3, .6, .6]}, {'rental_share': lambda v: [0, .3, .3, .2, .2]}),
+        ('Rental 비중 60% ↔ 20%', {'rental_share': lambda v: [0, .3, .3, .6, .6]}, {'rental_share': lambda v: [0, .3, .3, .2, .2]}),
     ]
     out = []
     for name, lo, hi in items:
@@ -674,7 +674,8 @@ def partner_irr(s='B', months=None):
         mid = (lo + hi) / 2
         if npv(mid) > 0: lo = mid
         else: hi = mid
-    return dict(price=price, inflow=inflow, resid=resid, irr_m=lo, irr_y=(1 + lo) ** 12 - 1)
+    return dict(price=price, inflow=inflow, resid=resid, irr_m=lo, irr_y=(1 + lo) ** 12 - 1,
+                payback=price / inflow, hurdle=a['payback_hurdle'])     # 단순 회수기간 (개월) vs 요구 Payback
 
 # ---------------------------------------------------------------- 기술 KPI → 경제성 연결 (DERIVED targets)
 def kpi_links():
@@ -727,14 +728,6 @@ def main():
     # Series A 이후 (Y3~Y5) 누적 현금 소요 — 후속 라운드 규모 참고 (DERIVED)
     M['post_seed_burn'] = dict(y3=-B['cash'][2], y4=-B['cash'][3], y3_y4=-(B['cash'][2] + B['cash'][3]),
                                min_cum=B['min_cum_cash'])
-    # steady-state recurring share (DERIVED illustration: installed base = 6 × annual placements)
-    a = V('B'); rs = 0.4
-    cons_y, cons_y_rent, _ = cons_lists(a)
-    arpu = (1 - rs) * (a['care_attach'] * a['p_care'] + a['cons_attach'] * cons_y) + rs * (a['partner_fee'] * 12 + a['cons_attach'] * cons_y_rent)
-    y0 = a['p_rr'] / 0.85 + (1 - rs) * a['p_robot'] + rs * a['p_robot'] * a['wholesale'] + a['p_comm']
-    upg = a['p_robot'] * 0.30 / 6.5
-    M['steady'] = dict(arpu=arpu, y0=y0, upg=upg, base_mult=6,
-                       rec_share=6 * arpu / (y0 + 6 * arpu + 6 * upg), upg_share=6 * upg / (y0 + 6 * arpu + 6 * upg))
     M['team_kind'] = TEAM_KIND
     # sanity checks
     for s in SC:

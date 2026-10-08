@@ -431,7 +431,7 @@ def header(s, section, title, sub=None, size=30):
         y += 0.36
     return y
 
-def footer(s, page, left='MH Robotics  ·  Seed · TIPS IR  ·  Draft v5', note=None):
+def footer(s, page, left='MH Robotics  ·  Seed · TIPS IR', note=None):
     NOLOG['on'] = True
     text(s, MX, H - 0.45, 6, 0.22, left, size=9, color=T['muted'], check=False)
     if note:
@@ -512,3 +512,10 @@ def alpha(sh, pct):
 def ttxt(t):
     """Table cell text colored by tag keyword."""
     return (t, {'color': TAG_COLOR.get(t, T['text']), 'bold': True, 'size': 9})
+
+
+def nf(x, d=0):
+    """Number with thousands separators, rounded half-up (1,784.5 -> 1,785; Python format rounds half-even)."""
+    from decimal import Decimal, ROUND_HALF_UP
+    q = Decimal(1).scaleb(-d)
+    return f"{Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP):,}"

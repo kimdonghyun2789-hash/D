@@ -17,12 +17,13 @@ HH = M['household']; H3, H5 = HH['purchase_direct_Y3'], HH['purchase_direct_Y5']
 MK = M['market']['B']; F = M['funding']; TP = M['tips']; KL = M['kpi_links']
 R3, R5 = M['rental']['Y3'], M['rental']['Y5']; C3, C5 = M['care']['Y3'], M['care']['Y5']; CO = M['cons']
 PI = M['partner_irr']['B']; VA = M['value']
-MAIN = [m for m in DT['meta'] if isinstance(m['no'], int)]
-APX = [m for m in DT['meta'] if not isinstance(m['no'], int)]
+MAIN = [m for m in DT['meta'] if m.get('pack', 'main') == 'main']
+APX = [m for m in DT['meta'] if m.get('pack') == 'appendix']
+INT = [m for m in DT['meta'] if m.get('pack') == 'internal']
 N_MAIN = len(MAIN)
 DATE = '2026-10-08'
-HEADER = (f"> MH Robotics · Seed 투자 · TIPS 운영사 검토용 IR · Draft v5 · {DATE}  \n"
-          "> Concept 단계: 시제품 · 고객 · 계약 · LOI · 파트너 · 매출 없음 (FACT). 숫자는 FACT / DERIVED / ASSUMPTION / TARGET, 그림은 CONCEPT로 표기.\n")
+HEADER = "> MH Robotics · Seed · TIPS IR · 최종본 · 2026.10\n"
+HEADER_INT = "> MH Robotics · IR 내부 검토용 (제출 제외) · 2026.10\n"
 
 
 def v(k, s='B'):
@@ -54,9 +55,20 @@ def md_table(header, rows, align=None):
     return '\n'.join(out)
 
 
+def gaejo(body):
+    # 개조식: drop the sentence period at the end of prose / bullet lines (tables and code blocks untouched)
+    out, code = [], False
+    for l in body.split('\n'):
+        if l.startswith('```'): code = not code
+        elif not code and not l.startswith('|'):
+            l = re.sub(r'(?<=[가-힣0-9A-Za-z\)\]%*])\.\s*$', '', l)
+        out.append(l)
+    return '\n'.join(out)
+
+
 def write(name, body):
     with open(os.path.join(DOCS, name), 'w', encoding='utf-8') as f:
-        f.write(body.strip() + '\n')
+        f.write(gaejo(body.strip()) + '\n')
     print('wrote', name)
 
 
@@ -113,73 +125,53 @@ ASSETS = slide_assets()
 
 # ================================================================ 00 index
 DELIV = [
-    ('01', 'Executive Summary', '01_Executive_Summary.md', '회사 정의 · 문제 · 접근 · 제품 · BM · 시장 · 자금 · 24개월 Evidence · 판단 요약'),
-    ('02', 'Main IR Deck', '02_Main_IR_Deck.md', f'본문 {N_MAIN}장 구성 (Spec 35 순서) · 장별 핵심 메시지 · Red-team 질문 연결 · 부록 {len(APX) - 1}장 목록'),
-    ('03', '각 Slide 실제 화면 문구', '03_Slide_Text.md', '본문 화면 문구 전체 (표기 순서 그대로)'),
-    ('04', '각 Slide Visual 구성', '04_Slide_Visual.md', '장별 레이아웃 · 사용 이미지 · CONCEPT 표기'),
-    ('05', 'Diagram / Chart', '05_Diagram_Chart.md', '필수 Visual 8종 위치 · 도표별 Data 출처 · 3D 렌더 재생성 방법'),
-    ('06', 'Speaker Note', '06_Speaker_Notes.md', '장별 발표 메모 · 예상 발표 시간'),
-    ('07', '시장 Data 및 Source', '07_Market_Data_Sources.md', '주택 · 리모델링 · 렌탈 · Care · Robot Arm · Hand Benchmark · 경쟁 · 기준 · 출처 전체'),
-    ('08', 'FACT / DERIVED / ASSUMPTION / TARGET 구분표', '08_Tag_Register.md', f"재무모델 입력 {len(M['inputs'])}개 전체 · 주요 계산값 · CONCEPT 목록"),
-    ('09', 'Business Model', '09_Business_Model.md', 'INSTALL → OPERATE → EXPAND · 가격 가설 · Rental · Care · Consumables · MH Core vs Partner'),
-    ('10', '5-Year Household Economics', '10_Household_Economics_5Y.md', '대표 1세대 5년 매출 · 매출총이익 · 서비스 원가 · Lifetime Contribution · 범위 · 민감도'),
-    ('11', 'TIPS R&D Work Package', '11_TIPS_RnD_Work_Package.md', 'TIPS (Technology De-risking) vs Seed (Commercial Validation) · WP1~WP6 · 과제 편성'),
-    ('12', 'Technical KPI', '12_Technical_KPI.md', 'Manipulation · Application · Business KPI 20개 · Benchmark · 목표 근거 · Hand 시험 계획'),
-    ('13', 'Patent Portfolio', '13_Patent_Portfolio.md', '출원 후보 12개 묶음 · 사업 중요도 · 차별성 · Prior Art Risk · 우선순위'),
-    ('14', '24개월 Roadmap', '14_Roadmap_24M.md', '0~6 · 7~12 · 13~18 · 19~24M 실행 · Gate · 채용 · 24M Value Creation'),
-    ('15', 'Funding Plan', '15_Funding_Plan.md', '24개월 사용처 · TIPS 과제 편성 · Seed 범위 산식 · 5개년 계획 맥락'),
-    ('16', '투자심사 예상질문 20개', '16_Investor_Questions_20.md', '질문 · 심사역이 확인하려는 것 · 답하는 위치'),
-    ('17', '각 질문의 방어논리', '17_Defense_Logic.md', '방어논리 · 근거 (Tag) · 약한 부분 · 보강 Evidence'),
-    ('18', '현재 부족한 Evidence', '18_Evidence_Gaps.md', 'Evidence Gap · Risk Register · 첫 90일 실행 목록'),
-    ('19', 'Founder 입력 필요정보', '19_Founder_Inputs.md', 'Founder 입력 항목 · TIPS 요건 · 증빙 · 입력 양식'),
-    ('20', '투자심사 Memo', '20_Investment_Memo.md', f'심사 의견 · Scorecard · 판단 {C.VERDICT} · 판단을 바꿀 Evidence 5개'),
+    ('01', 'Executive Summary', '01_Executive_Summary.md', '회사 정의 · 문제 · 접근 · 제품 · BM · 시장 · 자금 · 24개월 Gate', '제출 · 공유'),
+    ('02', 'Main IR Deck', '02_Main_IR_Deck.md', f'본문 {N_MAIN}장 구성 · 장별 핵심 메시지 · 부록 {len(APX) - 1}장 + 목차', '제출 · 공유'),
+    ('03', '각 Slide 실제 화면 문구', '03_Slide_Text.md', '본문 화면 문구 전체 (표기 순서)', '제출 · 공유'),
+    ('04', '각 Slide Visual 구성', '04_Slide_Visual.md', '장별 레이아웃 · 사용 이미지 · CONCEPT 표기', '제출 · 공유'),
+    ('05', 'Diagram / Chart', '05_Diagram_Chart.md', '필수 Visual 8종 위치 · 도표별 Data 출처 · 3D 렌더 재생성', '제출 · 공유'),
+    ('06', 'Speaker Note', '06_Speaker_Notes.md', '장별 발표 요지 · 예상 발표 시간', '발표자용'),
+    ('07', '시장 Data 및 Source', '07_Market_Data_Sources.md', '주택 · 리모델링 · 렌탈 · Care · Robot Arm · Hand Benchmark · 경쟁 · 기준 · 출처 전체', '제출 · 공유'),
+    ('08', 'FACT / DERIVED / ASSUMPTION / TARGET 구분표', '08_Tag_Register.md', f"재무모델 입력 {len(M['inputs'])}개 전체 · 주요 계산값 · CONCEPT 목록", '제출 · 공유'),
+    ('09', 'Business Model', '09_Business_Model.md', 'INSTALL → OPERATE → EXPAND · 가격 가설 · Rental · Care · Consumables · MH Core vs Partner', '제출 · 공유'),
+    ('10', '5-Year Household Economics', '10_Household_Economics_5Y.md', '대표 1세대 5년 매출 · 매출총이익 · 서비스 원가 · Lifetime Contribution · 범위 · 민감도', '제출 · 공유'),
+    ('11', 'TIPS R&D Work Package', '11_TIPS_RnD_Work_Package.md', 'TIPS 과제 (기술 검증) vs Seed (사업 검증 · 과제 외 개발) · WP1~WP6 · 과제 편성', '제출 · 공유'),
+    ('12', 'Technical KPI', '12_Technical_KPI.md', 'Manipulation · Application · Business KPI 20개 · Benchmark · 목표 근거 · Hand 시험 계획', '제출 · 공유'),
+    ('13', 'Patent Portfolio', '13_Patent_Portfolio.md', '출원 후보 12개 묶음 · 사업 중요도 · 차별성 · Prior Art Risk · 우선순위', '제출 · 공유'),
+    ('14', '24개월 Roadmap', '14_Roadmap_24M.md', '0~6 · 7~12 · 13~18 · 19~24M 실행 · Gate · 채용 · 24M Value Creation', '제출 · 공유'),
+    ('15', 'Funding Plan', '15_Funding_Plan.md', '24개월 사용처 · TIPS 과제 편성 · Seed 범위 산식 · 5개년 계획', '제출 · 공유'),
+    ('16', '투자심사 예상질문 20개', '16_Investor_Questions_20.md', '질문 · 확인 포인트 · 답하는 위치', '내부 검토용'),
+    ('17', '각 질문의 방어논리', '17_Defense_Logic.md', '방어논리 · 근거 (Tag) · 약한 부분 · 보강 Evidence', '내부 검토용'),
+    ('18', '현재 부족한 Evidence', '18_Evidence_Gaps.md', 'Evidence Gap · Risk Register · 첫 90일 실행 목록', '내부 검토용'),
+    ('19', 'Founder 입력 필요정보', '19_Founder_Inputs.md', 'Founder 입력 항목 · TIPS 요건 · 증빙 · 입력 양식', '내부 검토용'),
+    ('20', '투자심사 Memo', '20_Investment_Memo.md', f'심사 의견 · Scorecard · 판단 {C.VERDICT} · 판단을 바꿀 Evidence 5개', '내부 검토용'),
+]
+FILES = [
+    ('`MH/MH_Robotics_Seed_TIPS_IR_Final.pptx`', f'제출용 IR: 본문 {N_MAIN}장 + 부록 {len(APX) - 1}장 + 목차 (A TIPS 과제 · B 제품 · 기술 · C 시장 · 경쟁 · D 경제성 · 재무 · E IP · Risk · F 출처), 16:9'),
+    ('`MH/MH_Robotics_Seed_TIPS_IR_Final_Main.pdf`', f'본문 {N_MAIN}장 (발표 · 송부용)'),
+    ('`MH/MH_Robotics_Seed_TIPS_IR_Final.pdf`', '본문 + 부록 전체'),
+    ('`MH/MH_Robotics_IR_Internal_QA.pptx` · `.pdf`', f'내부 검토용 {len(INT)}장 (예상질문 · 방어논리 · Evidence · Founder 입력 · 투자심사 Memo · Tag 원칙, 제출 제외)'),
+    ('`MH/MH_Robotics_Financial_Model.xlsx`', '수식 재무모델: Inputs (Tag · 출처) · 5Y FM (3 Scenario) · Household · Unit Economics · Market · Budget_24M · Sensitivity'),
 ]
 write('00_README_Index.md', f"""# MH Robotics — Seed · TIPS IR 산출물 Index
 
 {HEADER}
-## 결과물 (Spec 38 순서)
+## 결과물 20종
 
-{md_table(['No', '산출물', '파일', '내용'], [(a, b, f'[{c}]({c})', d) for a, b, c, d in DELIV])}
+{md_table(['No', '산출물', '파일', '내용', '용도'], [(a, b, f'[{c}]({c})', d, e) for a, b, c, d, e in DELIV])}
 
-## 함께 보는 파일
+## 파일
 
-{md_table(['파일', '내용'], [
-    ('`MH/MH_Robotics_Seed_TIPS_IR_Deck.pptx`', f'본문 {N_MAIN}장 + 부록 {len(APX)}장 (A TIPS 과제 · B 제품 · 기술 · C 시장 · 경쟁 · D 경제성 · E IP · 리스크 · Q&A · F 참고), 16:9'),
-    ('`MH/MH_Robotics_Seed_TIPS_IR_Deck_Main.pdf`', f'본문 {N_MAIN}장만 (발표 · 송부용)'),
-    ('`MH/MH_Robotics_Seed_TIPS_IR_Deck_preview.pdf`', '본문 + 부록 전체 (검토용)'),
-    ('`MH/MH_Robotics_Financial_Model.xlsx`', '수식 재무모델: Inputs (Tag · 출처) · 5Y FM (3 Scenario) · Household · Unit Economics · Market · Budget_24M · Sensitivity'),
-    ('`MH/source/model.py` → `model.json`', '모든 숫자의 단일 원본 (deck · xlsx · docs가 같은 값을 사용)'),
-    ('`MH/archive/ARKI_v4/`', '이전 판 (ARKI Robotics v4) Deck · PDF · 재무모델 · 문서 — 삭제 없이 보관'),
-])}
-
-## 재생성 순서
-
-```bash
-cd MH/source
-python3 model.py                 # model.json (입력 · 계산 · 자금 계획)
-python3 xlsx_model.py            # 수식 xlsx
-python3 /mnt/skills/public/xlsx/scripts/recalc.py ../MH_Robotics_Financial_Model.xlsx 120
-python3 check_xlsx.py            # xlsx 수식값 = model.json 대조
-python3 build.py --pdf           # pptx + 본문 PDF + 전체 PDF (fit 검사 포함)
-python3 gen_docs.py              # 이 문서들
-```
-
-## 작성 원칙
-
-- 없는 고객 · 계약 · LOI · 파트너 · 매출 · Founder 이력은 쓰지 않음. Founder 칸은 `[Founder 정보 필요]`.
-- "최초 · 압도적", 근거 없는 ROI · 비용절감률 · 점유율 · Robot 성능, 특허 등록 확정 표현 없음.
-- 주방 전체 표준화가 아니라 Robot 적응 (Hand · Skill · Calibration) + 반복 작업점의 최소 Interface.
-- 초기 Mass Market 진입 없음: Premium Remodeling → 호환 주방 Retrofit → 신축 B2B2C.
-- 투자 요청액은 24개월 사용처에서 Bottom-up으로 계산하고, TIPS는 별도 재원으로 구분.
+{md_table(['파일', '내용'], FILES)}
 """)
 
 
 # ================================================================ 01 executive summary
-GOAL = ('MH Robotics는 Adaptive Robot Hand, Manipulation Skill, Calibration, Environment Integration을 결합해 다양한 실제 주방환경에서 '
-        '식기정리부터 조리까지 단계적으로 확장 가능한 Kitchen Manipulation Robotics System을 개발하는 회사입니다. '
-        '초기 CLEAN Workflow로 기술을 검증하고, 같은 Platform에서 ASSIST와 COOK으로 Capability를 확장합니다. '
-        '기존 주방 · Remodeling · New-build에 서로 다른 Integration 수준으로 적용하며, Robot과 설치 매출 이후 '
-        'Rental · Care · Consumables · Skill · Tool · Upgrade로 Installed Base 기반 반복매출을 만드는 사업입니다.')
+GOAL = ('Adaptive Robot Hand · Manipulation Skill · Calibration · Environment Integration 결합 → 다양한 실제 주방에서 '
+        '식기 정리부터 조리까지 단계적으로 확장하는 Kitchen Manipulation Robotics System 개발  \n'
+        '- 초기 CLEAN Workflow로 기술 검증 → 같은 Platform에서 ASSIST · COOK으로 Capability 확장  \n'
+        '- 기존 주방 · Remodeling · New-build에 서로 다른 Integration 수준으로 적용  \n'
+        '- Robot · 설치 매출 이후 Rental · Care · Consumables · Skill · Tool · Upgrade로 Installed Base 기반 반복매출 확보')
 ROWS01 = [
     ('문제', '가전은 기기 안의 일을 자동화했지만, 가전 사이의 Physical Workflow (식기 이동 · 식세기 적재/인출 · 수납 · 재료 투입 · 도구)는 사람 몫. Appliance Automation ≠ Physical Workflow Automation',
      '무급 가사노동 582.4조원 중 가정관리 459.5조원 (2024) FACT · 식사 후 정리 40분/일 ASSUMPTION'),
@@ -190,22 +182,22 @@ ROWS01 = [
     ('설치 경로', f"제품 하나 · 경로 셋: Retrofit {man(HH['retrofit_purchase_Y3']['y0'])} · Remodeling {man(H3['y0'])} · New-build Option {v('p_rr_new')}만원 (B2B) + 입주 후 Robot", 'ASSUMPTION (VAT 별도)'),
     ('BM', f"INSTALL → OPERATE (Rental 월 {v('p_rent')}만 · Care 연 {v('p_care')}만 · 소모품 연 {CO['list_y']:.0f}만) → EXPAND (Skill {v('p_sw')}만 · Tool {v('p_tool')}만). 1세대 5년 매출 {man(H3['rev5'])} · 기여이익 {man(H3['contrib5'])} (Y3 원가) → {man(H5['contrib5'])} (Y5 원가)", 'DERIVED (from ASSUMPTION)'),
     ('시장', f"Bottom-up SAM 연 {MK['sam']:,.0f}억원 (Remodeling {MK['sam_remodel']:,.0f} · Retrofit {MK['sam_retro']:,.0f} · New-build {MK['sam_new']:,.0f}). Y5 계획 매출 {B['rev'][4] / 1e4:.1f}억원 = 대상 세대의 {MK['som_share_hh'] * 100:.1f}%", 'DERIVED · TARGET'),
-    ('GTM', 'Phase 1 Premium Kitchen Remodeling (검증) → Phase 2 호환 주방 Retrofit → Phase 3 신축 B2B2C (Scale). 일반 시공은 Partner, MH는 Robot · Hand · Skill · Calibration · Interface 표준 · Safety · Commissioning', '현재 Partner 계약 · LOI 없음'),
+    ('GTM', 'Phase 1 Premium Kitchen Remodeling (검증) → Phase 2 호환 주방 Retrofit → Phase 3 신축 B2B2C (Scale). 일반 시공은 Partner, MH는 Robot · Hand · Skill · Calibration · Interface 표준 · Safety · Commissioning', 'Partner 조건 협의 (M18~M24)'),
     ('자금', f"24개월 지출 {eok(F['spend_total'])} = TIPS 정부지원 8억원 (Technology De-risking, 선정 시) + Seed {F['seed_range'][0]}~{F['seed_range'][1]}억원 (Commercial Validation, Lean ~ Base). TIPS 미선정 시 Lean 범위 {eok(F['seed_no_tips'])}", 'DERIVED · TIPS 규정 FACT'),
-    ('24M Evidence', '가정 3세대 CLEAN ≥ 90% · 주방 3종 Transfer 하락 ≤ 10%p · Calibration ≤ 4시간 · BOM · 설치 · Service 원가 실측 · WTP n ≥ 300 · 유료 전환 ≥ 2세대 · Partner 조건 · 출원 5건', 'TARGET'),
+    ('24개월 Evidence', '가정 3세대 CLEAN ≥ 90% · 주방 3종 Transfer 하락 ≤ 10%p · Calibration ≤ 4시간 · BOM · 설치 · Service 원가 실측 · WTP n ≥ 300 · 유료 전환 ≥ 2세대 · Partner 조건 · 출원 5건', 'TARGET'),
 ]
 KEYNUM = [
     ('국내 아파트 (기회 기반, 구매시장 아님)', f"약 {MK['apt'] / 10:,.0f}만호", 'DERIVED (총주택 2,018.1만 × 65.8%, FACT)'),
     ('연간 주방 교체 (아파트)', '30만 세대', f"ASSUMPTION (교차검증 {MK['tri1'] / 10:.1f}만 · {MK['tri2'] / 10:.1f}만)"),
     ('Remodeling Beachhead', f"{MK['fit'] * 1000:,.0f}세대/년 · {MK['sam_remodel']:,.0f}억원", 'DERIVED (30만 × Premium 10% × 적용 60%)'),
     ('Robot System ASP', man(v('p_robot')), 'ASSUMPTION (WTP 검증 1순위)'),
-    ('Robot BOM Pilot → Y3 → Y5', f"{v('bom')[0]:,} → {v('bom')[2]:,} → {v('bom')[4]:,}만원", 'ASSUMPTION (공개가 Benchmark 기반)'),
+    ('Robot BOM Y1 시제품 → Y3 → Y5', f"{v('bom')[0]:,} → {v('bom')[2]:,} → {v('bom')[4]:,}만원", 'ASSUMPTION (공개가 Benchmark 기반)'),
     ('Remodeling 1세대 설치 시점 매출', man(H3['y0']), 'DERIVED (Interface 450 + Robot 1,490 + 설치 80)'),
     ('1세대 5년 Lifetime Contribution', f"{man(H3['contrib5'])} (Y3) · {man(H5['contrib5'])} (Y5)", 'DERIVED'),
     ('Y5 매출 · 설치 (Base Plan)', f"{B['rev'][4] / 1e4:.1f}억원 · {B['kitchens'][4]:,.0f}세대", 'TARGET'),
     ('24개월 지출', eok(F['spend_total']), 'DERIVED (Bottom-up)'),
     ('Seed 범위', f"{F['seed_range'][0]}~{F['seed_range'][1]}억원 (Lean {eok(F['seed_lean'])} · Base {eok(F['seed_base'])})", 'DERIVED'),
-    ('TIPS 정부지원 (일반트랙 최대)', '8억원 · 24개월 · 정부 75% 이내', 'FACT (선정 미확정)'),
+    ('TIPS 정부지원 (일반트랙 상한)', '8억원 · 24개월 · 정부 75% 이내', 'FACT (상한) · 수령 = 선정 시'),
 ]
 write('01_Executive_Summary.md', f"""# 01. Executive Summary
 
@@ -214,7 +206,7 @@ write('01_Executive_Summary.md', f"""# 01. Executive Summary
 
 > {GOAL}
 
-현재 단계: **Concept**. 시제품 · 고객 · 계약 · LOI · 파트너 · 매출 없음. Founder 정보 미기재 (`[Founder 정보 필요]`).
+현재 단계: **Concept** (시제품 개발 전).
 
 ## 요약
 
@@ -224,11 +216,11 @@ write('01_Executive_Summary.md', f"""# 01. Executive Summary
 
 {md_table(['항목', '값', 'Tag · 산식'], KEYNUM)}
 
-## TIPS와 Seed의 역할 분리
+## TIPS와 Seed의 역할 분담
 
 {md_table(['재원', '목적', '쓰는 곳'], [
-    ('TIPS R&D (정부 8억원 + 기관부담 ' + f"{TP['private'] / 1e4:.2f}억원)", 'Technology De-risking', 'WP1 Adaptive Hand · WP2 Skill · WP3 Perception / Calibration · WP4 Minimal Interface · WP5 Safety · WP6 Integrated CLEAN 실증'),
-    ('민간 Seed', 'Commercial Validation', 'Core Team (사업 · 현장 · 경영지원) · Mock-up 운영 · Customer Validation · WTP · Pilot · Partner Development · BM Validation · 기관부담금 · 운영사 선투자 요건'),
+    (f"TIPS 과제 {TP['total'] / 1e4:.2f}억원 (정부 8억원 + 기관부담 {TP['private'] / 1e4:.2f}억원)", '기술 검증 (Technology De-risking)', 'WP1 Adaptive Hand · WP2 Skill · WP3 Perception / Calibration · WP4 Minimal Interface · WP5 Safety · WP6 Integrated CLEAN 실증'),
+    ('민간 Seed', '사업 검증 · 과제 외 개발 (Commercial Validation)', f"기관부담금 · 과제 외 인건비 {(sum(F['people']) - sum(F['uses'][0]['tips'])) / 1e4:.2f}억원 (참여율 외 R&D · 사업 · 현장 · 경영지원) · 목업 운영 · 고객 검증 · WTP · 실증 · Partner 개발 · 운영사 선투자 요건"),
 ])}
 
 ## 24개월 Gate (판단 기준)
@@ -239,13 +231,7 @@ write('01_Executive_Summary.md', f"""# 01. Executive Summary
 
 {md_table(['구분', 'Risk', '확인 시점', '대응', '중단 · 재편 기준'], C.RISKS[:5])}
 
-## 투자 판단 (자료 작성자의 반론 검토 의견)
-
-**{C.VERDICT}** — 만나서 확인할 가치는 있으나, 현재 자료만으로 투자 결정은 이르다. 상세: [20_Investment_Memo.md](20_Investment_Memo.md)
-
-판단을 바꿀 Evidence (최대 5개):
-
-""" + '\n'.join(f"{i}. **{a}** — {b}" for i, (a, b) in enumerate(C.CHANGE_EVIDENCE, 1)))
+""")
 
 
 # ================================================================ 02 main deck structure
@@ -259,30 +245,25 @@ apx_rows = [(m['no'], m['title']) for m in APX if m['id'] != 'xIDX']
 write('02_Main_IR_Deck.md', f"""# 02. Main IR Deck — 구성
 
 {HEADER}
-- 파일: `MH/MH_Robotics_Seed_TIPS_IR_Deck.pptx` (본문 {N_MAIN}장 + 부록 {len(APX)}장, 16:9) · 본문 PDF `MH_Robotics_Seed_TIPS_IR_Deck_Main.pdf` · 전체 PDF `MH_Robotics_Seed_TIPS_IR_Deck_preview.pdf`
-- 장별 화면 문구 → [03](03_Slide_Text.md) · Visual → [04](04_Slide_Visual.md) · Diagram / Chart → [05](05_Diagram_Chart.md) · 발표 메모 → [06](06_Speaker_Notes.md)
-- Q# = [16_Investor_Questions_20.md](16_Investor_Questions_20.md)의 질문 번호 (답하는 본문 장)
+- 제출용: `MH/MH_Robotics_Seed_TIPS_IR_Final.pptx` (본문 {N_MAIN}장 + 부록 {len(APX) - 1}장 + 목차, 16:9) · 본문 PDF `MH_Robotics_Seed_TIPS_IR_Final_Main.pdf` · 전체 PDF `MH_Robotics_Seed_TIPS_IR_Final.pdf`
+- 내부 검토용 (제출 제외): `MH/MH_Robotics_IR_Internal_QA.pptx` · `.pdf` ({len(INT)}장)
+- 화면 문구 [03](03_Slide_Text.md) · Visual [04](04_Slide_Visual.md) · Diagram / Chart [05](05_Diagram_Chart.md) · 발표 요지 [06](06_Speaker_Notes.md)
 
 ## 흐름
 
 """ + '\n'.join(f"- **{g}**: {a:02d}~{b:02d}쪽" for g, a, b in GROUPS) + f"""
 
-## 본문 {N_MAIN}장 (Spec 35 순서)
+## 본문 {N_MAIN}장
 
-{md_table(['No', 'Spec 35 구성', '화면 제목 (한 장 한 메시지)', '부제 (핵심 근거)', 'Red-team 질문'], rows02)}
+{md_table(['No', '구성', '화면 제목', '부제', '예상 질문 (내부 Q#)'], rows02)}
 
-## 부록 (본문에서 삭제하지 않고 옮긴 근거 · 계산 · 검증 계획)
+## 부록 (근거 · 계산 · 검증 계획)
 
 {md_table(['Code', '제목'], apx_rows)}
 
-## 디자인 원칙 (적용 결과)
+## 내부 검토용 (제출 제외)
 
-- 한 장 한 메시지: 제목 = 결론 문장, 부제 = 근거 한 줄.
-- 주황 (Accent)은 Robot Zone · Robot Path · Key Number에만 사용.
-- FACT · DERIVED · ASSUMPTION · TARGET은 작은 Tag로만 표시 (본문 시각 우선순위 낮춤).
-- 모든 제품 콘셉트 이미지에 `CONCEPT` 표기. COOK · Upgrade는 `FUTURE CONCEPT`.
-- 한국어 약 85% · English 약 15% (Manipulation · Skill · Calibration · Care 등 업계 용어만 영문).
-- 렌더는 실제 한국 아파트 주방 비율 기준, 특정 단지 평면이라고 표현하지 않음.
+{md_table(['Code', '제목'], [(m['no'], m['title']) for m in INT])}
 """)
 
 
@@ -296,15 +277,14 @@ for m in MAIN:
 write('03_Slide_Text.md', f"""# 03. 각 Slide 실제 화면 문구 (본문 {N_MAIN}장)
 
 {HEADER}
-- PPTX에 들어간 문구를 화면 표기 순서대로 옮긴 것 (빌드 시 자동 기록). 표는 `셀 | 셀` 형태.
-- `[FACT]` 등 대괄호는 화면의 작은 Tag. 부록 문구는 PPTX와 주제별 문서 (07~19)에 있음.
+- 표 = `셀 | 셀` · 대괄호 = 화면의 작은 Tag
 
 """ + '\n'.join(out))
 
 
 # ================================================================ 04 visual composition
-CONCEPT_NOTE = {'m01': '렌더 우하단 [CONCEPT RENDERING]', 'm06': 'Hand 렌더 좌상단 [CONCEPT] · 각주', 'm08': '렌더 좌상단 [CONCEPT] · 각주',
-                'm09': '렌더 줄 [CONCEPT] · COOK 카드 [FUTURE CONCEPT]', 'm07': '평면 도식 = 개념 예시 (각주)'}
+CONCEPT_NOTE = {'m01': '렌더 우하단 [CONCEPT RENDERING]', 'm06': 'Hand 확대 렌더 · 파지 렌더 4컷 각각 [CONCEPT]', 'm08': '렌더 좌상단 [CONCEPT]',
+                'm09': '렌더 5컷 각각 [CONCEPT] · COOK 카드 [FUTURE CONCEPT]', 'm07': '평면 도식 범례 (CONCEPT)'}
 out = []
 for m in MAIN:
     a = ASSETS.get(m['id'], [])
@@ -335,40 +315,40 @@ REQ = [
     ('8', 'Business Model: Install → Operate → Expand', '11', '도형 · 막대', '3층 항목 · 가격 가설 + 1세대 5년 층별 막대 + Rental 3자 구조'),
 ]
 DATA = {
-    'm01': '렌더 v2_cover (CONCEPT) · 현재 단계 = FACT (Evidence 없음)',
+    'm01': '렌더 v2_cover (CONCEPT)',
     'm03': '정성 기준 (사업 가설) → WTP n ≥ 300 (M18)',
     'm05': '대응 관계 = CONCEPT (기술 개발 전)',
     'm08': '렌더 v2_after (CONCEPT) · 안전 기준 [S39 · S47]',
-    'm09': '렌더 v2_seq_1~5 (CONCEPT)',
+    'm09': '렌더 v2_seq_1~5 (CONCEPT) · 가치 Anchor value.value · p_rent',
     'm02': '가계생산 위성계정 [S40] (FACT) · 정리 시간 a_cleanup_min (ASSUMPTION)',
-    'm04': '받은 평면 5종 재작도 (부록 B2, DERIVED) · LG CLOiD 보도 [S21]',
+    'm04': '확보 평면 5종 재작도 (부록 B2, DERIVED) · LG CLOiD 보도 [S21]',
     'm06': 'Robotiq · Inspire 공개가 [S16 · S42] · 식품 접촉 규격 [S48]',
     'm07': 'KPI 목표 (content.KPI, TARGET)',
     'm10': 'inputs p_rt_if · p_rr · p_rr_new · p_robot · p_comm · p_comm_rt · comm_cost · comm_cost_rt · kpi_links.inst_h',
-    'm11': 'household.purchase_direct_Y3 / _Y5 · partner_irr.B · steady · inputs p_* (xlsx Household · Unit_Economics 시트)',
+    'm11': 'household.purchase_direct_Y3 / _Y5 · partner_irr.B · scenarios.B recurring · oe_share · inputs p_* (xlsx Household · Unit_Economics 시트)',
     'm12': 'market.B (xlsx Market 시트) · [S1~S6]',
     'm13': 'scenarios.B rd · rp · rt · ni · kitchens (xlsx FM 시트, TARGET)',
     'm14': 'kpi_links (inst_h · care_unit · bom · pad_life) · sens_household (xlsx Sensitivity)',
     'm15': 'content.COMP · content.IP · [S19~S25 · S41 · S45 · S46 · S49~S51]',
     'm16': 'content.WP · content.GATES · TIPS 규정 [S33 · S52]',
     'm17': 'model.TEAM · funding.team (xlsx Budget_24M)',
-    'm18': 'funding.uses · tips.rows · funding.seed_* (xlsx Budget_24M)',
+    'm18': 'funding.uses · tips.rows · funding.seed_* · post_seed_burn · breakeven_kitchens (xlsx Budget_24M · FM)',
 }
 rows05 = [(f"{m['no']:02d}", m['title'][:40] + ('…' if len(m['title']) > 40 else ''), m['chart'], DATA.get(m['id'], '-')) for m in MAIN]
 write('05_Diagram_Chart.md', f"""# 05. Diagram / Chart
 
 {HEADER}
-## 필수 Visual 8종 (Spec 36) → 반영 위치
+## 핵심 Visual 8종 → 반영 위치
 
 {md_table(['#', '필수 Visual', '본문 (부록)', '이미지 · 도형', '내용'], REQ)}
 
-모든 제품 콘셉트 이미지는 `CONCEPT`, COOK · Robot Upgrade는 `FUTURE CONCEPT`로 표기. 과도한 Humanoid · SF 주방 · 미래도시 · 광고 카피 없음.
+표기: 제품 콘셉트 이미지 = `CONCEPT` · COOK · Robot Upgrade = `FUTURE CONCEPT`.
 
 ## 장별 도표와 Data 출처
 
 {md_table(['No', '장', '도표', 'Data 출처 (model.json key · xlsx 시트 · Source ID)'], rows05)}
 
-숫자가 들어간 도표는 모두 `model.json`에서 직접 읽어 그림 (손으로 입력한 숫자 없음). xlsx는 같은 입력으로 수식 재계산 후 `check_xlsx.py`로 대조.
+도표 숫자 원천 = `model.json` (xlsx 수식 재계산값과 대조 완료).
 
 ## 3D 콘셉트 렌더 재생성
 
@@ -381,26 +361,22 @@ bash render_plans.sh        # 대표 평면 (구축 2Bay A) 원본 · Interface 
 bash render_hand.sh         # hand_hero · hand_plate · hand_cup · hand_bowl · hand_tool
 ```
 
-각 PNG 옆 JSON = Callout 위치 (Anchor) · 충돌검사 결과. 렌더는 실물 · 성능 증거가 아님 (CONCEPT).
+PNG 옆 JSON = Callout 위치 (Anchor) · 충돌검사 결과.
 """)
 
 
 # ================================================================ 06 speaker notes
-def mins(t):
-    return len(re.sub(r'\s', '', t)) / 330      # 한국어 발표 약 330음절/분 (참고)
-
-
+TIME = [('표지 · Why (01~04)', 1, 4, 3.0), ('How (05~09)', 5, 9, 4.5), ('Business (10~13)', 10, 13, 3.5), ('Proof (14~16)', 14, 16, 2.5), ('Ask (17~18)', 17, 18, 1.5)]
 out = []
-tot = 0
 for m in MAIN:
-    mm = mins(m['note']); tot += mm
-    out.append(f"## {m['no']:02d}. {m['title']}  _(약 {mm:.1f}분)_\n")
+    out.append(f"## {m['no']:02d}. {m['title']}\n")
     out.append(m['note'] + '\n')
 write('06_Speaker_Notes.md', f"""# 06. Speaker Note (본문 {N_MAIN}장)
 
 {HEADER}
-- 발표 메모는 PPTX 각 장의 Notes에도 들어 있음. 예상 시간 = 메모 길이 ÷ 약 330음절/분 (참고값).
-- 전체 약 **{tot:.0f}분** (질의응답 제외). 10분 발표가 필요하면 02 · 03 · 04 · 05 · 07 · 12 · 14 · 15를 1문장으로 줄임.
+발표 시간 배분 (15분 기준, 질의응답 별도)
+
+{md_table(['구간', '쪽', '분'], [(a, f'{b:02d}~{c:02d}', d) for a, b, c, d in TIME], ['l', 'c', 'r'])}
 
 """ + '\n'.join(out))
 
@@ -411,8 +387,7 @@ src_rows = [(d['id'], d['item'], d['value'], d.get('basis', ''), d['source'], d.
 write('07_Market_Data_Sources.md', f"""# 07. 시장 Data 및 Source
 
 {HEADER}
-- 조회일 2026-10-07~08. 공식 통계 · 회사 발표 중 보도 인용이 있어 **외부 제출 전 원문 (국가데이터처 · 국토부 · 중기부 공고 · 회사 IR) 대조 필요**.
-- 우선 Source: 국가데이터처 (통계청) · KOSIS · 국토교통부 · 한국부동산원 · 중소벤처기업부 · 기업 공식자료 · 사업보고서 · 학술자료.
+조회일 2026-10-07~08 · 국가데이터처 (통계청) · 국토교통부 · 한국부동산원 · 중소벤처기업부 · 기업 공식자료 · 학술자료 · 보도 인용 포함
 
 ## 1. 주택 · Apartment Stock · 노후 · 거래 · 입주
 
@@ -442,7 +417,7 @@ write('07_Market_Data_Sources.md', f"""# 07. 시장 Data 및 Source
 
 {md_table(['가정', 'Tag', '검증 방법', '시점'], C.MKT_VALID)}
 
-- 식기세척기 보급률 · 연간 주방 교체 세대 수 · Premium Kitchen 시장 규모는 공식 통계를 찾지 못함 → 가정으로 두고 견적 20건 · 평면 30개 · 소비자 조사 n ≥ 300으로 대체.
+- 공식 통계 미확인 항목: 식기세척기 보급률 · 연간 주방 교체 세대 수 · Premium Kitchen 시장 규모 → 견적 20건 · 평면 30개 · 소비자 조사 n ≥ 300으로 대체 예정.
 
 ## 8. 전체 출처 ({len(SRC)}건, sources.json)
 
@@ -564,7 +539,7 @@ write('09_Business_Model.md', f"""# 09. Business Model
 {HEADER}
 ## 한 줄 정의
 
-Robot System과 설치로 시작해 (INSTALL), 쓰는 동안 Rental · Care · 소모품 반복매출을 받고 (OPERATE), 같은 Platform에 Skill · Tool을 더해 확장매출을 만든다 (EXPAND). Installed Base가 커질수록 반복 · 확장 매출 비중이 커지는 구조 (가설).
+INSTALL (Robot System · Interface · 설치) → OPERATE (Rental · Care · 소모품 반복매출) → EXPAND (같은 Platform에 Skill · Tool 추가). Installed Base 증가 → 반복 · 확장 매출 비중 확대 구조 (가설).
 
 ## 3층 구조 (가격 = ASSUMPTION, VAT 별도)
 
@@ -584,7 +559,7 @@ Robot System과 설치로 시작해 (INSTALL), 쓰는 동안 Rental · Care · �
 
 {md_table(['항목', '가격 가설', '원가 Floor (DERIVED)', '시장 Reference (FACT)', '가치 Anchor'], C.PRICE)}
 
-**가치 Gap (솔직한 약점)**: CLEAN만의 가사 대체 가치는 월 약 {VA['value']:.0f}만원 (정리 {v('a_cleanup_min')}분/일 × {pct(v('a_auto_share'))} 자동화 × 가사서비스 {v('f_helper_rate')}만원/h, 범위 {VA['lo']:.0f}~{VA['hi']:.0f}만원) < Rental 월 {v('p_rent')}만원. → Premium Remodeling 고객부터, ASSIST 확장 · 위생 · 편의 가치를 묶어 WTP 조사 (n ≥ 300 · 예약금, M18).
+**가치 Gap**: CLEAN만의 가사 대체 가치 = 월 약 {VA['value']:.0f}만원 (정리 {v('a_cleanup_min')}분/일 × {pct(v('a_auto_share'))} 자동화 × 가사서비스 {v('f_helper_rate')}만원/h, 범위 {VA['lo']:.0f}~{VA['hi']:.0f}만원) < Rental 월 {v('p_rent')}만원. → Premium Remodeling 고객부터, ASSIST 확장 · 위생 · 편의 가치를 묶어 WTP 조사 (n ≥ 300 · 예약금, M18).
 
 ## 설치 경로별 1세대 경제성 (구매, 5년, 만원)
 
@@ -596,8 +571,9 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
 
 - **Pilot (Y2~Y3)**: MH가 직접 보유 · 운영 (실증 3세대 + 초기 고객).
 - **Scale (Y4~)**: Rental · Capital Partner가 Robot 자산을 ASP의 {pct(v('wholesale'))}에 매입 · 보유, 고객은 Partner에 월 {v('p_rent')}만원, MH는 Product · SW · Care 담당 + 서비스료 월 {v('partner_fee'):.0f}만원.
-- Partner 관점: 매입가 {PI['price']:,.0f}만원 · 월 순유입 {PI['inflow']:.0f}만원 · 60개월 · 잔존 15% → 연 IRR 약 {pct(PI['irr_y'], 1)} (DERIVED). 렌탈 · 캐피탈사 요구 수익률과의 비교는 협의로 확인 (Partner 계약 없음).
-- 원칙: MH Balance Sheet에 Rental 자산이 과도하게 쌓이지 않게 함.
+- Partner 관점: 매입가 {PI['price']:,.0f}만원 · 월 순유입 {PI['inflow']:.0f}만원 · 60개월 · 잔존 15% → 연 IRR 약 {pct(PI['irr_y'], 1)} · 단순 회수 약 {PI['payback']:.0f}개월 (DERIVED).
+- 회수 약 {PI['payback']:.0f}개월 > Partner 요구 {PI['hurdle']}개월 (ASSUMPTION) → 매입가율 · 서비스료 · 계약기간 조건 협의 필요 (M24 Partner 조건).
+- MH Balance Sheet의 Rental 자산 누적 지양 (Scale 단계 Partner 보유).
 
 {md_table(['Rental 월 단위 (만원)', 'Y3', 'Y5'], [
     ('감가 (잔존 15%)', f"{R3['lines']['dep']:.1f}", f"{R5['lines']['dep']:.1f}"), ('금융비용 (연 8%)', f"{R3['lines']['fin']:.1f}", f"{R5['lines']['fin']:.1f}"),
@@ -615,7 +591,7 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
     ('Cloud · SW', f"{C3['cloud']}", f"{C5['cloud']}"), ('**원가 합계**', f"{C3['cost']:.1f}", f"{C5['cost']:.1f}"), ('**마진**', pct(C3['margin']), pct(C5['margin'])),
 ], ['l', 'r', 'r'])}
 
-선례 (FACT, MH와 무관): 코웨이 국내 렌탈 계정 748만 (2026 1Q) · LG 가전 구독 매출 2조원+ · 케어매니저 약 4,000명 (2025) [S12 · S41].
+선례: 코웨이 국내 렌탈 계정 748만 (2026 1Q) · LG 가전 구독 매출 2조원+ · 케어매니저 약 4,000명 (2025) [S12 · S41].
 
 ## Consumables = 실제 마모 · 위생 기반 (억지 Lock-in 아님)
 
@@ -627,7 +603,7 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
 
 {md_table(['층', 'Y1', 'Y2', 'Y3', 'Y4', 'Y5'], mix_rows, ['l', 'r', 'r', 'r', 'r', 'r'])}
 
-초기 5년은 설치 물량이 빠르게 늘어 INSTALL 비중이 큼. Installed Base가 연 설치의 {M['steady']['base_mult']}배인 정상 상태에서 OPERATE + EXPAND 비중 약 {pct(M['steady']['rec_share'] + M['steady']['upg_share'])} (DERIVED).
+반복매출 (OPERATE) Y3 {B['recurring'][2] / 1e4:.1f} → Y5 {B['recurring'][4] / 1e4:.1f}억원 (Installed Base {B['base_end'][4]:,.0f}대) · Y5 매출 중 OPERATE + EXPAND {pct(B['oe_share'][4])} = 설치 초기 구조 (Installed Base 누적 후 비중 확대, DERIVED).
 
 ## MH Core vs Partner (Product Company 구조)
 
@@ -736,10 +712,10 @@ TIPS_RULES = [
     ('정부지원 R&D (일반트랙)', '최대 8억원 · 최대 24개월', 'FACT [S33]'),
     ('정부지원 비율', '총 연구개발비의 75% 이내 · 기관부담 25% 이상 (그중 현금 10% 이상)', 'FACT [S33]'),
     ('운영사 선투자', '수도권 2억원 이상 · 비수도권 1억원 이상 (Seed 라운드에 포함)', 'FACT [S33]'),
-    ('창업팀 요건', '대표 포함 창업팀 2인 이상 지분 60% 이상 · 운영사 지분 30% 이하', 'FACT [S33] · 원문 확인 필요'),
-    ('고용', '정부지원 5억원당 청년 1명 신규 채용', 'FACT [S33] · 원문 확인 필요'),
+    ('창업팀 요건', '대표 포함 창업팀 2인 이상 지분 60% 이상 · 운영사 지분 30% 이하', 'FACT [S33]'),
+    ('고용', '정부지원 5억원당 청년 1명 신규 채용', 'FACT [S33]'),
     ('비R&D 연계', f"창업사업화 · 해외마케팅 각 최대 {v('biz_link') / 1e4:.1f}억원 (선정 뒤 별도 신청, 본 계획 미반영)", 'FACT [S33]'),
-    ('접수', '분기별 접수 (운영사 추천)', 'FACT [S52] · 일정 원문 확인 필요'),
+    ('접수', '분기별 접수 (운영사 추천)', 'FACT [S52]'),
 ]
 wp_rows = [(a, b, c, d, ' · '.join(e), f, g, h) for a, b, c, d, e, f, g, h in C.WP]
 tips_rows = [(r['cat'], r['item'], f"{r['y1']:,.0f}", f"{r['y2']:,.0f}", f"{r['total']:,.0f}", r['kind']) for r in TP['rows']]
@@ -747,18 +723,18 @@ tips_rows.append(('**합계**', '', f"{TP['year_total'][0]:,.0f}", f"{TP['year_t
 write('11_TIPS_RnD_Work_Package.md', f"""# 11. TIPS R&D Work Package
 
 {HEADER}
-## TIPS의 역할 = Technology De-risking (단순 개발비 조달 아님)
+## TIPS 과제 = 기술 검증 (Technology De-risking) · Seed = 사업 검증 + 과제 외 개발
 
-{md_table(['구분', 'TIPS R&D', '민간 Seed'], [
-    ('목적', 'Technology De-risking', 'Commercial Validation'),
-    ('범위', 'Adaptive Robot Hand · Manipulation · Calibration · Safety · Reliability · Integrated Workflow', 'Core Team · Prototype · Full-scale Mock-up · Customer Validation · Pilot · WTP · Partner Development · BM Validation'),
+{md_table(['구분', 'TIPS 과제', '민간 Seed'], [
+    ('목적', '기술 검증 (Technology De-risking)', '사업 검증 (Commercial Validation) · 과제 외 개발'),
+    ('범위', 'Adaptive Robot Hand · Manipulation · Calibration · Safety · Reliability · Integrated Workflow', f"기관부담금 · 과제 외 인건비 {(sum(F['people']) - sum(F['uses'][0]['tips'])) / 1e4:.2f}억원 (참여율 외 R&D · 사업 · 현장 · 경영지원) · Full-scale Mock-up 운영 · Customer Validation · Pilot · WTP · Partner Development · BM Validation"),
     ('결과물', 'Hand v3 · CLEAN Skill Library · Calibration Tool · Interface 표준 · Safety Architecture · 실증 보고서', 'WTP 조사 · 예약금 · 유료 전환 · Partner 조건 · BOM · 설치 · Service 원가'),
     ('판단 Gate', 'M6 Hand Buy/Build · M12 목업 CLEAN · M18 Transfer', 'M18 WTP · M24 유료 전환 · 원가'),
 ])}
 
-역할 중복 최소화: TIPS 편성은 R&D 인력 · 연구재료 · 시험 · 인증 사전시험 · IP · 간접비. 고객 검증 · 실증 운영 · 사업개발 · 운영비는 Seed.
+TIPS 편성 = R&D 인력 (참여율분) · 연구재료 · 시험 · 인증 사전시험 · IP · 간접비 / Seed = 기관부담금 · 과제 외 인건비 · 고객 검증 · 실증 운영 · 사업개발 · 운영비.
 
-## TIPS 2026 규정 (FACT, 선정 미확정)
+## TIPS 2026 규정
 
 {md_table(['항목', '내용', 'Tag'], TIPS_RULES)}
 
@@ -793,15 +769,11 @@ for g, lab in (('Manipulation', 'Manipulation'), ('Application', 'Application (�
 write('12_Technical_KPI.md', f"""# 12. Technical KPI
 
 {HEADER}
-## 원칙
-
-- 정확한 목표 수치는 선행 Benchmark와 Prototype 결과로 설정. **근거 없는 정량목표는 두지 않음** → Benchmark가 없는 KPI는 "Baseline 측정 → 다음 Gate에서 설정".
-- 공개 연구 Benchmark는 실험실 · 조건이 달라 직접 비교가 아님 (참고선).
-- 모든 목표 = TARGET (또는 원가 연결 DERIVED · 사업 가정 ASSUMPTION).
+목표 설정 기준: 선행 Benchmark · Prototype 결과 · 경제성 가정 → Benchmark 없는 KPI = Baseline 측정 후 다음 Gate에서 설정 · 공개 연구값 = 참고선 (실험 조건 상이).
 
 """ + '\n\n'.join(kpi_sections) + f"""
 
-## KPI ↔ 원가 연결 (Base, DERIVED)
+## KPI ↔ 원가 연결 (Base · 원가 ASSUMPTION, 인시 DERIVED)
 
 {md_table(['연결 지표', 'Y1', 'Y2', 'Y3', 'Y4', 'Y5'], [
     ('설치 · Calibration 인시 (Remodeling)', *[f'{x:.1f}' for x in KL['inst_h']]),
@@ -811,13 +783,13 @@ write('12_Technical_KPI.md', f"""# 12. Technical KPI
     ('Robot BOM (만원)', *[f'{x:,}' for x in KL['bom']]),
 ], ['l', 'r', 'r', 'r', 'r', 'r'])}
 
-인시 = 설치 원가 ÷ 설치 엔지니어 시간당 원가 약 {KL['hour']:.1f}만원 (연 6,600만원 기준). Pad 수명 목표 {KL['pad_life']:,.0f}회 = 하루 {KL['grasps_day']:.0f}회 파지 × 365 ÷ 4 (분기 교체).
+인시 = 설치 원가 ÷ 설치 엔지니어 시간당 원가 약 {KL['hour']:.1f}만원 (연 6,600만원 기준). Pad 수명 요구치 {KL['pad_life']:,.0f}회 = 하루 {KL['grasps_day']:.0f}회 파지 × 365 ÷ 4 (분기 교체 가정 충족 조건).
 
 ## Adaptive Hand 시험 계획 (Buy vs Build, WP1)
 
 {md_table(['항목', '내용', 'Tag'], C.HAND_TEST)}
 
-자체 Hand 채택 조건 = 성공률 · Tool 교체 횟수 · 원가 중 하나 이상에서 명확한 우위. 우위가 없으면 상용 Gripper + 교체형 Pad (Buy)로 전환하고 Skill · Calibration에 집중.
+자체 Hand 채택 조건 = Coverage +15%p 또는 Tool 교체 50% 감소 (성공률 · 교체 · 원가 중 명확한 우위) · 미달 시 상용 Gripper + 교체형 Pad (Buy) 전환 → Skill · Calibration 집중.
 """)
 
 
@@ -827,13 +799,13 @@ prior = [d for d in SRC if d['id'] in ('S16', 'S43', 'S49', 'S50')]
 write('13_Patent_Portfolio.md', f"""# 13. Patent Portfolio (출원 후보)
 
 {HEADER}
-## 원칙
+## 출원 전략
 
-- **등록 가능성은 단정하지 않음.** 현재 출원 0건 · 선행기술조사 전 (M3 예정) · 청구항은 변리사 검토 전.
-- 식기 로봇 · 주방 Rail Arm · 수납장 로봇 · 교체형 Gripper 부품 관련 선행특허가 있어 **넓은 청구는 어렵고**, 구체적인 구조 · 방법 청구를 목표.
-- 실제 방어력은 특허 단독이 아니라 Grasp Data · Skill Library · Calibration 절차 · Interface 표준 · Installed Base Data의 축적 (모두 구축 전).
+- 현재 출원 0건 · 선행기술조사 M3 · 청구항 변리사 검토 예정 · 등록 가능성 미정.
+- 식기 로봇 · 주방 Rail Arm · 수납장 로봇 · 교체형 Gripper 부품 선행특허 존재 → 넓은 청구 대신 구체 구조 · 방법 청구.
+- 방어력 = 특허 + Grasp Data · Skill Library · Calibration 절차 · Interface 표준 · Installed Base Data 축적 (TARGET).
 
-## 출원 후보 12개 묶음 (Spec 23 영역)
+## 출원 후보 12개 묶음 (기술 영역별)
 
 {md_table(['영역', '출원 후보 (Family)', '사업 중요도', '차별성', 'Prior Art Risk (참고)', '우선순위', '시점'], ip_rows)}
 
@@ -892,13 +864,13 @@ write('14_Roadmap_24M.md', f"""# 14. 24개월 Roadmap
 
 {md_table(['Gate', '확인할 Evidence', '통과 기준 (TARGET)', '미달 시 조치'], C.GATES)}
 
-각 Gate는 "계속 · 범위 축소 · 전환" 중 하나를 결정. 중단 기준이 있어야 초기 자금이 Option 매입으로 작동함.
+Gate별 판단: 계속 · 범위 축소 · 전환.
 
 ## WP 일정
 
 {md_table(['WP', '이름', '기간'], [(a, b, c) for a, b, c, *_ in C.WP])}
 
-## 채용 계획 (ASSUMPTION, 인물 정보 없음)
+## 채용 계획 (ASSUMPTION)
 
 {md_table(['역할', '구분', '시작', 'Y1 인건비 (만원)', 'Y2 인건비 (만원)'], team_rows, ['l', 'l', 'c', 'r', 'r'])}
 
@@ -940,7 +912,7 @@ write('15_Funding_Plan.md', f"""# 15. Funding Plan
     ('운영사 선투자 요건 (수도권)', f"{v('op_invest_min') / 1e4:.0f}억원 이상 → Seed 라운드에 포함", 'FACT'),
 ])}
 
-투자 조건 · 기업가치는 이 자료에서 제시하지 않음 (협의 대상). 비R&D 연계 (최대 각 1.5억원)는 선정 뒤 별도 신청이라 본 계획에 반영하지 않음.
+투자 조건 · 기업가치: 협의 · 비R&D 연계 (창업사업화 · 해외마케팅 각 최대 1.5억원): 선정 후 별도 신청 (계획 미반영).
 
 ## 24개월 사용처 (만원, Base)
 
@@ -980,12 +952,12 @@ for i, (q, a, ev, wk, where) in enumerate(C.QA, 1):
     q_rows.append((f'Q{i}', q, C.QA_INTENT[i - 1], where, spec if (i - 1) in C.QA_SPEC_MERGED else '-'))
 write('16_Investor_Questions_20.md', f"""# 16. 투자심사 예상질문 20개
 
-{HEADER}
-매우 비판적인 Seed VC · TIPS 운영사 관점. Spec 34의 21개 질문 중 "상용 Gripper를 쓰면 안 되는가?"와 "왜 자체 Hand가 필요한가?"는 같은 판단 (Buy vs Build)이라 Q6 하나로 묶음.
+{HEADER_INT}
+- Q6 = 상용 Gripper 비교 · 자체 Hand 필요성 병합 (같은 Buy vs Build 판단)
 
-{md_table(['#', '질문', '심사역이 확인하려는 것', '답하는 위치 (본문 쪽 · 부록)', 'Spec 34 원문 (병합 시)'], q_rows)}
+{md_table(['#', '질문', '확인 포인트', '답하는 위치 (본문 쪽 · 부록)', '병합 질문 원문'], q_rows)}
 
-방어논리 · 근거 · 약한 부분: [17_Defense_Logic.md](17_Defense_Logic.md). 부록 E3~E5에 같은 표.
+방어논리: [17_Defense_Logic.md](17_Defense_Logic.md) · 내부 검토 자료 I1~I3.
 """)
 
 
@@ -995,12 +967,12 @@ for i, (q, a, ev, wk, where) in enumerate(C.QA, 1):
     out.append(f"## Q{i}. {q}\n")
     out.append(f"- **방어논리**: {a}")
     out.append(f"- **근거 (Tag)**: {ev}")
-    out.append(f"- **약한 부분 (인정)**: {wk}")
+    out.append(f"- **약한 부분**: {wk}")
     out.append(f"- **위치**: 본문 · 부록 {where}\n")
 write('17_Defense_Logic.md', f"""# 17. 각 질문의 방어논리
 
-{HEADER}
-원칙: 모르는 것은 "아직 모름"으로 답하고, 언제 어떤 Evidence로 확인하는지 (Gate)를 함께 말함. 약한 부분을 숨기지 않음.
+{HEADER_INT}
+답변 기준: 미검증 항목 = "미검증" 명시 + 확인 Gate · Evidence 제시.
 
 """ + '\n'.join(out))
 
@@ -1009,8 +981,8 @@ write('17_Defense_Logic.md', f"""# 17. 각 질문의 방어논리
 first90 = [r for r in C.EVIDENCE if any(t in r[4] for t in ('즉시', 'M3'))]
 write('18_Evidence_Gaps.md', f"""# 18. 현재 부족한 Evidence
 
-{HEADER}
-존재하지 않는 Evidence는 "없음"으로 표기. 고객 · 계약 · LOI · 파트너 · 매출 · 시제품 Data는 모두 **없음**.
+{HEADER_INT}
+현재 없음: 고객 · 계약 · LOI · 파트너 · 매출 · 시제품 Data.
 
 ## Evidence Gap
 
@@ -1040,8 +1012,8 @@ slide17 = ['Why This Problem', 'Relevant Engineering Experience', 'Hardware / Pr
 form = '\n'.join(f"- **{s}**: [Founder 정보 필요]" for s in slide17)
 write('19_Founder_Inputs.md', f"""# 19. Founder 입력 필요정보
 
-{HEADER}
-**원칙: Founder 정보가 없으면 임의로 만들지 않음.** 본문 17쪽 · 부록 E6 · 이 문서의 모든 Founder 칸은 `[Founder 정보 필요]`.
+{HEADER_INT}
+입력 전 Founder 칸 = `[Founder 정보 필요]` (본문 17쪽 · 내부 검토 자료 I4).
 
 ## 입력 항목
 
@@ -1091,8 +1063,7 @@ Full-time Commitment (전업 시점) / 지분 / 베스팅:
 hw3 = 1 - v('bom')[2] / v('p_robot')
 write('20_Investment_Memo.md', f"""# 20. 투자심사 Memo
 
-{HEADER}
-> 본 Memo는 자료 작성자가 비판적 Seed VC · TIPS 운영사 관점에서 쓴 반론 검토 의견이며 실제 투자 결정이 아님.
+{HEADER_INT}
 
 ## 1. Deal 개요
 
@@ -1107,10 +1078,10 @@ write('20_Investment_Memo.md', f"""# 20. 투자심사 Memo
 
 ## 2. Investment Thesis (성립 조건)
 
-1. 가전 사이 Physical Workflow는 가전사가 기기 안에서 풀기 어려운 문제이고, 주방은 동작 · 영역 · 물체가 닫혀 있어 첫 Application으로 검증 가능하다.
-2. 범용 Robot의 병목은 지능만이 아니라 **설치 · Calibration · 반복 적용**이며, Hand · Skill · Calibration · 최소 Interface를 묶으면 설치시간과 서비스 원가를 낮출 수 있다.
-3. Remodeling · 신축이라는 구매 계기와 Partner 시공 구조로, 현장 인력에 비례하지 않는 설치 확대가 가능하다.
-4. Installed Base 위에 Care · 소모품 · Skill · Tool 반복 · 확장 매출이 쌓인다.
+1. 가전 사이 Physical Workflow = 가전사가 기기 안에서 풀기 어려운 문제 · 주방은 동작 · 영역 · 물체가 닫혀 있어 첫 Application으로 검증 가능.
+2. 범용 Robot의 병목 = 지능만이 아닌 **설치 · Calibration · 반복 적용** → Hand · Skill · Calibration · 최소 Interface 결합으로 설치시간 · 서비스 원가 절감 가능 (검증 대상).
+3. Remodeling · 신축 구매 계기 + Partner 시공 구조 → 현장 인력에 비례하지 않는 설치 확대 가능.
+4. Installed Base 위에 Care · 소모품 · Skill · Tool 반복 · 확장 매출 누적.
 
 ## 3. 강점
 
@@ -1121,7 +1092,8 @@ write('20_Investment_Memo.md', f"""# 20. 투자심사 Memo
 """ + '\n'.join(f"- {x}" for x in C.VERDICT_WHY[0][1]) + f"""
 - Hardware 마진이 얇음: Robot ASP {v('p_robot'):,}만원 vs BOM Y3 {v('bom')[2]:,}만원 → {pct(hw3)}. Conservative에서는 1세대 5년 기여이익이 Y3 원가 기준 적자.
 - CLEAN만의 가사 대체 가치 (월 약 {VA['value']:.0f}만원) < Rental 월 {v('p_rent')}만원 → 가치 Gap.
-- Series A 이후에도 Y3~Y4 약 {eok(M['post_seed_burn']['y3_y4'], 0)} 현금 소요 (Base) → 자본 집약도가 높은 하드웨어 사업.
+- Series A 이후에도 Y3~Y4 약 {eok(M['post_seed_burn']['y3_y4'], 0)} 현금 소요 (Base) → 자본 집약도 높은 하드웨어 사업.
+- Rental Partner 단순 회수 약 {PI['payback']:.0f}개월 > 요구 {PI['hurdle']}개월 (가정) → Partner 조건 미확보 시 MH 자산 보유 부담.
 
 ## 5. 숫자 점검
 
@@ -1167,29 +1139,30 @@ print('docs:', len(os.listdir(DOCS)))
 main_rows = [(f"{m['no']:02d}", SPEC35[m['no'] - 1], m['title']) for m in MAIN]
 apx_line = ' · '.join(f"{c} {t}" for c, t in [('A', 'TIPS 과제 상세 (KPI · WP · Gate · 과제 편성 · 팀)'), ('B', '제품 · 기술 (Hand 시험 · 평면 5종 · Robot Home · 대표 평면 · Safety · BOM)'),
                                                ('C', '시장 · 경쟁'), ('D', '경제성 · 재무 (가격 · Household · Unit Economics · 5Y FM · 민감도)'),
-                                               ('E', 'IP · Risk · 예상질문 20 · Evidence · 투자 Memo'), ('F', 'Tag 원칙 · 출처')])
-readme = f"""# MH Robotics — Seed · TIPS IR Package (Draft v5, 2026.10)
+                                               ('E', 'IP · Risk'), ('F', '출처')])
+readme = f"""# MH Robotics — Seed · TIPS IR Package (최종본, 2026.10)
 
 **Kitchen Manipulation Robotics System — Adaptive Robot Hand · Manipulation Skill · Calibration · Environment Integration**
 
-> Concept 단계 자료. 시제품 · 고객 · 계약 · LOI · 파트너 · 매출 · 투자유치 없음. Seed 투자 및 TIPS 운영사 검토용 IR. 모든 수치는 FACT / DERIVED / ASSUMPTION / TARGET (+ CONCEPT · TBV · FUTURE)로 구분. Founder 정보는 `[Founder 정보 필요]`로 비워 둠. 평면은 사용자 제공 도면이며 단지명은 표기하지 않음.
+> Concept 단계 (시제품 · 고객 · 계약 · LOI · 파트너 · 매출 · 투자유치 없음). 수치 = FACT / DERIVED / ASSUMPTION / TARGET (+ CONCEPT · TBV · FUTURE). Founder 칸 = `[Founder 정보 필요]`. 평면 = 제공 도면 재작도 (단지명 미표기).
 
 ## 산출물
 
 | 파일 | 내용 |
 |---|---|
-| `MH_Robotics_Seed_TIPS_IR_Deck.pptx` | IR 덱: 본문 {N_MAIN}장 + 부록 {len(APX)}장 (16:9, 발표 메모 포함) |
-| `MH_Robotics_Seed_TIPS_IR_Deck_Main.pdf` | 본문 {N_MAIN}장만 (발표 · 운영사 공유용) |
-| `MH_Robotics_Seed_TIPS_IR_Deck_preview.pdf` | 본문 + 부록 전체 (검토용) |
+| `MH_Robotics_Seed_TIPS_IR_Final.pptx` | 제출용 IR: 본문 {N_MAIN}장 + 부록 {len(APX) - 1}장 + 목차 (16:9, 발표 요지 Notes 포함) |
+| `MH_Robotics_Seed_TIPS_IR_Final_Main.pdf` | 본문 {N_MAIN}장 (발표 · 운영사 송부용) |
+| `MH_Robotics_Seed_TIPS_IR_Final.pdf` | 본문 + 부록 전체 |
+| `MH_Robotics_IR_Internal_QA.pptx` · `.pdf` | 내부 검토용 {len(INT)}장 (예상질문 · 방어논리 · Evidence · Founder 입력 · 투자심사 Memo · Tag 원칙) — 제출 제외 |
 | `MH_Robotics_Financial_Model.xlsx` | 수식 기반 모델: Inputs (Tag · 출처) → 5Y FM 3 Scenario · Household · Unit_Economics · Market · Budget_24M · Sensitivity · Sources |
-| `docs/00~20` | Spec 38 순서의 결과물 20종 (Executive Summary → 투자심사 Memo) · [docs/00_README_Index.md](docs/00_README_Index.md) |
+| `docs/00~20` | 결과물 20종 (01~15 제출 · 공유용 · 16~20 내부 검토용) · [docs/00_README_Index.md](docs/00_README_Index.md) |
 | `render3d/` | 3D 콘셉트 렌더 생성기 (three.js + Playwright) · 충돌검사 · 보관/전개 경로 · 평면 JSON · Adaptive Hand 모델 (`web/hand.js`) |
 | `assets/renders/` | 덱에 들어간 렌더 PNG + Callout Anchor · 충돌검사 JSON |
 | `archive/ARKI_v4/` | 이전 판 (ARKI Robotics v4) 덱 · PDF · 재무모델 · 문서 · 문서 생성기 — 삭제 없이 보관 |
 
-## 본문 구성 ({N_MAIN}장, Spec 35 순서)
+## 본문 구성 ({N_MAIN}장)
 
-{md_table(['쪽', 'Spec 35 구성', '화면 제목'], main_rows)}
+{md_table(['쪽', '구성', '화면 제목'], main_rows)}
 
 부록: {apx_line}.
 
@@ -1200,7 +1173,8 @@ readme = f"""# MH Robotics — Seed · TIPS IR Package (Draft v5, 2026.10)
 - 시장 (Bottom-up): SAM 연 {MK['sam']:,.0f}억원 (Remodeling {MK['sam_remodel']:,.0f} · Retrofit {MK['sam_retro']:,.0f} · New-build {MK['sam_new']:,.0f}) · Y5 계획 {B['rev'][4] / 1e4:.1f}억원 = 대상 세대 {MK['som_share_hh'] * 100:.1f}%.
 - 5개년: Y5 매출 {B['rev'][4] / 1e4:.1f}억원 · 설치 {B['kitchens'][4]:,.0f}세대 · 영업이익 {B['op'][4] / 1e4:.1f}억원 · 누적 현금 최저 {M['post_seed_burn']['min_cum'] / 1e4:.0f}억원 · 손익분기 연 약 {M['breakeven_kitchens']:,.0f}세대.
 - 24개월: 지출 {eok(F['spend_total'])} = TIPS 정부지원 8억원 (선정 시) + Seed {F['seed_range'][0]}~{F['seed_range'][1]}억원 (Lean {eok(F['seed_lean'])} ~ Base {eok(F['seed_base'])}, Buffer 3개월 포함) · TIPS 미선정 시 {eok(F['seed_no_tips'])}. TIPS 과제 {TP['total'] / 1e4:.2f}억원 (정부 8 + 기관부담 {TP['private'] / 1e4:.2f}).
-- 판단 (반론 검토 의견): **{C.VERDICT}** — 판단을 바꿀 Evidence 5개: {' · '.join(a for a, _ in C.CHANGE_EVIDENCE)} ([docs/20](docs/20_Investment_Memo.md)).
+- Series A 이후 Y3~Y4 현금 소요 약 {eok(M['post_seed_burn']['y3_y4'], 0)} · Rental Partner 단순 회수 약 {PI['payback']:.0f}개월 (요구 {PI['hurdle']}개월 가정 → 조건 협의).
+- 내부 검토 판단: **{C.VERDICT}** — 판단을 바꿀 Evidence 5개: {' · '.join(a for a, _ in C.CHANGE_EVIDENCE)} ([docs/20](docs/20_Investment_Memo.md)).
 
 ## Environment Interface 예 (Remodeling 채널, 3D 모델 기준 CONCEPT)
 
@@ -1209,7 +1183,7 @@ readme = f"""# MH Robotics — Seed · TIPS IR Package (Draft v5, 2026.10)
 - 낮은 작업점: 식세기 하단 랙을 44cm 당겨 위에서 적재 (Gripper 최저 약 37cm), 서랍도 열어서 위에서 넣음.
 - 충돌검사: 로봇 링크 = 캡슐, 가구 = 상자. 작업 자세 · 보관 · 전개 경로 · Rail 이동 · 자기충돌 관통 0cm (`assets/renders/*.json`의 `ik`). 실제 기구 검증 전.
 
-## 받은 평면 5종 (Kitchen Variation 근거, 부록 B2)
+## 확보 평면 5종 (Kitchen Variation 근거, 부록 B2)
 
 {md_table(['평면', '구분', '크기 (mm)', '주방 형태', '3D', '기본 배치'], C.PLANS)}
 
@@ -1222,24 +1196,24 @@ python3 MH/source/xlsx_model.py     # 수식 기반 xlsx
 python3 /mnt/skills/public/xlsx/scripts/recalc.py MH/MH_Robotics_Financial_Model.xlsx 120
 python3 MH/source/check_xlsx.py     # xlsx 수식값 ↔ model.json 교차검증
 cd MH/render3d && npm install && bash render_v2.sh && bash render_plans.sh && bash render_hand.sh && cd ../..   # 3D 렌더 (선택)
-python3 MH/source/build.py --pdf    # 덱 + 본문 PDF + 전체 PDF (fit 검사, --png: 미리보기)
+python3 MH/source/build.py --pdf    # 제출용 덱 + 본문 PDF + 전체 PDF + 내부 검토용 (fit 검사, --png: 미리보기)
 python3 MH/source/gen_docs.py       # docs/*.md + 이 README
 ```
 
 - 단일 원천: `source/model.py` (입력 · Tag · 출처 · 계산) → `model.json` → 덱 · xlsx · 문서. 정성 표 (KPI · WP · Gate · IP · Risk · Q&A · Evidence · Founder 항목 · 경쟁 · 기준 · 평면)는 `source/content.py`.
-- 덱: `source/slides_mh.py` (본문) · `source/slides_mh_apx.py` (부록) · 공용 `kit.py` · `common.py` · `mhkit.py`. 이전 판 생성 코드 (`slides_main.py` 등)는 사용하지 않음.
+- 덱: `source/slides_mh.py` (본문) · `source/slides_mh_apx.py` (부록 · 내부 검토용) · 공용 `kit.py` · `common.py` · `mhkit.py`. 이전 판 코드 = `archive/ARKI_v4/source`.
 
 ## 외부 제출 전 입력 · 확인
 
 | 항목 | 위치 |
 |---|---|
-| Founder 2인 정보 · 증빙 · 지분 · 전업 여부 | 본문 17쪽 · 부록 E6 · docs/19 |
+| Founder 2인 정보 · 증빙 · 지분 · 전업 여부 (Founder 2 확보 여부 포함) | 본문 17쪽 · 내부 I4 · docs/19 |
 | TIPS 공고 원문 대조 (정부지원 비율 · 기관부담 현금 · 간접비 · 운영사 선투자 · 창업팀 지분 · 청년 채용) · 접수 일정 | 본문 16 · 18쪽 · 부록 A6 · docs/11 |
-| 운영사명 · 투자 조건 (형태 · 기업가치 · 지분) | 본문 18쪽 (현재 미제시) |
-| 공식 통계 · 회사 발표 원문 대조 (보도 인용분) | 부록 C1 · C2 · F2~F5 · docs/07 |
+| 운영사명 · 투자 조건 (형태 · 기업가치 · 지분) | 본문 18쪽 (협의) |
+| 공식 통계 · 회사 발표 원문 대조 (보도 인용분, 조회일 2026-10-07~08) | 부록 C1 · C2 · F1~F4 · docs/07 |
 | 가격 · 원가 가정 (ASP · Interface · Rental · Care · BOM) → 견적 · WTP 결과로 교체 | 부록 D1 · B6 · docs/09 · 10 |
 | 특허 후보 → 선행기술조사 · 변리사 검토 | 본문 15쪽 · 부록 E1 · docs/13 |
 """
 with open(os.path.join(ROOT, 'README.md'), 'w', encoding='utf-8') as f:
-    f.write(readme.strip() + '\n')
+    f.write(gaejo(readme.strip()) + '\n')
 print('wrote MH/README.md')
