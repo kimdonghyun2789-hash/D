@@ -21,3 +21,6 @@ PY
 $N $O/plan_old2b_top_orig.png 1400 1100 "id=old2b&arki=0&view=top&pad=0.03" > /dev/null
 $N $O/plan_old2b_unit.png 1600 1200 "id=old2b&arki=0&pad=0.03" > /dev/null
 $N $O/plan_old2a_unit_orig.png 1600 1200 "id=old2a&arki=0&dir3=-0.5,1.05,1.0&pad=0.03" > /dev/null
+# new 4Bay (as drawn)
+$N $O/plan_new4_top_orig.png 1400 1000 "id=new4&arki=0&view=top&pad=0.03" > /dev/null
+$N $O/plan_new4_unit.png 1600 1200 "id=new4&arki=0&pad=0.03" > /dev/null
