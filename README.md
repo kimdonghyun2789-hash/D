@@ -1,4 +1,4 @@
-> **저장소 구성** — `ARKI/`: ARKI Robotics Seed IR Package (2026.10, Draft v1: 덱 48장 · 수식 재무모델 · Investment Memo · 문서 11종) → [`ARKI/README.md`](ARKI/README.md). 아래는 기존 SoftHand Seed IR.
+> **저장소 구성** — `MH/`: MH Robotics Seed · TIPS IR Package (2026.10, Draft v5: 본문 18장 + 부록 35장 · 수식 재무모델 · 결과물 문서 20종 · 투자심사 Memo) → [`MH/README.md`](MH/README.md). 이전 판 ARKI Robotics v4는 `MH/archive/ARKI_v4/`에 보관. 아래는 기존 SoftHand Seed IR.
 
 # SoftHand — 투자유치 사업계획서 (Seed, 최종본)
 

@@ -1,0 +1,5102 @@
+{
+ "inputs": [
+  {
+   "key": "m_housing_total",
+   "group": "market",
+   "desc": "총주택 (2025.11.1 기준)",
+   "unit": "천호",
+   "tag": "FACT",
+   "vals": {
+    "C": 20181,
+    "B": 20181,
+    "U": 20181
+   },
+   "yearly": false,
+   "src": "국가데이터처, 2025 인구주택총조사 등록센서스 결과 (2026.7.28 발표)"
+  },
+  {
+   "key": "m_apt_share",
+   "group": "market",
+   "desc": "아파트 비중 (총주택 대비)",
+   "unit": "%",
+   "tag": "FACT",
+   "vals": {
+    "C": 0.658,
+    "B": 0.658,
+    "U": 0.658
+   },
+   "yearly": false,
+   "src": "국가데이터처, 2025 인구주택총조사"
+  },
+  {
+   "key": "m_house_20y_share",
+   "group": "market",
+   "desc": "준공 20년 이상 주택 비중",
+   "unit": "%",
+   "tag": "FACT",
+   "vals": {
+    "C": 0.56,
+    "B": 0.56,
+    "U": 0.56
+   },
+   "yearly": false,
+   "src": "국가데이터처, 2025 인구주택총조사"
+  },
+  {
+   "key": "m_house_30y_share",
+   "group": "market",
+   "desc": "준공 30년 이상 주택 비중",
+   "unit": "%",
+   "tag": "FACT",
+   "vals": {
+    "C": 0.306,
+    "B": 0.306,
+    "U": 0.306
+   },
+   "yearly": false,
+   "src": "국가데이터처, 2025 인구주택총조사"
+  },
+  {
+   "key": "m_apt_2023",
+   "group": "market",
+   "desc": "아파트 수 (2023)",
+   "unit": "천호",
+   "tag": "FACT",
+   "vals": {
+    "C": 12630,
+    "B": 12630,
+    "U": 12630
+   },
+   "yearly": false,
+   "src": "통계청, 2023 주택총조사 (보도 인용)"
+  },
+  {
+   "key": "m_apt_20y_2023",
+   "group": "market",
+   "desc": "준공 20년 이상 아파트 (2023)",
+   "unit": "천호",
+   "tag": "FACT",
+   "vals": {
+    "C": 6390,
+    "B": 6390,
+    "U": 6390
+   },
+   "yearly": false,
+   "src": "통계청, 2023 주택총조사 (보도 인용)"
+  },
+  {
+   "key": "m_txn_2025",
+   "group": "market",
+   "desc": "주택 매매거래 (2025, 전체 주택)",
+   "unit": "천호",
+   "tag": "FACT",
+   "vals": {
+    "C": 726,
+    "B": 726,
+    "U": 726
+   },
+   "yearly": false,
+   "src": "KB주택시장리뷰 2026.2 (한국부동산원 자료)"
+  },
+  {
+   "key": "m_completion_2025",
+   "group": "market",
+   "desc": "주택 준공 (2025 연간, 전체 주택)",
+   "unit": "천호",
+   "tag": "FACT",
+   "vals": {
+    "C": 342.4,
+    "B": 342.4,
+    "U": 342.4
+   },
+   "yearly": false,
+   "src": "국토교통부, 2025년 12월 주택통계"
+  },
+  {
+   "key": "m_movein_2025",
+   "group": "market",
+   "desc": "아파트 입주 (2025)",
+   "unit": "천호",
+   "tag": "FACT",
+   "vals": {
+    "C": 236.3,
+    "B": 236.3,
+    "U": 236.3
+   },
+   "yearly": false,
+   "src": "부동산114 REPS"
+  },
+  {
+   "key": "m_movein_2026e",
+   "group": "market",
+   "desc": "아파트 입주 예정 (2026)",
+   "unit": "천호",
+   "tag": "FACT",
+   "vals": {
+    "C": 183.1,
+    "B": 183.1,
+    "U": 183.1
+   },
+   "yearly": false,
+   "src": "부동산114 REPS (예정 물량)"
+  },
+  {
+   "key": "a_replace_cycle",
+   "group": "market",
+   "desc": "Kitchen 교체주기 (노후 아파트)",
+   "unit": "년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 22,
+    "B": 22,
+    "U": 22
+   },
+   "yearly": false,
+   "src": "교차검증용 가정. 견적 · 인터뷰로 검증"
+  },
+  {
+   "key": "a_txn_apt_share",
+   "group": "market",
+   "desc": "매매거래 중 아파트 비중",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.7,
+    "B": 0.7,
+    "U": 0.7
+   },
+   "yearly": false,
+   "src": "부동산원 월별 아파트 거래 비중 확인 필요"
+  },
+  {
+   "key": "a_txn_kitchen_rate",
+   "group": "market",
+   "desc": "매수 후 Kitchen 교체율",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.4,
+    "B": 0.4,
+    "U": 0.4
+   },
+   "yearly": false,
+   "src": "인터뷰 · 인테리어 Partner 자료로 검증"
+  },
+  {
+   "key": "a_aging_nontxn",
+   "group": "market",
+   "desc": "비거래 노후 교체 세대",
+   "unit": "천/년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 100,
+    "B": 100,
+    "U": 100
+   },
+   "yearly": false,
+   "src": "교차검증용 가정"
+  },
+  {
+   "key": "a_kitchen_replace",
+   "group": "market",
+   "desc": "연간 Kitchen 교체 세대 (아파트)",
+   "unit": "천/년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 300,
+    "B": 300,
+    "U": 300
+   },
+   "yearly": false,
+   "src": "두 방식 교차검증 (29만 · 30만) 후 30만으로 설정"
+  },
+  {
+   "key": "a_premium_share",
+   "group": "market",
+   "desc": "Premium Kitchen 비중 (교체 세대 중)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.1,
+    "B": 0.1,
+    "U": 0.1
+   },
+   "yearly": false,
+   "src": "주방 예산 2,000만원 이상 가정. 견적 수집으로 검증"
+  },
+  {
+   "key": "a_fit_rate",
+   "group": "market",
+   "desc": "Remodeling 적용 가능률 (구조 · 전원 · 평면)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.6,
+    "B": 0.6,
+    "U": 0.6
+   },
+   "yearly": false,
+   "src": "평면 30개 분석으로 검증"
+  },
+  {
+   "key": "a_prem_stock",
+   "group": "market",
+   "desc": "Premium 세대 비중 (아파트 재고 기준)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.1,
+    "B": 0.1,
+    "U": 0.1
+   },
+   "yearly": false,
+   "src": "Retrofit 대상. 소득 · 주택가격 기준 정의 필요"
+  },
+  {
+   "key": "a_dw_premium",
+   "group": "market",
+   "desc": "Premium 세대 식기세척기 보유율",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.6,
+    "B": 0.6,
+    "U": 0.6
+   },
+   "yearly": false,
+   "src": "공식 보급률 통계 확인 안 됨 (2019~20 업계 추정 10%대 초반 · 전체 가구) → TO BE VALIDATED"
+  },
+  {
+   "key": "a_retro_fit",
+   "group": "market",
+   "desc": "Retrofit 호환률 (주방 형태 · 식세기 위치 · 상부장)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.4,
+    "B": 0.4,
+    "U": 0.4
+   },
+   "yearly": false,
+   "src": "받은 평면 5종 중 2종만 기본 배치 수용 (표본 작음) → 평면 30개로 검증"
+  },
+  {
+   "key": "a_retro_conv",
+   "group": "market",
+   "desc": "Retrofit 연간 전환율 (호환 세대 중, 제품 성숙 후)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.005,
+    "B": 0.005,
+    "U": 0.005
+   },
+   "yearly": false,
+   "src": "가설. Phase 2 시작 전 검증"
+  },
+  {
+   "key": "a_new_supply",
+   "group": "market",
+   "desc": "연간 신규 아파트 입주 (평균)",
+   "unit": "천/년",
+   "tag": "DERIVED",
+   "vals": {
+    "C": 200,
+    "B": 200,
+    "U": 200
+   },
+   "yearly": false,
+   "src": "2025 실적 23.6만 · 2026 예정 18.3만 → 20만"
+  },
+  {
+   "key": "a_premium_project",
+   "group": "market",
+   "desc": "Premium 단지 비중 (신축)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.15,
+    "B": 0.15,
+    "U": 0.15
+   },
+   "yearly": false,
+   "src": "브랜드 · 분양가 기준 정의 필요"
+  },
+  {
+   "key": "f_helper_rate",
+   "group": "value",
+   "desc": "가사서비스 시간당 요금 (플랫폼 4시간 59,900~64,900원)",
+   "unit": "만원/h",
+   "tag": "FACT",
+   "vals": {
+    "C": 1.5,
+    "B": 1.5,
+    "U": 1.5
+   },
+   "yearly": false,
+   "src": "가사서비스 플랫폼 공개 요금 (2025, 보도 · 앱 정보)"
+  },
+  {
+   "key": "a_cleanup_min",
+   "group": "value",
+   "desc": "식사 후 정리 시간 (식기 이동 · 식세기 · 수납, 일)",
+   "unit": "분/일",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 40,
+    "B": 40,
+    "U": 40
+   },
+   "yearly": false,
+   "src": "Time-diary(n=30)로 검증"
+  },
+  {
+   "key": "a_auto_share",
+   "group": "value",
+   "desc": "CLEAN 자동화 가능 비중",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.6,
+    "B": 0.6,
+    "U": 0.6
+   },
+   "yearly": false,
+   "src": "식기 이동 · 식세기 적재/인출 · 수납만. 행주 · 싱크 세척 제외"
+  },
+  {
+   "key": "fx",
+   "group": "value",
+   "desc": "환율 (Benchmark 환산용)",
+   "unit": "원/USD",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 1400,
+    "B": 1400,
+    "U": 1400
+   },
+   "yearly": false,
+   "src": "부품 Benchmark 환산 전용"
+  },
+  {
+   "key": "p_rr",
+   "group": "price",
+   "desc": "Interface · Integration — Remodeling (Robot Home · Rail · 식세기 Interface · Storage Dock)",
+   "unit": "만원/세대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 400,
+    "B": 450,
+    "U": 450
+   },
+   "yearly": false,
+   "src": "주방 공사비 위 증분. 시스템에어컨 유상옵션(500~1,000만원) 대비 하단"
+  },
+  {
+   "key": "p_rr_new",
+   "group": "price",
+   "desc": "Interface Option — New-build (설계 반영, MH 공급가)",
+   "unit": "만원/세대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 200,
+    "B": 220,
+    "U": 220
+   },
+   "yearly": false,
+   "src": "건설사 · 가구사 마진 별도. 분양 고객가 약 300만원 가정"
+  },
+  {
+   "key": "p_rt_if",
+   "group": "price",
+   "desc": "Interface Kit — Retrofit (Compact Mount · Dock · Vision Reference · Drop Zone)",
+   "unit": "만원/세대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 150,
+    "B": 150,
+    "U": 150
+   },
+   "yearly": false,
+   "src": "기존 주방 유지. 최소 시공"
+  },
+  {
+   "key": "p_robot",
+   "group": "price",
+   "desc": "Robot System ASP (Arm · Adaptive Hand · Vision · Safety · Controller)",
+   "unit": "만원/대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 1290,
+    "B": 1490,
+    "U": 1490
+   },
+   "yearly": false,
+   "src": "Upside는 가격 인상 없음. WTP 검증 대상 1순위"
+  },
+  {
+   "key": "p_comm",
+   "group": "price",
+   "desc": "Installation · Calibration · Safety Check (Remodeling · New-build)",
+   "unit": "만원/대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 80,
+    "B": 80,
+    "U": 80
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "p_comm_rt",
+   "group": "price",
+   "desc": "Installation · Calibration (Retrofit, 현장 Calibration 비중 큼)",
+   "unit": "만원/대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 120,
+    "B": 120,
+    "U": 120
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "p_rent",
+   "group": "price",
+   "desc": "Robot Rental 월 요금 (Care Basic · Grip Kit 포함, 60개월)",
+   "unit": "만원/월",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 29,
+    "B": 33,
+    "U": 33
+   },
+   "yearly": false,
+   "src": "원가 Build-up (감가 · 금융 · Care · Grip · Reserve) + 마진"
+  },
+  {
+   "key": "rent_months",
+   "group": "price",
+   "desc": "Rental 계약기간",
+   "unit": "개월",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 60,
+    "B": 60,
+    "U": 60
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "p_care",
+   "group": "price",
+   "desc": "Care Basic 연 요금 (구매 고객)",
+   "unit": "만원/년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 42,
+    "B": 48,
+    "U": 48
+   },
+   "yearly": false,
+   "src": "정기 안전점검 · Calibration · 원격진단 · SW Update · A/S 공임"
+  },
+  {
+   "key": "p_care_plus",
+   "group": "price",
+   "desc": "Care Plus 연 요금 (Kit 정기교체 포함)",
+   "unit": "만원/년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 72,
+    "B": 72,
+    "U": 72
+   },
+   "yearly": false,
+   "src": "옵션 상품. 재무 Base에는 미반영"
+  },
+  {
+   "key": "p_grip",
+   "group": "price",
+   "desc": "Grip Kit (Finger Pad · Food-contact Tip · Suction Seal)",
+   "unit": "만원/Kit",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 4.5,
+    "B": 4.5,
+    "U": 4.5
+   },
+   "yearly": false,
+   "src": "분기 교체 가정"
+  },
+  {
+   "key": "n_grip",
+   "group": "price",
+   "desc": "Grip Kit 교체 횟수",
+   "unit": "회/년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 4,
+    "B": 4,
+    "U": 4
+   },
+   "yearly": false,
+   "src": "Pad 마모율 · 교체주기 검증 대상 (KPI: Pad 수명)"
+  },
+  {
+   "key": "p_clean",
+   "group": "price",
+   "desc": "Cleaning Kit (Brush · Wiper · Cleaning Pad)",
+   "unit": "만원/Kit",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 2.5,
+    "B": 2.5,
+    "U": 2.5
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "n_clean",
+   "group": "price",
+   "desc": "Cleaning Kit 교체 횟수",
+   "unit": "회/년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 4,
+    "B": 4,
+    "U": 4
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "p_protect",
+   "group": "price",
+   "desc": "Protection Kit (Sensor Cover · Sleeve · Seal)",
+   "unit": "만원/Kit",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 4.0,
+    "B": 4.0,
+    "U": 4.0
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "n_protect",
+   "group": "price",
+   "desc": "Protection Kit 교체 횟수",
+   "unit": "회/년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 2,
+    "B": 2,
+    "U": 2
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "cons_attach",
+   "group": "price",
+   "desc": "Consumables 구매율",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.55,
+    "B": 0.7,
+    "U": 0.7
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "care_attach",
+   "group": "price",
+   "desc": "Care 가입률 (구매 고객)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.55,
+    "B": 0.7,
+    "U": 0.7
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "p_sw",
+   "group": "price",
+   "desc": "ASSIST Skill Pack (설치 다음 해)",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 60,
+    "B": 60,
+    "U": 60
+   },
+   "yearly": false,
+   "src": "ASSIST 기능 (재료 이동 · 투입 보조 등) 출시 전제"
+  },
+  {
+   "key": "sw_attach",
+   "group": "price",
+   "desc": "ASSIST Skill 구매율",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.1,
+    "B": 0.2,
+    "U": 0.2
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "p_tool",
+   "group": "price",
+   "desc": "Tool · End-effector 추가 (설치 2년 후)",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 80,
+    "B": 80,
+    "U": 80
+   },
+   "yearly": false,
+   "src": "FUTURE CONCEPT 제품"
+  },
+  {
+   "key": "tool_attach",
+   "group": "price",
+   "desc": "Tool 구매율",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.15,
+    "B": 0.25,
+    "U": 0.25
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "wholesale",
+   "group": "price",
+   "desc": "Rental Partner 공급가율 (Robot ASP 대비)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.88,
+    "B": 0.88,
+    "U": 0.88
+   },
+   "yearly": false,
+   "src": "Y4부터 Rental Partner가 자산 보유"
+  },
+  {
+   "key": "partner_fee",
+   "group": "price",
+   "desc": "Rental Partner → MH Care · Grip 서비스료",
+   "unit": "만원/월",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 6.0,
+    "B": 6.0,
+    "U": 6.0
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "realization",
+   "group": "price",
+   "desc": "가격 실현율 (Y2 Pilot 할인)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     1,
+     0.3,
+     1,
+     1,
+     1
+    ],
+    "B": [
+     1,
+     0.5,
+     1,
+     1,
+     1
+    ],
+    "U": [
+     1,
+     0.6,
+     1,
+     1,
+     1
+    ]
+   },
+   "yearly": true,
+   "src": "Pilot은 할인 유료"
+  },
+  {
+   "key": "kit_std_cost",
+   "group": "cost",
+   "desc": "Interface Kit 원가 — Remodeling (표준부품 100% 기준)",
+   "unit": "만원/세대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 200,
+    "B": 200,
+    "U": 200
+   },
+   "yearly": false,
+   "src": "Robot Home (Dock) · Rail Interface · 식세기 상향 하우징 · 전원/통신 · Storage Dock"
+  },
+  {
+   "key": "custom_factor",
+   "group": "cost",
+   "desc": "Custom 부품 원가 배수",
+   "unit": "x",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 1.6,
+    "B": 1.6,
+    "U": 1.6
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "design_cost",
+   "group": "cost",
+   "desc": "Site 설계 · 조정 원가 (100% Custom 시)",
+   "unit": "만원/세대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 100,
+    "B": 100,
+    "U": 100
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "smr",
+   "group": "cost",
+   "desc": "Interface 표준부품 사용률",
+   "unit": "%",
+   "tag": "TARGET",
+   "vals": {
+    "C": [
+     0.4,
+     0.45,
+     0.55,
+     0.62,
+     0.65
+    ],
+    "B": [
+     0.4,
+     0.5,
+     0.65,
+     0.75,
+     0.8
+    ],
+    "U": [
+     0.4,
+     0.55,
+     0.7,
+     0.8,
+     0.85
+    ]
+   },
+   "yearly": true,
+   "src": "M24 65% 이상 목표 (M18 60% 미만이면 Interface 설계 재검토)"
+  },
+  {
+   "key": "kit_new_cost",
+   "group": "cost",
+   "desc": "Interface Option 원가 — New-build (공장 생산)",
+   "unit": "만원/세대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 145,
+    "B": 130,
+    "U": 120
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "rt_kit_cost",
+   "group": "cost",
+   "desc": "Interface Kit 원가 — Retrofit",
+   "unit": "만원/세대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 70,
+    "B": 70,
+    "U": 70
+   },
+   "yearly": false,
+   "src": "Compact Mount · Dock · Vision Reference"
+  },
+  {
+   "key": "bom",
+   "group": "cost",
+   "desc": "Robot System BOM (Adaptive Hand 포함)",
+   "unit": "만원/대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     1680,
+     1580,
+     1330,
+     1210,
+     1100
+    ],
+    "B": [
+     1680,
+     1520,
+     1180,
+     1030,
+     915
+    ],
+    "U": [
+     1680,
+     1460,
+     1100,
+     950,
+     820
+    ]
+   },
+   "yearly": true,
+   "src": "BOM 구성 Benchmark 기반 (부록). 수량 · 국산화 · 자체 Hand 원가 하락 가정"
+  },
+  {
+   "key": "comm_cost",
+   "group": "cost",
+   "desc": "Installation · Calibration 원가 — Remodeling · New-build (MH 인력)",
+   "unit": "만원/대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     120,
+     100,
+     75,
+     62,
+     55
+    ],
+    "B": [
+     120,
+     90,
+     60,
+     45,
+     38
+    ],
+    "U": [
+     120,
+     85,
+     52,
+     38,
+     30
+    ]
+   },
+   "yearly": true,
+   "src": "Calibration 시간 KPI와 연동"
+  },
+  {
+   "key": "comm_cost_rt",
+   "group": "cost",
+   "desc": "Installation · Calibration 원가 — Retrofit (MH 인력)",
+   "unit": "만원/대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     160,
+     140,
+     110,
+     95,
+     85
+    ],
+    "B": [
+     160,
+     130,
+     95,
+     75,
+     62
+    ],
+    "U": [
+     160,
+     120,
+     85,
+     65,
+     52
+    ]
+   },
+   "yearly": true,
+   "src": "현장 Calibration 비중 큼"
+  },
+  {
+   "key": "logistics",
+   "group": "cost",
+   "desc": "물류 (세대당)",
+   "unit": "만원/세대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 25,
+    "B": 25,
+    "U": 25
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "warranty",
+   "group": "cost",
+   "desc": "Warranty Reserve (Robot 매출 대비)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.05,
+    "B": 0.04,
+    "U": 0.035
+   },
+   "yearly": false,
+   "src": "1년 무상 A/S"
+  },
+  {
+   "key": "visits",
+   "group": "cost",
+   "desc": "정기 방문 횟수",
+   "unit": "회/년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "B": [
+     2,
+     2,
+     2,
+     1.5,
+     1.5
+    ],
+    "U": [
+     2,
+     2,
+     1.5,
+     1.2,
+     1.0
+    ]
+   },
+   "yearly": true,
+   "src": "원격진단 고도화로 감소"
+  },
+  {
+   "key": "visit_cost",
+   "group": "cost",
+   "desc": "방문 1회 원가 (인건비 · 이동)",
+   "unit": "만원/회",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     15,
+     14,
+     12.5,
+     11,
+     10
+    ],
+    "B": [
+     15,
+     13,
+     11,
+     9,
+     8
+    ],
+    "U": [
+     15,
+     12,
+     10,
+     8,
+     7
+    ]
+   },
+   "yearly": true,
+   "src": "참고: 제조사 출장비 2.8만원 (소비자 부과분, 2026)과 별개인 실제 원가. Route Density로 하락"
+  },
+  {
+   "key": "corrective",
+   "group": "cost",
+   "desc": "고장 방문 (Failure Rate)",
+   "unit": "회/대·년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.9,
+    "B": 0.6,
+    "U": 0.5
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "corr_cost",
+   "group": "cost",
+   "desc": "고장 방문 1회 원가 (소부품 포함)",
+   "unit": "만원/회",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 18,
+    "B": 18,
+    "U": 18
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "cloud",
+   "group": "cost",
+   "desc": "Cloud · Software 운영비",
+   "unit": "만원/대·년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 4,
+    "B": 4,
+    "U": 4
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "cons_cogs",
+   "group": "cost",
+   "desc": "Consumables 원가율 (물류 포함)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.4,
+    "B": 0.35,
+    "U": 0.32
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "sw_cogs",
+   "group": "cost",
+   "desc": "Skill 원가율",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.1,
+    "B": 0.1,
+    "U": 0.1
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "tool_cogs",
+   "group": "cost",
+   "desc": "Tool 원가율",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.45,
+    "B": 0.45,
+    "U": 0.45
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "partner_margin",
+   "group": "cost",
+   "desc": "Kitchen · Interior · 설치 Partner 수수료 (Partner 경유 판매)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.12,
+    "B": 0.1,
+    "U": 0.09
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "cac",
+   "group": "cost",
+   "desc": "직접판매 획득비용 (상담 · 설계 · Demo)",
+   "unit": "만원/세대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 180,
+    "B": 150,
+    "U": 140
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "bd_new",
+   "group": "cost",
+   "desc": "신축 Project 수주비용 (Spec · 견본주택)",
+   "unit": "만원/Project",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 2000,
+    "B": 2000,
+    "U": 2000
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "residual",
+   "group": "cost",
+   "desc": "Rental 자산 잔존가치 (60개월 후)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.15,
+    "B": 0.15,
+    "U": 0.15
+   },
+   "yearly": false,
+   "src": "Refurbish 재배치"
+  },
+  {
+   "key": "fin_rate",
+   "group": "cost",
+   "desc": "Rental 자산 금융비용",
+   "unit": "%/년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.08,
+    "B": 0.08,
+    "U": 0.08
+   },
+   "yearly": false,
+   "src": "캐피탈 조달금리 + Spread 가정"
+  },
+  {
+   "key": "payback_hurdle",
+   "group": "cost",
+   "desc": "Rental Partner 요구 Payback",
+   "unit": "개월",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 36,
+    "B": 36,
+    "U": 36
+   },
+   "yearly": false,
+   "src": "렌탈 · 캐피탈사 협의로 검증"
+  },
+  {
+   "key": "rd",
+   "group": "volume",
+   "desc": "Remodeling — MH 직접 판매 (시공은 파트너)",
+   "unit": "세대",
+   "tag": "TARGET",
+   "vals": {
+    "C": [
+     0,
+     3,
+     20,
+     35,
+     40
+    ],
+    "B": [
+     0,
+     3,
+     30,
+     50,
+     60
+    ],
+    "U": [
+     0,
+     3,
+     35,
+     60,
+     70
+    ]
+   },
+   "yearly": true,
+   "src": "Y2 = 가정 실증 3세대 (유료 목표, 할인)"
+  },
+  {
+   "key": "rp",
+   "group": "volume",
+   "desc": "Remodeling — 주방 · 인테리어 Partner 경유",
+   "unit": "세대",
+   "tag": "TARGET",
+   "vals": {
+    "C": [
+     0,
+     0,
+     10,
+     60,
+     150
+    ],
+    "B": [
+     0,
+     0,
+     20,
+     130,
+     340
+    ],
+    "U": [
+     0,
+     0,
+     30,
+     220,
+     600
+    ]
+   },
+   "yearly": true,
+   "src": "Kitchen 가구 · 인테리어 Partner"
+  },
+  {
+   "key": "rt",
+   "group": "volume",
+   "desc": "Existing Kitchen Retrofit (호환 주방, Partner 설치)",
+   "unit": "세대",
+   "tag": "TARGET",
+   "vals": {
+    "C": [
+     0,
+     0,
+     0,
+     10,
+     40
+    ],
+    "B": [
+     0,
+     0,
+     0,
+     20,
+     80
+    ],
+    "U": [
+     0,
+     0,
+     0,
+     30,
+     120
+    ]
+   },
+   "yearly": true,
+   "src": "Phase 2. Y4 시작"
+  },
+  {
+   "key": "attach",
+   "group": "volume",
+   "desc": "Robot Attach Rate (Remodeling, 설치 시점)",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     1,
+     1,
+     0.75,
+     0.75,
+     0.75
+    ],
+    "B": [
+     1,
+     1,
+     0.85,
+     0.85,
+     0.85
+    ],
+    "U": [
+     1,
+     1,
+     0.85,
+     0.85,
+     0.85
+    ]
+   },
+   "yearly": true,
+   "src": "나머지는 Interface 선설치 (Robot 후설치)"
+  },
+  {
+   "key": "later_attach",
+   "group": "volume",
+   "desc": "Interface 선설치 세대의 연간 Robot 후설치",
+   "unit": "%/년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.05,
+    "B": 0.1,
+    "U": 0.12
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "rental_share",
+   "group": "volume",
+   "desc": "Rental 선택 비중",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     0,
+     0.3,
+     0.3,
+     0.35,
+     0.35
+    ],
+    "B": [
+     0,
+     0.3,
+     0.3,
+     0.4,
+     0.4
+    ],
+    "U": [
+     0,
+     0.3,
+     0.3,
+     0.45,
+     0.45
+    ]
+   },
+   "yearly": true,
+   "src": ""
+  },
+  {
+   "key": "partner_rental",
+   "group": "volume",
+   "desc": "Rental 자산 보유 주체 (0 = MH Pilot, 1 = Rental Partner)",
+   "unit": "flag",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     0,
+     0,
+     0,
+     1,
+     1
+    ],
+    "B": [
+     0,
+     0,
+     0,
+     1,
+     1
+    ],
+    "U": [
+     0,
+     0,
+     0,
+     1,
+     1
+    ]
+   },
+   "yearly": true,
+   "src": ""
+  },
+  {
+   "key": "projects",
+   "group": "volume",
+   "desc": "신축 Interface Option 계약 Project",
+   "unit": "개",
+   "tag": "TARGET",
+   "vals": {
+    "C": [
+     0,
+     0,
+     0,
+     1,
+     2
+    ],
+    "B": [
+     0,
+     0,
+     1,
+     2,
+     3
+    ],
+    "U": [
+     0,
+     0,
+     2,
+     3,
+     4
+    ]
+   },
+   "yearly": true,
+   "src": "계약 2년 후 입주 · 설치"
+  },
+  {
+   "key": "hh_project",
+   "group": "volume",
+   "desc": "Project당 세대수",
+   "unit": "세대",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 800,
+    "B": 800,
+    "U": 800
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "option_rate",
+   "group": "volume",
+   "desc": "신축 Interface Option 선택률",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.06,
+    "B": 0.1,
+    "U": 0.12
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "new_attach",
+   "group": "volume",
+   "desc": "신축 입주 시 Robot Attach",
+   "unit": "%",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": 0.15,
+    "B": 0.25,
+    "U": 0.3
+   },
+   "yearly": false,
+   "src": ""
+  },
+  {
+   "key": "fte",
+   "group": "opex",
+   "desc": "평균 인원 (FTE)",
+   "unit": "명",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     7.041666666666667,
+     12.75,
+     20,
+     32,
+     42
+    ],
+    "B": [
+     7.041666666666667,
+     12.75,
+     20,
+     32,
+     42
+    ],
+    "U": [
+     7.041666666666667,
+     12.75,
+     20,
+     32,
+     42
+    ]
+   },
+   "yearly": true,
+   "src": "Y1~Y2 = 팀 계획 (Budget_24M, Founder 2 + 신규 채용) · Y3부터 Series A 전제"
+  },
+  {
+   "key": "loaded",
+   "group": "opex",
+   "desc": "인당 연 인건비 (4대보험 · 퇴직급여 포함, 평균)",
+   "unit": "만원/년",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     7927.8106508875735,
+     7611.764705882353,
+     8500,
+     8500,
+     8500
+    ],
+    "B": [
+     7927.8106508875735,
+     7611.764705882353,
+     8500,
+     8500,
+     8500
+    ],
+    "U": [
+     7927.8106508875735,
+     7611.764705882353,
+     8500,
+     8500,
+     8500
+    ]
+   },
+   "yearly": true,
+   "src": "Y1~Y2 = 팀 계획 가중평균 · Y3~ 평균 연봉 약 7,100만원 × 1.2"
+  },
+  {
+   "key": "robot_hw",
+   "group": "opex",
+   "desc": "Robot Hardware (R&D 로봇 셀)",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     4800,
+     1600,
+     12000,
+     14000,
+     16000
+    ],
+    "B": [
+     4800,
+     1600,
+     12000,
+     14000,
+     16000
+    ],
+    "U": [
+     4800,
+     1600,
+     12000,
+     14000,
+     16000
+    ]
+   },
+   "yearly": true,
+   "src": ""
+  },
+  {
+   "key": "hand_proto",
+   "group": "opex",
+   "desc": "Hand Prototype (비교군 · 자체 Hand v1~v3)",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     6000,
+     4000,
+     10000,
+     12000,
+     14000
+    ],
+    "B": [
+     6000,
+     4000,
+     10000,
+     12000,
+     14000
+    ],
+    "U": [
+     6000,
+     4000,
+     10000,
+     12000,
+     14000
+    ]
+   },
+   "yearly": true,
+   "src": ""
+  },
+  {
+   "key": "mockup",
+   "group": "opex",
+   "desc": "Kitchen Mock-up (실물 크기 3종)",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     5000,
+     2500,
+     8000,
+     9000,
+     10000
+    ],
+    "B": [
+     5000,
+     2500,
+     8000,
+     9000,
+     10000
+    ],
+    "U": [
+     5000,
+     2500,
+     8000,
+     9000,
+     10000
+    ]
+   },
+   "yearly": true,
+   "src": ""
+  },
+  {
+   "key": "swdata",
+   "group": "opex",
+   "desc": "Software · Data (GPU · Cloud · Annotation)",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     2500,
+     3000,
+     10000,
+     15000,
+     20000
+    ],
+    "B": [
+     2500,
+     3000,
+     10000,
+     15000,
+     20000
+    ],
+    "U": [
+     2500,
+     3000,
+     10000,
+     15000,
+     20000
+    ]
+   },
+   "yearly": true,
+   "src": ""
+  },
+  {
+   "key": "pilot",
+   "group": "opex",
+   "desc": "Pilot 운영 (실증 하드웨어 제외)",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     0,
+     3500,
+     5000,
+     5000,
+     5000
+    ],
+    "B": [
+     0,
+     3500,
+     5000,
+     5000,
+     5000
+    ],
+    "U": [
+     0,
+     3500,
+     5000,
+     5000,
+     5000
+    ]
+   },
+   "yearly": true,
+   "src": ""
+  },
+  {
+   "key": "custval",
+   "group": "opex",
+   "desc": "Customer Validation · Partner · Marketing",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     2000,
+     4000,
+     30000,
+     50000,
+     70000
+    ],
+    "B": [
+     2000,
+     4000,
+     30000,
+     50000,
+     70000
+    ],
+    "U": [
+     2000,
+     4000,
+     30000,
+     50000,
+     70000
+    ]
+   },
+   "yearly": true,
+   "src": ""
+  },
+  {
+   "key": "cert",
+   "group": "opex",
+   "desc": "Safety · Certification",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     1500,
+     4500,
+     15000,
+     6000,
+     5000
+    ],
+    "B": [
+     1500,
+     4500,
+     15000,
+     6000,
+     5000
+    ],
+    "U": [
+     1500,
+     4500,
+     15000,
+     6000,
+     5000
+    ]
+   },
+   "yearly": true,
+   "src": "Y3 본인증"
+  },
+  {
+   "key": "ip",
+   "group": "opex",
+   "desc": "IP (선행기술조사 · 출원)",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     1500,
+     3000,
+     5000,
+     4000,
+     5000
+    ],
+    "B": [
+     1500,
+     3000,
+     5000,
+     4000,
+     5000
+    ],
+    "U": [
+     1500,
+     3000,
+     5000,
+     4000,
+     5000
+    ]
+   },
+   "yearly": true,
+   "src": ""
+  },
+  {
+   "key": "space",
+   "group": "opex",
+   "desc": "Space (실험실 · 목업 공간)",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     4800,
+     4800,
+     10000,
+     12000,
+     15000
+    ],
+    "B": [
+     4800,
+     4800,
+     10000,
+     12000,
+     15000
+    ],
+    "U": [
+     4800,
+     4800,
+     10000,
+     12000,
+     15000
+    ]
+   },
+   "yearly": true,
+   "src": ""
+  },
+  {
+   "key": "ga",
+   "group": "opex",
+   "desc": "Operating · G&A (법무 · 회계 · 보험 · 사무)",
+   "unit": "만원",
+   "tag": "ASSUMPTION",
+   "vals": {
+    "C": [
+     4000,
+     5000,
+     30000,
+     40000,
+     50000
+    ],
+    "B": [
+     4000,
+     5000,
+     30000,
+     40000,
+     50000
+    ],
+    "U": [
+     4000,
+     5000,
+     30000,
+     40000,
+     50000
+    ]
+   },
+   "yearly": true,
+   "src": ""
+  },
+  {
+   "key": "contingency",
+   "group": "opex",
+   "desc": "예비비 (인건비 외 지출의 10%, Y1~Y2)",
+   "unit": "만원",
+   "tag": "DERIVED",
+   "vals": {
+    "C": [
+     3210.0,
+     3590.0,
+     0,
+     0,
+     0
+    ],
+    "B": [
+     3210.0,
+     3590.0,
+     0,
+     0,
+     0
+    ],
+    "U": [
+     3210.0,
+     3590.0,
+     0,
+     0,
+     0
+    ]
+   },
+   "yearly": true,
+   "src": "24개월 계획의 하드웨어 · 일정 Risk 대비"
+  },
+  {
+   "key": "rnd_allow",
+   "group": "opex",
+   "desc": "연구수당 (TIPS 과제 현금 인건비 × 5%)",
+   "unit": "만원",
+   "tag": "DERIVED",
+   "vals": {
+    "C": [
+     1032.75,
+     1626.0,
+     0,
+     0,
+     0
+    ],
+    "B": [
+     1032.75,
+     1626.0,
+     0,
+     0,
+     0
+    ],
+    "U": [
+     1032.75,
+     1626.0,
+     0,
+     0,
+     0
+    ]
+   },
+   "yearly": true,
+   "src": "TIPS 선정 시"
+  },
+  {
+   "key": "tips",
+   "group": "funding",
+   "desc": "TIPS R&D 정부지원금 (일반 트랙 최대)",
+   "unit": "만원",
+   "tag": "FACT",
+   "vals": {
+    "C": 80000,
+    "B": 80000,
+    "U": 80000
+   },
+   "yearly": false,
+   "src": "중소벤처기업부 공고 제2026-40호 (2026.1.26) 팁스 창업기업 지원계획. 선정 미확정"
+  },
+  {
+   "key": "tips_months",
+   "group": "funding",
+   "desc": "TIPS R&D 기간 (최대)",
+   "unit": "개월",
+   "tag": "FACT",
+   "vals": {
+    "C": 24,
+    "B": 24,
+    "U": 24
+   },
+   "yearly": false,
+   "src": "공고 제2026-40호"
+  },
+  {
+   "key": "tips_gov_ratio",
+   "group": "funding",
+   "desc": "정부지원연구개발비 비율 상한 (총 연구개발비 대비)",
+   "unit": "%",
+   "tag": "FACT",
+   "vals": {
+    "C": 0.75,
+    "B": 0.75,
+    "U": 0.75
+   },
+   "yearly": false,
+   "src": "공고 제2026-40호 (사본 · 운용사 정리 기준: 정부 75% 이내, 기관부담 25% 이상)"
+  },
+  {
+   "key": "tips_cash_ratio",
+   "group": "funding",
+   "desc": "기관부담연구개발비 중 현금 최소 비율",
+   "unit": "%",
+   "tag": "FACT",
+   "vals": {
+    "C": 0.1,
+    "B": 0.1,
+    "U": 0.1
+   },
+   "yearly": false,
+   "src": "공고 제2026-40호 (사본 · 운용사 정리 기준)"
+  },
+  {
+   "key": "op_invest_min",
+   "group": "funding",
+   "desc": "TIPS 운영사 선투자 요건 (수도권)",
+   "unit": "만원",
+   "tag": "FACT",
+   "vals": {
+    "C": 20000,
+    "B": 20000,
+    "U": 20000
+   },
+   "yearly": false,
+   "src": "2026: 수도권 2억원 이상 · 비수도권 1억원 이상"
+  },
+  {
+   "key": "biz_link",
+   "group": "funding",
+   "desc": "비R&D 연계 (창업사업화 · 해외마케팅) 각 최대 (선정 뒤 별도 신청, 기본안 미반영)",
+   "unit": "만원",
+   "tag": "FACT",
+   "vals": {
+    "C": 15000,
+    "B": 15000,
+    "U": 15000
+   },
+   "yearly": false,
+   "src": "공고 제2026-40호: 각 10개월 최대 1.5억원, 합산 3억원, 정부 70% 이내"
+  }
+ ],
+ "scenarios": {
+  "C": {
+   "rd": [
+    0,
+    3,
+    20,
+    35,
+    40
+   ],
+   "rp": [
+    0,
+    0,
+    10,
+    60,
+    150
+   ],
+   "rt": [
+    0,
+    0,
+    0,
+    10,
+    40
+   ],
+   "ni": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "kitchens": [
+    0.0,
+    3.0,
+    30.0,
+    105.0,
+    230.0
+   ],
+   "pl_remodel": [
+    0,
+    3,
+    22.5,
+    71.25,
+    142.5
+   ],
+   "later": [
+    0.0,
+    0.0,
+    0.0,
+    0.375,
+    1.5437500000000002
+   ],
+   "pl_new": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "pl": [
+    0.0,
+    3.0,
+    22.5,
+    81.625,
+    184.04375
+   ],
+   "rpl": [
+    0.0,
+    0.8999999999999999,
+    6.75,
+    28.568749999999998,
+    64.4153125
+   ],
+   "pp": [
+    0.0,
+    2.1,
+    15.75,
+    53.056250000000006,
+    119.62843749999999
+   ],
+   "drpl": [
+    0.0,
+    0.8999999999999999,
+    6.75,
+    0.0,
+    0.0
+   ],
+   "prpl": [
+    0.0,
+    0.0,
+    0.0,
+    28.568749999999998,
+    64.4153125
+   ],
+   "pool": [
+    0.0,
+    0.0,
+    7.5,
+    30.875,
+    76.83125
+   ],
+   "pb_end": [
+    0.0,
+    2.1,
+    17.85,
+    70.90625,
+    190.5346875
+   ],
+   "pb_avg": [
+    0.0,
+    1.05,
+    9.975,
+    44.378125000000004,
+    130.72046875
+   ],
+   "dr_end": [
+    0.0,
+    0.8999999999999999,
+    7.65,
+    7.65,
+    7.65
+   ],
+   "dr_avg": [
+    0.0,
+    0.44999999999999996,
+    4.275,
+    7.65,
+    7.65
+   ],
+   "pr_end": [
+    0.0,
+    0.0,
+    0.0,
+    28.568749999999998,
+    92.9840625
+   ],
+   "pr_avg": [
+    0.0,
+    0.0,
+    0.0,
+    14.284374999999999,
+    60.776406249999994
+   ],
+   "base_end": [
+    0.0,
+    3.0,
+    25.5,
+    107.125,
+    291.16875
+   ],
+   "rev_kitchen": [
+    0.0,
+    360.0,
+    12000.0,
+    39500.0,
+    82000.0
+   ],
+   "rev_comm": [
+    0.0,
+    72.0,
+    1800.0,
+    6930.0,
+    16323.5
+   ],
+   "rev_robot": [
+    0.0,
+    812.6999999999999,
+    20317.5,
+    100873.80750000001,
+    227444.947125
+   ],
+   "rev_rental": [
+    0.0,
+    156.6,
+    1487.7,
+    2662.2000000000003,
+    2662.2000000000003
+   ],
+   "rev_care": [
+    0.0,
+    24.255000000000006,
+    230.4225,
+    2053.6096875000003,
+    7395.544078125
+   ],
+   "rev_cons": [
+    0.0,
+    25.245000000000005,
+    239.8275,
+    1095.8371875000003,
+    3265.6867031250003
+   ],
+   "rev_upg": [
+    0.0,
+    0.0,
+    18.000000000000004,
+    171.0,
+    759.75
+   ],
+   "rev": [
+    0.0,
+    1450.7999999999997,
+    36093.45,
+    153286.454375,
+    339851.62790625
+   ],
+   "c_kitchen": [
+    0.0,
+    963.0,
+    8970.0,
+    27642.000000000004,
+    55430.0
+   ],
+   "c_log": [
+    0.0,
+    75.0,
+    750.0,
+    2625.0,
+    5750.0
+   ],
+   "c_robot": [
+    0.0,
+    3318.0,
+    20947.5,
+    98766.25,
+    202448.125
+   ],
+   "c_comm": [
+    0.0,
+    300.0,
+    1687.5,
+    5390.75,
+    11322.40625
+   ],
+   "c_warranty": [
+    0.0,
+    40.635,
+    1015.875,
+    5043.690375000001,
+    11372.247356250002
+   ],
+   "c_dep": [
+    0.0,
+    120.86999999999998,
+    1004.8274999999999,
+    1767.9149999999997,
+    1767.9149999999997
+   ],
+   "c_care": [
+    0.0,
+    49.52550000000001,
+    441.2085000000001,
+    1955.6469062500003,
+    5640.9710953125
+   ],
+   "c_cons": [
+    0.0,
+    13.338000000000003,
+    126.711,
+    596.2623750000001,
+    1798.9448062500003
+   ],
+   "c_upg": [
+    0.0,
+    0.0,
+    1.8000000000000005,
+    29.7,
+    170.475
+   ],
+   "cogs": [
+    0.0,
+    4880.3685,
+    34945.422000000006,
+    143817.21465625003,
+    295701.08450781245
+   ],
+   "gp": [
+    0.0,
+    -3429.5685,
+    1148.0279999999912,
+    9469.239718749974,
+    44150.543398437556
+   ],
+   "ch_partner": [
+    0.0,
+    0.0,
+    1713.0,
+    12150.0,
+    33183.0
+   ],
+   "ch_cac": [
+    0,
+    540,
+    3600,
+    6300,
+    7200
+   ],
+   "ch_bd": [
+    0,
+    0,
+    0,
+    2000,
+    4000
+   ],
+   "contrib": [
+    0.0,
+    -3969.5685,
+    -4164.972000000009,
+    -10980.760281250026,
+    -232.45660156244412
+   ],
+   "op_people": [
+    55825.0,
+    97050.0,
+    170000,
+    272000,
+    357000
+   ],
+   "op_other": [
+    36342.75,
+    41116.0,
+    135000,
+    167000,
+    210000
+   ],
+   "opex": [
+    92167.75,
+    138166.0,
+    305000,
+    439000,
+    567000
+   ],
+   "op": [
+    -92167.75,
+    -142135.5685,
+    -309164.972,
+    -449980.76028125,
+    -567232.4566015624
+   ],
+   "capex": [
+    0.0,
+    1421.9999999999998,
+    8977.5,
+    0.0,
+    0.0
+   ],
+   "cash": [
+    -92167.75,
+    -143436.6985,
+    -317137.6445,
+    -448212.84528125,
+    -565464.5416015624
+   ],
+   "cum_cash": [
+    -92167.75,
+    -235604.4485,
+    -552742.093,
+    -1000954.93828125,
+    -1566419.4798828124
+   ],
+   "backlog": [
+    0.0,
+    0.0,
+    0.0,
+    48.0,
+    144.0
+   ],
+   "kit_unit_cost": [
+    332.0,
+    321.0,
+    299.0,
+    283.6,
+    277.0
+   ],
+   "care_unit_cost": [
+    50.2,
+    48.2,
+    45.2,
+    42.2,
+    40.2
+   ],
+   "install": [
+    0.0,
+    1244.6999999999998,
+    34117.5,
+    147303.8075,
+    325768.447125
+   ],
+   "build": [
+    0.0,
+    432.0,
+    13800.0,
+    46430.0,
+    98323.5
+   ],
+   "recurring": [
+    0.0,
+    206.1,
+    1957.9499999999998,
+    5811.646875000001,
+    13323.430781250001
+   ],
+   "expand": [
+    0.0,
+    0.0,
+    18.000000000000004,
+    171.0,
+    759.75
+   ],
+   "gm": [
+    0,
+    -2.3639154259718778,
+    0.03180710073434352,
+    0.06177479776252391,
+    0.12991123117590814
+   ],
+   "robot_recurring_share": [
+    0,
+    0.7022332506203475,
+    0.6176591597644449,
+    0.6971030467805484,
+    0.7106869824171532
+   ],
+   "oe_share": [
+    0,
+    0.14205955334987597,
+    0.054745390091554005,
+    0.039029194715170676,
+    0.04143920353718278
+   ],
+   "min_cum_cash": -1566419.4798828124
+  },
+  "B": {
+   "rd": [
+    0,
+    3,
+    30,
+    50,
+    60
+   ],
+   "rp": [
+    0,
+    0,
+    20,
+    130,
+    340
+   ],
+   "rt": [
+    0,
+    0,
+    0,
+    20,
+    80
+   ],
+   "ni": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    80.0
+   ],
+   "kitchens": [
+    0.0,
+    3.0,
+    50.0,
+    200.0,
+    560.0
+   ],
+   "pl_remodel": [
+    0,
+    3,
+    42.5,
+    153.0,
+    340.0
+   ],
+   "later": [
+    0.0,
+    0.0,
+    0.0,
+    0.7500000000000001,
+    3.375000000000001
+   ],
+   "pl_new": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    20.0
+   ],
+   "pl": [
+    0.0,
+    3.0,
+    42.5,
+    173.75,
+    443.375
+   ],
+   "rpl": [
+    0.0,
+    0.8999999999999999,
+    12.75,
+    69.5,
+    177.35000000000002
+   ],
+   "pp": [
+    0.0,
+    2.1,
+    29.75,
+    104.25,
+    266.025
+   ],
+   "drpl": [
+    0.0,
+    0.8999999999999999,
+    12.75,
+    0.0,
+    0.0
+   ],
+   "prpl": [
+    0.0,
+    0.0,
+    0.0,
+    69.5,
+    177.35000000000002
+   ],
+   "pool": [
+    0.0,
+    0.0,
+    7.500000000000001,
+    33.75000000000001,
+    150.375
+   ],
+   "pb_end": [
+    0.0,
+    2.1,
+    31.85,
+    136.1,
+    402.125
+   ],
+   "pb_avg": [
+    0.0,
+    1.05,
+    16.975,
+    83.975,
+    269.11249999999995
+   ],
+   "dr_end": [
+    0.0,
+    0.8999999999999999,
+    13.65,
+    13.65,
+    13.65
+   ],
+   "dr_avg": [
+    0.0,
+    0.44999999999999996,
+    7.275,
+    13.65,
+    13.65
+   ],
+   "pr_end": [
+    0.0,
+    0.0,
+    0.0,
+    69.5,
+    246.85000000000002
+   ],
+   "pr_avg": [
+    0.0,
+    0.0,
+    0.0,
+    34.75,
+    158.175
+   ],
+   "base_end": [
+    0.0,
+    3.0,
+    45.5,
+    219.25,
+    662.625
+   ],
+   "rev_kitchen": [
+    0.0,
+    675.0,
+    22500.0,
+    84000.0,
+    209600.0
+   ],
+   "rev_comm": [
+    0.0,
+    120.0,
+    3400.0,
+    14700.0,
+    38670.0
+   ],
+   "rev_robot": [
+    0.0,
+    1564.5,
+    44327.5,
+    246460.9,
+    628918.5700000001
+   ],
+   "rev_rental": [
+    0.0,
+    178.2,
+    2880.9,
+    5405.4,
+    5405.4
+   ],
+   "rev_care": [
+    0.0,
+    35.28,
+    570.36,
+    5323.5599999999995,
+    20430.78
+   ],
+   "rev_cons": [
+    0.0,
+    32.13,
+    519.435,
+    2726.0099999999993,
+    8946.629999999997
+   ],
+   "rev_upg": [
+    0.0,
+    0.0,
+    36.00000000000001,
+    570.0,
+    2935.0
+   ],
+   "rev": [
+    0.0,
+    2605.11,
+    74234.19499999999,
+    359185.87000000005,
+    914906.3800000001
+   ],
+   "c_kitchen": [
+    0.0,
+    930.0,
+    13850.0,
+    47299.99999999999,
+    113600.00000000001
+   ],
+   "c_log": [
+    0.0,
+    75.0,
+    1250.0,
+    5000.0,
+    14000.0
+   ],
+   "c_robot": [
+    0.0,
+    3192.0,
+    35105.0,
+    178962.5,
+    405688.125
+   ],
+   "c_comm": [
+    0.0,
+    270.0,
+    2550.0,
+    8418.75,
+    18768.25
+   ],
+   "c_warranty": [
+    0.0,
+    62.58,
+    1773.1000000000001,
+    9858.436,
+    25156.742800000004
+   ],
+   "c_dep": [
+    0.0,
+    116.27999999999997,
+    1511.385,
+    2790.21,
+    2790.21
+   ],
+   "c_care": [
+    0.0,
+    48.348,
+    704.9959999999999,
+    3033.2647499999994,
+    9653.4605
+   ],
+   "c_cons": [
+    0.0,
+    14.080499999999999,
+    227.63474999999997,
+    1259.0234999999998,
+    4213.817999999999
+   ],
+   "c_upg": [
+    0.0,
+    0.0,
+    3.600000000000001,
+    78.0,
+    591.0
+   ],
+   "cogs": [
+    0.0,
+    4708.2885,
+    56975.715749999996,
+    256700.18425,
+    594461.6063
+   ],
+   "gp": [
+    0.0,
+    -2103.1784999999995,
+    17258.479249999997,
+    102485.68575000006,
+    320444.77370000014
+   ],
+   "ch_partner": [
+    0.0,
+    0.0,
+    3569.0,
+    26718.5,
+    74753.0
+   ],
+   "ch_cac": [
+    0,
+    450,
+    4500,
+    7500,
+    9000
+   ],
+   "ch_bd": [
+    0,
+    0,
+    2000,
+    4000,
+    6000
+   ],
+   "contrib": [
+    0.0,
+    -2553.1784999999995,
+    7189.479249999997,
+    64267.18575000006,
+    230691.77370000014
+   ],
+   "op_people": [
+    55825.0,
+    97050.0,
+    170000,
+    272000,
+    357000
+   ],
+   "op_other": [
+    36342.75,
+    41116.0,
+    135000,
+    167000,
+    210000
+   ],
+   "opex": [
+    92167.75,
+    138166.0,
+    305000,
+    439000,
+    567000
+   ],
+   "op": [
+    -92167.75,
+    -140719.1785,
+    -297810.52075,
+    -374732.81424999994,
+    -336308.22629999986
+   ],
+   "capex": [
+    0.0,
+    1367.9999999999998,
+    15045.0,
+    0.0,
+    0.0
+   ],
+   "cash": [
+    -92167.75,
+    -141970.8985,
+    -311344.13575,
+    -371942.6042499999,
+    -333518.01629999984
+   ],
+   "cum_cash": [
+    -92167.75,
+    -234138.6485,
+    -545482.78425,
+    -917425.3884999999,
+    -1250943.4047999997
+   ],
+   "backlog": [
+    0.0,
+    0.0,
+    80.0,
+    240.0,
+    400.0
+   ],
+   "kit_unit_cost": [
+    332.0,
+    310.0,
+    277.0,
+    254.99999999999997,
+    244.00000000000003
+   ],
+   "care_unit_cost": [
+    44.8,
+    40.8,
+    36.8,
+    28.299999999999997,
+    26.799999999999997
+   ],
+   "install": [
+    0.0,
+    2359.5,
+    70227.5,
+    345160.9,
+    877188.5700000001
+   ],
+   "build": [
+    0.0,
+    795.0,
+    25900.0,
+    98700.0,
+    248270.0
+   ],
+   "recurring": [
+    0.0,
+    245.60999999999999,
+    3970.695,
+    13454.969999999998,
+    34782.81
+   ],
+   "expand": [
+    0.0,
+    0.0,
+    36.00000000000001,
+    570.0,
+    2935.0
+   ],
+   "gm": [
+    0,
+    -0.8073280974699723,
+    0.23248691859593815,
+    0.2853277211322373,
+    0.35024870380726836
+   ],
+   "robot_recurring_share": [
+    0,
+    0.69483054458353,
+    0.6511041845338258,
+    0.7252119076955893,
+    0.7286389018294965
+   ],
+   "oe_share": [
+    0,
+    0.09428008798092978,
+    0.05397371117178546,
+    0.039046552694291664,
+    0.041225868377920805
+   ],
+   "min_cum_cash": -1250943.4047999997
+  },
+  "U": {
+   "rd": [
+    0,
+    3,
+    35,
+    60,
+    70
+   ],
+   "rp": [
+    0,
+    0,
+    30,
+    220,
+    600
+   ],
+   "rt": [
+    0,
+    0,
+    0,
+    30,
+    120
+   ],
+   "ni": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    192.0
+   ],
+   "kitchens": [
+    0.0,
+    3.0,
+    65.0,
+    310.0,
+    982.0
+   ],
+   "pl_remodel": [
+    0,
+    3,
+    55.25,
+    238.0,
+    569.5
+   ],
+   "later": [
+    0.0,
+    0.0,
+    0.0,
+    1.1700000000000002,
+    6.0696
+   ],
+   "pl_new": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    57.599999999999994
+   ],
+   "pl": [
+    0.0,
+    3.0,
+    55.25,
+    269.16999999999996,
+    753.1696000000001
+   ],
+   "rpl": [
+    0.0,
+    0.8999999999999999,
+    16.575,
+    121.12649999999998,
+    338.92632000000003
+   ],
+   "pp": [
+    0.0,
+    2.1,
+    38.675,
+    148.0435,
+    414.24328
+   ],
+   "drpl": [
+    0.0,
+    0.8999999999999999,
+    16.575,
+    0.0,
+    0.0
+   ],
+   "prpl": [
+    0.0,
+    0.0,
+    0.0,
+    121.12649999999998,
+    338.92632000000003
+   ],
+   "pool": [
+    0.0,
+    0.0,
+    9.750000000000002,
+    50.580000000000005,
+    279.41040000000004
+   ],
+   "pb_end": [
+    0.0,
+    2.1,
+    40.775,
+    188.8185,
+    603.06178
+   ],
+   "pb_avg": [
+    0.0,
+    1.05,
+    21.4375,
+    114.79675,
+    395.94014000000004
+   ],
+   "dr_end": [
+    0.0,
+    0.8999999999999999,
+    17.474999999999998,
+    17.474999999999998,
+    17.474999999999998
+   ],
+   "dr_avg": [
+    0.0,
+    0.44999999999999996,
+    9.1875,
+    17.474999999999998,
+    17.474999999999998
+   ],
+   "pr_end": [
+    0.0,
+    0.0,
+    0.0,
+    121.12649999999998,
+    460.05282
+   ],
+   "pr_avg": [
+    0.0,
+    0.0,
+    0.0,
+    60.56324999999999,
+    290.58966
+   ],
+   "base_end": [
+    0.0,
+    3.0,
+    58.25,
+    327.41999999999996,
+    1080.5896
+   ],
+   "rev_kitchen": [
+    0.0,
+    810.0,
+    29250.0,
+    130500.0,
+    361740.0
+   ],
+   "rev_comm": [
+    0.0,
+    144.0,
+    4420.0,
+    22733.6,
+    65053.56800000001
+   ],
+   "rev_robot": [
+    0.0,
+    1877.3999999999999,
+    57625.74999999999,
+    379405.8818,
+    1061622.6779840002
+   ],
+   "rev_rental": [
+    0.0,
+    178.2,
+    3638.25,
+    6920.099999999999,
+    6920.099999999999
+   ],
+   "rev_care": [
+    0.0,
+    35.28,
+    720.3,
+    8217.7248,
+    34226.044224
+   ],
+   "rev_cons": [
+    0.0,
+    32.13,
+    655.9875,
+    3876.1600499999995,
+    13859.306244
+   ],
+   "rev_upg": [
+    0.0,
+    0.0,
+    36.00000000000001,
+    723.0,
+    4335.04
+   ],
+   "rev": [
+    0.0,
+    3077.0099999999998,
+    96346.2875,
+    552376.4666499998,
+    1547756.7364520004
+   ],
+   "c_kitchen": [
+    0.0,
+    897.0,
+    17290.000000000004,
+    70420.00000000001,
+    187550.00000000003
+   ],
+   "c_log": [
+    0.0,
+    75.0,
+    1625.0,
+    7750.0,
+    24550.0
+   ],
+   "c_robot": [
+    0.0,
+    3066.0,
+    42542.5,
+    255711.49999999997,
+    617599.072
+   ],
+   "c_comm": [
+    0.0,
+    255.0,
+    2873.0,
+    11038.46,
+    25235.088000000003
+   ],
+   "c_warranty": [
+    0.0,
+    65.709,
+    2016.90125,
+    13279.205863000001,
+    37156.79372944001
+   ],
+   "c_dep": [
+    0.0,
+    111.68999999999998,
+    1773.1425,
+    3322.9049999999997,
+    3322.9049999999997
+   ],
+   "c_care": [
+    0.0,
+    43.845,
+    677.4250000000001,
+    3579.7490350000003,
+    11704.45516
+   ],
+   "c_cons": [
+    0.0,
+    12.873600000000001,
+    262.836,
+    1689.8715359999997,
+    6209.430439680001
+   ],
+   "c_upg": [
+    0.0,
+    0.0,
+    3.600000000000001,
+    93.3,
+    820.254
+   ],
+   "cogs": [
+    0.0,
+    4527.1176,
+    69064.40475,
+    366884.991434,
+    914147.99832912
+   ],
+   "gp": [
+    0.0,
+    -1450.1075999999998,
+    27281.882750000004,
+    185491.47521599982,
+    633608.7381228805
+   ],
+   "ch_partner": [
+    0.0,
+    0.0,
+    4818.15,
+    40085.1,
+    115371.0
+   ],
+   "ch_cac": [
+    0,
+    420,
+    4900,
+    8400,
+    9800
+   ],
+   "ch_bd": [
+    0,
+    0,
+    4000,
+    6000,
+    8000
+   ],
+   "contrib": [
+    0.0,
+    -1870.1075999999998,
+    13563.732750000003,
+    131006.37521599981,
+    500437.73812288046
+   ],
+   "op_people": [
+    55825.0,
+    97050.0,
+    170000,
+    272000,
+    357000
+   ],
+   "op_other": [
+    36342.75,
+    41116.0,
+    135000,
+    167000,
+    210000
+   ],
+   "opex": [
+    92167.75,
+    138166.0,
+    305000,
+    439000,
+    567000
+   ],
+   "op": [
+    -92167.75,
+    -140036.1076,
+    -291436.26725,
+    -307993.6247840002,
+    -66562.26187711954
+   ],
+   "capex": [
+    0.0,
+    1313.9999999999998,
+    18232.5,
+    0.0,
+    0.0
+   ],
+   "cash": [
+    -92167.75,
+    -141238.4176,
+    -307895.62474999996,
+    -304670.7197840002,
+    -63239.35687711954
+   ],
+   "cum_cash": [
+    -92167.75,
+    -233406.1676,
+    -541301.79235,
+    -845972.5121340002,
+    -909211.8690111197
+   ],
+   "backlog": [
+    0.0,
+    0.0,
+    192.0,
+    480.0,
+    672.0
+   ],
+   "kit_unit_cost": [
+    332.0,
+    299.0,
+    266.00000000000006,
+    244.00000000000003,
+    233.00000000000003
+   ],
+   "care_unit_cost": [
+    43.0,
+    37.0,
+    28.0,
+    22.6,
+    20.0
+   ],
+   "install": [
+    0.0,
+    2831.3999999999996,
+    91295.75,
+    532639.4818,
+    1488416.2459840002
+   ],
+   "build": [
+    0.0,
+    954.0,
+    33670.0,
+    153233.6,
+    426793.568
+   ],
+   "recurring": [
+    0.0,
+    245.60999999999999,
+    5014.5375,
+    19013.984849999997,
+    55005.450467999995
+   ],
+   "expand": [
+    0.0,
+    0.0,
+    36.00000000000001,
+    723.0,
+    4335.04
+   ],
+   "gm": [
+    0,
+    -0.4712716565757017,
+    0.28316485728627583,
+    0.3358062597071719,
+    0.40937230199064306
+   ],
+   "robot_recurring_share": [
+    0,
+    0.6899587586650677,
+    0.650531422915491,
+    0.7225920920756882,
+    0.7242502274754363
+   ],
+   "oe_share": [
+    0,
+    0.07982099505688964,
+    0.05242067578369328,
+    0.035731038597098426,
+    0.038339675137857354
+   ],
+   "min_cum_cash": -909211.8690111197
+  }
+ },
+ "years": [
+  "Y1",
+  "Y2",
+  "Y3",
+  "Y4",
+  "Y5"
+ ],
+ "household": {
+  "purchase_direct_Y3": {
+   "R": {
+    "kitchen": 450,
+    "comm": 80,
+    "sw": 12.0,
+    "tool": 20.0,
+    "robot": 1490,
+    "care": 240,
+    "cons": 126.0
+   },
+   "C": {
+    "kitchen": 277.0,
+    "comm": 60,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 1180,
+    "warranty": 59.6,
+    "care": 184.0,
+    "cons": 44.099999999999994,
+    "channel": 150
+   },
+   "y0": 2020,
+   "rev5": 2418.0,
+   "cost5": 1989.9,
+   "gp5": 578.0999999999999,
+   "contrib5": 428.0999999999999,
+   "gm5": 0.23908188585607937,
+   "cm5": 0.17704714640198507,
+   "recurring5": 366.0,
+   "layers": {
+    "install": 2020,
+    "operate": 366.0,
+    "expand": 32.0
+   },
+   "service_cost5": 287.7,
+   "kit_unit": 277.0,
+   "care_unit": 36.8,
+   "bom": 1180,
+   "install": "remodel",
+   "channel": "direct",
+   "mode": "purchase"
+  },
+  "purchase_partner_Y3": {
+   "R": {
+    "kitchen": 450,
+    "comm": 80,
+    "sw": 12.0,
+    "tool": 20.0,
+    "robot": 1490,
+    "care": 240,
+    "cons": 126.0
+   },
+   "C": {
+    "kitchen": 277.0,
+    "comm": 60,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 1180,
+    "warranty": 59.6,
+    "care": 184.0,
+    "cons": 44.099999999999994,
+    "channel": 202.0
+   },
+   "y0": 2020,
+   "rev5": 2418.0,
+   "cost5": 2041.9,
+   "gp5": 578.0999999999999,
+   "contrib5": 376.0999999999999,
+   "gm5": 0.23908188585607937,
+   "cm5": 0.15554177005789904,
+   "recurring5": 366.0,
+   "layers": {
+    "install": 2020,
+    "operate": 366.0,
+    "expand": 32.0
+   },
+   "service_cost5": 287.7,
+   "kit_unit": 277.0,
+   "care_unit": 36.8,
+   "bom": 1180,
+   "install": "remodel",
+   "channel": "partner",
+   "mode": "purchase"
+  },
+  "rental_direct_Y3": {
+   "R": {
+    "kitchen": 450,
+    "comm": 80,
+    "sw": 12.0,
+    "tool": 20.0,
+    "rental": 1980,
+    "cons": 63.0
+   },
+   "C": {
+    "kitchen": 277.0,
+    "comm": 60,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 1003.0,
+    "finance": 271.4,
+    "warranty": 47.2,
+    "care": 184.0,
+    "cons": 53.55,
+    "channel": 150
+   },
+   "y0": 530,
+   "rev5": 2605.0,
+   "cost5": 2081.35,
+   "gp5": 673.6500000000001,
+   "contrib5": 523.6500000000001,
+   "gm5": 0.2585988483685221,
+   "cm5": 0.20101727447216894,
+   "recurring5": 2043.0,
+   "layers": {
+    "install": 530,
+    "operate": 2043.0,
+    "expand": 32.0
+   },
+   "service_cost5": 284.75,
+   "kit_unit": 277.0,
+   "care_unit": 36.8,
+   "bom": 1180,
+   "install": "remodel",
+   "channel": "direct",
+   "mode": "rental"
+  },
+  "rental_partner_Y3": {
+   "R": {
+    "kitchen": 450,
+    "comm": 80,
+    "sw": 12.0,
+    "tool": 20.0,
+    "rental": 1980,
+    "cons": 63.0
+   },
+   "C": {
+    "kitchen": 277.0,
+    "comm": 60,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 1003.0,
+    "finance": 271.4,
+    "warranty": 47.2,
+    "care": 184.0,
+    "cons": 53.55,
+    "channel": 202.0
+   },
+   "y0": 530,
+   "rev5": 2605.0,
+   "cost5": 2133.35,
+   "gp5": 673.6500000000001,
+   "contrib5": 471.6500000000001,
+   "gm5": 0.2585988483685221,
+   "cm5": 0.18105566218809985,
+   "recurring5": 2043.0,
+   "layers": {
+    "install": 530,
+    "operate": 2043.0,
+    "expand": 32.0
+   },
+   "service_cost5": 284.75,
+   "kit_unit": 277.0,
+   "care_unit": 36.8,
+   "bom": 1180,
+   "install": "remodel",
+   "channel": "partner",
+   "mode": "rental"
+  },
+  "retrofit_purchase_Y3": {
+   "R": {
+    "kitchen": 150,
+    "comm": 120,
+    "sw": 12.0,
+    "tool": 20.0,
+    "robot": 1490,
+    "care": 240,
+    "cons": 126.0
+   },
+   "C": {
+    "kitchen": 70,
+    "comm": 95,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 1180,
+    "warranty": 59.6,
+    "care": 184.0,
+    "cons": 44.099999999999994,
+    "channel": 176.0
+   },
+   "y0": 1760,
+   "rev5": 2158.0,
+   "cost5": 1843.9,
+   "gp5": 490.0999999999999,
+   "contrib5": 314.0999999999999,
+   "gm5": 0.22710843373493972,
+   "cm5": 0.1455514365152919,
+   "recurring5": 366.0,
+   "layers": {
+    "install": 1760,
+    "operate": 366.0,
+    "expand": 32.0
+   },
+   "service_cost5": 287.7,
+   "kit_unit": 70,
+   "care_unit": 36.8,
+   "bom": 1180,
+   "install": "retrofit",
+   "channel": "partner",
+   "mode": "purchase"
+  },
+  "newbuild_purchase_Y3": {
+   "R": {
+    "kitchen": 220,
+    "comm": 80,
+    "sw": 12.0,
+    "tool": 20.0,
+    "robot": 1490,
+    "care": 240,
+    "cons": 126.0
+   },
+   "C": {
+    "kitchen": 130,
+    "comm": 60,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 1180,
+    "warranty": 59.6,
+    "care": 184.0,
+    "cons": 44.099999999999994,
+    "channel": 25.0
+   },
+   "y0": 1790,
+   "rev5": 2188.0,
+   "cost5": 1717.9,
+   "gp5": 495.0999999999999,
+   "contrib5": 470.0999999999999,
+   "gm5": 0.22627970749542958,
+   "cm5": 0.214853747714808,
+   "recurring5": 366.0,
+   "layers": {
+    "install": 1790,
+    "operate": 366.0,
+    "expand": 32.0
+   },
+   "service_cost5": 287.7,
+   "kit_unit": 130,
+   "care_unit": 36.8,
+   "bom": 1180,
+   "install": "newbuild",
+   "channel": "b2b",
+   "mode": "purchase"
+  },
+  "purchase_direct_Y5": {
+   "R": {
+    "kitchen": 450,
+    "comm": 80,
+    "sw": 12.0,
+    "tool": 20.0,
+    "robot": 1490,
+    "care": 240,
+    "cons": 126.0
+   },
+   "C": {
+    "kitchen": 244.00000000000003,
+    "comm": 38,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 915,
+    "warranty": 59.6,
+    "care": 134.0,
+    "cons": 44.099999999999994,
+    "channel": 150
+   },
+   "y0": 2020,
+   "rev5": 2418.0,
+   "cost5": 1619.9,
+   "gp5": 948.0999999999999,
+   "contrib5": 798.0999999999999,
+   "gm5": 0.3921009098428453,
+   "cm5": 0.330066170388751,
+   "recurring5": 366.0,
+   "layers": {
+    "install": 2020,
+    "operate": 366.0,
+    "expand": 32.0
+   },
+   "service_cost5": 237.7,
+   "kit_unit": 244.00000000000003,
+   "care_unit": 26.799999999999997,
+   "bom": 915,
+   "install": "remodel",
+   "channel": "direct",
+   "mode": "purchase"
+  },
+  "purchase_partner_Y5": {
+   "R": {
+    "kitchen": 450,
+    "comm": 80,
+    "sw": 12.0,
+    "tool": 20.0,
+    "robot": 1490,
+    "care": 240,
+    "cons": 126.0
+   },
+   "C": {
+    "kitchen": 244.00000000000003,
+    "comm": 38,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 915,
+    "warranty": 59.6,
+    "care": 134.0,
+    "cons": 44.099999999999994,
+    "channel": 202.0
+   },
+   "y0": 2020,
+   "rev5": 2418.0,
+   "cost5": 1671.9,
+   "gp5": 948.0999999999999,
+   "contrib5": 746.0999999999999,
+   "gm5": 0.3921009098428453,
+   "cm5": 0.30856079404466497,
+   "recurring5": 366.0,
+   "layers": {
+    "install": 2020,
+    "operate": 366.0,
+    "expand": 32.0
+   },
+   "service_cost5": 237.7,
+   "kit_unit": 244.00000000000003,
+   "care_unit": 26.799999999999997,
+   "bom": 915,
+   "install": "remodel",
+   "channel": "partner",
+   "mode": "purchase"
+  },
+  "rental_direct_Y5": {
+   "R": {
+    "kitchen": 450,
+    "comm": 80,
+    "sw": 12.0,
+    "tool": 20.0,
+    "rental": 1980,
+    "cons": 63.0
+   },
+   "C": {
+    "kitchen": 244.00000000000003,
+    "comm": 38,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 777.75,
+    "finance": 210.45000000000002,
+    "warranty": 36.6,
+    "care": 134.0,
+    "cons": 53.55,
+    "channel": 150
+   },
+   "y0": 530,
+   "rev5": 2605.0,
+   "cost5": 1679.55,
+   "gp5": 1075.45,
+   "contrib5": 925.45,
+   "gm5": 0.41284069097888676,
+   "cm5": 0.3552591170825336,
+   "recurring5": 2043.0,
+   "layers": {
+    "install": 530,
+    "operate": 2043.0,
+    "expand": 32.0
+   },
+   "service_cost5": 224.15,
+   "kit_unit": 244.00000000000003,
+   "care_unit": 26.799999999999997,
+   "bom": 915,
+   "install": "remodel",
+   "channel": "direct",
+   "mode": "rental"
+  },
+  "rental_partner_Y5": {
+   "R": {
+    "kitchen": 450,
+    "comm": 80,
+    "sw": 12.0,
+    "tool": 20.0,
+    "rental": 1980,
+    "cons": 63.0
+   },
+   "C": {
+    "kitchen": 244.00000000000003,
+    "comm": 38,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 777.75,
+    "finance": 210.45000000000002,
+    "warranty": 36.6,
+    "care": 134.0,
+    "cons": 53.55,
+    "channel": 202.0
+   },
+   "y0": 530,
+   "rev5": 2605.0,
+   "cost5": 1731.55,
+   "gp5": 1075.45,
+   "contrib5": 873.45,
+   "gm5": 0.41284069097888676,
+   "cm5": 0.3352975047984645,
+   "recurring5": 2043.0,
+   "layers": {
+    "install": 530,
+    "operate": 2043.0,
+    "expand": 32.0
+   },
+   "service_cost5": 224.15,
+   "kit_unit": 244.00000000000003,
+   "care_unit": 26.799999999999997,
+   "bom": 915,
+   "install": "remodel",
+   "channel": "partner",
+   "mode": "rental"
+  },
+  "retrofit_purchase_Y5": {
+   "R": {
+    "kitchen": 150,
+    "comm": 120,
+    "sw": 12.0,
+    "tool": 20.0,
+    "robot": 1490,
+    "care": 240,
+    "cons": 126.0
+   },
+   "C": {
+    "kitchen": 70,
+    "comm": 62,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 915,
+    "warranty": 59.6,
+    "care": 134.0,
+    "cons": 44.099999999999994,
+    "channel": 176.0
+   },
+   "y0": 1760,
+   "rev5": 2158.0,
+   "cost5": 1495.9,
+   "gp5": 838.0999999999999,
+   "contrib5": 662.0999999999999,
+   "gm5": 0.388368860055607,
+   "cm5": 0.3068118628359592,
+   "recurring5": 366.0,
+   "layers": {
+    "install": 1760,
+    "operate": 366.0,
+    "expand": 32.0
+   },
+   "service_cost5": 237.7,
+   "kit_unit": 70,
+   "care_unit": 26.799999999999997,
+   "bom": 915,
+   "install": "retrofit",
+   "channel": "partner",
+   "mode": "purchase"
+  },
+  "newbuild_purchase_Y5": {
+   "R": {
+    "kitchen": 220,
+    "comm": 80,
+    "sw": 12.0,
+    "tool": 20.0,
+    "robot": 1490,
+    "care": 240,
+    "cons": 126.0
+   },
+   "C": {
+    "kitchen": 130,
+    "comm": 38,
+    "log": 25,
+    "sw": 1.2000000000000002,
+    "tool": 9.0,
+    "robot": 915,
+    "warranty": 59.6,
+    "care": 134.0,
+    "cons": 44.099999999999994,
+    "channel": 25.0
+   },
+   "y0": 1790,
+   "rev5": 2188.0,
+   "cost5": 1380.9,
+   "gp5": 832.0999999999999,
+   "contrib5": 807.0999999999999,
+   "gm5": 0.38030164533820837,
+   "cm5": 0.3688756855575868,
+   "recurring5": 366.0,
+   "layers": {
+    "install": 1790,
+    "operate": 366.0,
+    "expand": 32.0
+   },
+   "service_cost5": 237.7,
+   "kit_unit": 130,
+   "care_unit": 26.799999999999997,
+   "bom": 915,
+   "install": "newbuild",
+   "channel": "b2b",
+   "mode": "purchase"
+  }
+ },
+ "rental": {
+  "Y3": {
+   "lines": {
+    "dep": 16.716666666666665,
+    "fin": 4.523333333333333,
+    "care": 3.0666666666666664,
+    "grip": 0.525,
+    "reserve": 0.7866666666666667
+   },
+   "cost_m": 25.618333333333332,
+   "fee": 33,
+   "contrib_m": 7.381666666666668,
+   "margin": 0.2236868686868687,
+   "fee_at_20": 32.02291666666666,
+   "payback": 40.124681212808156,
+   "bom_max": 1058.7,
+   "bom": 1180
+  },
+  "Y5": {
+   "lines": {
+    "dep": 12.9625,
+    "fin": 3.5075000000000003,
+    "care": 2.233333333333333,
+    "grip": 0.525,
+    "reserve": 0.61
+   },
+   "cost_m": 19.838333333333335,
+   "fee": 33,
+   "contrib_m": 13.161666666666665,
+   "margin": 0.39883838383838377,
+   "fee_at_20": 24.797916666666666,
+   "payback": 30.25626894461284,
+   "bom_max": 1088.7,
+   "bom": 915
+  }
+ },
+ "rental_C": {
+  "Y3": {
+   "lines": {
+    "dep": 18.841666666666665,
+    "fin": 5.098333333333333,
+    "care": 3.766666666666667,
+    "grip": 0.6,
+    "reserve": 1.1083333333333334
+   },
+   "cost_m": 29.415,
+   "fee": 29,
+   "contrib_m": -0.41499999999999915,
+   "margin": -0.014310344827586178,
+   "fee_at_20": 36.76875,
+   "payback": 53.99188092016238,
+   "bom_max": 886.8,
+   "bom": 1330
+  },
+  "Y5": {
+   "lines": {
+    "dep": 15.583333333333334,
+    "fin": 4.216666666666667,
+    "care": 3.35,
+    "grip": 0.6,
+    "reserve": 0.9166666666666666
+   },
+   "cost_m": 24.666666666666668,
+   "fee": 29,
+   "contrib_m": 4.333333333333332,
+   "margin": 0.1494252873563218,
+   "fee_at_20": 30.833333333333332,
+   "payback": 43.9121756487026,
+   "bom_max": 901.8,
+   "bom": 1100
+  }
+ },
+ "care": {
+  "Y3": {
+   "fee": 48,
+   "visits": 22,
+   "corrective": 10.799999999999999,
+   "cloud": 4,
+   "cost": 36.8,
+   "contrib": 11.200000000000003,
+   "margin": 0.2333333333333334
+  },
+  "Y5": {
+   "fee": 48,
+   "visits": 12.0,
+   "corrective": 10.799999999999999,
+   "cloud": 4,
+   "cost": 26.799999999999997,
+   "contrib": 21.200000000000003,
+   "margin": 0.4416666666666667
+  }
+ },
+ "cons": {
+  "kits": [
+   [
+    "Grip Kit",
+    4.5,
+    4
+   ],
+   [
+    "Cleaning Kit",
+    2.5,
+    4
+   ],
+   [
+    "Protection Kit",
+    4.0,
+    2
+   ]
+  ],
+  "list_y": 36.0,
+  "rev": 25.2,
+  "cogs": 8.819999999999999,
+  "contrib": 16.38,
+  "margin": 0.65,
+  "attach": 0.7
+ },
+ "market": {
+  "C": {
+   "apt": 13279.098,
+   "tri1": 290.45454545454544,
+   "tri2": 303.28,
+   "rep": 300,
+   "prem": 30.0,
+   "fit": 18.0,
+   "pkg_remodel": 1427.5,
+   "pkg_full": 1770,
+   "retro_pool": 318.69835200000006,
+   "retro_annual": 1.5934917600000003,
+   "pkg_retro": 1560,
+   "sam_retro": 248.58471456,
+   "new_prem": 30.0,
+   "new_opt": 1.7999999999999998,
+   "pkg_new": 405.5,
+   "tam": 10620.0,
+   "sam_remodel": 2569.5,
+   "sam_new": 72.99,
+   "sam": 2891.07471456,
+   "som": 33.985162790625004,
+   "som_hh": 230.0,
+   "som_share_hh": 0.010750933161366267,
+   "arpu": 42.900000000000006,
+   "arpu_rent": 357.9,
+   "base_y5": 291.16875,
+   "recurring_y5": 1.332343078125,
+   "recurring_per_1000": 4.290000000000001,
+   "kitchen_pool": 500
+  },
+  "B": {
+   "apt": 13279.098,
+   "tri1": 290.45454545454544,
+   "tri2": 303.28,
+   "rep": 300,
+   "prem": 30.0,
+   "fit": 18.0,
+   "pkg_remodel": 1784.5,
+   "pkg_full": 2020,
+   "retro_pool": 318.69835200000006,
+   "retro_annual": 1.5934917600000003,
+   "pkg_retro": 1760,
+   "sam_retro": 280.4545497600001,
+   "new_prem": 30.0,
+   "new_opt": 3.0,
+   "pkg_new": 612.5,
+   "tam": 12120.0,
+   "sam_remodel": 3212.1,
+   "sam_new": 183.75,
+   "sam": 3676.30454976,
+   "som": 91.49063800000002,
+   "som_hh": 560.0,
+   "som_share_hh": 0.02478589878663359,
+   "arpu": 58.8,
+   "arpu_rent": 408.6,
+   "base_y5": 662.625,
+   "recurring_y5": 3.478281,
+   "recurring_per_1000": 5.88,
+   "kitchen_pool": 500
+  },
+  "U": {
+   "apt": 13279.098,
+   "tri1": 290.45454545454544,
+   "tri2": 303.28,
+   "rep": 300,
+   "prem": 30.0,
+   "fit": 18.0,
+   "pkg_remodel": 1784.5,
+   "pkg_full": 2020,
+   "retro_pool": 318.69835200000006,
+   "retro_annual": 1.5934917600000003,
+   "pkg_retro": 1760,
+   "sam_retro": 280.4545497600001,
+   "new_prem": 30.0,
+   "new_opt": 3.5999999999999996,
+   "pkg_new": 691.0,
+   "tam": 12120.0,
+   "sam_remodel": 3212.1,
+   "sam_new": 248.76,
+   "sam": 3741.31454976,
+   "som": 154.77567364520004,
+   "som_hh": 982.0,
+   "som_share_hh": 0.042339463594419986,
+   "arpu": 58.8,
+   "arpu_rent": 408.6,
+   "base_y5": 1080.5896,
+   "recurring_y5": 5.500545046799999,
+   "recurring_per_1000": 5.88,
+   "kitchen_pool": 500
+  }
+ },
+ "value": {
+  "hours": 20.0,
+  "value": 18.0,
+  "lo": 11.25,
+  "hi": 23.625
+ },
+ "sens_household": {
+  "base": 428.0999999999999,
+  "items": [
+   {
+    "name": "Robot ASP (WTP) ±20%",
+    "lo": -286.0799999999999,
+    "hi": 286.08000000000015
+   },
+   {
+    "name": "Robot BOM ±20%",
+    "lo": -236.0,
+    "hi": 236.0
+   },
+   {
+    "name": "Interface 가격 ±20%",
+    "lo": -90.0,
+    "hi": 90.0
+   },
+   {
+    "name": "직접판매 획득비용 ±50%",
+    "lo": -75.0,
+    "hi": 75.0
+   },
+   {
+    "name": "Failure Rate 0.3 ↔ 1.2회",
+    "lo": -83.79999999999973,
+    "hi": 49.350000000000136
+   },
+   {
+    "name": "Care 요금 ±20%",
+    "lo": -48.0,
+    "hi": 48.0
+   },
+   {
+    "name": "Care 방문 원가 ±30%",
+    "lo": -33.0,
+    "hi": 33.0
+   },
+   {
+    "name": "Interface 표준부품 사용률 -15pp/+15pp",
+    "lo": -33.0,
+    "hi": 33.0
+   },
+   {
+    "name": "설치 · Calibration 원가 ±50%",
+    "lo": -30.0,
+    "hi": 30.0
+   },
+   {
+    "name": "Consumables 구매율 50% ↔ 90%",
+    "lo": -23.399999999999864,
+    "hi": 23.40000000000009
+   }
+  ]
+ },
+ "sens_company": {
+  "base": 230691.77370000014,
+  "items": [
+   {
+    "name": "Customer WTP (Robot ASP · Interface ±20%)",
+    "lo": -142696.16544000007,
+    "hi": 142696.16543999972
+   },
+   {
+    "name": "Robot BOM ±20%",
+    "lo": -81695.66700000002,
+    "hi": 81695.66700000002
+   },
+   {
+    "name": "Partner 경유 Remodeling ±30%",
+    "lo": -46636.66909680018,
+    "hi": 46636.6690967998
+   },
+   {
+    "name": "Retrofit 물량 0 ↔ 2배",
+    "lo": -33169.34399999998,
+    "hi": 33169.343999999925
+   },
+   {
+    "name": "Robot Attach Rate 65% ↔ 95%",
+    "lo": -30175.012400000065,
+    "hi": 15087.506199999945
+   },
+   {
+    "name": "Rental 비중 20% ↔ 60%",
+    "lo": -13965.76777500019,
+    "hi": 13965.76777499984
+   },
+   {
+    "name": "Failure Rate 0.3 ↔ 1.2회",
+    "lo": -16468.571899999864,
+    "hi": 11378.878800000064
+   },
+   {
+    "name": "Interface 표준부품 사용률 -15pp/+10pp",
+    "lo": -13200.0,
+    "hi": 8800.0
+   },
+   {
+    "name": "설치 · Calibration 원가 ±50%",
+    "lo": -9384.125,
+    "hi": 9384.125
+   },
+   {
+    "name": "신축 Option 선택률 5% ↔ 15%",
+    "lo": -7675.248000000138,
+    "hi": 7675.247999999905
+   },
+   {
+    "name": "Care 방문 원가 ±30%",
+    "lo": -1296.733499999973,
+    "hi": 1296.7335000000894
+   }
+  ]
+ },
+ "funding": {
+  "uses": [
+   {
+    "cat": "인건비",
+    "item": "팀 14명 (Founder 2 + 신규 12) · 평균 7.0 → 12.8 FTE",
+    "y": [
+     55825.0,
+     97050.0
+    ],
+    "tips": [
+     27255.0,
+     39120.0
+    ]
+   },
+   {
+    "cat": "연구수당",
+    "item": "TIPS 과제 현금 인건비 × 5%",
+    "y": [
+     1032.75,
+     1626.0
+    ],
+    "tips": [
+     1032.75,
+     1626.0
+    ]
+   },
+   {
+    "cat": "Robot Hardware",
+    "item": "R&D 로봇 셀 (Arm · Vision · Compute) Y1 3식 + Y2 1식",
+    "y": [
+     4800,
+     1600
+    ],
+    "tips": [
+     3840.0,
+     1280.0
+    ]
+   },
+   {
+    "cat": "Hand Prototype",
+    "item": "상용 Gripper 비교군 구매 · 자체 Hand v1~v3 가공 · 센서 · Pad 금형",
+    "y": [
+     6000,
+     4000
+    ],
+    "tips": [
+     5400.0,
+     3600.0
+    ]
+   },
+   {
+    "cat": "Kitchen Mock-up",
+    "item": "실물 크기 목업 3종 (Remodeling · ㄱ자 · Retrofit) · 식기세척기 3모델 · 재구성",
+    "y": [
+     5000,
+     2500
+    ],
+    "tips": [
+     4000.0,
+     2000.0
+    ]
+   },
+   {
+    "cat": "Software · Data",
+    "item": "GPU · Cloud · Annotation · SW License",
+    "y": [
+     2500,
+     3000
+    ],
+    "tips": [
+     2000.0,
+     2400.0
+    ]
+   },
+   {
+    "cat": "Pilot",
+    "item": "가정 실증 운영 (설치 파트너 · 보험 · 모니터링). 실증 하드웨어는 원가로 별도",
+    "y": [
+     0,
+     3500
+    ],
+    "tips": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "cat": "Customer · Partner",
+    "item": "고객 인터뷰 · 정리 시간 기록 · WTP 조사 (n≥300) · 예약금 Test · 파트너 개발 · 전시",
+    "y": [
+     2000,
+     4000
+    ],
+    "tips": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "cat": "Certification",
+    "item": "안전 Gap 분석 (IEC 63682 초안 · ISO 13482) · EMC/전기안전 사전시험 · 식품접촉 소재 시험",
+    "y": [
+     1500,
+     4500
+    ],
+    "tips": [
+     1500.0,
+     2025.0
+    ]
+   },
+   {
+    "cat": "IP",
+    "item": "선행기술조사 · 국내 출원 5건 · PCT 1건",
+    "y": [
+     1500,
+     3000
+    ],
+    "tips": [
+     1200.0,
+     2400.0
+    ]
+   },
+   {
+    "cat": "Space",
+    "item": "실험실 · 목업 공간 (약 50평) 임차 · 관리",
+    "y": [
+     4800,
+     4800
+    ],
+    "tips": [
+     2749.4174757582878,
+     3238.4991909083765
+    ]
+   },
+   {
+    "cat": "Operating",
+    "item": "법무 · 회계 · 보험 · 사무 · 출장 · 채용",
+    "y": [
+     4000,
+     5000
+    ],
+    "tips": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "cat": "예비비",
+    "item": "인건비 외 지출의 10%",
+    "y": [
+     3210.0,
+     3590.0
+    ],
+    "tips": [
+     0,
+     0
+    ]
+   },
+   {
+    "cat": "실증 순비용",
+    "item": "실증 3세대 하드웨어 · 설치 원가 − 실증 매출 (50% 할인) · Rental 자산",
+    "y": [
+     0.0,
+     3804.8985000000102
+    ],
+    "tips": [
+     0,
+     0
+    ]
+   }
+  ],
+  "spend": [
+   92167.75,
+   141970.8985
+  ],
+  "spend_total": 234138.6485,
+  "pilot_net": [
+   0.0,
+   3804.8985000000102
+  ],
+  "tips": {
+   "rows": [
+    {
+     "cat": "인건비 (현금)",
+     "item": "R&D 인원 8명 × 참여율 40~60%",
+     "y1": 20655.0,
+     "y2": 32520.0,
+     "kind": "현금",
+     "total": 53175.0
+    },
+    {
+     "cat": "인건비 (현물)",
+     "item": "Founder 2인 × 참여율 50~60%",
+     "y1": 6600.0,
+     "y2": 6600.0,
+     "kind": "현물",
+     "total": 13200.0
+    },
+    {
+     "cat": "연구재료비",
+     "item": "Robot Hardware · Hand Prototype · Kitchen Mock-up",
+     "y1": 13240.0,
+     "y2": 6880.0,
+     "kind": "현금",
+     "total": 20120.0
+    },
+    {
+     "cat": "연구활동비",
+     "item": "Software · Data · Certification · IP",
+     "y1": 4700.0,
+     "y2": 6825.0,
+     "kind": "현금",
+     "total": 11525.0
+    },
+    {
+     "cat": "연구수당",
+     "item": "현금 인건비 × 5%",
+     "y1": 1032.75,
+     "y2": 1626.0,
+     "kind": "현금",
+     "total": 2658.75
+    },
+    {
+     "cat": "간접비",
+     "item": "직접비 비례 (공간 · 관리비 일부 충당)",
+     "y1": 2749.4174757582878,
+     "y2": 3238.4991909083765,
+     "kind": "현금",
+     "total": 5987.916666666664
+    }
+   ],
+   "year_total": [
+    48977.16747575829,
+    57689.49919090838
+   ],
+   "total": 106666.66666666667,
+   "gov": 80000,
+   "gov_y": [
+    36732.875606818714,
+    43267.12439318128
+   ],
+   "private": 26666.66666666667,
+   "private_cash": 13466.666666666672,
+   "inkind": 13200.0,
+   "indirect": 5987.9166666666715,
+   "indirect_rate": 0.06844995689429344,
+   "months": 24
+  },
+  "buffer": 35492.724625,
+  "buffer_months": 3,
+  "seed_base": 189631.373125,
+  "seed_lean": 137770.123125,
+  "seed_no_tips": 215241.123125,
+  "seed_range": [
+   14,
+   19
+  ],
+  "lean_spend": [
+   84669.0,
+   106480.89850000001
+  ],
+  "lean_total": 191149.8985,
+  "no_tips_spend": [
+   83685.0,
+   105244.89850000001
+  ],
+  "company_need": 154138.6485,
+  "tips_gov": 80000,
+  "runway_base": 27.0,
+  "op_invest_min": 20000,
+  "biz_link": 15000,
+  "team": [
+   {
+    "key": "F1",
+    "role": "대표 · 사업 총괄 [Founder 정보 필요]",
+    "start": 1,
+    "loaded": 6000,
+    "frac": 1.0,
+    "part": 0.5,
+    "kind": "founder",
+    "pm": [
+     12.0,
+     12.0
+    ],
+    "cost": [
+     6000.0,
+     6000.0
+    ]
+   },
+   {
+    "key": "F2",
+    "role": "공동창업자 · 기술 총괄 [Founder 정보 필요]",
+    "start": 1,
+    "loaded": 6000,
+    "frac": 1.0,
+    "part": 0.6,
+    "kind": "founder",
+    "pm": [
+     12.0,
+     12.0
+    ],
+    "cost": [
+     6000.0,
+     6000.0
+    ]
+   },
+   {
+    "key": "E1",
+    "role": "Manipulation · 제어 리드",
+    "start": 1,
+    "loaded": 9600,
+    "frac": 1.0,
+    "part": 0.5,
+    "kind": "rnd",
+    "pm": [
+     12.0,
+     12.0
+    ],
+    "cost": [
+     9600.0,
+     9600.0
+    ]
+   },
+   {
+    "key": "E2",
+    "role": "Perception · ML 리드",
+    "start": 2,
+    "loaded": 9600,
+    "frac": 1.0,
+    "part": 0.5,
+    "kind": "rnd",
+    "pm": [
+     11.0,
+     12.0
+    ],
+    "cost": [
+     8800.0,
+     9600.0
+    ]
+   },
+   {
+    "key": "E3",
+    "role": "Hand · 기구 리드 (메카트로닉스)",
+    "start": 2,
+    "loaded": 9600,
+    "frac": 1.0,
+    "part": 0.6,
+    "kind": "rnd",
+    "pm": [
+     11.0,
+     12.0
+    ],
+    "cost": [
+     8800.0,
+     9600.0
+    ]
+   },
+   {
+    "key": "E4",
+    "role": "임베디드 · 전기 · 안전",
+    "start": 4,
+    "loaded": 7800,
+    "frac": 1.0,
+    "part": 0.5,
+    "kind": "rnd",
+    "pm": [
+     9.0,
+     12.0
+    ],
+    "cost": [
+     5850.0,
+     7800.0
+    ]
+   },
+   {
+    "key": "E5",
+    "role": "Robot SW · 통합 (Motion · Skill)",
+    "start": 6,
+    "loaded": 7800,
+    "frac": 1.0,
+    "part": 0.5,
+    "kind": "rnd",
+    "pm": [
+     7.0,
+     12.0
+    ],
+    "cost": [
+     4550.0,
+     7800.0
+    ]
+   },
+   {
+    "key": "B1",
+    "role": "제품 · 사업개발 (고객 검증 · 파트너)",
+    "start": 7,
+    "loaded": 7200,
+    "frac": 1.0,
+    "part": 0.0,
+    "kind": "biz",
+    "pm": [
+     6.0,
+     12.0
+    ],
+    "cost": [
+     3600.0,
+     7200.0
+    ]
+   },
+   {
+    "key": "E6",
+    "role": "Hand 센싱 (Grip Force · Slip)",
+    "start": 10,
+    "loaded": 7800,
+    "frac": 1.0,
+    "part": 0.5,
+    "kind": "rnd",
+    "pm": [
+     3.0,
+     12.0
+    ],
+    "cost": [
+     1950.0,
+     7800.0
+    ]
+   },
+   {
+    "key": "O1",
+    "role": "경영지원 (재무 · 과제 관리, 0.5 FTE)",
+    "start": 10,
+    "loaded": 5400,
+    "frac": 0.5,
+    "part": 0.0,
+    "kind": "ops",
+    "pm": [
+     1.5,
+     6.0
+    ],
+    "cost": [
+     675.0,
+     2700.0
+    ]
+   },
+   {
+    "key": "E7",
+    "role": "시험 · 신뢰성 (Test · QA)",
+    "start": 13,
+    "loaded": 7800,
+    "frac": 1.0,
+    "part": 0.4,
+    "kind": "rnd",
+    "pm": [
+     0.0,
+     12.0
+    ],
+    "cost": [
+     0.0,
+     7800.0
+    ]
+   },
+   {
+    "key": "S1",
+    "role": "설치 · Commissioning 엔지니어",
+    "start": 13,
+    "loaded": 6600,
+    "frac": 1.0,
+    "part": 0.0,
+    "kind": "field",
+    "pm": [
+     0.0,
+     12.0
+    ],
+    "cost": [
+     0.0,
+     6600.0
+    ]
+   },
+   {
+    "key": "E8",
+    "role": "Skill · Data 엔지니어",
+    "start": 16,
+    "loaded": 7800,
+    "frac": 1.0,
+    "part": 0.4,
+    "kind": "rnd",
+    "pm": [
+     0.0,
+     9.0
+    ],
+    "cost": [
+     0.0,
+     5850.0
+    ]
+   },
+   {
+    "key": "S2",
+    "role": "현장 서비스 Technician",
+    "start": 19,
+    "loaded": 5400,
+    "frac": 1.0,
+    "part": 0.0,
+    "kind": "field",
+    "pm": [
+     0.0,
+     6.0
+    ],
+    "cost": [
+     0.0,
+     2700.0
+    ]
+   }
+  ],
+  "team_lean": [
+   {
+    "key": "F1",
+    "role": "대표 · 사업 총괄 [Founder 정보 필요]",
+    "start": 1,
+    "loaded": 6000,
+    "frac": 1.0,
+    "part": 0.5,
+    "kind": "founder",
+    "pm": [
+     12.0,
+     12.0
+    ],
+    "cost": [
+     6000.0,
+     6000.0
+    ]
+   },
+   {
+    "key": "F2",
+    "role": "공동창업자 · 기술 총괄 [Founder 정보 필요]",
+    "start": 1,
+    "loaded": 6000,
+    "frac": 1.0,
+    "part": 0.6,
+    "kind": "founder",
+    "pm": [
+     12.0,
+     12.0
+    ],
+    "cost": [
+     6000.0,
+     6000.0
+    ]
+   },
+   {
+    "key": "E1",
+    "role": "Manipulation · 제어 리드",
+    "start": 1,
+    "loaded": 9600,
+    "frac": 1.0,
+    "part": 0.5,
+    "kind": "rnd",
+    "pm": [
+     12.0,
+     12.0
+    ],
+    "cost": [
+     9600.0,
+     9600.0
+    ]
+   },
+   {
+    "key": "E2",
+    "role": "Perception · ML 리드",
+    "start": 2,
+    "loaded": 9600,
+    "frac": 1.0,
+    "part": 0.5,
+    "kind": "rnd",
+    "pm": [
+     11.0,
+     12.0
+    ],
+    "cost": [
+     8800.0,
+     9600.0
+    ]
+   },
+   {
+    "key": "E3",
+    "role": "Hand · 기구 리드 (메카트로닉스)",
+    "start": 2,
+    "loaded": 9600,
+    "frac": 1.0,
+    "part": 0.6,
+    "kind": "rnd",
+    "pm": [
+     11.0,
+     12.0
+    ],
+    "cost": [
+     8800.0,
+     9600.0
+    ]
+   },
+   {
+    "key": "E4",
+    "role": "임베디드 · 전기 · 안전",
+    "start": 4,
+    "loaded": 7800,
+    "frac": 1.0,
+    "part": 0.5,
+    "kind": "rnd",
+    "pm": [
+     9.0,
+     12.0
+    ],
+    "cost": [
+     5850.0,
+     7800.0
+    ]
+   },
+   {
+    "key": "E5",
+    "role": "Robot SW · 통합 (Motion · Skill)",
+    "start": 6,
+    "loaded": 7800,
+    "frac": 1.0,
+    "part": 0.5,
+    "kind": "rnd",
+    "pm": [
+     7.0,
+     12.0
+    ],
+    "cost": [
+     4550.0,
+     7800.0
+    ]
+   },
+   {
+    "key": "B1",
+    "role": "제품 · 사업개발 (고객 검증 · 파트너)",
+    "start": 7,
+    "loaded": 7200,
+    "frac": 1.0,
+    "part": 0.0,
+    "kind": "biz",
+    "pm": [
+     6.0,
+     12.0
+    ],
+    "cost": [
+     3600.0,
+     7200.0
+    ]
+   },
+   {
+    "key": "O1",
+    "role": "경영지원 (재무 · 과제 관리, 0.5 FTE)",
+    "start": 10,
+    "loaded": 5400,
+    "frac": 0.5,
+    "part": 0.0,
+    "kind": "ops",
+    "pm": [
+     1.5,
+     6.0
+    ],
+    "cost": [
+     675.0,
+     2700.0
+    ]
+   },
+   {
+    "key": "E7",
+    "role": "시험 · 신뢰성 (Test · QA)",
+    "start": 19,
+    "loaded": 7800,
+    "frac": 1.0,
+    "part": 0.4,
+    "kind": "rnd",
+    "pm": [
+     0.0,
+     6.0
+    ],
+    "cost": [
+     0.0,
+     3900.0
+    ]
+   },
+   {
+    "key": "S1",
+    "role": "설치 · Commissioning 엔지니어",
+    "start": 13,
+    "loaded": 6600,
+    "frac": 1.0,
+    "part": 0.0,
+    "kind": "field",
+    "pm": [
+     0.0,
+     12.0
+    ],
+    "cost": [
+     0.0,
+     6600.0
+    ]
+   }
+  ],
+  "fte": [
+   7.041666666666667,
+   12.75
+  ],
+  "fte_lean": [
+   6.791666666666667,
+   10.0
+  ],
+  "heads_m24": 13.5,
+  "heads_m24_lean": 10.5,
+  "people": [
+   55825.0,
+   97050.0
+  ],
+  "lean_people": [
+   53875.0,
+   76800.0
+  ],
+  "lean_other": [
+   27100,
+   22400
+  ]
+ },
+ "tips": {
+  "rows": [
+   {
+    "cat": "인건비 (현금)",
+    "item": "R&D 인원 8명 × 참여율 40~60%",
+    "y1": 20655.0,
+    "y2": 32520.0,
+    "kind": "현금",
+    "total": 53175.0
+   },
+   {
+    "cat": "인건비 (현물)",
+    "item": "Founder 2인 × 참여율 50~60%",
+    "y1": 6600.0,
+    "y2": 6600.0,
+    "kind": "현물",
+    "total": 13200.0
+   },
+   {
+    "cat": "연구재료비",
+    "item": "Robot Hardware · Hand Prototype · Kitchen Mock-up",
+    "y1": 13240.0,
+    "y2": 6880.0,
+    "kind": "현금",
+    "total": 20120.0
+   },
+   {
+    "cat": "연구활동비",
+    "item": "Software · Data · Certification · IP",
+    "y1": 4700.0,
+    "y2": 6825.0,
+    "kind": "현금",
+    "total": 11525.0
+   },
+   {
+    "cat": "연구수당",
+    "item": "현금 인건비 × 5%",
+    "y1": 1032.75,
+    "y2": 1626.0,
+    "kind": "현금",
+    "total": 2658.75
+   },
+   {
+    "cat": "간접비",
+    "item": "직접비 비례 (공간 · 관리비 일부 충당)",
+    "y1": 2749.4174757582878,
+    "y2": 3238.4991909083765,
+    "kind": "현금",
+    "total": 5987.916666666664
+   }
+  ],
+  "year_total": [
+   48977.16747575829,
+   57689.49919090838
+  ],
+  "total": 106666.66666666667,
+  "gov": 80000,
+  "gov_y": [
+   36732.875606818714,
+   43267.12439318128
+  ],
+  "private": 26666.66666666667,
+  "private_cash": 13466.666666666672,
+  "inkind": 13200.0,
+  "indirect": 5987.9166666666715,
+  "indirect_rate": 0.06844995689429344,
+  "months": 24
+ },
+ "kpi_links": {
+  "hour": 3.2894736842105265,
+  "inst_h": [
+   36.48,
+   27.36,
+   18.24,
+   13.68,
+   11.552
+  ],
+  "inst_h_rt": [
+   48.63999999999999,
+   39.519999999999996,
+   28.88,
+   22.799999999999997,
+   18.848
+  ],
+  "visit_h": [
+   4.56,
+   3.9519999999999995,
+   3.344,
+   2.7359999999999998,
+   2.432
+  ],
+  "grasps_day": 60.0,
+  "pad_life": 5475.0,
+  "care_unit": [
+   44.8,
+   40.8,
+   36.8,
+   28.299999999999997,
+   26.799999999999997
+  ],
+  "bom": [
+   1680,
+   1520,
+   1180,
+   1030,
+   915
+  ]
+ },
+ "bom_breakdown": [
+  [
+   "6축 Arm (가반 3~5kg, Controller 포함)",
+   950,
+   600,
+   450,
+   "FAIRINO FR5 $6,999 · xArm 6 $8,399 · UR3e $23k~33k 공개가 → OEM · 국산 Partner"
+  ],
+  [
+   "Adaptive Hand (손가락 2~3 · 교체형 Pad · 힘/미끄럼 감지 · Quick Changer)",
+   200,
+   120,
+   85,
+   "Robotiq 2F-85 약 $5,825 (2026 판매가) · Inspire RH56 $4,500~9,899 대비 자체 설계 목표가"
+  ],
+  [
+   "Rail · Carriage · Servo (Remodeling · New-build, 2.4~3.6m)",
+   180,
+   150,
+   120,
+   "Belt 구동 7축 Rail. Retrofit은 Compact Mount"
+  ],
+  [
+   "Vision (Depth Camera 2대 + Mount)",
+   110,
+   80,
+   60,
+   "Orbbec Gemini 335 $384~400 · RealSense D405 $514"
+  ],
+  [
+   "Compute (Edge GPU)",
+   100,
+   80,
+   70,
+   "Edge AI Module 가정"
+  ],
+  [
+   "Safety (Zone Sensor · Safety Controller)",
+   70,
+   60,
+   50,
+   "ToF/Radar Zone Sensor + Safety Relay 가정"
+  ],
+  [
+   "Robot Home (Dock) · Harness · Enclosure",
+   70,
+   50,
+   45,
+   ""
+  ],
+  [
+   "조립 · 시험 (Pilot은 Opex 인건비 처리)",
+   0,
+   40,
+   35,
+   ""
+  ]
+ ],
+ "partner_irr": {
+  "C": {
+   "price": 1135.2,
+   "inflow": 23.0,
+   "resid": 170.28,
+   "irr_m": 0.009778745592928684,
+   "irr_y": 0.1238664380235881
+  },
+  "B": {
+   "price": 1311.2,
+   "inflow": 27.0,
+   "resid": 196.68,
+   "irr_m": 0.010276112281064507,
+   "irr_y": 0.1305271901206957
+  },
+  "U": {
+   "price": 1311.2,
+   "inflow": 27.0,
+   "resid": 196.68,
+   "irr_m": 0.010276112281064507,
+   "irr_y": 0.1305271901206957
+  }
+ },
+ "breakeven_kitchens": 1376.381978894984,
+ "contrib_per_kitchen_y5": 411.94959589285736,
+ "post_seed_burn": {
+  "y3": 311344.13575,
+  "y4": 371942.6042499999,
+  "y3_y4": 683286.74,
+  "min_cum": -1250943.4047999997
+ },
+ "steady": {
+  "arpu": 69.11999999999999,
+  "y0": 2027.8917647058825,
+  "upg": 68.76923076923077,
+  "base_mult": 6,
+  "rec_share": 0.1452493893869654,
+  "upg_share": 0.1445122797720209
+ },
+ "team_kind": {
+  "founder": "Founder",
+  "rnd": "R&D",
+  "biz": "사업",
+  "ops": "경영지원",
+  "field": "현장"
+ }
+}

@@ -3,9 +3,9 @@ __pycache__/
 source/render3d/node_modules/
 source/render3d/final/
 source/deck/_img/
-ARKI/source/_png/
-ARKI/source/_img/
-ARKI/source/_deck_text.json
-ARKI/source/_xlsx_rows.json
-ARKI/render3d/node_modules/
-ARKI/render3d/out/
+MH/source/_png/
+MH/source/_img/
+MH/source/_deck_text.json
+MH/source/_xlsx_rows.json
+MH/render3d/node_modules/
+MH/render3d/out/
