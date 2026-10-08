@@ -1,0 +1,1 @@
+{"anchors": {"sink": [173, 255], "cooktop": [457, 226], "fridge": [353, 459], "sink_run": [221, 222], "cooktop_run": [458, 227], "peninsula": [528, 353]}, "px_per_cm": 1.5385, "window_cm": 520.0, "fit_err_px": 0.56, "source": "plans/new4.json as drawn (arki=0), orthographic, camera from the counter corner toward the room"}

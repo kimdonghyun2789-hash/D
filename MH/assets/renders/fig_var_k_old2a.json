@@ -1,0 +1,1 @@
+{"anchors": {"sink": [552, 315], "cooktop": [205, 395], "sink_run": [526, 299], "cooktop_run": [282, 342]}, "px_per_cm": 1.5385, "window_cm": 520.0, "fit_err_px": 0.57, "source": "plans/old2a.json as drawn (arki=0), orthographic, camera from the counter corner toward the room"}

@@ -159,13 +159,52 @@ def b1(prs):
            note='- M6 자체 Hand 필요 여부 판정\n- 30종 세트 (접시 · 그릇 · 컵 · 유리잔 · 수저 · 뚜껑 · 도구) · 젖은 조건 · 식세기 랙 조건 시험\n- 비교군: 상용 Gripper · 흡착 · Soft Finger\n- 식품 접촉 부품 = 식품위생법 기구 기준 · 고무제 규격 대응')
 
 
+def _var_thumbs(s, y, hmax, legend_w=2.15):
+    """확보 평면 4종 평면도 썸네일 (동일 축척 · 주방/식당 음영) + 범례. Returns the bottom y."""
+    from PIL import Image
+    from pptx.util import Inches
+    items = [('old2a', '구축 2Bay A'), ('old2b', '구축 2Bay B'), ('new3', '신축 3Bay'), ('new4', '신축 4Bay')]
+    size_ = {p[0]: p[2] for p in C.PLANS}
+    rd = os.path.join(common.ROOT, 'assets', 'renders')
+    px = {pid: Image.open(os.path.join(rd, f'fig_var_top_{pid}.png')).size for pid, _ in items}
+    js = {pid: json.load(open(os.path.join(rd, f'fig_var_top_{pid}.json'), encoding='utf-8')) for pid, _ in items}
+    assert len({j['px_per_cm'] for j in js.values()}) == 1          # one scale for all thumbnails
+    k = hmax / max(h for _, h in px.values())                        # slide inch per image px
+    gap = (CW - legend_w - sum(w_ for w_, _ in px.values()) * k) / len(items)
+    x = MX; yb = y + hmax
+    for pid, name in items:
+        w, h = px[pid][0] * k, px[pid][1] * k
+        at = render(s, 'fig_var_top_' + pid, x, yb - h, w, h)
+        pts = [at(tuple(p)) for p in js[pid]['kitchen']]
+        ff = s.shapes.build_freeform(round(pts[0][0] * 1000), round(pts[0][1] * 1000), scale=Inches(1) / 1000)
+        ff.add_line_segments([(round(px_ * 1000), round(py_ * 1000)) for px_, py_ in pts[1:]], close=True)
+        sh = ff.convert_to_shape(0, 0)
+        sh.fill.solid(); sh.fill.fore_color.rgb = kit._rgb(INK); kit.alpha(sh, 16)
+        sh.line.color.rgb = kit._rgb(INK); sh.line.width = kit.Pt(1.0)
+        kit._nostyle(sh)
+        text(s, x, yb + 0.06, w, 0.36, [[(name, {'bold': True})], [(size_[name] + 'mm', {'size': 8, 'color': INK2})]], size=8.5,
+             label='B2cap ' + name)
+        x += w + gap
+    lx = W - MX - legend_w
+    kit.alpha(rect(s, lx, yb - 0.6, 0.26, 0.16, fill=INK, line=INK, lw=1.0), 16)
+    text(s, lx + 0.36, yb - 0.63, legend_w - 0.36, 0.22, '주방 · 식당', size=8.5, color=INK2, check=False)
+    text(s, lx, yb - 0.32, legend_w, 0.36, '확보 평면 재작도 (단지명 미표기)\n4종 동일 축척 · 신축 2Bay = 3D 미착수', size=8, color=GREY, line=1.05)
+    return yb + 0.42
+
+
 def b2(prs):
+    s, y = S(prs, 'B2', 'Kitchen Variation 근거: 확보 평면 5종', sub='제공 도면 치수선 기준 재작도 · 표본 5종 → 평면 30개 분석으로 확대 (M6, TARGET)',
+             visual='표 (평면 · 구분 · 크기 · 주방 형태 · 3D · 기본 배치) + 결론 띠 + 하단 평면도 썸네일 4장 (확보 평면 재작도 · 동일 축척 · 주방/식당 음영 · 평면명 · 크기 캡션) + 범례',
+             chart='표 + 평면도 4 (확보 평면 재작도)',
+             note='- 확보 평면 5종: 구축 2Bay A 1종만 기본 한 줄 배치 수용 · 3종 싱크 줄 2.6~2.8m · 1종 미검토\n- 주방마다 다른 환경의 실제 예 → Retrofit · 짧은 벽용 Compact 구성 개발 필요\n- 표본 작음 → 평면 30개 분석으로 확대 (M6)')
     rows = [list(r) for r in C.PLANS]
-    tslide(prs, 'B2', 'Kitchen Variation 근거: 확보 평면 5종', ['평면', '구분', '크기 (mm)', '주방 형태', '디지털화 (3D)', '기본 배치 (Remodeling 한 줄)'], rows,
-           [1.25, 1.85, 1.35, 3.0, 1.6, 2.78], size=9.5,
-           sub='제공 도면 치수선 기준 재작도 · 표본 5종 → 평면 30개 분석으로 확대 (M6, TARGET)',
-           takeaway='5종 모두 싱크 · 조리기구가 다른 벽 → 로봇 구역 분리 가능 · 3종 싱크 줄 2.6~2.8m → 짧은 벽용 Compact 구성 필요 (Kitchen Compatibility KPI)',
-           note='- 확보 평면 5종: 구축 2Bay A 1종만 기본 한 줄 배치 수용 · 3종 싱크 줄 2.6~2.8m · 1종 미검토\n- 주방마다 다른 환경의 실제 예 → Retrofit · 짧은 벽용 Compact 구성 개발 필요\n- 표본 작음 → 평면 30개 분석으로 확대 (M6)')
+    th = table(s, MX, y, CW, ['평면', '구분', '크기 (mm)', '주방 형태', '디지털화 (3D)', '기본 배치 (Remodeling 한 줄)'], rows,
+               col_w=[1.25, 1.85, 1.35, 3.0, 1.6, 2.78], size=9.5, header_size=9.5, label='B2', max_h=H - y - 1.25)
+    sy = min(y + th + 0.16, H - 1.2)
+    sh = statement(s, MX, sy, CW, '5종 모두 싱크 · 조리기구가 다른 벽 → 로봇 구역 분리 가능 · 3종 싱크 줄 2.6~2.8m → 짧은 벽용 Compact 구성 필요 (Kitchen Compatibility KPI)', size=11)
+    ty = sy + sh + 0.28
+    _var_thumbs(s, ty, H - 0.6 - 0.42 - ty)
+    foot(s, 'B2')
 
 
 def b3(prs):

@@ -136,28 +136,52 @@ def m03(prs):
 
 
 # ================================================================= 04 limits
+_VAR_KITCHENS = [('old2a', '구축 2Bay A', 'ㄱ자 · 윗벽 3,255mm'), ('old2b', '구축 2Bay B', 'ㄱ자 · 싱크 줄 약 2.6m'),
+                 ('new3', '신축 3Bay', '반도형 · 싱크 줄 약 2.6m'), ('new4', '신축 4Bay', '반도형 · 싱크 줄 약 2.8m')]
+
+
+def _var_strip(s, x, y, w, ih, gap=0.12):
+    """확보 평면 4종 주방 (도면 그대로 재작도 · 로봇 없음 · 동일 축척 Axonometric) + 3줄 캡션. Returns the bottom y."""
+    import content as C
+    plans = {p[0]: p for p in C.PLANS}
+    tw = (w - 3 * gap) / 4
+    for i, (pid, name, kind) in enumerate(_VAR_KITCHENS):
+        row = plans[name]
+        assert all(t in row[3] for t in kind.replace('·', ' ').split() if t in ('ㄱ자', '반도형') or t[0].isdigit()), (name, kind)
+        tx = x + i * (tw + gap)
+        render(s, 'fig_var_k_' + pid, tx, y, tw, ih, bg=(244, 245, 246))
+        fit = '기본 한 줄 배치 수용' if row[5].startswith('수용') else '기본 한 줄 배치 불가'
+        text(s, tx, y + ih + 0.05, tw, 0.5, [[(name, {'bold': True})], [(kind, {'size': 8, 'color': INK2})],
+                                             [(fit, {'size': 7.5, 'color': GREY})]], size=8.5, label='m04cap ' + name)
+    return y + ih + 0.55
+
+
 def m04(prs):
     s = start(prs, 'm04', pg(prs), '주방마다 다른 환경 → 동일 로봇 반복 설치의 구조적 한계',
-              visual='좌측 3×3 칩: 주방마다 달라지는 9개 변수. 우측 세로 체인: 범용 Robot 적용 시 집마다 반복되는 6단계 (Perception → Validation). 하단 근거 2개 (확보 평면 5종 · 공개 사례).',
-              chart='변수 Grid + 반복 공정 체인',
+              visual='좌측 상단: 확보 평면 4종 주방 3D 재작도 4컷 (구축 2Bay A · B · 신축 3Bay · 4Bay, 도면 그대로 · 로봇 없음 · 같은 시점 · 동일 축척) + 평면명 · 주방 형태 · 기본 한 줄 배치 수용/불가 캡션. 좌측 하단: 주방마다 달라지는 9개 변수 칩. 우측 세로 체인: 범용 Robot 적용 시 집마다 반복되는 6단계 (Perception → Validation) + 결론 상자. 하단 전체 폭: 근거 2행 (확보 평면 5종 · 공개 사례).',
+              chart='평면 재작도 주방 4컷 (동일 축척 Axonometric) + 변수 칩 + 반복 공정 체인 + 근거 표',
               note=('- 가정용 로봇의 한계 = AI 성능만이 아닌 높은 환경 편차\n'
                     '- 집마다 다른 것: 주방 형태 · 가전 위치 · 모델 · 수납 위치 · 조리대 치수 · 물건 위치 · 동선 · 조명 · 설치 오차\n'
                     '- 범용 로봇 적용 시 집마다 인식 · Mapping · 교시 · Programming · Calibration · 검증 반복 → 설치시간 · 비용 · 신뢰성 좌우\n'
                     '- 확보 평면 5종: 싱크 벽 길이 약 2.6~3.3m · 3종 기본 배치 불가 · 1종 미검토\n'
-                    '- MH 접근 = 모든 주방 표준화가 아닌 Robot 적응 + 필요한 지점만 Interface (다음 장)'))
+                    '- MH 접근 = 모든 주방 표준화가 아닌 Robot 적응 + 필요한 지점만 Interface (다음 장)\n'
+                    '- 확보 평면 4종 주방 재작도 (로봇 없음 · 동일 축척): ㄱ자 2종 · 반도형 2종 · 기본 한 줄 배치 수용 = 구축 2Bay A 1종'))
     y = mhead(s, '04  가정용 Robot 적용의 구조적 한계', '주방마다 다른 환경 → 동일 로봇 반복 설치의 구조적 한계',
               'Robot 지능 부족만이 아닌 높은 환경 편차 (Environment Variation) → 신뢰성 · 반복설치 제약')
     lw = 7.0
-    text(s, MX, y, lw, 0.28, '주방마다 다른 것', size=11, bold=True, color=GREY)
+    text(s, MX, y, 2.0, 0.28, '주방마다 다른 것', size=11, bold=True, color=GREY)
+    text(s, MX + 2.0, y + 0.06, lw - 2.0, 0.2, '확보 평면 재작도 (단지명 미표기) · 동일 축척 · 신축 2Bay = 3D 미착수', size=7.5,
+         color=GREY, align='r')
+    cy = _var_strip(s, MX, y + 0.36, lw, 1.52)
     vars_ = [('주방 형태', 'ㅡ자 · ㄱ자 · 반도형'), ('가전 위치', '식세기 · 인덕션 배치'), ('수납 위치', '상부장 · 서랍 · 키큰장'),
              ('조리대 치수', '높이 · 깊이 · 길이'), ('가전 모델', '랙 구조 · 문 열림'), ('물건 위치', '식기 놓는 자리'),
              ('동선', '통로 폭 · 사람 위치'), ('조명', '창 · 조명 반사'), ('설치오차', '벽 · 가구 수직 · 수평')]
-    gw = (lw - 2 * 0.14) / 3; gh = 0.78
+    gw = (lw - 2 * 0.1) / 3; gh = 0.34
     for i, (a, b) in enumerate(vars_):
-        gx = MX + (i % 3) * (gw + 0.14); gy = y + 0.36 + (i // 3) * (gh + 0.12)
+        gx = MX + (i % 3) * (gw + 0.1); gy = cy + 0.2 + (i // 3) * (gh + 0.08)
         rect(s, gx, gy, gw, gh, fill=SOFT)
-        text(s, gx + 0.14, gy + 0.1, gw - 0.28, 0.3, a, size=12, bold=True)
-        text(s, gx + 0.14, gy + 0.42, gw - 0.28, 0.28, b, size=9.5, color=INK2)
+        text(s, gx + 0.12, gy, gw - 0.24, gh, [[(a, {'bold': True}), ('   ' + b, {'size': 9, 'color': INK2})]], size=10,
+             anchor='m', check=False)
     rx = MX + lw + 0.45; rw = W - MX - rx
     text(s, rx, y, rw, 0.28, '범용 Robot 적용 시 집마다 반복', size=11, bold=True, color=GREY)
     steps = ['인식 (Perception)', 'Mapping', '교시 (Teaching)', 'Programming', 'Calibration', '검증 (Validation)']
@@ -172,11 +196,11 @@ def m04(prs):
     seg(s, bx, by0, bx, by1, color=INK, lw=1.5)
     seg(s, bx - 0.1, by0, bx, by0, color=INK, lw=1.5); seg(s, bx - 0.1, by1, bx, by1, color=INK, lw=1.5)
     text(s, bx + 0.06, (by0 + by1) / 2 - 0.3, 0.5, 0.6, '집마다\n반복', size=8.5, bold=True, color=INK, align='l', anchor='m', check=False)
-    ey = y + 0.36 + 3 * (gh + 0.12) + 0.1
+    bar(s, rx, by1 + 0.32, rw - 0.3, 0.62, '모든 주방 표준화가 아닌\n→ Robot 적응력 + 필요한 지점만 Interface', size=10.5, fill=SOFT, color=INK)
+    ey = max(cy + 0.2 + 3 * gh + 2 * 0.08, by1 + 0.32 + 0.62) + 0.22
     rows = [[('확보 평면 5종', {'bold': True}), '싱크 벽 길이 약 2.6~3.3m · 3종 기본 한 줄 배치 불가 · 1종 미검토 · ㄱ자 · 일자 · 반도형 혼재', ttxt('DERIVED')],
             [('공개 사례', {'bold': True}), 'LG CLOiD: 팔 작업 범위 무릎 높이 이상 (보도) → 낮은 작업점 (식세기 하단 랙) = 환경 측 보완 필요 (MH 해석)', ('FACT + 해석', {'bold': True, 'size': 9})]]
-    table(s, MX, ey, lw, None, rows, col_w=[1.35, lw - 2.35, 1.0], size=9.5, label='m04ev')
-    bar(s, rx, by1 + 0.32, rw - 0.3, 0.62, '모든 주방 표준화가 아닌\n→ Robot 적응력 + 필요한 지점만 Interface', size=10.5, fill=SOFT, color=INK)
+    table(s, MX, ey, CW, None, rows, col_w=[1.35, CW - 2.35, 1.0], size=9.5, label='m04ev')
     note(s, '출처 [S21] · 평면 5종 = 제공 도면 재작도 (부록 B2) · 평면 30개 분석 예정 (M6)')
     mfoot(s)
 
