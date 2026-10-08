@@ -782,7 +782,7 @@ def s19(prs):
     s = start(prs, 'gtm', 19, 'GTM: Direct는 학습, Scale은 Partner Distribution', q=[1, 5],
               visual='상단 Stage 1~5 계단 (시기·채널·Base 물량). 좌하 Revenue Mix 100% 누적 막대 (Y2~Y5 + 정상상태 DERIVED). 우하 KPI: Build 비중↓ / Robot+Recurring↑.',
               chart='Stage 계단 + 100% Stacked Column',
-              note=('직접판매는 고객 학습과 제품 검증 목적입니다. Y2에 5세대 Home Pilot으로 시작하고, Y3부터 주방가구·인테리어 Partner를 통해 물량을 늘립니다. '
+              note=(f"직접판매는 고객 학습과 제품 검증 목적입니다. Y2에 {inp('rd')[1]}세대 Home Pilot (TIPS 가정 실증)으로 시작하고, Y3부터" ' 주방가구·인테리어 Partner를 통해 물량을 늘립니다. '
                     'Base에서 Y5 Partner 경유 Kitchen은 340세대로 직접판매 60세대의 5배 이상입니다. 신축은 Y3 계약, Y5 설치입니다. '
                     f"매출 구성에서 Kitchen Build와 설치 매출 비중은 Y5에 약 {B('build')[4] / B('rev')[4]:.0%}이고, 나머지는 Robot과 반복매출입니다. Interior 회사가 아니라 Robotics Product 회사로 가는지 보는 KPI입니다."))
     y = head(s, '18  GTM · Partner Distribution', 'GTM: Direct는 학습, Scale은 Partner Distribution',

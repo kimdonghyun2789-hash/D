@@ -66,7 +66,7 @@
 | M6 | 실물 크기 목업 (대표 평면 기준) · Robot Architecture 선정 · Dish Handling Test | 주거동선과 Robot Reach 양립 실패 → Architecture 변경 |
 | M9 | Dishwasher Integration · 성공률 측정 (200 cycle) | Clean-up 성공률 70% 미만 → Task Scope 축소 |
 | M12 | Clean-up Integrated Demo · Template 3개 · PSM/Conjoint · BOM v1 | WTP 중앙값 < 목표가 60% → B2C 전략 재검토 |
-| M18 | Real-home Pilot 3~5세대 · 설치시간·Service 원가 실측 | Standard Module 사용률 60% 미만 → Productization 재검토 |
+| M18 | Real-home Pilot 3세대 (M13~M24) · 설치시간·Service 원가 실측 | Standard Module 사용률 60% 미만 → Productization 재검토 |
 | M24 | Paid Pilot · Partner Pilot 협의 · Series A Evidence Pack | Paid Pilot·Partner 확보 실패 → Scale 투자 보류 |
 
 ## 6. What Must Be True

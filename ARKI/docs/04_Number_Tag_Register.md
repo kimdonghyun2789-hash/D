@@ -147,7 +147,7 @@
 | TARGET | 식기 정리 성공률 (사람 개입 없이) | 70% (M9 목업) · 90% (M24 가정 실증) |
 | TARGET | 특허 출원 | 24개월 5건 (Y1 2 · Y2 3, 등록 미정) |
 | TARGET | Consumer Interview / Conjoint | 50명 / n≥300 |
-| TARGET | Home Pilot | 3~5세대 (Paid Pilot 포함) |
+| TARGET | Home Pilot | 3세대 (TIPS 가정 실증, 유료 목표) |
 | TARGET | Installation · Calibration Time | 1일·2인 · 2시간 (M24) |
 | TARGET | Patent 출원 | 5~8건 (선행기술조사 후) |
 | TARGET | Volume (Base) | 구축 직접 [0, 3, 30, 50, 60] · Partner [0, 0, 20, 130, 340] · 신축 Project [0, 0, 1, 2, 3] |

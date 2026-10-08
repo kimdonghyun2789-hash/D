@@ -1058,7 +1058,7 @@ Installed Robot (기말) | 46대 | 563대
 
 **도표**: Stage 계단 + 100% Stacked Column
 
-**발표 메모**: 직접판매는 고객 학습과 제품 검증 목적입니다. Y2에 5세대 가정 실증으로 시작하고, Y3부터 주방가구·인테리어 Partner를 통해 물량을 늘립니다. Base에서 Y5 Partner 경유 Kitchen은 340세대로 직접판매 60세대의 5배 이상입니다. 신축은 Y3 계약, Y5 설치입니다. 매출 구성에서 Kitchen Build와 설치 매출 비중은 Y5에 약 29%이고, 나머지는 Robot과 반복매출입니다. Interior 회사가 아니라 Robotics Product 회사로 가는지 보는 KPI입니다.
+**발표 메모**: 직접판매는 고객 학습과 제품 검증 목적입니다. Y2에 3세대 가정 실증 (TIPS 가정 실증)으로 시작하고, Y3부터 주방가구·인테리어 Partner를 통해 물량을 늘립니다. Base에서 Y5 Partner 경유 Kitchen은 340세대로 직접판매 60세대의 5배 이상입니다. 신축은 Y3 계약, Y5 설치입니다. 매출 구성에서 Kitchen Build와 설치 매출 비중은 Y5에 약 29%이고, 나머지는 Robot과 반복매출입니다. Interior 회사가 아니라 Robotics Product 회사로 가는지 보는 KPI입니다.
 
 ## C6. 경쟁 구도: 모든 Player와 경쟁하지 않는 공간 · 로봇 통합 영역
 

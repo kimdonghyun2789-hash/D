@@ -151,7 +151,7 @@ outrows = [
 tgt = [['TARGET', '평면 분석', '30개 이상 (신축 15 · 구축 15)'], ['TARGET', 'Layout Family / Robot Architecture', '3~5 / 2~3'],
        ['TARGET', 'Standard Module 사용률', '65% (Y3) · 80% (Y5) · Kill: M18 60% 미만'], ['TARGET', '식기 정리 성공률 (사람 개입 없이)', '70% (M9 목업) · 90% (M24 가정 실증)'],
        ['TARGET', '특허 출원', '24개월 5건 (Y1 2 · Y2 3, 등록 미정)'], ['TARGET', 'Consumer Interview / Conjoint', '50명 / n≥300'],
-       ['TARGET', 'Home Pilot', '3~5세대 (Paid Pilot 포함)'], ['TARGET', 'Installation · Calibration Time', '1일·2인 · 2시간 (M24)'],
+       ['TARGET', 'Home Pilot', '3세대 (TIPS 가정 실증, 유료 목표)'], ['TARGET', 'Installation · Calibration Time', '1일·2인 · 2시간 (M24)'],
        ['TARGET', 'Patent 출원', '5~8건 (선행기술조사 후)'], ['TARGET', 'Volume (Base)', f"구축 직접 {v('rd')} · Partner {v('rp')} · 신축 Project {v('projects')}"]]
 write('04_Number_Tag_Register.md', f"""# 04. FACT / DERIVED / ASSUMPTION / TARGET 구분표
 
@@ -570,7 +570,7 @@ write('10_Investment_Memo.md', f"""# 10. Investment Memo — ARKI Robotics (가�
     ['M6', '84㎡ Full-scale Mock-up · Robot Architecture 선정 · Dish Handling Test', '주거동선과 Robot Reach 양립 실패 → Architecture 변경'],
     ['M9', 'Dishwasher Integration · 성공률 측정 (200 cycle)', 'Clean-up 성공률 70% 미만 → Task Scope 축소'],
     ['M12', 'Clean-up Integrated Demo · Template 3개 · PSM/Conjoint · BOM v1', 'WTP 중앙값 < 목표가 60% → B2C 전략 재검토'],
-    ['M18', 'Real-home Pilot 3~5세대 · 설치시간·Service 원가 실측', 'Standard Module 사용률 60% 미만 → Productization 재검토'],
+    ['M18', 'Real-home Pilot 3세대 (M13~M24) · 설치시간·Service 원가 실측', 'Standard Module 사용률 60% 미만 → Productization 재검토'],
     ['M24', 'Paid Pilot · Partner Pilot 협의 · Series A Evidence Pack', 'Paid Pilot·Partner 확보 실패 → Scale 투자 보류'],
 ])}
 
