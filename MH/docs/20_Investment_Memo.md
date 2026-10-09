@@ -16,7 +16,7 @@
 
 ## 2. Investment Thesis (성립 조건)
 
-1. 가전 사이 Physical Workflow = 가전사가 기기 안에서 풀기 어려운 문제 · 주방은 동작 · 영역 · 물체가 닫혀 있어 첫 Application으로 검증 가능
+1. 가전 사이 Physical Workflow = 가전사가 가전 내부에서 풀기 어려운 문제 · 주방은 동작 · 영역 · 물체 종류가 한정돼 있어 첫 Application으로 검증 가능
 2. 범용 Robot의 병목 = 지능만이 아닌 **설치 · Calibration · 반복 적용** → Hand · Skill · Calibration · 최소 Interface 결합으로 설치시간 · 서비스 원가 절감 가능 (검증 대상)
 3. Remodeling · 신축 구매 계기 + Partner 시공 구조 → 현장 인력에 비례하지 않는 설치 확대 가능
 4. Installed Base 위에 Care · 소모품 · Skill · Tool 반복 · 확장 매출 누적
@@ -35,17 +35,17 @@
 - 고객 지불의사 · 구매 행동 증거 없음
 - BOM · 설치 · Care 원가가 모두 가정
 - 가전사 · Humanoid 진입 속도가 빠름
-- Hardware 마진이 얇음: Robot ASP 1,490만원 vs BOM Y3 1,180만원 → 21%. Conservative에서는 1세대 5년 기여이익이 Y3 원가 기준 적자
+- Hardware 마진이 얇음: Robot ASP 1,490만원 vs BOM Y3 1,180만원 → 21%. Conservative에서는 세대당 5년 공헌이익이 Y3 원가 기준 적자
 - CLEAN만의 가사 대체 가치 (월 약 18만원) < Rental 월 33만원 → 가치 Gap
 - Series A 이후에도 Y3~Y4 약 68억원 현금 소요 (Base) → 자본 집약도 높은 하드웨어 사업
-- Rental Partner 단순 회수 약 49개월 > 요구 36개월 (가정) → Partner 조건 미확보 시 MH 자산 보유 부담
+- Rental Partner 단순 회수기간 약 49개월 > 요구 36개월 (가정) → Partner 조건 미확보 시 MH 자산 보유 부담
 
 ## 5. 숫자 점검
 
 | 점검 | 결과 | Tag |
 |---|---|---|
 | 시장 | Bottom-up SAM 연 3,676억원 · Y5 계획 91.5억원 = 대상 세대 2.5% (공격적이지 않음, 비율은 전부 가정) | DERIVED |
-| Unit Economics | Remodeling 1세대 5년 기여이익 428만원 (Y3) → 798만원 (Y5). 민감도 1 · 2순위 = WTP · BOM | DERIVED |
+| Unit Economics | Remodeling 세대당 5년 공헌이익 428만원 (Y3) → 798만원 (Y5). 민감도 1 · 2순위 = WTP · BOM | DERIVED |
 | 자금 | Seed 14~19억원 · Runway 약 27개월 · TIPS 미선정 시 21.5억원 | DERIVED |
 | 실행 | WP1~WP6 · Gate 4개 · 중단 기준 명시 (Hand Buy 전환 · Retrofit 보류 · 범위 축소) | TARGET |
 
@@ -71,7 +71,7 @@
 
 ## 8. 판단을 바꿀 Evidence (최대 5개)
 
-1. **Founder · 핵심 팀** — 로봇 조작 · Hand 개발 실적과 주방 · 건축 설치 실적을 가진 2인 이상 전업 Founding Team (지분 · 역할 확정)
+1. **Founder · 핵심 팀** — 로봇 조작 · Hand 개발 실적과 주방 · 건축 시공 실적을 가진 2인 이상 전업 Founding Team (지분 · 역할 확정)
 2. **기술 Baseline (M3 이내)** — 상용 Arm + Gripper로 30종 식기 파지 · 식세기 적재 영상과 성공률 Data
 3. **고객 행동** — Premium 리모델링 고객 10세대 이상 예약금 또는 유료 실증 의향서 (2,020만원 또는 월 33만원 조건)
 4. **설치 경제성** — 서로 다른 주방 2종에서 Calibration · 설치 1일 이내 (목업 가능)
@@ -80,7 +80,7 @@
 ## 9. 첫 미팅 의제 (MEET)
 
 1. Founder 2인의 이력 · 역할 · 지분 · 전업 여부와 이 문제를 택한 이유
-2. 상용 Arm + Gripper 기준선 영상 (식기 파지 · 식세기 적재) 또는 M3까지의 확보 계획
+2. 상용 Arm + Gripper 비교 기준 영상 (식기 파지 · 식세기 적재) 또는 M3까지의 확보 계획
 3. Premium 리모델링 고객 · 시공 Partner 접점 (실명 · 관계 수준, 없으면 없음)
 4. 24개월 Gate별 중단 기준을 실제로 지킬 의사와 Lean안 전환 조건
 5. TIPS 운영사 접촉 현황 · 소재지 (선투자 요건) · 창업팀 지분 구조

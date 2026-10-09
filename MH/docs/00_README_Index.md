@@ -15,7 +15,7 @@
 | 07 | 시장 Data 및 Source | [07_Market_Data_Sources.md](07_Market_Data_Sources.md) | 주택 · 리모델링 · 렌탈 · Care · Robot Arm · Hand Benchmark · 경쟁 · 기준 · 출처 전체 | 제출 · 공유 |
 | 08 | FACT / DERIVED / ASSUMPTION / TARGET 구분표 | [08_Tag_Register.md](08_Tag_Register.md) | 재무모델 입력 108개 전체 · 주요 계산값 · CONCEPT 목록 | 제출 · 공유 |
 | 09 | Business Model | [09_Business_Model.md](09_Business_Model.md) | INSTALL → OPERATE → EXPAND · 가격 가설 · Rental · Care · Consumables · MH Core vs Partner | 제출 · 공유 |
-| 10 | 5-Year Household Economics | [10_Household_Economics_5Y.md](10_Household_Economics_5Y.md) | 대표 1세대 5년 매출 · 매출총이익 · 서비스 원가 · Lifetime Contribution · 범위 · 민감도 | 제출 · 공유 |
+| 10 | 5-Year Household Economics | [10_Household_Economics_5Y.md](10_Household_Economics_5Y.md) | 대표 세대 5년 매출 · 매출총이익 · 서비스 원가 · 누적 공헌이익 · 범위 · 민감도 | 제출 · 공유 |
 | 11 | TIPS R&D Work Package | [11_TIPS_RnD_Work_Package.md](11_TIPS_RnD_Work_Package.md) | TIPS 과제 (기술 검증) vs Seed (사업 검증 · 과제 외 개발) · WP1~WP6 · 과제 편성 | 제출 · 공유 |
 | 12 | Technical KPI | [12_Technical_KPI.md](12_Technical_KPI.md) | Manipulation · Application · Business KPI 20개 · Benchmark · 목표 근거 · Hand 시험 계획 | 제출 · 공유 |
 | 13 | Patent Portfolio | [13_Patent_Portfolio.md](13_Patent_Portfolio.md) | 출원 후보 12개 묶음 · 사업 중요도 · 차별성 · Prior Art Risk · 우선순위 | 제출 · 공유 |

@@ -27,9 +27,9 @@ TEAM = [
     ('E6', 'Hand 센싱 (Grip Force · Slip)', 10, 7800, 1.0, 0.5, 'rnd', False, None),
     ('O1', '경영지원 (재무 · 과제 관리, 0.5 FTE)', 10, 5400, 0.5, 0.0, 'ops', True, None),
     ('E7', '시험 · 신뢰성 (Test · QA)', 13, 7800, 1.0, 0.4, 'rnd', True, 19),
-    ('S1', '설치 · Commissioning 엔지니어', 13, 6600, 1.0, 0.0, 'field', True, None),
+    ('S1', '설치 · 시운전 엔지니어', 13, 6600, 1.0, 0.0, 'field', True, None),
     ('E8', 'Skill · Data 엔지니어', 16, 7800, 1.0, 0.4, 'rnd', False, None),
-    ('S2', '현장 서비스 Technician', 19, 5400, 1.0, 0.0, 'field', False, None),
+    ('S2', '현장 서비스 엔지니어', 19, 5400, 1.0, 0.0, 'field', False, None),
 ]
 TEAM_KIND = {'founder': 'Founder', 'rnd': 'R&D', 'biz': '사업', 'ops': '경영지원', 'field': '현장'}
 
@@ -39,8 +39,8 @@ COSTS = [
     ('hand_proto', 'Hand Prototype', '상용 Gripper 비교군 구매 · 자체 Hand v1~v3 가공 · 센서 · Pad 금형', (6000, 4000), (5000, 3000), (0.9, 0.9), '연구재료비'),
     ('mockup', 'Kitchen Mock-up', '실물 크기 목업 3종 (Remodeling · ㄱ자 · Retrofit) · 식기세척기 3모델 · 재구성', (5000, 2500), (4000, 1000), (0.8, 0.8), '연구재료비'),
     ('swdata', 'Software · Data', 'GPU · Cloud · Annotation · SW License', (2500, 3000), (2000, 2000), (0.8, 0.8), '연구활동비'),
-    ('pilot', 'Pilot', '가정 실증 운영 (설치 파트너 · 보험 · 모니터링). 실증 하드웨어는 원가로 별도', (0, 3500), (0, 2500), (0.0, 0.0), '-'),
-    ('custval', 'Customer · Partner', '고객 인터뷰 · 정리 시간 기록 · WTP 조사 (n≥300) · 예약금 Test · 파트너 개발 · 전시', (2000, 4000), (1500, 2500), (0.0, 0.0), '-'),
+    ('pilot', 'Pilot', '실거주 실증 운영 (설치 파트너 · 보험 · 모니터링). 실증 하드웨어는 원가로 별도', (0, 3500), (0, 2500), (0.0, 0.0), '-'),
+    ('custval', 'Customer · Partner', '고객 인터뷰 · 정리 시간 기록 · WTP 조사 (n≥300) · 예약금 테스트 · 파트너 개발 · 전시', (2000, 4000), (1500, 2500), (0.0, 0.0), '-'),
     ('cert', 'Certification', '안전 Gap 분석 (IEC 63682 초안 · ISO 13482) · EMC/전기안전 사전시험 · 식품접촉 소재 시험', (1500, 4500), (1500, 2000), (1.0, 0.45), '연구활동비'),
     ('ip', 'IP', '선행기술조사 · 국내 출원 5건 · PCT 1건', (1500, 3000), (1200, 1800), (0.8, 0.8), '연구활동비'),
     ('space', 'Space', '실험실 · 목업 공간 (약 50평) 임차 · 관리', (4800, 4800), (3600, 3600), (0.0, 0.0), '간접비 일부'),
@@ -118,7 +118,7 @@ inp('a_premium_share', 'market', 'Premium Kitchen 비중 (교체 세대 중)', '
 inp('a_fit_rate', 'market', 'Remodeling 적용 가능률 (구조 · 전원 · 평면)', '%', 'ASSUMPTION', 0.60, '평면 30개 분석으로 검증')
 inp('a_prem_stock', 'market', 'Premium 세대 비중 (아파트 재고 기준)', '%', 'ASSUMPTION', 0.10, 'Retrofit 대상. 소득 · 주택가격 기준 정의 필요')
 inp('a_dw_premium', 'market', 'Premium 세대 식기세척기 보유율', '%', 'ASSUMPTION', 0.60, '공식 보급률 통계 확인 안 됨 (2019~20 업계 추정 10%대 초반 · 전체 가구) → TO BE VALIDATED')
-inp('a_retro_fit', 'market', 'Retrofit 호환률 (주방 형태 · 식세기 위치 · 상부장)', '%', 'ASSUMPTION', 0.40, '가설. 확보 평면 5종 (Remodeling 기본 배치 수용 1 · 미수용 3 · 미검토 1)으로는 판단 불가 → 평면 30개 · 상담 주방 실측으로 검증')
+inp('a_retro_fit', 'market', 'Retrofit 호환률 (주방 형태 · 식세기 위치 · 상부장)', '%', 'ASSUMPTION', 0.40, '가설. 확보 평면 5종 (Remodeling 기본 배치 가능 1 · 불가 3 · 미검토 1)으로는 판단 불가 → 평면 30개 · 상담 주방 실측으로 검증')
 inp('a_retro_conv', 'market', 'Retrofit 연간 전환율 (호환 세대 중, 제품 성숙 후)', '%', 'ASSUMPTION', 0.005, '가설. Phase 2 시작 전 검증')
 inp('a_new_supply', 'market', '연간 신규 아파트 입주 (평균)', '천/년', 'ASSUMPTION', 200, '2025 실적 23.6만 · 2026 예정 18.3만 (평균 21.0만) → 보수적으로 20만')
 inp('a_premium_project', 'market', 'Premium 단지 비중 (신축)', '%', 'ASSUMPTION', 0.15, '브랜드 · 분양가 기준 정의 필요')
@@ -126,8 +126,8 @@ inp('a_premium_project', 'market', 'Premium 단지 비중 (신축)', '%', 'ASSUM
 # --- value anchor
 inp('f_helper_rate', 'value', '가사서비스 시간당 요금 (플랫폼 4시간 59,900~64,900원)', '만원/h', 'FACT', 1.5,
     '가사서비스 플랫폼 공개 요금 (2025, 보도 · 앱 정보)')
-inp('a_cleanup_min', 'value', '식사 후 정리 시간 (식기 이동 · 식세기 · 수납, 일)', '분/일', 'ASSUMPTION', 40, 'Time-diary(n=30)로 검증')
-inp('a_auto_share', 'value', 'CLEAN 자동화 가능 비중', '%', 'ASSUMPTION', 0.60, '식기 이동 · 식세기 적재/인출 · 수납만. 행주 · 싱크 세척 제외')
+inp('a_cleanup_min', 'value', '식사 후 정리 시간 (식기 이동 · 식세기 · 수납, 일)', '분/일', 'ASSUMPTION', 40, '시간일지 조사 (n=30)로 검증')
+inp('a_auto_share', 'value', 'CLEAN 자동화 가능 비중', '%', 'ASSUMPTION', 0.60, '식기 이동 · 식세기 적재/꺼내기 · 수납만. 행주 · 싱크 세척 제외')
 inp('fx', 'value', '환율 (Benchmark 환산용)', '원/USD', 'ASSUMPTION', 1400, '부품 Benchmark 환산 전용')
 
 # --- prices (VAT 별도, 고객가)
@@ -135,7 +135,7 @@ inp('p_rr', 'price', 'Interface · Integration — Remodeling (Robot Home · Rai
     {'C': 400, 'B': 450, 'U': 450}, '주방 공사비 위 증분. 시스템에어컨 유상옵션(500~1,000만원) 대비 하단')
 inp('p_rr_new', 'price', 'Interface Option — New-build (설계 반영, MH 공급가)', '만원/세대', 'ASSUMPTION', {'C': 200, 'B': 220, 'U': 220},
     '건설사 · 가구사 마진 별도. 분양 고객가 약 300만원 가정')
-inp('p_rt_if', 'price', 'Interface Kit — Retrofit (Compact Mount · Dock · Vision Reference · Drop Zone)', '만원/세대', 'ASSUMPTION', 150,
+inp('p_rt_if', 'price', 'Interface Kit — Retrofit (Compact Mount · Dock · Vision 기준점 · Drop Zone)', '만원/세대', 'ASSUMPTION', 150,
     '기존 주방 유지. 최소 시공')
 inp('p_robot', 'price', 'Robot System ASP (Arm · Adaptive Hand · Vision · Safety · Controller)', '만원/대', 'ASSUMPTION',
     {'C': 1290, 'B': 1490, 'U': 1490}, 'Upside는 가격 인상 없음. WTP 검증 대상 1순위')
@@ -173,7 +173,7 @@ inp('smr', 'cost', 'Interface 표준부품 사용률', '%', 'TARGET',
     {'C': [0.40, 0.45, 0.55, 0.62, 0.65], 'B': [0.40, 0.50, 0.65, 0.75, 0.80], 'U': [0.40, 0.55, 0.70, 0.80, 0.85]},
     'M24 65% 이상 목표 (M18 60% 미만이면 Interface 설계 재검토)')
 inp('kit_new_cost', 'cost', 'Interface Option 원가 — New-build (공장 생산)', '만원/세대', 'ASSUMPTION', {'C': 145, 'B': 130, 'U': 120}, '')
-inp('rt_kit_cost', 'cost', 'Interface Kit 원가 — Retrofit', '만원/세대', 'ASSUMPTION', 70, 'Compact Mount · Dock · Vision Reference')
+inp('rt_kit_cost', 'cost', 'Interface Kit 원가 — Retrofit', '만원/세대', 'ASSUMPTION', 70, 'Compact Mount · Dock · Vision 기준점')
 inp('bom', 'cost', 'Robot System BOM (Adaptive Hand 포함)', '만원/대', 'ASSUMPTION',
     {'C': [1680, 1580, 1330, 1210, 1100], 'B': [1680, 1520, 1180, 1030, 915], 'U': [1680, 1460, 1100, 950, 820]},
     'BOM 구성 Benchmark 기반 (부록). 수량 · 국산화 · 자체 Hand 원가 하락 가정')
@@ -188,7 +188,7 @@ inp('visits', 'cost', '정기 방문 횟수', '회/년', 'ASSUMPTION',
 inp('visit_cost', 'cost', '방문 1회 원가 (인건비 · 이동)', '만원/회', 'ASSUMPTION',
     {'C': [15, 14, 12.5, 11, 10], 'B': [15, 13, 11, 9, 8], 'U': [15, 12, 10, 8, 7]},
     '참고: 제조사 출장비 2.8만원 (소비자 부과분, 2026)과 별개인 실제 원가. Route Density로 하락')
-inp('corrective', 'cost', '고장 방문 (Failure Rate)', '회/대·년', 'ASSUMPTION', {'C': 0.9, 'B': 0.6, 'U': 0.5}, '')
+inp('corrective', 'cost', '고장 방문 (연 고장 횟수)', '회/대·년', 'ASSUMPTION', {'C': 0.9, 'B': 0.6, 'U': 0.5}, '')
 inp('corr_cost', 'cost', '고장 방문 1회 원가 (소부품 포함)', '만원/회', 'ASSUMPTION', 18, '')
 inp('cloud', 'cost', 'Cloud · Software 운영비', '만원/대·년', 'ASSUMPTION', 4, '')
 inp('cons_cogs', 'cost', 'Consumables 원가율 (물류 포함)', '%', 'ASSUMPTION', {'C': 0.40, 'B': 0.35, 'U': 0.32}, '')
@@ -198,18 +198,18 @@ inp('partner_margin', 'cost', 'Kitchen · Interior · 설치 Partner 수수료 (
     {'C': 0.12, 'B': 0.10, 'U': 0.09}, '')
 inp('cac', 'cost', '직접판매 획득비용 (상담 · 설계 · Demo)', '만원/세대', 'ASSUMPTION', {'C': 180, 'B': 150, 'U': 140}, '')
 inp('bd_new', 'cost', '신축 Project 수주비용 (Spec · 견본주택)', '만원/Project', 'ASSUMPTION', 2000, '')
-inp('residual', 'cost', 'Rental 자산 잔존가치 (60개월 후)', '%', 'ASSUMPTION', 0.15, 'Refurbish 재배치')
+inp('residual', 'cost', 'Rental 자산 잔존가치 (60개월 후)', '%', 'ASSUMPTION', 0.15, 'Refurbish 후 재임대')
 inp('fin_rate', 'cost', 'Rental 자산 금융비용', '%/년', 'ASSUMPTION', 0.08, '캐피탈 조달금리 + Spread 가정')
 inp('payback_hurdle', 'cost', 'Rental Partner 요구 Payback', '개월', 'ASSUMPTION', 36, '렌탈 · 캐피탈사 협의로 검증')
 
 # --- volumes
 inp('rd', 'volume', 'Remodeling — MH 직접 판매 (시공은 파트너)', '세대', 'TARGET',
-    {'C': [0, 3, 20, 35, 40], 'B': [0, 3, 30, 50, 60], 'U': [0, 3, 35, 60, 70]}, 'Y2 = 가정 실증 3세대 (유료 목표, 할인)')
+    {'C': [0, 3, 20, 35, 40], 'B': [0, 3, 30, 50, 60], 'U': [0, 3, 35, 60, 70]}, 'Y2 = 실거주 3세대 실증 (유료 목표, 할인)')
 inp('rp', 'volume', 'Remodeling — 주방 · 인테리어 Partner 경유', '세대', 'TARGET',
     {'C': [0, 0, 10, 60, 150], 'B': [0, 0, 20, 130, 340], 'U': [0, 0, 30, 220, 600]}, 'Kitchen 가구 · 인테리어 Partner')
 inp('rt', 'volume', 'Existing Kitchen Retrofit (호환 주방, Partner 설치)', '세대', 'TARGET',
     {'C': [0, 0, 0, 10, 40], 'B': [0, 0, 0, 20, 80], 'U': [0, 0, 0, 30, 120]}, 'Phase 2. Y4 시작')
-inp('attach', 'volume', 'Robot Attach Rate (Remodeling, 설치 시점)', '%', 'ASSUMPTION',
+inp('attach', 'volume', '로봇 동시 구매율 (Remodeling, 설치 시점)', '%', 'ASSUMPTION',
     {'C': [1, 1, 0.75, 0.75, 0.75], 'B': [1, 1, 0.85, 0.85, 0.85], 'U': [1, 1, 0.85, 0.85, 0.85]}, '나머지는 Interface 선설치 (Robot 후설치)')
 inp('later_attach', 'volume', 'Interface 선설치 세대의 연간 Robot 후설치', '%/년', 'ASSUMPTION', {'C': 0.05, 'B': 0.10, 'U': 0.12}, '')
 inp('rental_share', 'volume', 'Rental 선택 비중', '%', 'ASSUMPTION',
@@ -219,7 +219,7 @@ inp('projects', 'volume', '신축 Interface Option 계약 Project', '개', 'TARG
     {'C': [0, 0, 0, 1, 2], 'B': [0, 0, 1, 2, 3], 'U': [0, 0, 2, 3, 4]}, '계약 2년 후 입주 · 설치')
 inp('hh_project', 'volume', 'Project당 세대수', '세대', 'ASSUMPTION', 800, '')
 inp('option_rate', 'volume', '신축 Interface Option 선택률', '%', 'ASSUMPTION', {'C': 0.06, 'B': 0.10, 'U': 0.12}, '')
-inp('new_attach', 'volume', '신축 입주 시 Robot Attach', '%', 'ASSUMPTION', {'C': 0.15, 'B': 0.25, 'U': 0.30}, '')
+inp('new_attach', 'volume', '신축 입주 시 로봇 구매율', '%', 'ASSUMPTION', {'C': 0.15, 'B': 0.25, 'U': 0.30}, '')
 
 # --- opex (same plan in all scenarios). Y1~Y2 = 24개월 Bottom-up 예산 (BUD['base']), Y3~Y5 = Series A 이후 가정
 _b = BUD['base']
@@ -520,9 +520,9 @@ def sens_household():
         ('직접판매 획득비용 ±50%', {'cac': lambda v: v * 1.5}, {'cac': lambda v: v * 0.5}),
         ('Care 요금 ±20%', {'p_care': lambda v: v * 0.8}, {'p_care': lambda v: v * 1.2}),
         ('Care 방문 원가 ±30%', {'visit_cost': lambda v: [x * 1.3 for x in v]}, {'visit_cost': lambda v: [x * 0.7 for x in v]}),
-        ('Interface 표준부품 사용률 -15pp/+15pp', {'smr': lambda v: [x - 0.15 for x in v]}, {'smr': lambda v: [x + 0.15 for x in v]}),
+        ('Interface 표준부품 사용률 -15%p/+15%p', {'smr': lambda v: [x - 0.15 for x in v]}, {'smr': lambda v: [x + 0.15 for x in v]}),
         ('설치 · Calibration 원가 ±50%', {'comm_cost': lambda v: [x * 1.5 for x in v]}, {'comm_cost': lambda v: [x * 0.5 for x in v]}),
-        ('Failure Rate 1.2 ↔ 0.3회', {'corrective': 1.2, 'warranty': 0.06}, {'corrective': 0.3, 'warranty': 0.025}),
+        ('고장 횟수 1.2 ↔ 0.3회/년', {'corrective': 1.2, 'warranty': 0.06}, {'corrective': 0.3, 'warranty': 0.025}),
         ('Consumables 구매율 50% ↔ 90%', {'cons_attach': 0.5}, {'cons_attach': 0.9}),
     ]
     out = []
@@ -540,12 +540,12 @@ def sens_company():
          {'p_robot': lambda v: v * 1.2, 'p_rr': lambda v: v * 1.2}),
         ('Robot BOM ±20%', {'bom': lambda v: [x * 1.2 for x in v]}, {'bom': lambda v: [x * 0.8 for x in v]}),
         ('Partner 경유 Remodeling ±30%', {'rp': lambda v: [x * 0.7 for x in v]}, {'rp': lambda v: [x * 1.3 for x in v]}),
-        ('Robot Attach Rate 65% ↔ 95%', {'attach': lambda v: [1, 1, .65, .65, .65]}, {'attach': lambda v: [1, 1, .95, .95, .95]}),
-        ('Interface 표준부품 사용률 -15pp/+10pp', {'smr': lambda v: [x - 0.15 for x in v]}, {'smr': lambda v: [min(x + 0.10, 0.95) for x in v]}),
+        ('로봇 동시 구매율 65% ↔ 95%', {'attach': lambda v: [1, 1, .65, .65, .65]}, {'attach': lambda v: [1, 1, .95, .95, .95]}),
+        ('Interface 표준부품 사용률 -15%p/+10%p', {'smr': lambda v: [x - 0.15 for x in v]}, {'smr': lambda v: [min(x + 0.10, 0.95) for x in v]}),
         ('설치 · Calibration 원가 ±50%', {'comm_cost': lambda v: [x * 1.5 for x in v], 'comm_cost_rt': lambda v: [x * 1.5 for x in v]},
          {'comm_cost': lambda v: [x * 0.5 for x in v], 'comm_cost_rt': lambda v: [x * 0.5 for x in v]}),
         ('Care 방문 원가 ±30%', {'visit_cost': lambda v: [x * 1.3 for x in v]}, {'visit_cost': lambda v: [x * 0.7 for x in v]}),
-        ('Failure Rate 1.2 ↔ 0.3회', {'corrective': 1.2, 'warranty': 0.06}, {'corrective': 0.3, 'warranty': 0.025}),
+        ('고장 횟수 1.2 ↔ 0.3회/년', {'corrective': 1.2, 'warranty': 0.06}, {'corrective': 0.3, 'warranty': 0.025}),
         ('Retrofit 물량 0 ↔ 2배', {'rt': lambda v: [0] * 5}, {'rt': lambda v: [x * 2 for x in v]}),
         ('신축 Option 선택률 5% ↔ 15%', {'option_rate': 0.05}, {'option_rate': 0.15}),
         ('Rental 비중 60% ↔ 20%', {'rental_share': lambda v: [0, .3, .3, .6, .6]}, {'rental_share': lambda v: [0, .3, .3, .2, .2]}),
@@ -653,7 +653,7 @@ def funding_plan():
 
 # ---------------------------------------------------------------- BOM breakdown (ASSUMPTION, 만원/대) — sums equal Base bom Y1 / Y3 / Y5
 BOM_BREAKDOWN = [  # (item, pilot(Y1), Y3, Y5, basis)
-    ('6축 Arm (가반 3~5kg, Controller 포함)', 950, 600, 450, 'FAIRINO FR5 $6,999 · xArm 6 $8,399 · UR3e $23k~33k 공개가 → OEM · 국산 Partner'),
+    ('6축 Arm (가반하중 3~5kg, Controller 포함)', 950, 600, 450, 'FAIRINO FR5 $6,999 · xArm 6 $8,399 · UR3e $23k~33k 공개가 → OEM · 국산 Partner'),
     ('Adaptive Hand (손가락 2~3 · 교체형 Pad · 힘/미끄럼 감지 · Quick Changer)', 200, 120, 85, 'Robotiq 2F-85 약 $5,825 (2026 판매가) · Inspire RH56 $4,500~9,899 대비 자체 설계 목표가'),
     ('Rail · Carriage · Servo (Remodeling · New-build, 2.4~3.6m)', 180, 150, 120, 'Belt 구동 7축 Rail. Retrofit은 Compact Mount'),
     ('Vision (Depth Camera 2대 + Mount)', 110, 80, 60, 'Orbbec Gemini 335 $384~400 · RealSense D405 $514'),
@@ -686,7 +686,7 @@ def kpi_links():
     inst_h = [yr(a['comm_cost'], t) / hour for t in range(N)]
     inst_h_rt = [yr(a['comm_cost_rt'], t) / hour for t in range(N)]
     visit_h = [yr(a['visit_cost'], t) / hour for t in range(N)]
-    grasps_day = 20 * 2 * 1.5                         # 식기 20개 × (적재 + 인출) × 하루 1.5회
+    grasps_day = 20 * 2 * 1.5                         # 식기 20개 × (적재 + 꺼내기) × 하루 1.5회
     pad_life = grasps_day * 365 / a['n_grip']
     return dict(hour=hour, inst_h=inst_h, inst_h_rt=inst_h_rt, visit_h=visit_h, grasps_day=grasps_day, pad_life=pad_life,
                 care_unit=[care_cost(a, t) for t in range(N)], bom=list(a['bom']))

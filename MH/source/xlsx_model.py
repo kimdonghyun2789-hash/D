@@ -63,7 +63,7 @@ lines = [
     ('  Inputs_Yearly: 연도별 가정 (Volume, BOM, Interface 표준부품 사용률, 인원 · 지출 등). Y1~Y2 지출 = Budget_24M 팀 · 지출 계획과 같은 값', None),
     ('  FM_Conservative / FM_Base / FM_Upside: 5개년 Bottom-up 손익 (INSTALL · OPERATE · EXPAND 매출층, 채널 3종)', None),
     ('  Scenario_Summary: 3개 시나리오 요약 (억원)', None),
-    ('  Household: 대표 1세대 5년 경제성 (Remodeling 구매 · Rental, Retrofit, New-build)', None),
+    ('  Household: 대표 세대 5년 경제성 (Remodeling 구매 · Rental, Retrofit, New-build)', None),
     ('  Unit_Economics: Rental 월 원가 Build-up · Payback, Care · Consumables 단위 경제성, BOM 구성', None),
     ('  Market: Bottom-up 4개 시장 (Remodeling · Retrofit · New-build · Recurring)', None),
     ('  Sensitivity: 세대 Contribution 민감도 (수식) + 회사 Y5 Contribution 민감도 (model.py 정적 결과)', None),
@@ -135,7 +135,7 @@ LINES = [
     ('rt', 'Existing Kitchen Retrofit', '세대', 'n'),
     ('ni', 'New-build Interface Option 입주 (계약 2년 후)', '세대', 'n'),
     ('kitchens', '설치 세대 합계', '세대', 'n'),
-    ('att', 'Robot Attach Rate (Remodeling)', '%', 'p'),
+    ('att', '로봇 동시 구매율 (Remodeling)', '%', 'p'),
     ('later', 'Interface 선설치 세대 Robot 후설치', '대', 'n'),
     ('pl_remodel', 'Robot 설치 — Remodeling', '대', 'n'),
     ('pl_new', 'Robot 설치 — New-build 입주', '대', 'n'),
@@ -357,7 +357,7 @@ for s in MD.SC:
 # ---------------------------------------------------------------- Household (Base)
 ws = wb.create_sheet('Household')
 setw(ws, [46, 15, 15, 15, 15, 15, 15, 44])
-ws['A1'] = 'Household Economics — 대표 1세대, 5년, Base (만원)'; ws['A1'].font = TITLE
+ws['A1'] = 'Household Economics — 대표 세대, 5년, Base (만원)'; ws['A1'].font = TITLE
 ws['A2'] = ('기대값 기준 (Skill · Tool은 구매율 반영). 구매 모델은 Care 가입 세대 기준. Y3 / Y5 = 해당 연도의 원가 수준을 5년간 적용. '
             'Remodeling = 직접판매 (획득비용), Retrofit = Partner 경유 (수수료), New-build = Project 수주비용 ÷ Option 세대.')
 b = lambda k: S(k, 'B')
@@ -538,7 +538,7 @@ UE_EXTRA = {'irr_row': pr0 + 4, 'bom_check_row': r}
 ws = wb.create_sheet('Market')
 setw(ws, [60, 16, 12, 12, 64])
 ws['A1'] = 'Market Sizing — Bottom-up 4개 시장 (Base)'; ws['A1'].font = TITLE
-ws['A2'] = '큰 TAM 대신 세대 수 × 적용률 × 단가. 아파트 재고는 기회 기반이지 구매시장 규모가 아님. 핵심 비율은 모두 ASSUMPTION (검증 계획 부록).'
+ws['A2'] = '큰 TAM 대신 세대 수 × 적용률 × 단가. 아파트 재고는 잠재 대상이지 실구매 시장 규모가 아님. 핵심 비율은 모두 ASSUMPTION (검증 계획 부록).'
 hdr(ws, 3, ['항목', '값', '단위', 'Tag', '산식 / 출처'])
 cons_y_f = f"({b('p_grip')}*{b('n_grip')}+{b('p_clean')}*{b('n_clean')}+{b('p_protect')}*{b('n_protect')})"
 MK = [
@@ -552,7 +552,7 @@ MK = [
     ('Premium Kitchen 교체 세대', '=B9*B10', '천/년', 'DERIVED', ''),
     ('Remodeling 적용 가능률', f"={b('a_fit_rate')}", '%', 'ASSUMPTION', ''),
     ('① Remodeling 대상 세대', '=B11*B12', '천/년', 'DERIVED', ''),
-    ('Remodeling 패키지 기대 매출/세대', f"={b('p_rr')}+{Y('attach', 'B', 4)}*({b('p_robot')}+{b('p_comm')})", '만원', 'DERIVED', 'Interface + Attach × (Robot + 설치)'),
+    ('Remodeling 패키지 기대 매출/세대', f"={b('p_rr')}+{Y('attach', 'B', 4)}*({b('p_robot')}+{b('p_comm')})", '만원', 'DERIVED', 'Interface + 로봇 구매율 × (Robot + 설치)'),
     ('① SAM Remodeling', '=B13*B14/10', '억원/년', 'DERIVED', '천세대 × 만원 ÷ 10 = 억원'),
     ('Premium 세대 비중 (재고)', f"={b('a_prem_stock')}", '%', 'ASSUMPTION', ''),
     ('Premium 세대 식기세척기 보유율', f"={b('a_dw_premium')}", '%', 'ASSUMPTION', 'TO BE VALIDATED'),
@@ -567,7 +567,7 @@ MK = [
     ('신축 Premium 세대', '=B24*B25', '천/년', 'DERIVED', ''),
     ('Interface Option 선택률', f"={b('option_rate')}", '%', 'ASSUMPTION', ''),
     ('③ New-build 대상 세대', '=B26*B27', '천/년', 'DERIVED', ''),
-    ('New-build 패키지 기대 매출/세대', f"={b('p_rr_new')}+{b('new_attach')}*({b('p_robot')}+{b('p_comm')})", '만원', 'DERIVED', 'Option + 입주 Attach × (Robot + 설치)'),
+    ('New-build 패키지 기대 매출/세대', f"={b('p_rr_new')}+{b('new_attach')}*({b('p_robot')}+{b('p_comm')})", '만원', 'DERIVED', 'Option + 입주 로봇 구매율 × (Robot + 설치)'),
     ('③ SAM New-build', '=B28*B29/10', '억원/년', 'DERIVED', ''),
     ('구매 고객 ARPU (Care × 가입률 + Consumables × 구매율)', f"={b('care_attach')}*{b('p_care')}+{b('cons_attach')}*{cons_y_f}", '만원/년', 'DERIVED', ''),
     ('④ Installed Base 1,000대당 연 OPERATE 매출 (구매 고객)', '=B31*1000/10000', '억원/년', 'DERIVED', ''),
@@ -594,7 +594,7 @@ assert MK_ROW['아파트 수 (2025)'] == 6 and MK_ROW['① SAM Remodeling'] == 1
 ws = wb.create_sheet('Sensitivity')
 PARAMS = ['p_robot', 'bom', 'p_rr', 'cac', 'p_care', 'visit_cost', 'smr', 'comm_cost', 'corrective', 'warranty', 'cons_attach']
 setw(ws, [40] + [11] * len(PARAMS) + [14, 14])
-ws['A1'] = 'Sensitivity — Remodeling 구매 1세대 5년 Contribution (Base, Y3 원가, 직접판매)'; ws['A1'].font = TITLE
+ws['A1'] = 'Sensitivity — Remodeling 구매 세대당 5년 Contribution (Base, Y3 원가, 직접판매)'; ws['A1'].font = TITLE
 ws['A2'] = '각 행은 한 변수만 바꾼 파라미터 세트 (파란 글자 = 변경값). Contribution 수식은 Household 시트와 동일 구조.'
 hdr(ws, 4, ['Case'] + PARAMS + ['Contribution', 'Δ vs Base'])
 base_vals = {'p_robot': f"={b('p_robot')}", 'bom': f"={yb('bom', 2)}", 'p_rr': f"={b('p_rr')}", 'cac': f"={b('cac')}",
@@ -604,7 +604,7 @@ base_vals = {'p_robot': f"={b('p_robot')}", 'bom': f"={yb('bom', 2)}", 'p_rr': f
 CASES = [('Base', {})]
 for name, lo, hi in [('Robot ASP (WTP)', {'p_robot': '*0.8'}, {'p_robot': '*1.2'}), ('Robot BOM', {'bom': '*1.2'}, {'bom': '*0.8'}),
                      ('Interface 가격', {'p_rr': '*0.8'}, {'p_rr': '*1.2'}), ('직접판매 획득비용', {'cac': '*1.5'}, {'cac': '*0.5'}),
-                     ('Failure Rate', {'corrective': '=1.2', 'warranty': '=0.06'}, {'corrective': '=0.3', 'warranty': '=0.025'}),
+                     ('고장 횟수', {'corrective': '=1.2', 'warranty': '=0.06'}, {'corrective': '=0.3', 'warranty': '=0.025'}),
                      ('Care 요금', {'p_care': '*0.8'}, {'p_care': '*1.2'}), ('Care 방문 원가', {'visit_cost': '*1.3'}, {'visit_cost': '*0.7'}),
                      ('Interface 표준부품 사용률', {'smr': '-0.15'}, {'smr': '+0.15'}), ('설치 · Calibration 원가', {'comm_cost': '*1.5'}, {'comm_cost': '*0.5'}),
                      ('Consumables 구매율', {'cons_attach': '=0.5'}, {'cons_attach': '=0.9'})]:

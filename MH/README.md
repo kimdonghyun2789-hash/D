@@ -14,8 +14,8 @@
 | `MH_Robotics_IR_Internal_QA.pptx` · `.pdf` | 내부 검토용 7장 (예상질문 · 방어논리 · Evidence · Founder 입력 · 투자심사 Memo · Tag 원칙) — 제출 제외 |
 | `MH_Robotics_Financial_Model.xlsx` | 수식 기반 모델: Inputs (Tag · 출처) → 5Y FM 3 Scenario · Household · Unit_Economics · Market · Budget_24M · Sensitivity · Sources |
 | `docs/00~20` | 결과물 20종 (01~15 제출 · 공유용 · 16~20 내부 검토용) · [docs/00_README_Index.md](docs/00_README_Index.md) |
-| `render3d/` | 3D 콘셉트 렌더 생성기 (three.js + Playwright) · 충돌검사 · 보관/전개 경로 · 평면 JSON · Adaptive Hand 모델 (`web/hand.js`) |
-| `assets/renders/` | 덱에 들어간 렌더 PNG + Callout Anchor · 충돌검사 JSON |
+| `render3d/` | 3D 콘셉트 렌더 생성기 (three.js + Playwright) · 간섭 검토 · 보관/펼침 경로 · 평면 JSON · Adaptive Hand 모델 (`web/hand.js`) |
+| `assets/renders/` | 덱에 들어간 렌더 PNG + Callout Anchor · 간섭 검토 JSON |
 | `archive/ARKI_v4/` | 이전 판 (ARKI Robotics v4) 덱 · PDF · 재무모델 · 문서 · 문서 생성기 — 삭제 없이 보관 |
 
 ## 본문 구성 (18장)
@@ -23,16 +23,16 @@
 | 쪽 | 구성 | 화면 제목 |
 |---|---|---|
 | 01 | MH Robotics · Kitchen Manipulation Robotics System | MH Robotics — Kitchen Manipulation Robotics System |
-| 02 | 가전 자동화 이후 남은 Physical Workflow | 가전 자동화 이후에도 사람 몫으로 남은 주방 Physical Workflow |
+| 02 | 가전 자동화 이후 남은 Physical Workflow | 가전 자동화 이후에도 사람이 하는 주방 Physical Workflow |
 | 03 | 왜 Kitchen인가 | 주방: 기술 · 사업성 동시 검증이 가능한 첫 적용 공간 |
 | 04 | 가정용 Robot 적용의 구조적 한계 | 주방마다 다른 환경 → 동일 로봇 반복 설치의 구조적 한계 |
-| 05 | MH Robotics Technology Strategy | Robot 적응 + 반복 작업점에만 최소 Interface |
-| 06 | Adaptive Kitchen Robot Hand | 핵심 Hardware: 주방 물체 대응 Adaptive Robot Hand |
-| 07 | Manipulation Skill / Calibration | 핵심 기술: Calibration 기반 Skill의 주방 간 이전 |
+| 05 | MH Robotics Technology Strategy | 로봇이 주방에 적응 + 반복 작업 위치에만 최소 Interface |
+| 06 | Adaptive Kitchen Robot Hand | 핵심 Hardware: 식기 · 도구 대응 Adaptive Robot Hand |
+| 07 | Manipulation Skill / Calibration | 핵심 기술: Calibration 기반 Skill의 타 주방 적용 |
 | 08 | MH Kitchen Robotics System | MH Kitchen Robotics System: 5개 Layer 통합 제품 |
 | 09 | 첫 검증 Workflow: CLEAN → ASSIST → COOK | CLEAN 첫 검증 → 동일 Platform으로 ASSIST · COOK 확장 |
-| 10 | Existing / Remodeling / New-build 적용 | 단일 제품 · 3가지 설치 경로 (기존 주방 · Remodeling · 신축) |
-| 11 | Business Model | 설치 매출 → 사용 기간 반복매출 → 기능 확장매출의 3층 BM |
+| 10 | Existing / Remodeling / New-build 적용 | 단일 제품 · 3가지 설치 유형 (기존 주방 · Remodeling · 신축) |
+| 11 | Business Model | 설치 매출 → 사용 기간 반복매출 → 기능 확장매출의 3단계 BM |
 | 12 | Market / Beachhead | Bottom-up 시장 산정: 세대 수 × 적용률 × 단가 |
 | 13 | GTM / Partner Distribution | Premium Remodeling 검증 → Retrofit → 신축 B2B2C 확장 |
 | 14 | Technology-to-Economics / Moat | R&D 성과의 설치비 · 서비스비 · 확장매출 연결 구조 |
@@ -45,30 +45,30 @@
 
 ## 핵심 결과 (Base, 전부 DERIVED from ASSUMPTION · 물량은 TARGET)
 
-- 1세대 5년 (Remodeling · 구매): 설치 시점 2,020만원 · 5년 매출 2,418만원 · Lifetime Contribution 428만원 (Y3 원가) → 798만원 (Y5 원가). Conservative는 Y3 원가 기준 적자 → WTP · BOM이 1 · 2순위 변수
+- 세대당 5년 (Remodeling · 구매): 설치 시점 2,020만원 · 5년 매출 2,418만원 · 누적 공헌이익 428만원 (Y3 원가) → 798만원 (Y5 원가). Conservative는 Y3 원가 기준 적자 → WTP · BOM이 1 · 2순위 변수
 - 가치 Gap: CLEAN만의 가사 대체 가치 월 약 18만원 < Rental 월 33만원 → Premium 고객 · ASSIST 확장 · WTP 검증 (M18)
 - 시장 (Bottom-up): SAM 연 3,676억원 (Remodeling 3,212 · Retrofit 280 · New-build 184) · Y5 계획 91.5억원 = 대상 세대 2.5%
 - 5개년: Y5 매출 91.5억원 · 설치 560세대 · 영업이익 -33.6억원 · 누적 현금 최저 -125억원 · 손익분기 연 약 1,376세대
 - 24개월: 지출 23.4억원 = TIPS 정부지원 8억원 (선정 시) + Seed 14~19억원 (Lean 13.8억원 ~ Base 19.0억원, Buffer 3개월 포함) · TIPS 미선정 시 21.5억원. TIPS 과제 10.67억원 (정부 8 + 기관부담 2.67)
-- Series A 이후 Y3~Y4 현금 소요 약 68억원 · Rental Partner 단순 회수 약 49개월 (요구 36개월 가정 → 조건 협의)
+- Series A 이후 Y3~Y4 현금 소요 약 68억원 · Rental Partner 단순 회수기간 약 49개월 (요구 36개월 가정 → 조건 협의)
 - 내부 검토 판단: **MEET** — 판단을 바꿀 Evidence 5개: Founder · 핵심 팀 · 기술 Baseline (M3 이내) · 고객 행동 · 설치 경제성 · Partner ([docs/20](docs/20_Investment_Memo.md))
 
 ## Environment Interface 예 (Remodeling 채널, 3D 모델 기준 CONCEPT)
 
-- 주방 전체 표준화가 아니라 반복 작업점에만 최소 Interface: Robot Home (Dock) · Rail · 식세기 Interface · Storage Dock · Vision Reference. Retrofit은 Compact Mount · Dock, New-build는 설계 단계 반영
-- Remodeling 예 (부록 B3 · B4): 로봇 작업 줄 Robot Home 45 · Drop Zone 70 · 싱크 80 · 서랍 60 · 식세기 60cm. Rail은 상부장 하단 (약 139cm), 바닥 사용 안 함. 조리기구 구역 = 로봇 금지 구역
-- 낮은 작업점: 식세기 하단 랙을 44cm 당겨 위에서 적재 (Gripper 최저 약 37cm), 서랍도 열어서 위에서 넣음
-- 충돌검사: 로봇 링크 = 캡슐, 가구 = 상자. 작업 자세 · 보관 · 전개 경로 · Rail 이동 · 자기충돌 관통 0cm (`assets/renders/*.json`의 `ik`). 실제 기구 검증 전
+- 주방 전체 표준화가 아니라 반복 작업 위치에만 최소 Interface: Robot Home (Dock) · Rail · 식세기 Interface · 수납 Dock · Vision 기준점. Retrofit은 Compact Mount · Dock, New-build는 설계 단계 반영
+- Remodeling 예 (부록 B3 · B4): 로봇 작업 구간 Robot Home 450 · Drop Zone 700 · 싱크 800 · 서랍 600 · 식세기 600mm. Rail은 상부장 하단 (바닥에서 약 1,390mm), 바닥 레일 없음. 쿡탑 구역 = 로봇 진입 금지
+- 하단 작업: 식세기 하단 랙을 440mm 당겨 위에서 적재 (Gripper 최저 도달 높이 약 370mm), 서랍도 열어서 위에서 넣음
+- 간섭 검토: 로봇 링크 = 캡슐, 가구 = 상자. 작업 자세 · 보관 · 펼침 경로 · Rail 이동 · 자체 간섭 0cm (`assets/renders/*.json`의 `ik`). 실제 기구 검증 전
 
 ## 확보 평면 5종 (Kitchen Variation 근거, 부록 B2)
 
 | 평면 | 구분 | 크기 (mm) | 주방 형태 | 3D | 기본 배치 |
 |---|---|---|---|---|---|
-| 구축 2Bay A | 구축 · 계단실형 (코어 포함) | 12,390 × 11,670 | ㄱ자 (윗벽 3,255mm + 옆벽) | 완료 · 원본과 겹쳐 확인 | 수용: Remodeling 한 줄 3,150mm · 충돌검사 0cm (B4) |
-| 구축 2Bay B | 구축 · 전면 발코니 | 10,940 × 8,500 | ㄱ자 (싱크 줄 약 2.6m + 아랫벽) · 거실과 개방 | 완료 | 미수용 · 냉장고 이전 시 약 3.3m |
-| 신축 2Bay | 신축 · 탑상형 | 15,120 × 10,730 | 옆벽 + 윗벽 + 아일랜드형 카운터 | 미착수 | 미검토 |
-| 신축 3Bay | 신축 · 판상형 | 12,400 × 10,550 | 윗벽 싱크 줄 약 2.6m + 옆벽 쿡탑 + 반도형 | 완료 | 미수용 · 단축형 (Compact Mount) 검토 |
-| 신축 4Bay | 신축 · 판상형 | 14,700 × 9,780 | 윗벽 싱크 줄 약 2.8m + 옆벽 쿡탑 + 반도형 | 완료 | 미수용 · 단축형 검토 |
+| 구축 2Bay A | 구축 · 계단실형 (코어 포함) | 12,390 × 11,670 | ㄱ자 (싱크대 벽 3,255mm + 쿡탑 벽) | 완료 · 원도면 중첩 확인 | 가능: 일자 3,150mm · 간섭 없음 (B4) |
+| 구축 2Bay B | 구축 · 전면 발코니 | 10,940 × 8,500 | ㄱ자 (싱크대 벽 약 2.6m + 쿡탑 벽) · 거실 일체형 | 완료 | 불가 · 냉장고 위치 변경 시 약 3.3m |
+| 신축 2Bay | 신축 · 탑상형 | 15,120 × 10,730 | ㄱ자 + 아일랜드 | 미착수 | 미검토 |
+| 신축 3Bay | 신축 · 판상형 | 12,400 × 10,550 | ㄷ자 (싱크대 벽 약 2.6m + 쿡탑 벽) | 완료 | 불가 · Compact Mount 검토 |
+| 신축 4Bay | 신축 · 판상형 | 14,700 × 9,780 | ㄷ자 (싱크대 벽 약 2.8m + 쿡탑 벽) | 완료 | 불가 · Compact Mount 검토 |
 
 ## 다시 만들기
 

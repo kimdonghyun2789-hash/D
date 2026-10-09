@@ -25,7 +25,7 @@
 | 항목 | 값 | Tag | 비고 |
 |---|---|---|---|
 | 국내 리모델링 시장 (건축물 전체) | 2025 37조원 → 2030 44조원 (전망) | FACT | 한국건설산업연구원 · 주택 주방 단독 아님 [S7] |
-| 프리미엄 Kitchen 동향 | 수입 · 고가 맞춤 약 90% · 키친바흐 +17% · 밀레 연계 +173% | FACT | 한샘 발표 인용 보도 [S9] |
+| 프리미엄 주방 동향 | 수입 · 고가 맞춤 약 90% · 키친바흐 +17% · 밀레 연계 +173% | FACT | 한샘 발표 인용 보도 [S9] |
 | 한샘 리하우스 매출 | 2025 1Q 1,147억원 (−4.3%) | FACT | 분기 실적 [S10] |
 | 신축 유상옵션 / 분양가 | 평균 9.7% (분양가상한제 7개 단지) | FACT | 보도 · 옵션 선택 문화 [S11] |
 | 코웨이 (렌탈 · 방문관리) | 2025 매출 4조9,636억 · 영업이익 8,787억 · 국내 계정 748만 (2026 1Q) | FACT | 실적 보도 [S12] |
@@ -52,14 +52,14 @@
 | Player | 구분 | 공개 내용 | 가격 · 상태 | 접근 | 출처 |
 |---|---|---|---|---|---|
 | 1X NEO | Humanoid (가정) | 가사 전반 · 원격조작 학습 | $20,000 또는 월 $499 · 2026년 말 첫 배송 목표 (확인 안 됨) | 이동 · 범용 손 · 설치 불필요 | [S19] |
-| Figure (Helix 02) | Humanoid | 식세기 인출 → 수납 → 적재 약 4분 연속 시연 (회사 발표) | 가격 · 출시 미공개 | 범용 VLA 모델 학습 | [S45] |
+| Figure (Helix 02) | Humanoid | 식세기 꺼내기 → 수납 → 적재 약 4분 연속 시연 (회사 발표) | 가격 · 출시 미공개 | 범용 VLA 모델 학습 | [S45] |
 | Sunday Robotics Memo | 이동형 가정 로봇 | 식세기 적재 · 테이블 정리 시연 | Beta 2026년 말 · 양산 $10k 미만 목표 | 집안 이동 · 학습 Data | [S20] |
 | LG CLOiD | Humanoid형 홈로봇 | 식세기 비우기 · 빨래 등 시연 (CES 2026) | 2026 실증 · 2028 상용화 목표 · 가격 미공개 | 가전 연계 · 팔 범위 무릎 높이 이상 (보도) | [S21] |
 | Samsung | 가전 · 로봇 | Bot Handy (2021 Concept) · 2026 AI 가전 중심 | 출시 확인 안 됨 | 가전 내부 자동화 | [S22] |
 | Moley Robotic Kitchen | 로봇 주방 | 천장 Rail 양팔 조리 | £248,000 (Arm 포함, 2021) | 전용 주방 · 조리 중심 | [S23] |
 | Posha | 조리대 조리 로봇 | 자동 조리 | $1,750 + 월 $15 | 조리 전용 기기 | [S24] |
 | Tesla Optimus | Humanoid | 가정용 목표 | 소비자 목표가 $20k~30k (양산 시) | 범용 | [S25] |
-| UR · Doosan + Robotiq | Cobot + Gripper | 부품 (산업용) | UR3e $23k~33k · E0509 약 $22k · 2F-85 약 $5,825 | Integrator 맞춤 | [S15 · S42] |
+| UR · Doosan + Robotiq | 협동로봇 + Gripper | 부품 (산업용) | UR3e $23k~33k · E0509 약 $22k · 2F-85 약 $5,825 | SI 업체 맞춤 | [S15 · S42] |
 | 한샘 · 리바트 | 주방가구 | 키친바흐 × 가게나우 빌트인 협업 | 로봇 협업 보도 없음 (2026) | 주방 시공 · 수납 | [S51] |
 
 ## 5. 안전 · 인증 · 식품 접촉 기준
@@ -71,8 +71,8 @@
 | 개인 서비스 로봇 | ISO 13482 개정 FDIS (2025.7) · 국내 ISO 13482 인증 사례 (유진로봇 AMR) | FACT | [S31 · S47] |
 | 전기 · EMC | KC 전기용품 안전 · 전자파 적합성 (가정용) — 적용 범위 사전상담 필요 | TBV | - |
 | 식품 접촉 | 「기구 및 용기 · 포장의 기준 및 규격」 고무제 규격 (ASSIST · COOK 단계 필수) | FACT | [S48] |
-| MH 안전 원칙 | 사람 위로 운반 금지 · Zone 진입 시 감속 · 정지 · 저가반 · 조리기구 구역 No-go · 고장 시 Safe Home Return · 수동 주방으로 사용 가능 | CONCEPT | - |
-| 일정 | M4 Risk Assessment · M9 인증기관 사전상담 · M12 안전 기능 시험 · M18 사전시험 (전기 · EMC) · Series A 이후 본인증 | TARGET | - |
+| MH 안전 원칙 | 사람 위로 운반 금지 · Zone 진입 시 감속 · 정지 · 저가반하중 Arm · 쿡탑 구역 진입 금지 · 고장 시 Robot Home 자동 복귀 · 로봇 없이 일반 주방 사용 가능 | CONCEPT | - |
+| 일정 | M4 위험성평가 · M9 인증기관 사전상담 · M12 안전 기능 시험 · M18 사전시험 (전기 · EMC) · Series A 이후 본인증 | TARGET | - |
 
 ## 6. 재무모델에 쓰인 FACT 입력 (17개)
 
@@ -104,7 +104,7 @@
 | Premium 비중 10% | ASSUMPTION | 견적 분포 (주방 2,000만원 이상) | M6 |
 | Remodeling 적용 가능률 60% | ASSUMPTION | 평면 30개 분석 · 상담 주방 실측 | M6 |
 | Premium 재고 10% · 식세기 60% · 호환 40% · 전환 0.5%/년 | ASSUMPTION / TBV | 소비자 조사 n ≥ 300 · 평면 분석 | M18 |
-| 신축 Premium 단지 15% · Option 10% · 입주 Attach 25% | ASSUMPTION | 건설사 · 분양 옵션 사례 조사 | M18 |
+| 신축 Premium 단지 15% · Option 10% · 입주 시 로봇 구매 25% | ASSUMPTION | 건설사 · 분양 옵션 사례 조사 | M18 |
 | Care 가입 70% · 소모품 구매 70% | ASSUMPTION | 실증 3세대 · Pilot 가입 · 교체 Data | M24 |
 
 - 공식 통계 미확인 항목: 식기세척기 보급률 · 연간 주방 교체 세대 수 · Premium Kitchen 시장 규모 → 견적 20건 · 평면 30개 · 소비자 조사 n ≥ 300으로 대체 예정
@@ -121,19 +121,19 @@
 | S6 | 주택 매매거래 (2025) | 72.6만호 (+13%, 10년 평균 88.5만호) | 2025 연간, 한국부동산원 자료 | KB주택시장리뷰 2026년 2월호: https://kbthink.com/realestate/insights/research/260213-3.html | 17, A2 |
 | S7 | 국내 리모델링 시장 전망 (건축물 전체, 비주거 포함) | 2025년 37조원 → 2030년 44조원 (리모델링 23.3조 + 유지보수 13.8조, 2025) | 한국건설산업연구원 전망치 | https://m.ekn.kr/view.php?key=523568 | A3 |
 | S8 | 한샘 리하우스 스타일패키지 (전체 리모델링) | 30평대 평당 100만원대 → 약 3,000만원 | 2019 보도 (가격 시점 오래됨) | https://www.dailian.co.kr/news/view/1008108/ | 14, A3 |
-| S9 | 프리미엄 Kitchen 동향 (한샘 키친바흐·빌트인 가전 연계) | 국내 프리미엄 키친 시장 약 90%가 수입·고가 맞춤 / 키친바흐 매출 +17% (2025.6 기준) / 밀레 연계 부엌 매출 +173% (2024 대비) | 회사 발표 인용 보도 | https://www.heraldk.com/article/2025072318143590645 , https://www.heraldk.com/article/2026062223520679105 | 17, A3 |
+| S9 | 프리미엄 주방 동향 (한샘 키친바흐·빌트인 가전 연계) | 국내 프리미엄 키친 시장 약 90%가 수입·고가 맞춤 / 키친바흐 매출 +17% (2025.6 기준) / 밀레 연계 부엌 매출 +173% (2024 대비) | 회사 발표 인용 보도 | https://www.heraldk.com/article/2025072318143590645 , https://www.heraldk.com/article/2026062223520679105 | 17, A3 |
 | S10 | 한샘 리하우스 부문 매출 | 2025 1Q 1,147억원 (−4.3%) | 분기 실적 | https://newstomato.com/ReadNews.aspx?no=1284742 | A3 |
 | S11 | 신축 유상옵션 비용 비중 | 분양가상한제 단지 7곳 평균 분양가 대비 9.7% | 수도권 분양 단지 보도 | https://www.etoday.co.kr/news/view/2392578 | 12, 13, A3 |
 | S12 | 코웨이 실적 · 렌탈 계정 (가전 Rental · 방문관리 사례) | 2024 매출 4조3,101억원 · 국내 계정 671만 / 2025 매출 4조9,636억원 · 영업이익 8,787억원 / 2026 1Q 국내 계정 748만 (전체 1,173만) | 회사 실적 발표 인용 보도 | https://news.bizwatch.co.kr/article/consumer/2025/02/14/0029 , https://dealsite.co.kr/articles/156536 , https://www.heraldk.com/article/2026050717254859414 | A12, A19 |
 | S13 | 가전 A/S 출장비 (소비자 부과분) | 삼성전자서비스 평절기 기본 2.8만원 (2026.1.8~) / LG전자 평절기 평일 주간 2.8만원 | 2026 | https://biz.sbs.co.kr/amp/article/20000282569 , https://biz.sbs.co.kr/amp/article/20000310315 | A13 |
 | S14 | 가사서비스 요금 | 플랫폼 4시간 59,900~64,900원 (약 1.5~1.6만원/h) / 2026 최저임금 10,320원 | 공개 요금·고시 | https://apps.apple.com/pl/app/id997730211 , https://www.activpayroll.com/news-articles/south-korea-announces-2026-minimum-wage-increase | 14 |
-| S15 | 협동로봇 가격 (Arm + Controller) | UR3e $23k~33k (공식 정가 미공개, 유통가) / Doosan E0509 약 $22k / UFACTORY xArm 6 $8,399 / FAIRINO FR5 $6,999 / UFACTORY Lite 6 Kit $4,482 (가반 0.6kg) | 유통가·공개가 (2025~2026) | https://standardbots.com/blog/universal-robot-price , https://robotomated.com/explore/manufacturing/doosan-e-series-e0509 , https://www.robotshop.com/products/xarm-6-dof-robotic-arm , https://top3dshop.com/product/fairino-fr5-robotic-arm , https://www.robotshop.com/products/ufactory-6-axis-robot-arm-lite-6-kit | A4 |
+| S15 | 협동로봇 가격 (Arm + Controller) | UR3e $23k~33k (공식 정가 미공개, 유통가) / Doosan E0509 약 $22k / UFACTORY xArm 6 $8,399 / FAIRINO FR5 $6,999 / UFACTORY Lite 6 Kit $4,482 (가반하중 0.6kg) | 유통가·공개가 (2025~2026) | https://standardbots.com/blog/universal-robot-price , https://robotomated.com/explore/manufacturing/doosan-e-series-e0509 , https://www.robotshop.com/products/xarm-6-dof-robotic-arm , https://top3dshop.com/product/fairino-fr5-robotic-arm , https://www.robotshop.com/products/ufactory-6-axis-robot-arm-lite-6-kit | A4 |
 | S16 | Gripper / Fingertip / Food-grade Suction Cup | Robotiq 2F-85 $4,999~ / OnRobot RG2 약 $3,200 / Robotiq Fingertip $175~195 / Piab Food-grade Silicone Cup £7~20 (FDA 21 CFR 177.2600) / 2026 판매가 2F-85 약 $5,825 (미국 리셀러, Coupling · Fingertip 포함) | 공개가 | https://qviro.com/product/robotiq/2f-85-robotiq/ , https://www.roboticscenter.ai/en/hardware/robotiq-2f-85 , https://automationdistribution.com/brands/Robotiq.html , https://uk.rubix.com/en/flat-suction-cups-f-silicone/p-G2010133211 , https://www.roboticscenter.ai/ko/blog/robotiq-gripper-guide | A4, A13 |
 | S17 | Depth Camera | Intel RealSense D405 $514 / D435 $538 / Orbbec Gemini 335 $384~400 | 공개가 | https://openelab.com/collections/robotic-camera , https://knoxlabs.com/products/orbbec-gemini-335-depth-camera | A4 |
 | S18 | Linear Module (소형) | HIWIN KK 계열 $73~245 (소형 모듈, Robot 7축 Rail과 다름) | 유통가 | https://qviro.com/product/hiwin/electric-linear-axis-kk-series | A4 |
 | S19 | 1X NEO (가정용 Humanoid) | $20,000 구매 또는 월 $499 구독. 첫 가정 배송 목표 2026년 말 (2026.10 기준 고객 배송 완료 확인 안 됨) | 회사 발표 인용 보도 | https://www.fastcompany.com/91428202/1x-technologies-home-robot-neo , https://heise.de/-11287205 | 14, 20, A9 |
 | S20 | Sunday Robotics Memo | 식세기 적재 · 테이블 정리 시연 (회사 발표, 낯선 Airbnb 6곳 시연 보도) · Beta 2026년 말 (회사 웹사이트) · 양산 시 $10k 미만 목표 | 보도 | https://euronews.com/next/2025/11/25/meet-memo-a-home-robot-that-can-grab-wine-glasses-and-load-the-dishwasher , https://sacra.com/c/sunday/ , https://sunday.ai/ , https://www.eweek.com/news/sunday-memo-home-robot/ | 20, A9 |
-| S21 | LG CLOiD | CES 2026 공개 · 식세기 비우기 등 시연 · 2026 현장 실증 → 가정용 상용화 2028 목표 (회사 언급 보도) · 팔 작업 범위 무릎 높이 이상 (보도) · 판매가 미공개 | CES 2026 | https://www.dezeen.com/2026/01/06/lg-ai-powered-robot-ces-2026/ , https://v.daum.net/v/20260429185809070 , https://www.nocutnews.co.kr/news/6453121 | 20, A9 |
+| S21 | LG CLOiD | CES 2026 공개 · 식세기 비우기 등 시연 · 2026 현장 실증 → 가정용 상용화 2028 목표 (회사 언급 보도) · 팔 가동 범위 무릎 높이 이상 (보도) · 판매가 미공개 | CES 2026 | https://www.dezeen.com/2026/01/06/lg-ai-powered-robot-ces-2026/ , https://v.daum.net/v/20260429185809070 , https://www.nocutnews.co.kr/news/6453121 | 20, A9 |
 | S22 | Samsung (가정용 로봇 · 주방) | Bot Handy: CES 2021 공개 Concept (식기 이동 시연), 출시 일정 미공개 / CES · IFA 2026 주방 전시는 AI 가전 중심, 식기 로봇 출시 확인 안 됨 | 보도 | https://www.sammobile.com/news/meet-samsung-new-ai-powered-household-robots-ces-2021/ , https://www.tomsguide.com/home/home-appliances/2026-could-be-a-tipping-point-for-the-smart-kitchen-according-to-samsung | A9 |
 | S23 | Moley Robotic Kitchen | Arm 포함 £248,000 / Arm 제외 £128,000~140,000 (천장 Rail 양팔) | 2021 판매 개시 보도 | https://thespoon.tech/moleys-robotic-kitchen-goes-on-sale/ | 20, A9 |
 | S24 | Posha (Countertop Cooking Robot) | $1,750 (선주문 $1,500) + 월 $15 | 2025 | https://techcrunch.com/2025/05/06/meet-posha-a-countertop-robot-that-cooks-your-meals-for-you | A9 |
@@ -157,7 +157,7 @@
 | S42 | Robot Hand Benchmark (상용) | Robotiq 2F-85 약 $5,825 (2026 판매가) · Inspire RH56 계열 $4,500~9,899 (판매가) · Inspire RH56E2 엄지 파지력 30N | 판매처 공개가 (2026) | https://www.roboticscenter.ai/ko/blog/robotiq-gripper-guide , https://www.knoxlabs.com/collections/robotic-hands | 본문 06 · 부록 |
 | S43 | 식품 직접 접촉용 Finger Gripper (상용) | Schmalz OFG: 실리콘 파지부 · IP68 · 최대 80°C · 마모부품 Kit 별도 | 제조사 제품 페이지 | https://www.schmalz.com/en/vacuum-technology-for-automation/vacuum-components/area-gripping-systems-and-end-effectors/finger-grippers/finger-grippers-ofg-312389/10.01.51.00001/ | 본문 06 · 15 · 부록 (선행기술) |
 | S44 | 미끄럼 감지 연구 (촉각 센서) | GelSight Mini 기반 실시간 미끄럼 감지, 일상 물체 10종 평균 정확도 99% (실험실) · 센서 가격 비공개 (견적) | Hu et al., arXiv 2303.00935 | https://arxiv.org/abs/2303.00935 , https://www.roboticscenter.ai/guides/best-tactile-sensors-robot-learning/ | 부록 KPI |
-| S45 | Figure Helix 식기세척기 시연 | 2025.9 식세기 적재 시연 · 2026.1 Helix 02 식세기 인출 → 수납 → 적재 약 4분 연속 (회사 발표, 독립 검증 없음) | 보도 | https://futurism.com/future-society/figure-robot-loading-dishwasher , https://interestingengineering.com/innovation/humanoid-robot-tackles-dishwasher-ai | 본문 15 |
+| S45 | Figure Helix 식기세척기 시연 | 2025.9 식세기 적재 시연 · 2026.1 Helix 02 식세기 꺼내기 → 수납 → 적재 약 4분 연속 (회사 발표, 독립 검증 없음) | 보도 | https://futurism.com/future-society/figure-robot-loading-dishwasher , https://interestingengineering.com/innovation/humanoid-robot-tackles-dishwasher-ai | 본문 15 |
 | S46 | Physical Intelligence openpi (공개 모델) | π0 · π0-FAST · π0.5 코드 · 가중치 공개 (2025.2~), 테이블 정리 등 Fine-tune 예시 | 회사 공개 Repository | https://github.com/Physical-Intelligence/openpi , https://pi.website/blog/openpi | 본문 15 |
 | S47 | 가정용 로봇 안전 표준 동향 | IEC 63682 (구 IEC 60335-2-123) Robots for household and similar use — Safety: 2026 CDV 단계 (독일 의견수렴 2026.5.15~7.15) · ISO 13482 개정 FDIS (2025.7) | 표준기관 프로젝트 페이지 (발행 전) | https://www.vde-verlag.de/standards/1701976/e-din-iec-63682-vde-0700-123-2026-06.html , https://knowledge.bsigroup.com/products/bs-en-iec-63682-robots-for-household-and-similar-use-safety-particular-requirements , https://din.de/en/getting-involved/standards-committees/nam/projects/wdc-proj:din21:348357354 | 본문 08 · 16 · 부록 |
 | S48 | 식품 접촉 부품 규정 | 식품위생법상 "기구" (식품에 직접 닿는 기계 · 기구) · 「기구 및 용기 · 포장의 기준 및 규격」 (식약처 고시) 고무제 (실리콘) 재질 · 용출 규격 | 법령 · 고시 | https://www.mfds.go.kr/brd/m_207/view.do?seq=14529 , https://food.chemlinked.com/database/view/6844 | 본문 06 · 부록 |

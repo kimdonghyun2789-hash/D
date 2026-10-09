@@ -65,7 +65,7 @@
  },
  {
   "id": "S9",
-  "item": "프리미엄 Kitchen 동향 (한샘 키친바흐·빌트인 가전 연계)",
+  "item": "프리미엄 주방 동향 (한샘 키친바흐·빌트인 가전 연계)",
   "value": "국내 프리미엄 키친 시장 약 90%가 수입·고가 맞춤 / 키친바흐 매출 +17% (2025.6 기준) / 밀레 연계 부엌 매출 +173% (2024 대비)",
   "basis": "회사 발표 인용 보도",
   "source": "https://www.heraldk.com/article/2025072318143590645 , https://www.heraldk.com/article/2026062223520679105",
@@ -114,7 +114,7 @@
  {
   "id": "S15",
   "item": "협동로봇 가격 (Arm + Controller)",
-  "value": "UR3e $23k~33k (공식 정가 미공개, 유통가) / Doosan E0509 약 $22k / UFACTORY xArm 6 $8,399 / FAIRINO FR5 $6,999 / UFACTORY Lite 6 Kit $4,482 (가반 0.6kg)",
+  "value": "UR3e $23k~33k (공식 정가 미공개, 유통가) / Doosan E0509 약 $22k / UFACTORY xArm 6 $8,399 / FAIRINO FR5 $6,999 / UFACTORY Lite 6 Kit $4,482 (가반하중 0.6kg)",
   "basis": "유통가·공개가 (2025~2026)",
   "source": "https://standardbots.com/blog/universal-robot-price , https://robotomated.com/explore/manufacturing/doosan-e-series-e0509 , https://www.robotshop.com/products/xarm-6-dof-robotic-arm , https://top3dshop.com/product/fairino-fr5-robotic-arm , https://www.robotshop.com/products/ufactory-6-axis-robot-arm-lite-6-kit",
   "used_in": "A4"
@@ -162,7 +162,7 @@
  {
   "id": "S21",
   "item": "LG CLOiD",
-  "value": "CES 2026 공개 · 식세기 비우기 등 시연 · 2026 현장 실증 → 가정용 상용화 2028 목표 (회사 언급 보도) · 팔 작업 범위 무릎 높이 이상 (보도) · 판매가 미공개",
+  "value": "CES 2026 공개 · 식세기 비우기 등 시연 · 2026 현장 실증 → 가정용 상용화 2028 목표 (회사 언급 보도) · 팔 가동 범위 무릎 높이 이상 (보도) · 판매가 미공개",
   "basis": "CES 2026",
   "source": "https://www.dezeen.com/2026/01/06/lg-ai-powered-robot-ces-2026/ , https://v.daum.net/v/20260429185809070 , https://www.nocutnews.co.kr/news/6453121",
   "used_in": "20, A9"
@@ -354,7 +354,7 @@
  {
   "id": "S45",
   "item": "Figure Helix 식기세척기 시연",
-  "value": "2025.9 식세기 적재 시연 · 2026.1 Helix 02 식세기 인출 → 수납 → 적재 약 4분 연속 (회사 발표, 독립 검증 없음)",
+  "value": "2025.9 식세기 적재 시연 · 2026.1 Helix 02 식세기 꺼내기 → 수납 → 적재 약 4분 연속 (회사 발표, 독립 검증 없음)",
   "basis": "보도",
   "source": "https://futurism.com/future-society/figure-robot-loading-dishwasher , https://interestingengineering.com/innovation/humanoid-robot-tackles-dishwasher-ai",
   "used_in": "본문 15"

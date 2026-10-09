@@ -134,7 +134,7 @@ DELIV = [
     ('07', '시장 Data 및 Source', '07_Market_Data_Sources.md', '주택 · 리모델링 · 렌탈 · Care · Robot Arm · Hand Benchmark · 경쟁 · 기준 · 출처 전체', '제출 · 공유'),
     ('08', 'FACT / DERIVED / ASSUMPTION / TARGET 구분표', '08_Tag_Register.md', f"재무모델 입력 {len(M['inputs'])}개 전체 · 주요 계산값 · CONCEPT 목록", '제출 · 공유'),
     ('09', 'Business Model', '09_Business_Model.md', 'INSTALL → OPERATE → EXPAND · 가격 가설 · Rental · Care · Consumables · MH Core vs Partner', '제출 · 공유'),
-    ('10', '5-Year Household Economics', '10_Household_Economics_5Y.md', '대표 1세대 5년 매출 · 매출총이익 · 서비스 원가 · Lifetime Contribution · 범위 · 민감도', '제출 · 공유'),
+    ('10', '5-Year Household Economics', '10_Household_Economics_5Y.md', '대표 세대 5년 매출 · 매출총이익 · 서비스 원가 · 누적 공헌이익 · 범위 · 민감도', '제출 · 공유'),
     ('11', 'TIPS R&D Work Package', '11_TIPS_RnD_Work_Package.md', 'TIPS 과제 (기술 검증) vs Seed (사업 검증 · 과제 외 개발) · WP1~WP6 · 과제 편성', '제출 · 공유'),
     ('12', 'Technical KPI', '12_Technical_KPI.md', 'Manipulation · Application · Business KPI 20개 · Benchmark · 목표 근거 · Hand 시험 계획', '제출 · 공유'),
     ('13', 'Patent Portfolio', '13_Patent_Portfolio.md', '출원 후보 12개 묶음 · 사업 중요도 · 차별성 · Prior Art Risk · 우선순위', '제출 · 공유'),
@@ -170,30 +170,30 @@ write('00_README_Index.md', f"""# MH Robotics — Seed · TIPS IR 산출물 Inde
 GOAL = ('Adaptive Robot Hand · Manipulation Skill · Calibration · Environment Integration 결합 → 다양한 실제 주방에서 '
         '식기 정리부터 조리까지 단계적으로 확장하는 Kitchen Manipulation Robotics System 개발  \n'
         '- 초기 CLEAN Workflow로 기술 검증 → 같은 Platform에서 ASSIST · COOK으로 Capability 확장  \n'
-        '- 기존 주방 · Remodeling · New-build에 서로 다른 Integration 수준으로 적용  \n'
+        '- 기존 주방 · Remodeling · New-build에 서로 다른 시공 범위로 적용  \n'
         '- Robot · 설치 매출 이후 Rental · Care · Consumables · Skill · Tool · Upgrade로 Installed Base 기반 반복매출 확보')
 ROWS01 = [
-    ('문제', '가전은 기기 안의 일을 자동화했지만, 가전 사이의 Physical Workflow (식기 이동 · 식세기 적재/인출 · 수납 · 재료 투입 · 도구)는 사람 몫. Appliance Automation ≠ Physical Workflow Automation',
+    ('문제', '가전은 내부 기능을 자동화했지만, 가전 사이의 Physical Workflow (식기 이동 · 식세기 적재/꺼내기 · 수납 · 재료 투입 · 도구)는 사람 작업. Appliance Automation ≠ Physical Workflow Automation',
      '무급 가사노동 582.4조원 중 가정관리 459.5조원 (2024) FACT · 식사 후 정리 40분/일 ASSUMPTION'),
-    ('왜 Kitchen', '동작 종류가 적고 반복 (Pick · Place · Insert · Remove) · 작업영역 고정 · 물체 범위가 닫혀 있음 (기술). 매일 사용 · Remodeling / 입주라는 구매 계기 (사업)', '사업 가설 → WTP n ≥ 300 (M18)'),
-    ('구조적 한계', '주방마다 형태 · 가전 · 수납 · 치수 · 설치오차가 달라 범용 Robot은 집마다 인식 · 교시 · Calibration을 반복 → 설치시간 · 비용 · 신뢰성 문제', '받은 평면 5종 중 3종 기본 배치 불가 (DERIVED)'),
-    ('접근', 'Object → Adaptive Hand · Task → Skill Library · Kitchen → Perception + Calibration · 반복 작업점 → Minimal Interface. 주방 전체 표준화는 하지 않음', 'CONCEPT'),
+    ('왜 Kitchen', '동작 종류가 적고 반복 (Pick · Place · Insert · Remove) · 작업영역 고정 · 물체 종류가 한정됨 (기술). 매일 사용 · Remodeling / 입주라는 구매 계기 (사업)', '사업 가설 → WTP n ≥ 300 (M18)'),
+    ('구조적 한계', '주방마다 형태 · 가전 · 수납 · 치수 · 시공 오차가 달라 범용 Robot은 집마다 인식 · 티칭 · Calibration을 반복 → 설치시간 · 비용 · 신뢰성 문제', '받은 평면 5종 중 3종 기본 배치 불가 (DERIVED)'),
+    ('접근', 'Object → Adaptive Hand · Task → Skill Library · Kitchen → Perception + Calibration · 반복 작업 위치 → Minimal Interface. 주방 전체 표준화는 하지 않음', 'CONCEPT'),
     ('제품', 'A Robot Module · B Manipulation Layer · C Calibration Layer · D Environment Interface · E Human-Robot Safety. CLEAN (첫 검증) → ASSIST (중기) → COOK (장기 R&D)', 'CONCEPT · FUTURE'),
     ('설치 경로', f"제품 하나 · 경로 셋: Retrofit {man(HH['retrofit_purchase_Y3']['y0'])} · Remodeling {man(H3['y0'])} · New-build Option {v('p_rr_new')}만원 (B2B) + 입주 후 Robot", 'ASSUMPTION (VAT 별도)'),
-    ('BM', f"INSTALL → OPERATE (Rental 월 {v('p_rent')}만 · Care 연 {v('p_care')}만 · 소모품 연 {CO['list_y']:.0f}만) → EXPAND (Skill {v('p_sw')}만 · Tool {v('p_tool')}만). 1세대 5년 매출 {man(H3['rev5'])} · 기여이익 {man(H3['contrib5'])} (Y3 원가) → {man(H5['contrib5'])} (Y5 원가)", 'DERIVED (from ASSUMPTION)'),
+    ('BM', f"INSTALL → OPERATE (Rental 월 {v('p_rent')}만 · Care 연 {v('p_care')}만 · 소모품 연 {CO['list_y']:.0f}만) → EXPAND (Skill {v('p_sw')}만 · Tool {v('p_tool')}만). 세대당 5년 매출 {man(H3['rev5'])} · 공헌이익 {man(H3['contrib5'])} (Y3 원가) → {man(H5['contrib5'])} (Y5 원가)", 'DERIVED (from ASSUMPTION)'),
     ('시장', f"Bottom-up SAM 연 {MK['sam']:,.0f}억원 (Remodeling {MK['sam_remodel']:,.0f} · Retrofit {MK['sam_retro']:,.0f} · New-build {MK['sam_new']:,.0f}). Y5 계획 매출 {B['rev'][4] / 1e4:.1f}억원 = 대상 세대의 {MK['som_share_hh'] * 100:.1f}%", 'DERIVED · TARGET'),
-    ('GTM', 'Phase 1 Premium Kitchen Remodeling (검증) → Phase 2 호환 주방 Retrofit → Phase 3 신축 B2B2C (Scale). 일반 시공은 Partner, MH는 Robot · Hand · Skill · Calibration · Interface 표준 · Safety · Commissioning', 'Partner 조건 협의 (M18~M24)'),
+    ('GTM', 'Phase 1 Premium Kitchen Remodeling (검증) → Phase 2 호환 주방 Retrofit → Phase 3 신축 B2B2C (Scale). 인테리어 시공은 Partner, MH는 Robot · Hand · Skill · Calibration · Interface 표준 · Safety · 시운전', 'Partner 조건 협의 (M18~M24)'),
     ('자금', f"24개월 지출 {eok(F['spend_total'])} = TIPS 정부지원 8억원 (Technology De-risking, 선정 시) + Seed {F['seed_range'][0]}~{F['seed_range'][1]}억원 (Commercial Validation, Lean ~ Base). TIPS 미선정 시 Lean 범위 {eok(F['seed_no_tips'])}", 'DERIVED · TIPS 규정 FACT'),
-    ('24개월 Evidence', '가정 3세대 CLEAN ≥ 90% · 주방 3종 Transfer 하락 ≤ 10%p · Calibration ≤ 4시간 · BOM · 설치 · Service 원가 실측 · WTP n ≥ 300 · 유료 전환 ≥ 2세대 · Partner 조건 · 출원 5건', 'TARGET'),
+    ('24개월 Evidence', '실거주 3세대 CLEAN ≥ 90% · 주방 3종 적용 하락 ≤ 10%p · Calibration ≤ 4시간 · BOM · 설치 · Service 원가 실측 · WTP n ≥ 300 · 유료 전환 ≥ 2세대 · Partner 조건 · 출원 5건', 'TARGET'),
 ]
 KEYNUM = [
-    ('국내 아파트 (기회 기반, 구매시장 아님)', f"약 {MK['apt'] / 10:,.0f}만호", 'DERIVED (총주택 2,018.1만 × 65.8%, FACT)'),
+    ('국내 아파트 (잠재 대상, 실구매 시장 아님)', f"약 {MK['apt'] / 10:,.0f}만호", 'DERIVED (총주택 2,018.1만 × 65.8%, FACT)'),
     ('연간 주방 교체 (아파트)', '30만 세대', f"ASSUMPTION (교차검증 {MK['tri1'] / 10:.1f}만 · {MK['tri2'] / 10:.1f}만)"),
     ('Remodeling Beachhead', f"{MK['fit'] * 1000:,.0f}세대/년 · {MK['sam_remodel']:,.0f}억원", 'DERIVED (30만 × Premium 10% × 적용 60%)'),
     ('Robot System ASP', man(v('p_robot')), 'ASSUMPTION (WTP 검증 1순위)'),
     ('Robot BOM Y1 시제품 → Y3 → Y5', f"{v('bom')[0]:,} → {v('bom')[2]:,} → {v('bom')[4]:,}만원", 'ASSUMPTION (공개가 Benchmark 기반)'),
-    ('Remodeling 1세대 설치 시점 매출', man(H3['y0']), 'DERIVED (Interface 450 + Robot 1,490 + 설치 80)'),
-    ('1세대 5년 Lifetime Contribution', f"{man(H3['contrib5'])} (Y3) · {man(H5['contrib5'])} (Y5)", 'DERIVED'),
+    ('Remodeling 세대당 설치 시점 매출', man(H3['y0']), 'DERIVED (Interface 450 + Robot 1,490 + 설치 80)'),
+    ('세대당 5년 누적 공헌이익', f"{man(H3['contrib5'])} (Y3) · {man(H5['contrib5'])} (Y5)", 'DERIVED'),
     ('Y5 매출 · 설치 (Base Plan)', f"{B['rev'][4] / 1e4:.1f}억원 · {B['kitchens'][4]:,.0f}세대", 'TARGET'),
     ('24개월 지출', eok(F['spend_total']), 'DERIVED (Bottom-up)'),
     ('Seed 범위', f"{F['seed_range'][0]}~{F['seed_range'][1]}억원 (Lean {eok(F['seed_lean'])} · Base {eok(F['seed_base'])})", 'DERIVED'),
@@ -307,12 +307,12 @@ write('04_Slide_Visual.md', f"""# 04. 각 Slide Visual 구성
 REQ = [
     ('1', '실제 한국 Apartment 느낌의 MH Kitchen Robotics System Concept Rendering', '01 · 08 (부록 B3 · B4)', 'v2_cover · v2_after · v2_stow_1~5 · plan_old2a_*', '구축 2Bay 대표 평면 비율 · 상부장 하단 Rail · Robot Home · 식세기 Interface. 특정 단지 표기 없음'),
     ('2', 'Adaptive Robot Hand 확대도', '06', 'hand_hero', 'Quick Changer · 힘/토크 센서 · Wrist Camera · 교체형 Food-contact Pad · Palm Suction'),
-    ('3', 'Plate · Cup · Bowl · Tool Handling', '06', 'hand_plate · hand_cup · hand_bowl · hand_tool', '접시 가장자리 Pinch · 컵 외벽 감싸기 · 그릇 테두리 Pinch · 국자 손잡이 Power Grasp (손가락 각도를 접촉점에 맞춰 계산)'),
-    ('4', '다양한 Kitchen → Calibration → 동일 Skill', '07', '도형 (평면 도식 3)', 'Kitchen A ㅡ자 · B ㄱ자 · C Retrofit → Mapping · 기준점 · 가전/수납 위치 · Task Parameter → 같은 CLEAN Skill Library'),
+    ('3', 'Plate · Cup · Bowl · Tool Handling', '06', 'hand_plate · hand_cup · hand_bowl · hand_tool', '접시 가장자리 Pinch 파지 · 컵 몸통 감싸쥐기 · 그릇 테두리 Pinch 파지 · 국자 손잡이 Power Grasp (손가락 각도를 접촉점에 맞춰 계산)'),
+    ('4', '다양한 Kitchen → Calibration → 동일 Skill', '07', '도형 (평면 도식 3)', 'Kitchen A 일자 · B ㄱ자 · C Retrofit → Mapping · 기준점 · 가전/수납 위치 · Task Parameter → 같은 CLEAN Skill Library'),
     ('5', 'Kitchen CLEAN Workflow', '09', 'v2_seq_1~5', '식기 인식 → Pick → Dishwasher Loading → Unloading → Storage Return'),
-    ('6', 'Existing / Remodeling / New-build 비교', '10', 'fig_flow_retrofit · fig_flow_remodel · fig_flow_newbuild + 표', '같은 주방 · 같은 시점 3D 3컷 (Compact Mount · Rail · 설계 반영, CONCEPT) + Integration 수준 막대 + 6행 비교표 (고객 상황 · 공사 범위 · Interface · 설치 · 매출 가설 · 역할)'),
+    ('6', 'Existing / Remodeling / New-build 비교', '10', 'fig_flow_retrofit · fig_flow_remodel · fig_flow_newbuild + 표', '같은 주방 · 같은 시점 3D 3컷 (Compact Mount · Rail · 설계 반영, CONCEPT) + 시공 범위 막대 + 6행 비교표 (고객 상황 · 공사 범위 · Interface · 설치 · 매출 가설 · 역할)'),
     ('7', 'Robot + Skill + Calibration + Environment Interface Architecture', '08', 'v2_after + A~E 층 카드', 'A Robot Module · B Manipulation · C Calibration · D Environment Interface · E Safety'),
-    ('8', 'Business Model: Install → Operate → Expand', '11', '도형 · 막대', '3층 항목 · 가격 가설 + 1세대 5년 층별 막대 + Rental 3자 구조'),
+    ('8', 'Business Model: Install → Operate → Expand', '11', '도형 · 막대', '3단계 항목 · 가격 가설 + 세대당 5년 층별 막대 + Rental 3자 구조'),
 ]
 DATA = {
     'm01': '렌더 v2_cover (CONCEPT)',
@@ -363,12 +363,12 @@ three.js + Playwright (Chromium) 기반. `MH/render3d`에서:
 
 ```bash
 npm install                 # three 0.170 · playwright
-bash render_v2.sh           # v2_cover · v2_after · v2_seq_1~5 · v2_stow_1~5 (충돌검사 포함)
-bash render_plans.sh        # 대표 평면 (구축 2Bay A) 원본 · Interface 적용 · 충돌검사
+bash render_v2.sh           # v2_cover · v2_after · v2_seq_1~5 · v2_stow_1~5 (간섭 검토 포함)
+bash render_plans.sh        # 대표 평면 (구축 2Bay A) 원본 · Interface 적용 · 간섭 검토
 bash render_hand.sh         # hand_hero · hand_plate · hand_cup · hand_bowl · hand_tool
 {FIG_SH}```
 
-PNG 옆 JSON = Callout 위치 (Anchor) · 충돌검사 결과.
+PNG 옆 JSON = Callout 위치 (Anchor) · 간섭 검토 결과.
 """)
 
 
@@ -467,8 +467,8 @@ DERIVED_ROWS = [
     ('New-build SAM', f"{MK['sam_new']:,.0f}억원/년", '20만 × 15% × 10% × 612.5만원', 'market.B.sam_new'),
     ('Recurring (1,000대당)', f"{MK['recurring_per_1000']:.1f}억원/년", f"ARPU {MK['arpu']:.1f}만원 (Care 70% × 48 + 소모품 70% × 36)", 'market.B.recurring_per_1000'),
     ('Y5 매출 / 대상 세대 비중', f"{B['rev'][4] / 1e4:.1f}억원 · {MK['som_share_hh'] * 100:.1f}%", '560세대 ÷ 대상 세대 합', 'market.B.som · som_share_hh'),
-    ('1세대 5년 매출 · 기여이익 (Y3 원가)', f"{man(H3['rev5'])} · {man(H3['contrib5'])} ({pct(H3['cm5'], 1)})", '부록 D2 · 10번 문서', 'household.purchase_direct_Y3'),
-    ('1세대 5년 기여이익 (Y5 원가)', f"{man(H5['contrib5'])} ({pct(H5['cm5'], 1)})", 'BOM 915 · 설치 38 · Care 26.8만원', 'household.purchase_direct_Y5'),
+    ('세대당 5년 매출 · 공헌이익 (Y3 원가)', f"{man(H3['rev5'])} · {man(H3['contrib5'])} ({pct(H3['cm5'], 1)})", '부록 D2 · 10번 문서', 'household.purchase_direct_Y3'),
+    ('세대당 5년 공헌이익 (Y5 원가)', f"{man(H5['contrib5'])} ({pct(H5['cm5'], 1)})", 'BOM 915 · 설치 38 · Care 26.8만원', 'household.purchase_direct_Y5'),
     ('Rental 월 원가 · Payback (Y3)', f"{R3['cost_m']:.1f}만원 · {R3['payback']:.0f}개월", '감가 + 금융 + Care + Grip + Reserve', 'rental.Y3'),
     ('Partner IRR (연)', pct(PI['irr_y'], 1), f"Robot을 ASP의 88% ({PI['price']:,.0f}만원)에 매입, 월 {PI['inflow']:.0f}만원 순유입, 잔존 15%", 'partner_irr.B'),
     ('Care 마진 Y3 → Y5', f"{pct(C3['margin'])} → {pct(C5['margin'])}", '요금 48만원 − (방문 + 고장 + Cloud)', 'care.Y3 · Y5'),
@@ -477,19 +477,19 @@ DERIVED_ROWS = [
     ('24개월 지출', eok(F['spend_total']), '팀 계획 + 비용 + 예비비 10% + 연구수당', 'funding.spend_total'),
     ('TIPS 과제 총액', f"{TP['total'] / 1e4:.2f}억원", '정부 8억원 ÷ 75%', 'tips.total'),
     ('Seed Base · Lean · TIPS 미선정', f"{eok(F['seed_base'])} · {eok(F['seed_lean'])} · {eok(F['seed_no_tips'])}", '지출 − TIPS 정부지원 + Y2 월지출 × 3개월', 'funding.seed_*'),
-    ('손익분기 설치 물량 (Y5 단가 · 원가)', f"연 약 {M['breakeven_kitchens']:,.0f}세대", 'Y5 Opex ÷ 세대당 기여이익', 'breakeven_kitchens'),
+    ('손익분기 설치 물량 (Y5 단가 · 원가)', f"연 약 {M['breakeven_kitchens']:,.0f}세대", 'Y5 Opex ÷ 세대당 공헌이익', 'breakeven_kitchens'),
     ('Series A 이후 2년 (Y3~Y4) 현금 소요', eok(M['post_seed_burn']['y3_y4'], 0), 'Base 계획 기준', 'post_seed_burn.y3_y4'),
 ]
 TARGET_ROWS = [(f"`{d['key']}`", d['desc'], fmtv(d['vals']['B'], d['unit']), d['src'] or '-') for d in M['inputs'] if d['tag'] == 'TARGET']
 CONCEPT_ROWS = [
     ('Adaptive Robot Hand 형상 · 구성', '06 · 부록 B1', 'CONCEPT (v1~v3 설계 전)'),
-    ('Robot Home · Rail · 식세기 Interface · Storage Dock', '01 · 08 · 10 · 부록 B3 · B4', 'CONCEPT (3D 충돌검사 = 모델 기준)'),
+    ('Robot Home · Rail · 식세기 Interface · Storage Dock', '01 · 08 · 10 · 부록 B3 · B4', 'CONCEPT (3D 간섭 검토 = 모델 기준)'),
     ('CLEAN 5단계 동작 장면', '09', 'CONCEPT'),
     ('Kitchen A~C 평면 도식', '07', 'CONCEPT (개념 예시)'),
     ('Calibration 4요소 · Skill 실행 구조', '07 · 08', 'CONCEPT (개발 전)'),
     ('ASSIST Skill Pack · Tool', '09 · 11', 'FUTURE (출시 전제, Y3~)'),
     ('COOK · Robot Upgrade', '09 · 11', 'FUTURE CONCEPT (5년 Base 매출 미반영)'),
-    ('MH 안전 원칙 (Zone · 감속 · Safe Home Return)', '08 · 부록 B5', 'CONCEPT'),
+    ('MH 안전 원칙 (Zone · 감속 · Robot Home 자동 복귀)', '08 · 부록 B5', 'CONCEPT'),
 ]
 write('08_Tag_Register.md', f"""# 08. FACT / DERIVED / ASSUMPTION / TARGET 구분표
 
@@ -498,9 +498,9 @@ write('08_Tag_Register.md', f"""# 08. FACT / DERIVED / ASSUMPTION / TARGET 구�
 
 {md_table(['Tag', '정의', '예'], [
     ('FACT', '공식 통계 · 공개자료로 확인된 값', '총주택 2,018.1만호 · TIPS 8억원 · Robotiq 2F-85 약 $5,825'),
-    ('DERIVED', 'FACT 또는 가정으로 계산한 값 (산식 공개)', '아파트 약 1,328만호 · 1세대 5년 기여이익 · Seed 범위'),
+    ('DERIVED', 'FACT 또는 가정으로 계산한 값 (산식 공개)', '아파트 약 1,328만호 · 세대당 5년 공헌이익 · Seed 범위'),
     ('ASSUMPTION', '현재 사업 가설 (검증 전)', 'Robot ASP 1,490만원 · Premium 10% · 적용률 60%'),
-    ('TARGET', '24개월 · 이후 목표', '가정 실증 ≥ 90% · 출원 5건 · 설치 물량'),
+    ('TARGET', '24개월 · 이후 목표', '실거주 실증 ≥ 90% · 출원 5건 · 설치 물량'),
     ('CONCEPT', '실물 없는 설계 개념 (그림 · 도식)', 'Hand 렌더 · Robot Home'),
     ('TBV (To Be Validated)', '검증 방법이 정해진 미확인 사실', '식세기 보급률 · 인증 적용 범위'),
     ('FUTURE', '현재 없는 제품 · 기능', 'COOK · Upgrade'),
@@ -548,15 +548,15 @@ write('09_Business_Model.md', f"""# 09. Business Model
 
 INSTALL (Robot System · Interface · 설치) → OPERATE (Rental · Care · 소모품 반복매출) → EXPAND (같은 Platform에 Skill · Tool 추가). Installed Base 증가 → 반복 · 확장 매출 비중 확대 구조 (가설).
 
-## 3층 구조 (가격 = ASSUMPTION, VAT 별도)
+## 3단계 구조 (가격 = ASSUMPTION, VAT 별도)
 
 {md_table(['층', '항목', '가격 가설', '근거 · 비고'], [
     ('INSTALL', 'Robot System (Arm · Adaptive Hand · Vision · Safety)', man(v('p_robot')), f"BOM Y3 {v('bom')[2]:,} → Y5 {v('bom')[4]:,}만원 · Hardware 마진 {pct(1 - v('bom')[2] / v('p_robot'))} → {pct(1 - v('bom')[4] / v('p_robot'))}"),
-    ('INSTALL', 'Interface · Integration', f"Retrofit {v('p_rt_if')} · Remodeling {v('p_rr')} · New-build Option {v('p_rr_new')}만원", 'Robot Home · Rail · 식세기 Interface · Dock · Vision Reference (경로별 수준 다름)'),
+    ('INSTALL', 'Interface · Integration', f"Retrofit {v('p_rt_if')} · Remodeling {v('p_rr')} · New-build Option {v('p_rr_new')}만원", 'Robot Home · Rail · 식세기 Interface · Dock · Vision 기준점 (경로별 수준 다름)'),
     ('INSTALL', 'Installation · Calibration · Safety Check', f"{v('p_comm')}만원 (Retrofit {v('p_comm_rt')})", f"원가 Y3 {v('comm_cost')[2]}만원 (약 {KL['inst_h'][2]:.0f}인시)"),
     ('OPERATE', 'Robot Rental (60개월, Care Basic · Grip Kit 포함)', f"월 {v('p_rent')}만원", f"월 원가 Y3 {R3['cost_m']:.1f} → Y5 {R5['cost_m']:.1f}만원"),
     ('OPERATE', 'Care (Robot Lifecycle Maintenance)', f"연 {v('p_care')}만원", f"원가 Y3 {C3['cost']:.1f} → Y5 {C5['cost']:.1f}만원 · 가입률 {pct(v('care_attach'))}"),
-    ('OPERATE', 'Consumables (Grip · Cleaning · Protection Kit)', f"연 {CO['list_y']:.0f}만원 (List)", f"구매율 {pct(v('cons_attach'))} · 원가율 {pct(v('cons_cogs'))}"),
+    ('OPERATE', 'Consumables (Grip · Cleaning · Protection Kit)', f"연 {CO['list_y']:.0f}만원 (정가)", f"구매율 {pct(v('cons_attach'))} · 원가율 {pct(v('cons_cogs'))}"),
     ('EXPAND', 'ASSIST Skill Pack (설치 다음 해)', f"{v('p_sw')}만원", f"구매율 {pct(v('sw_attach'))} (FUTURE: ASSIST 출시 전제)"),
     ('EXPAND', 'Tool · End-effector (설치 2년 후)', f"{v('p_tool')}만원", f"구매율 {pct(v('tool_attach'))}"),
     ('EXPAND', 'COOK Skill · Robot Upgrade', 'FUTURE', '5년 Base 매출 미반영'),
@@ -568,9 +568,9 @@ INSTALL (Robot System · Interface · 설치) → OPERATE (Rental · Care · 소
 
 **가치 Gap**: CLEAN만의 가사 대체 가치 = 월 약 {VA['value']:.0f}만원 (정리 {v('a_cleanup_min')}분/일 × {pct(v('a_auto_share'))} 자동화 × 가사서비스 {v('f_helper_rate')}만원/h, 범위 {VA['lo']:.0f}~{VA['hi']:.0f}만원) < Rental 월 {v('p_rent')}만원. → Premium Remodeling 고객부터, ASSIST 확장 · 위생 · 편의 가치를 묶어 WTP 조사 (n ≥ 300 · 예약금, M18).
 
-## 설치 경로별 1세대 경제성 (구매, 5년, 만원)
+## 설치 경로별 세대당 경제성 (구매, 5년, 만원)
 
-{md_table(['경로', '설치 시점 매출', '5년 매출', '5년 기여이익 (Y3 원가)', '5년 기여이익 (Y5 원가)'], ch_rows, ['l', 'r', 'r', 'r', 'r'])}
+{md_table(['경로', '설치 시점 매출', '5년 매출', '5년 공헌이익 (Y3 원가)', '5년 공헌이익 (Y5 원가)'], ch_rows, ['l', 'r', 'r', 'r', 'r'])}
 
 Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New-build는 Project 수주비용이 세대당 작아 높음. 상세: [10_Household_Economics_5Y.md](10_Household_Economics_5Y.md)
 
@@ -578,7 +578,7 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
 
 - **Pilot (Y2~Y3)**: MH가 직접 보유 · 운영 (실증 3세대 + 초기 고객).
 - **Scale (Y4~)**: Rental · Capital Partner가 Robot 자산을 ASP의 {pct(v('wholesale'))}에 매입 · 보유, 고객은 Partner에 월 {v('p_rent')}만원, MH는 Product · SW · Care 담당 + 서비스료 월 {v('partner_fee'):.0f}만원.
-- Partner 관점: 매입가 {PI['price']:,.0f}만원 · 월 순유입 {PI['inflow']:.0f}만원 · 60개월 · 잔존 15% → 연 IRR 약 {pct(PI['irr_y'], 1)} · 단순 회수 약 {PI['payback']:.0f}개월 (DERIVED).
+- Partner 관점: 매입가 {PI['price']:,.0f}만원 · 월 순유입 {PI['inflow']:.0f}만원 · 60개월 · 잔존 15% → 연 IRR 약 {pct(PI['irr_y'], 1)} · 단순 회수기간 약 {PI['payback']:.0f}개월 (DERIVED).
 - 회수 약 {PI['payback']:.0f}개월 > Partner 요구 {PI['hurdle']}개월 (ASSUMPTION) → 매입가율 · 서비스료 · 계약기간 조건 협의 필요 (M24 Partner 조건).
 - MH Balance Sheet의 Rental 자산 누적 지양 (Scale 단계 Partner 보유).
 
@@ -586,7 +586,7 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
     ('감가 (잔존 15%)', f"{R3['lines']['dep']:.1f}", f"{R5['lines']['dep']:.1f}"), ('금융비용 (연 8%)', f"{R3['lines']['fin']:.1f}", f"{R5['lines']['fin']:.1f}"),
     ('Care 원가', f"{R3['lines']['care']:.1f}", f"{R5['lines']['care']:.1f}"), ('Grip Kit 원가', f"{R3['lines']['grip']:.1f}", f"{R5['lines']['grip']:.1f}"),
     ('Failure Reserve', f"{R3['lines']['reserve']:.1f}", f"{R5['lines']['reserve']:.1f}"), ('**월 원가 합계**', f"{R3['cost_m']:.1f}", f"{R5['cost_m']:.1f}"),
-    ('월 요금', f"{R3['fee']}", f"{R5['fee']}"), ('**월 Contribution**', f"{R3['contrib_m']:.1f}", f"{R5['contrib_m']:.1f}"), ('Payback (개월)', f"{R3['payback']:.0f}", f"{R5['payback']:.0f}"),
+    ('월 요금', f"{R3['fee']}", f"{R5['fee']}"), ('**월 공헌이익**', f"{R3['contrib_m']:.1f}", f"{R5['contrib_m']:.1f}"), ('Payback (개월)', f"{R3['payback']:.0f}", f"{R5['payback']:.0f}"),
 ], ['l', 'r', 'r'])}
 
 ## Care = Robot Lifecycle Maintenance (Software 구독 아님)
@@ -602,7 +602,7 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
 
 ## Consumables = 실제 마모 · 위생 기반 (억지 Lock-in 아님)
 
-{md_table(['Kit', '단가 (만원)', '교체 (회/년)', '연 (만원)'], [(k, p, n, f'{p * n:.0f}') for k, p, n in CO['kits']] + [('List 합계', '', '', f"{CO['list_y']:.0f}")], ['l', 'r', 'r', 'r'])}
+{md_table(['Kit', '단가 (만원)', '교체 (회/년)', '연 (만원)'], [(k, p, n, f'{p * n:.0f}') for k, p, n in CO['kits']] + [('정가 합계', '', '', f"{CO['list_y']:.0f}")], ['l', 'r', 'r', 'r'])}
 
 후보: Grip Pad · Finger Pad · Food-contact Tip · Suction Seal · Cleaning Pad · Protective Cover. 교체주기는 Pad 수명 가속시험 (목표 ≥ {KL['pad_life']:,.0f}회 파지, M18~M24)으로 확정. 식품 접촉 부품은 「기구 및 용기 · 포장의 기준 및 규격」 대응 [S48].
 
@@ -615,11 +615,11 @@ Retrofit은 Partner 수수료 · 현장 Calibration 비용 때문에 낮고, New
 ## MH Core vs Partner (Product Company 구조)
 
 {md_table(['MH Core', 'Partner'], [
-    ('Robot · Robot Hand', '철거 · 가구'), ('Manipulation Skill', '전기 · 배관'), ('Calibration', '일반 시공'), ('Interface Standard', '(신축) 건설사 · 주방가구사'),
-    ('Safety · Commissioning · QA', '(Rental) 렌탈 · 캐피탈사'),
+    ('Robot · Robot Hand', '철거 · 가구'), ('Manipulation Skill', '전기 · 설비'), ('Calibration', '마감 공사'), ('Interface Standard', '(신축) 건설사 · 주방가구사'),
+    ('Safety · 시운전 · QA', '(Rental) 렌탈 · 캐피탈사'),
 ])}
 
-Installation Volume 증가 ≠ 본사 현장인력 동일비율 증가. 현장 인력은 설치 엔지니어 · Technician (24개월 차 2명) 중심, 설치 인시는 Calibration 기술로 Y2 약 {KL['inst_h'][1]:.0f} → Y5 약 {KL['inst_h'][4]:.0f}인시 목표 (TARGET).
+Installation Volume 증가 ≠ 본사 현장인력 동일비율 증가. 현장 인력은 설치 · 서비스 엔지니어 (24개월 차 2명) 중심, 설치 인시는 Calibration 기술로 Y2 약 {KL['inst_h'][1]:.0f} → Y5 약 {KL['inst_h'][4]:.0f}인시 목표 (TARGET).
 """)
 
 
@@ -655,13 +655,13 @@ sh = M['sens_household']
 write('10_Household_Economics_5Y.md', f"""# 10. 5-Year Household Economics
 
 {HEADER}
-## 대표 고객 1세대 정의
+## 대표 고객 세대 정의
 
-- Premium 주방 Remodeling 시점에 MH System을 함께 설치하는 아파트 1세대, **직접 판매 · 구매 · Care 가입**.
+- Premium 주방 Remodeling 시점에 MH System을 함께 설치하는 아파트 세대, **직접 판매 · 구매 · Care 가입**.
 - 5년 기대값 (Skill · Tool은 구매율 반영). 원가는 해당 연도 수준을 5년간 적용: **Y3 원가** (첫 상용 단계) · **Y5 원가** (BOM · 설치 · 방문 개선 후).
 - 모든 값 만원 · VAT 별도 · 주방 공사비 별도 · DERIVED (from ASSUMPTION). 가격 실측 없음 → 공개가격 · Component Benchmark 기반 ASSUMPTION 범위 (아래 3).
 
-## 1. 대표 1세대 5년 (Remodeling 구매, Y3 원가)
+## 1. 대표 세대 5년 (Remodeling 구매, Y3 원가)
 
 {md_table(['매출 (만원)', '5년'], hh_lines(H3) + [('**5-Year Revenue**', f"**{H3['rev5']:,.0f}**")], ['l', 'r'])}
 
@@ -674,17 +674,17 @@ write('10_Household_Economics_5Y.md', f"""# 10. 5-Year Household Economics
     ('5-Year Revenue', man(H3['rev5']), '합계'),
     ('Gross Profit (채널비용 전)', f"{man(H3['gp5'])} ({pct(H3['gm5'])})", '매출 − 제품 · 설치 · 서비스 원가'),
     ('Expected Service Cost', man(H3['service_cost5'], 1), 'Care 원가 + 소모품 원가 + Warranty'),
-    ('**Lifetime Contribution**', f"**{man(H3['contrib5'])} ({pct(H3['cm5'], 1)})**", 'Gross Profit − 채널비용 (직접판매 획득비용 150)'),
+    ('**누적 공헌이익**', f"**{man(H3['contrib5'])} ({pct(H3['cm5'], 1)})**", 'Gross Profit − 채널비용 (직접판매 획득비용 150)'),
 ])}
 
-같은 1세대를 **Y5 원가**로 보면: Robot BOM {H5['C']['robot']:,.0f} · 설치 {H5['C']['comm']} · Care 원가 {H5['C']['care']:,.0f} → Lifetime Contribution **{man(H5['contrib5'])} ({pct(H5['cm5'])})**.
+같은 세대를 **Y5 원가**로 보면: Robot BOM {H5['C']['robot']:,.0f} · 설치 {H5['C']['comm']} · Care 원가 {H5['C']['care']:,.0f} → 누적 공헌이익 **{man(H5['contrib5'])} ({pct(H5['cm5'])})**.
 
 ## 2. 고객 지불 구조
 
 {md_table(['구분', '구매', 'Rental'], [
     ('설치 시점', man(H3['y0']), f"{man(HH['rental_direct_Y3']['y0'])} (Interface + 설치)"),
     ('매월', '-', f"{v('p_rent')}만원 × 60개월 (Care Basic · Grip Kit 포함)"),
-    ('매년', f"Care {v('p_care')}만원 (선택) · 소모품 약 {CO['list_y']:.0f}만원 (List)", '추가 소모품 (Cleaning · Protection)'),
+    ('매년', f"Care {v('p_care')}만원 (선택) · 소모품 약 {CO['list_y']:.0f}만원 (정가)", '추가 소모품 (Cleaning · Protection)'),
     ('5년 총지불 (기대값)', man(H3['rev5']), man(HH['rental_direct_Y3']['rev5'])),
 ])}
 
@@ -692,24 +692,24 @@ write('10_Household_Economics_5Y.md', f"""# 10. 5-Year Household Economics
 
 ## 3. ASSUMPTION 범위 (Scenario, 구매 · Remodeling 직접)
 
-{md_table(['Scenario', 'Robot ASP', 'BOM Y3 / Y5', '설치 시점', '5년 매출', 'Contribution (Y3 원가)', 'Contribution (Y5 원가)'], rng, ['l', 'r', 'r', 'r', 'r', 'r', 'r'])}
+{md_table(['Scenario', 'Robot ASP', 'BOM Y3 / Y5', '설치 시점', '5년 매출', '공헌이익 (Y3 원가)', '공헌이익 (Y5 원가)'], rng, ['l', 'r', 'r', 'r', 'r', 'r', 'r'])}
 
 Conservative (ASP {v('p_robot', 'C'):,} · Interface {v('p_rr', 'C')} · Care {v('p_care', 'C')}만원 · BOM 높음 · 고장 {v('corrective', 'C')}회/년 · 획득비용 {v('cac', 'C')}만원)에서는 Y3 원가 기준 **적자**. → 가격 · BOM이 사업성의 1 · 2순위 변수.
 
 ## 4. 설치 경로 · 판매 방식별 (만원)
 
-{md_table(['경로', '설치 시점 매출', '5년 매출', 'Gross Profit', 'Service Cost', 'Contribution (Y3 원가)', 'Contribution (Y5 원가)'], var_rows, ['l', 'r', 'r', 'r', 'r', 'r', 'r'])}
+{md_table(['경로', '설치 시점 매출', '5년 매출', 'Gross Profit', 'Service Cost', '공헌이익 (Y3 원가)', '공헌이익 (Y5 원가)'], var_rows, ['l', 'r', 'r', 'r', 'r', 'r', 'r'])}
 
 Rental (MH 보유)은 금융비용을 포함하고 잔존가치 15%를 회수하는 기준. Scale 단계에서는 Partner가 자산을 보유 (09 문서).
 
-## 5. 민감도 (Remodeling 구매 1세대 · Y3 원가 · 기준 {sh['base']:,.0f}만원)
+## 5. 민감도 (Remodeling 구매 세대당 · Y3 원가 · 기준 {sh['base']:,.0f}만원)
 
 {md_table(['변수', '불리', '유리'], [(d['name'], f"{d['lo']:+,.0f}", f"{d['hi']:+,.0f}") for d in sh['items']], ['l', 'r', 'r'])}
 
 ## 6. 검증 계획
 
-- Robot ASP · Interface 가격: WTP 조사 n ≥ 300 + 예약금 Test (M18) · 유료 전환 ≥ 2세대 (M24).
-- BOM: 100대/년 견적 (M18). 설치 · Care · 고장 원가: 가정 3세대 실측 (M24).
+- Robot ASP · Interface 가격: WTP 조사 n ≥ 300 + 예약금 테스트 (M18) · 유료 전환 ≥ 2세대 (M24).
+- BOM: 100대/년 견적 (M18). 설치 · Care · 고장 원가: 실거주 3세대 실측 (M24).
 - 소모품 교체주기: Pad 수명 가속시험 (M18~M24).
 """)
 
@@ -736,7 +736,7 @@ write('11_TIPS_RnD_Work_Package.md', f"""# 11. TIPS R&D Work Package
     ('목적', '기술 검증 (Technology De-risking)', '사업 검증 (Commercial Validation) · 과제 외 개발'),
     ('범위', 'Adaptive Robot Hand · Manipulation · Calibration · Safety · Reliability · Integrated Workflow', f"기관부담금 · 과제 외 인건비 {(sum(F['people']) - sum(F['uses'][0]['tips'])) / 1e4:.2f}억원 (참여율 외 R&D · 사업 · 현장 · 경영지원) · Full-scale Mock-up 운영 · Customer Validation · Pilot · WTP · Partner Development · BM Validation"),
     ('결과물', 'Hand v3 · CLEAN Skill Library · Calibration Tool · Interface 표준 · Safety Architecture · 실증 보고서', 'WTP 조사 · 예약금 · 유료 전환 · Partner 조건 · BOM · 설치 · Service 원가'),
-    ('판단 Gate', 'M6 Hand Buy/Build · M12 목업 CLEAN · M18 Transfer', 'M18 WTP · M24 유료 전환 · 원가'),
+    ('판단 Gate', 'M6 Hand Buy/Build · M12 목업 CLEAN · M18 타 주방 적용', 'M18 WTP · M24 유료 전환 · 원가'),
 ])}
 
 TIPS 편성 = R&D 인력 (참여율분) · 연구재료 · 시험 · 인증 사전시험 · IP · 간접비 / Seed = 기관부담금 · 과제 외 인건비 · 고객 검증 · 실증 운영 · 사업개발 · 운영비.
@@ -796,7 +796,7 @@ write('12_Technical_KPI.md', f"""# 12. Technical KPI
 
 {md_table(['항목', '내용', 'Tag'], C.HAND_TEST)}
 
-자체 Hand 채택 조건 = Coverage +15%p 또는 Tool 교체 50% 감소 (성공률 · 교체 · 원가 중 명확한 우위) · 미달 시 상용 Gripper + 교체형 Pad (Buy) 전환 → Skill · Calibration 집중.
+자체 Hand 채택 조건 = Coverage +15%p 또는 Tool 교체 횟수 50% 감소 (성공률 · 교체 · 원가 중 명확한 우위) · 미달 시 상용 Gripper + 교체형 Pad (Buy) 전환 → Skill · Calibration 집중.
 """)
 
 
@@ -835,7 +835,7 @@ write('13_Patent_Portfolio.md', f"""# 13. Patent Portfolio (출원 후보)
 
 ## 우선순위 판단 기준
 
-1. **사업 중요도**: 소모품 매출 · 설치시간 · 반복설치에 직접 연결되는가 (Food-contact Module · Coordinate Calibration · Robot Home).
+1. **사업 중요도**: 소모품 매출 · 설치시간 · 반복 설치에 직접 연결되는가 (Food-contact Module · Coordinate Calibration · Robot Home).
 2. **차별성**: 주방 · 식기 · 가전 기준점이라는 구체 조건에서만 성립하는 구조 · 절차인가.
 3. **Prior Art Risk**: 일반 Gripper · Tool Changer · 협동로봇 안전 기술과 겹치는 정도.
 4. **시점**: Hand v1 (M4) · 목업 CLEAN (M12) 결과로 실시예가 생긴 뒤 출원.
@@ -845,19 +845,19 @@ write('13_Patent_Portfolio.md', f"""# 13. Patent Portfolio (출원 후보)
 # ================================================================ 14 roadmap
 PERIODS = [
     ('0~6M', 'Kitchen Task 분석 · Robot Architecture · Hand v1 (M4) · Object Grasp Test (30종, 상용 Gripper 비교) · 초기 Calibration',
-     '리드 3명 채용 · Time-diary 30세대 · 인터뷰 50명 · 평면 30개 분석 · 견적 20건 · 선행기술조사 (M3)', 'M6'),
+     '리드 3명 채용 · 시간일지 조사 30세대 · 인터뷰 50명 · 평면 30개 분석 · 견적 20건 · 선행기술조사 (M3)', 'M6'),
     ('7~12M', 'CLEAN Skill · Dishwasher Interaction · Hand v2 (M10) · Safety 기능 · 1:1 Kitchen Mock-up · 목업 CLEAN 전 과정',
      '인증기관 사전상담 (M9) · 1순위 특허 2건 출원 · 리모델링 · 렌탈 Partner 탐색 · 사업개발 합류 (M7)', 'M12'),
-    ('13~18M', '다양한 Kitchen 적용 (주방 3종) · Task Transfer Test · Failure Recovery · Hand v3 (M18) · Pilot 착수',
-     'WTP 조사 n ≥ 300 · 예약금 Test · 전기 · EMC 사전시험 · BOM 100대/년 견적 · PCT 1건', 'M18'),
+    ('13~18M', '다양한 Kitchen 적용 (주방 3종) · 타 주방 적용 시험 · Failure Recovery · Hand v3 (M18) · Pilot 착수',
+     'WTP 조사 n ≥ 300 · 예약금 테스트 · 전기 · EMC 사전시험 · BOM 100대/년 견적 · PCT 1건', 'M18'),
     ('19~24M', 'Reliability (연속 운전) · Installation Standard · Real-home Pilot 3세대 · BOM · 설치 · Service 원가 실측',
      'Paid Pilot 전환 · Partner 조건 (리모델링 1 · 렌탈/캐피탈 1) · 출원 누적 5건 · Series A 준비', 'M24'),
 ]
 team_rows = [(t['role'], M['team_kind'][t['kind']], f"M{t['start']}", f"{t['cost'][0]:,.0f}", f"{t['cost'][1]:,.0f}") for t in F['team']]
 VC = [('TODAY', 'Concept · Technology Hypothesis · Business Hypothesis (시제품 · 고객 · 매출 없음)'),
       ('Seed + TIPS (24개월)', f"{eok(F['spend_total'])} 지출 · 24개월 차 약 {F['heads_m24']:.0f}명"),
-      ('24M TARGET — 기술', 'Working Kitchen Prototype · Adaptive Robot Hand · Manipulation Skill Library · Calibration System · Safety Architecture · Multiple Kitchen Test · Task Transfer Evidence'),
-      ('24M TARGET — 경제성', 'Robot BOM (100대/년 견적) · Installation Cost · Service Cost (가정 3세대 실측)'),
+      ('24M TARGET — 기술', 'Working Kitchen Prototype · Adaptive Robot Hand · Manipulation Skill Library · Calibration System · Safety Architecture · Multiple Kitchen Test · 타 주방 적용 검증'),
+      ('24M TARGET — 경제성', 'Robot BOM (100대/년 견적) · Installation Cost · Service Cost (실거주 3세대 실측)'),
       ('24M TARGET — 시장', 'Customer WTP (n ≥ 300) · Pilot · Paid Pilot (≥ 2세대) · Partner Evidence · Patent 출원 5건 + PCT 1건'),
       ('NEXT ROUND', 'Productization · Production · Distribution · Scale (Series A 판단 기준 = 기술 성공 + 유료 전환 + 원가 실측)')]
 write('14_Roadmap_24M.md', f"""# 14. 24개월 Roadmap
@@ -881,7 +881,7 @@ Gate별 판단: 계속 · 범위 축소 · 전환.
 
 {md_table(['역할', '구분', '시작', 'Y1 인건비 (만원)', 'Y2 인건비 (만원)'], team_rows, ['l', 'l', 'c', 'r', 'r'])}
 
-평균 FTE {F['fte'][0]:.1f} (Y1) → {F['fte'][1]:.1f} (Y2) · 24개월 차 약 {F['heads_m24']:.0f}명. Lean안: Hand 센싱 · Skill/Data · 현장 Technician 제외, 시험 인력 M19로 연기 (24개월 차 약 {F['heads_m24_lean']:.0f}명).
+평균 FTE {F['fte'][0]:.1f} (Y1) → {F['fte'][1]:.1f} (Y2) · 24개월 차 약 {F['heads_m24']:.0f}명. Lean안: Hand 센싱 · Skill/Data · 현장 서비스 엔지니어 제외, 시험 인력 M19로 연기 (24개월 차 약 {F['heads_m24_lean']:.0f}명).
 
 ## 24개월 Value Creation
 
@@ -896,7 +896,7 @@ for u in F['uses']:
     use_rows.append((u['cat'], u['item'], f"{u['y'][0]:,.0f}", f"{u['y'][1]:,.0f}", f"{sum(u['y']):,.0f}", f"{tv:,.0f}" if tv else '-', f"{sum(u['y']) - tv:,.0f}"))
 use_rows.append(('**합계**', '', f"{F['spend'][0]:,.0f}", f"{F['spend'][1]:,.0f}", f"**{F['spend_total']:,.0f}**", f"{TP['total']:,.0f}", f"{F['spend_total'] - TP['total']:,.0f}"))
 fm_rows = []
-for k, lab in [('rev', '매출'), ('gp', '매출총이익'), ('contrib', 'Contribution'), ('opex', 'Opex'), ('op', '영업이익 (근사)'), ('cash', '연간 현금흐름'), ('cum_cash', '누적 현금')]:
+for k, lab in [('rev', '매출'), ('gp', '매출총이익'), ('contrib', '공헌이익'), ('opex', 'Opex'), ('op', '영업이익 (근사)'), ('cash', '연간 현금흐름'), ('cum_cash', '누적 현금')]:
     fm_rows.append((lab, *[f"{x / 1e4:.1f}" for x in B[k]]))
 fm_rows.append(('설치 세대 (TARGET)', *[f"{x:,.0f}" for x in B['kitchens']]))
 fm_rows.append(('평균 인원 (FTE)', *[f"{x:.1f}" for x in v('fte')]))
@@ -932,7 +932,7 @@ write('15_Funding_Plan.md', f"""# 15. Funding Plan
 
 {md_table(['안', '24개월 지출', 'TIPS 정부지원', 'Buffer (3개월)', 'Seed 필요액', '차이'], [
     ('Base (기술 + 사업 검증)', f"{F['spend_total']:,.0f}", '80,000', f"{F['buffer']:,.0f}", f"**{F['seed_base']:,.0f}**", '-'),
-    ('Lean (팀 · 목업 · 실증 축소)', f"{F['lean_total']:,.0f}", '80,000', f"{F['seed_lean'] - F['lean_total'] + 80000:,.0f}", f"**{F['seed_lean']:,.0f}**", 'Hand 센싱 · Skill/Data · Technician 제외, 시험 인력 M19, 비용 축소'),
+    ('Lean (팀 · 목업 · 실증 축소)', f"{F['lean_total']:,.0f}", '80,000', f"{F['seed_lean'] - F['lean_total'] + 80000:,.0f}", f"**{F['seed_lean']:,.0f}**", 'Hand 센싱 · Skill/Data · 서비스 엔지니어 제외, 시험 인력 M19, 비용 축소'),
     ('TIPS 미선정 (Lean 범위)', f"{sum(F['no_tips_spend']):,.0f}", '0', f"{F['seed_no_tips'] - sum(F['no_tips_spend']):,.0f}", f"**{F['seed_no_tips']:,.0f}**", '연구수당 없음 · 일정 연장 또는 비R&D 과제로 보완'),
 ], ['l', 'r', 'r', 'r', 'r', 'l'])}
 
@@ -1085,7 +1085,7 @@ write('20_Investment_Memo.md', f"""# 20. 투자심사 Memo
 
 ## 2. Investment Thesis (성립 조건)
 
-1. 가전 사이 Physical Workflow = 가전사가 기기 안에서 풀기 어려운 문제 · 주방은 동작 · 영역 · 물체가 닫혀 있어 첫 Application으로 검증 가능.
+1. 가전 사이 Physical Workflow = 가전사가 가전 내부에서 풀기 어려운 문제 · 주방은 동작 · 영역 · 물체 종류가 한정돼 있어 첫 Application으로 검증 가능.
 2. 범용 Robot의 병목 = 지능만이 아닌 **설치 · Calibration · 반복 적용** → Hand · Skill · Calibration · 최소 Interface 결합으로 설치시간 · 서비스 원가 절감 가능 (검증 대상).
 3. Remodeling · 신축 구매 계기 + Partner 시공 구조 → 현장 인력에 비례하지 않는 설치 확대 가능.
 4. Installed Base 위에 Care · 소모품 · Skill · Tool 반복 · 확장 매출 누적.
@@ -1097,16 +1097,16 @@ write('20_Investment_Memo.md', f"""# 20. 투자심사 Memo
 ## 4. 우려
 
 """ + '\n'.join(f"- {x}" for x in C.VERDICT_WHY[0][1]) + f"""
-- Hardware 마진이 얇음: Robot ASP {v('p_robot'):,}만원 vs BOM Y3 {v('bom')[2]:,}만원 → {pct(hw3)}. Conservative에서는 1세대 5년 기여이익이 Y3 원가 기준 적자.
+- Hardware 마진이 얇음: Robot ASP {v('p_robot'):,}만원 vs BOM Y3 {v('bom')[2]:,}만원 → {pct(hw3)}. Conservative에서는 세대당 5년 공헌이익이 Y3 원가 기준 적자.
 - CLEAN만의 가사 대체 가치 (월 약 {VA['value']:.0f}만원) < Rental 월 {v('p_rent')}만원 → 가치 Gap.
 - Series A 이후에도 Y3~Y4 약 {eok(M['post_seed_burn']['y3_y4'], 0)} 현금 소요 (Base) → 자본 집약도 높은 하드웨어 사업.
-- Rental Partner 단순 회수 약 {PI['payback']:.0f}개월 > 요구 {PI['hurdle']}개월 (가정) → Partner 조건 미확보 시 MH 자산 보유 부담.
+- Rental Partner 단순 회수기간 약 {PI['payback']:.0f}개월 > 요구 {PI['hurdle']}개월 (가정) → Partner 조건 미확보 시 MH 자산 보유 부담.
 
 ## 5. 숫자 점검
 
 {md_table(['점검', '결과', 'Tag'], [
     ('시장', f"Bottom-up SAM 연 {MK['sam']:,.0f}억원 · Y5 계획 {B['rev'][4] / 1e4:.1f}억원 = 대상 세대 {MK['som_share_hh'] * 100:.1f}% (공격적이지 않음, 비율은 전부 가정)", 'DERIVED'),
-    ('Unit Economics', f"Remodeling 1세대 5년 기여이익 {man(H3['contrib5'])} (Y3) → {man(H5['contrib5'])} (Y5). 민감도 1 · 2순위 = WTP · BOM", 'DERIVED'),
+    ('Unit Economics', f"Remodeling 세대당 5년 공헌이익 {man(H3['contrib5'])} (Y3) → {man(H5['contrib5'])} (Y5). 민감도 1 · 2순위 = WTP · BOM", 'DERIVED'),
     ('자금', f"Seed {F['seed_range'][0]}~{F['seed_range'][1]}억원 · Runway 약 {F['runway_base']:.0f}개월 · TIPS 미선정 시 {eok(F['seed_no_tips'])}", 'DERIVED'),
     ('실행', 'WP1~WP6 · Gate 4개 · 중단 기준 명시 (Hand Buy 전환 · Retrofit 보류 · 범위 축소)', 'TARGET'),
 ])}
@@ -1129,7 +1129,7 @@ write('20_Investment_Memo.md', f"""# 20. 투자심사 Memo
 ## 9. 첫 미팅 의제 (MEET)
 
 1. Founder 2인의 이력 · 역할 · 지분 · 전업 여부와 이 문제를 택한 이유.
-2. 상용 Arm + Gripper 기준선 영상 (식기 파지 · 식세기 적재) 또는 M3까지의 확보 계획.
+2. 상용 Arm + Gripper 비교 기준 영상 (식기 파지 · 식세기 적재) 또는 M3까지의 확보 계획.
 3. Premium 리모델링 고객 · 시공 Partner 접점 (실명 · 관계 수준, 없으면 없음).
 4. 24개월 Gate별 중단 기준을 실제로 지킬 의사와 Lean안 전환 조건.
 5. TIPS 운영사 접촉 현황 · 소재지 (선투자 요건) · 창업팀 지분 구조.
@@ -1163,8 +1163,8 @@ readme = f"""# MH Robotics — Seed · TIPS IR Package (최종본, 2026.10)
 | `MH_Robotics_IR_Internal_QA.pptx` · `.pdf` | 내부 검토용 {len(INT)}장 (예상질문 · 방어논리 · Evidence · Founder 입력 · 투자심사 Memo · Tag 원칙) — 제출 제외 |
 | `MH_Robotics_Financial_Model.xlsx` | 수식 기반 모델: Inputs (Tag · 출처) → 5Y FM 3 Scenario · Household · Unit_Economics · Market · Budget_24M · Sensitivity · Sources |
 | `docs/00~20` | 결과물 20종 (01~15 제출 · 공유용 · 16~20 내부 검토용) · [docs/00_README_Index.md](docs/00_README_Index.md) |
-| `render3d/` | 3D 콘셉트 렌더 생성기 (three.js + Playwright) · 충돌검사 · 보관/전개 경로 · 평면 JSON · Adaptive Hand 모델 (`web/hand.js`) |
-| `assets/renders/` | 덱에 들어간 렌더 PNG + Callout Anchor · 충돌검사 JSON |
+| `render3d/` | 3D 콘셉트 렌더 생성기 (three.js + Playwright) · 간섭 검토 · 보관/펼침 경로 · 평면 JSON · Adaptive Hand 모델 (`web/hand.js`) |
+| `assets/renders/` | 덱에 들어간 렌더 PNG + Callout Anchor · 간섭 검토 JSON |
 | `archive/ARKI_v4/` | 이전 판 (ARKI Robotics v4) 덱 · PDF · 재무모델 · 문서 · 문서 생성기 — 삭제 없이 보관 |
 
 ## 본문 구성 ({N_MAIN}장)
@@ -1175,20 +1175,20 @@ readme = f"""# MH Robotics — Seed · TIPS IR Package (최종본, 2026.10)
 
 ## 핵심 결과 (Base, 전부 DERIVED from ASSUMPTION · 물량은 TARGET)
 
-- 1세대 5년 (Remodeling · 구매): 설치 시점 {man(H3['y0'])} · 5년 매출 {man(H3['rev5'])} · Lifetime Contribution {man(H3['contrib5'])} (Y3 원가) → {man(H5['contrib5'])} (Y5 원가). Conservative는 Y3 원가 기준 적자 → WTP · BOM이 1 · 2순위 변수.
+- 세대당 5년 (Remodeling · 구매): 설치 시점 {man(H3['y0'])} · 5년 매출 {man(H3['rev5'])} · 누적 공헌이익 {man(H3['contrib5'])} (Y3 원가) → {man(H5['contrib5'])} (Y5 원가). Conservative는 Y3 원가 기준 적자 → WTP · BOM이 1 · 2순위 변수.
 - 가치 Gap: CLEAN만의 가사 대체 가치 월 약 {VA['value']:.0f}만원 < Rental 월 {v('p_rent')}만원 → Premium 고객 · ASSIST 확장 · WTP 검증 (M18).
 - 시장 (Bottom-up): SAM 연 {MK['sam']:,.0f}억원 (Remodeling {MK['sam_remodel']:,.0f} · Retrofit {MK['sam_retro']:,.0f} · New-build {MK['sam_new']:,.0f}) · Y5 계획 {B['rev'][4] / 1e4:.1f}억원 = 대상 세대 {MK['som_share_hh'] * 100:.1f}%.
 - 5개년: Y5 매출 {B['rev'][4] / 1e4:.1f}억원 · 설치 {B['kitchens'][4]:,.0f}세대 · 영업이익 {B['op'][4] / 1e4:.1f}억원 · 누적 현금 최저 {M['post_seed_burn']['min_cum'] / 1e4:.0f}억원 · 손익분기 연 약 {M['breakeven_kitchens']:,.0f}세대.
 - 24개월: 지출 {eok(F['spend_total'])} = TIPS 정부지원 8억원 (선정 시) + Seed {F['seed_range'][0]}~{F['seed_range'][1]}억원 (Lean {eok(F['seed_lean'])} ~ Base {eok(F['seed_base'])}, Buffer 3개월 포함) · TIPS 미선정 시 {eok(F['seed_no_tips'])}. TIPS 과제 {TP['total'] / 1e4:.2f}억원 (정부 8 + 기관부담 {TP['private'] / 1e4:.2f}).
-- Series A 이후 Y3~Y4 현금 소요 약 {eok(M['post_seed_burn']['y3_y4'], 0)} · Rental Partner 단순 회수 약 {PI['payback']:.0f}개월 (요구 {PI['hurdle']}개월 가정 → 조건 협의).
+- Series A 이후 Y3~Y4 현금 소요 약 {eok(M['post_seed_burn']['y3_y4'], 0)} · Rental Partner 단순 회수기간 약 {PI['payback']:.0f}개월 (요구 {PI['hurdle']}개월 가정 → 조건 협의).
 - 내부 검토 판단: **{C.VERDICT}** — 판단을 바꿀 Evidence 5개: {' · '.join(a for a, _ in C.CHANGE_EVIDENCE)} ([docs/20](docs/20_Investment_Memo.md)).
 
 ## Environment Interface 예 (Remodeling 채널, 3D 모델 기준 CONCEPT)
 
-- 주방 전체 표준화가 아니라 반복 작업점에만 최소 Interface: Robot Home (Dock) · Rail · 식세기 Interface · Storage Dock · Vision Reference. Retrofit은 Compact Mount · Dock, New-build는 설계 단계 반영.
-- Remodeling 예 (부록 B3 · B4): 로봇 작업 줄 Robot Home 45 · Drop Zone 70 · 싱크 80 · 서랍 60 · 식세기 60cm. Rail은 상부장 하단 (약 139cm), 바닥 사용 안 함. 조리기구 구역 = 로봇 금지 구역.
-- 낮은 작업점: 식세기 하단 랙을 44cm 당겨 위에서 적재 (Gripper 최저 약 37cm), 서랍도 열어서 위에서 넣음.
-- 충돌검사: 로봇 링크 = 캡슐, 가구 = 상자. 작업 자세 · 보관 · 전개 경로 · Rail 이동 · 자기충돌 관통 0cm (`assets/renders/*.json`의 `ik`). 실제 기구 검증 전.
+- 주방 전체 표준화가 아니라 반복 작업 위치에만 최소 Interface: Robot Home (Dock) · Rail · 식세기 Interface · 수납 Dock · Vision 기준점. Retrofit은 Compact Mount · Dock, New-build는 설계 단계 반영.
+- Remodeling 예 (부록 B3 · B4): 로봇 작업 구간 Robot Home 450 · Drop Zone 700 · 싱크 800 · 서랍 600 · 식세기 600mm. Rail은 상부장 하단 (바닥에서 약 1,390mm), 바닥 레일 없음. 쿡탑 구역 = 로봇 진입 금지.
+- 하단 작업: 식세기 하단 랙을 440mm 당겨 위에서 적재 (Gripper 최저 도달 높이 약 370mm), 서랍도 열어서 위에서 넣음.
+- 간섭 검토: 로봇 링크 = 캡슐, 가구 = 상자. 작업 자세 · 보관 · 펼침 경로 · Rail 이동 · 자체 간섭 0cm (`assets/renders/*.json`의 `ik`). 실제 기구 검증 전.
 
 ## 확보 평면 5종 (Kitchen Variation 근거, 부록 B2)
 

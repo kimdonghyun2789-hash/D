@@ -13,17 +13,17 @@
 | 영역 | 출원 후보 (Family) | 사업 중요도 | 차별성 | Prior Art Risk (참고) | 우선순위 | 시점 |
 |---|---|---|---|---|---|---|
 | Robot Hand | Replaceable Food-contact Module (교체형 Pad · Tip, 마모 표시, 위생 결합 구조) | 상 (소모품 · 위생) | 중 | 중~상 (Schmalz OFG 마모부품 · Robotiq Fingertip) [S43 · S16] | 1 | M6~M9 |
-| Robot Hand | Adaptive Finger Mechanism (얇은 Edge 집기 + 감싸기 겸용, Edge Lip) | 상 | 중 | 상 (Dishcare US 11,731,282 Tapered Finger · 저구동 Gripper 일반) [S49] | 2 | M9~M12 |
+| Robot Hand | Adaptive Finger Mechanism (얇은 Edge 집기 + 감싸쥐기 겸용, Edge Lip) | 상 | 중 | 상 (Dishcare US 11,731,282 Tapered Finger · 부족구동 Gripper 일반) [S49] | 2 | M9~M12 |
 | Robot Hand | Compliance / Stiffness (젖은 유리 · 도자기 대응 가변 강성) | 중 | 중 | 중~상 | 3 | M15 |
 | Robot Hand | Tool Interface (국자 · 집게 · 뚜껑 Tool 결합 · Dock) | 중 | 중 | 상 (EP 3,881,977 교체형 End piece · Tool Changer 일반) [S50] | 3 | M18 |
 | Manipulation | Kitchen Object Handling (식세기 랙 형상 기반 식기 배치 계획) | 상 | 중 | 상 (Dishcraft US 10,507,584) [S49] | 2 | M12 |
-| Manipulation | Failure Recovery (적재 실패 · 기울어짐 감지 후 재배치) | 중 | 중 | 중 | 3 | M15 |
+| Manipulation | Failure Recovery (적재 실패 · 기울어짐 감지 후 다시 놓기) | 중 | 중 | 중 | 3 | M15 |
 | Calibration | Kitchen Mapping (가전 · 수납 Registry + Template) | 상 | 중 | 중 (Minimanipulation · Instrumented Environment US 10,518,409) [S50] | 2 | M12 |
 | Calibration | Task Coordinate Calibration (Robot Home · 가전 기준점 기반 좌표 보정) | 상 | 중~상 (가설) | 중 | 1 | M6~M9 |
-| Interface | Robot Mount / Robot Home (보관 · 전개 경로 · Rail 결합) | 상 | 중 | 상 (주방 벽 Rail Arm US 7,751,938 외 · 수납장 로봇 US 12,275,130) [S50] | 2 | M9 |
+| Interface | Robot Mount / Robot Home (보관 · 펼침 경로 · Rail 결합) | 상 | 중 | 상 (주방 벽 Rail Arm US 7,751,938 외 · 수납장 로봇 US 12,275,130) [S50] | 2 | M9 |
 | Interface | Tool Dock · Storage Dock | 중 | 하~중 | 중 | 3 | M18 |
 | Interface | Appliance Interface (식세기 랙 · 문의 Robot 대응 구조 · 연동) | 상 | 중 | 중 (US 2023/0165427 식세기 맞춤 Routine) [S49] | 2 | M12 |
-| Safety | Human / Robot Zone Control (주방 평면 기반 Zone · 감속 · 안전 복귀) | 중 | 중 | 중~상 (협동로봇 일반 기술) | 3 | M18 |
+| Safety | Human / Robot Zone Control (주방 평면 기반 Zone · 감속 · Robot Home 자동 복귀) | 중 | 중 | 중~상 (협동로봇 일반 기술) | 3 | M18 |
 
 ## 출원 계획
 
@@ -49,7 +49,7 @@
 
 ## 우선순위 판단 기준
 
-1. **사업 중요도**: 소모품 매출 · 설치시간 · 반복설치에 직접 연결되는가 (Food-contact Module · Coordinate Calibration · Robot Home)
+1. **사업 중요도**: 소모품 매출 · 설치시간 · 반복 설치에 직접 연결되는가 (Food-contact Module · Coordinate Calibration · Robot Home)
 2. **차별성**: 주방 · 식기 · 가전 기준점이라는 구체 조건에서만 성립하는 구조 · 절차인가
 3. **Prior Art Risk**: 일반 Gripper · Tool Changer · 협동로봇 안전 기술과 겹치는 정도
 4. **시점**: Hand v1 (M4) · 목업 CLEAN (M12) 결과로 실시예가 생긴 뒤 출원

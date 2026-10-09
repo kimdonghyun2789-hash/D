@@ -7,9 +7,9 @@
 | Tag | 정의 | 예 |
 |---|---|---|
 | FACT | 공식 통계 · 공개자료로 확인된 값 | 총주택 2,018.1만호 · TIPS 8억원 · Robotiq 2F-85 약 $5,825 |
-| DERIVED | FACT 또는 가정으로 계산한 값 (산식 공개) | 아파트 약 1,328만호 · 1세대 5년 기여이익 · Seed 범위 |
+| DERIVED | FACT 또는 가정으로 계산한 값 (산식 공개) | 아파트 약 1,328만호 · 세대당 5년 공헌이익 · Seed 범위 |
 | ASSUMPTION | 현재 사업 가설 (검증 전) | Robot ASP 1,490만원 · Premium 10% · 적용률 60% |
-| TARGET | 24개월 · 이후 목표 | 가정 실증 ≥ 90% · 출원 5건 · 설치 물량 |
+| TARGET | 24개월 · 이후 목표 | 실거주 실증 ≥ 90% · 출원 5건 · 설치 물량 |
 | CONCEPT | 실물 없는 설계 개념 (그림 · 도식) | Hand 렌더 · Robot Home |
 | TBV (To Be Validated) | 검증 방법이 정해진 미확인 사실 | 식세기 보급률 · 인증 적용 범위 |
 | FUTURE | 현재 없는 제품 · 기능 | COOK · Upgrade |
@@ -43,7 +43,7 @@
 | `a_fit_rate` | Remodeling 적용 가능률 (구조 · 전원 · 평면) | % | ASSUMPTION | = | 60% | = | 평면 30개 분석으로 검증 |
 | `a_prem_stock` | Premium 세대 비중 (아파트 재고 기준) | % | ASSUMPTION | = | 10% | = | Retrofit 대상. 소득 · 주택가격 기준 정의 필요 |
 | `a_dw_premium` | Premium 세대 식기세척기 보유율 | % | ASSUMPTION | = | 60% | = | 공식 보급률 통계 확인 안 됨 (2019~20 업계 추정 10%대 초반 · 전체 가구) → TO BE VALIDATED |
-| `a_retro_fit` | Retrofit 호환률 (주방 형태 · 식세기 위치 · 상부장) | % | ASSUMPTION | = | 40% | = | 가설. 확보 평면 5종 (Remodeling 기본 배치 수용 1 · 미수용 3 · 미검토 1)으로는 판단 불가 → 평면 30개 · 상담 주방 실측으로 검증 |
+| `a_retro_fit` | Retrofit 호환률 (주방 형태 · 식세기 위치 · 상부장) | % | ASSUMPTION | = | 40% | = | 가설. 확보 평면 5종 (Remodeling 기본 배치 가능 1 · 불가 3 · 미검토 1)으로는 판단 불가 → 평면 30개 · 상담 주방 실측으로 검증 |
 | `a_retro_conv` | Retrofit 연간 전환율 (호환 세대 중, 제품 성숙 후) | % | ASSUMPTION | = | 0.5% | = | 가설. Phase 2 시작 전 검증 |
 | `a_new_supply` | 연간 신규 아파트 입주 (평균) | 천/년 | ASSUMPTION | = | 200 | = | 2025 실적 23.6만 · 2026 예정 18.3만 (평균 21.0만) → 보수적으로 20만 |
 | `a_premium_project` | Premium 단지 비중 (신축) | % | ASSUMPTION | = | 15% | = | 브랜드 · 분양가 기준 정의 필요 |
@@ -53,8 +53,8 @@
 | Key | 항목 | 단위 | Tag | Conservative | Base | Upside | 출처 · 근거 |
 |---|---|---|---|---|---|---|---|
 | `f_helper_rate` | 가사서비스 시간당 요금 (플랫폼 4시간 59,900~64,900원) | 만원/h | FACT | = | 1.5 | = | 가사서비스 플랫폼 공개 요금 (2025, 보도 · 앱 정보) |
-| `a_cleanup_min` | 식사 후 정리 시간 (식기 이동 · 식세기 · 수납, 일) | 분/일 | ASSUMPTION | = | 40 | = | Time-diary(n=30)로 검증 |
-| `a_auto_share` | CLEAN 자동화 가능 비중 | % | ASSUMPTION | = | 60% | = | 식기 이동 · 식세기 적재/인출 · 수납만. 행주 · 싱크 세척 제외 |
+| `a_cleanup_min` | 식사 후 정리 시간 (식기 이동 · 식세기 · 수납, 일) | 분/일 | ASSUMPTION | = | 40 | = | 시간일지 조사 (n=30)로 검증 |
+| `a_auto_share` | CLEAN 자동화 가능 비중 | % | ASSUMPTION | = | 60% | = | 식기 이동 · 식세기 적재/꺼내기 · 수납만. 행주 · 싱크 세척 제외 |
 | `fx` | 환율 (Benchmark 환산용) | 원/USD | ASSUMPTION | = | 1,400 | = | 부품 Benchmark 환산 전용 |
 
 ### 가격 (25)
@@ -63,7 +63,7 @@
 |---|---|---|---|---|---|---|---|
 | `p_rr` | Interface · Integration — Remodeling (Robot Home · Rail · 식세기 Interface · Storage Dock) | 만원/세대 | ASSUMPTION | 400 | 450 | = | 주방 공사비 위 증분. 시스템에어컨 유상옵션(500~1,000만원) 대비 하단 |
 | `p_rr_new` | Interface Option — New-build (설계 반영, MH 공급가) | 만원/세대 | ASSUMPTION | 200 | 220 | = | 건설사 · 가구사 마진 별도. 분양 고객가 약 300만원 가정 |
-| `p_rt_if` | Interface Kit — Retrofit (Compact Mount · Dock · Vision Reference · Drop Zone) | 만원/세대 | ASSUMPTION | = | 150 | = | 기존 주방 유지. 최소 시공 |
+| `p_rt_if` | Interface Kit — Retrofit (Compact Mount · Dock · Vision 기준점 · Drop Zone) | 만원/세대 | ASSUMPTION | = | 150 | = | 기존 주방 유지. 최소 시공 |
 | `p_robot` | Robot System ASP (Arm · Adaptive Hand · Vision · Safety · Controller) | 만원/대 | ASSUMPTION | 1,290 | 1,490 | = | Upside는 가격 인상 없음. WTP 검증 대상 1순위 |
 | `p_comm` | Installation · Calibration · Safety Check (Remodeling · New-build) | 만원/대 | ASSUMPTION | = | 80 | = | - |
 | `p_comm_rt` | Installation · Calibration (Retrofit, 현장 Calibration 비중 큼) | 만원/대 | ASSUMPTION | = | 120 | = | - |
@@ -96,7 +96,7 @@
 | `design_cost` | Site 설계 · 조정 원가 (100% Custom 시) | 만원/세대 | ASSUMPTION | = | 100 | = | - |
 | `smr` | Interface 표준부품 사용률 | % | TARGET | 40% / 45% / 55% / 62% / 65% | 40% / 50% / 65% / 75% / 80% | 40% / 55% / 70% / 80% / 85% | M24 65% 이상 목표 (M18 60% 미만이면 Interface 설계 재검토) |
 | `kit_new_cost` | Interface Option 원가 — New-build (공장 생산) | 만원/세대 | ASSUMPTION | 145 | 130 | 120 | - |
-| `rt_kit_cost` | Interface Kit 원가 — Retrofit | 만원/세대 | ASSUMPTION | = | 70 | = | Compact Mount · Dock · Vision Reference |
+| `rt_kit_cost` | Interface Kit 원가 — Retrofit | 만원/세대 | ASSUMPTION | = | 70 | = | Compact Mount · Dock · Vision 기준점 |
 | `bom` | Robot System BOM (Adaptive Hand 포함) | 만원/대 | ASSUMPTION | 1,680 / 1,580 / 1,330 / 1,210 / 1,100 | 1,680 / 1,520 / 1,180 / 1,030 / 915 | 1,680 / 1,460 / 1,100 / 950 / 820 | BOM 구성 Benchmark 기반 (부록). 수량 · 국산화 · 자체 Hand 원가 하락 가정 |
 | `comm_cost` | Installation · Calibration 원가 — Remodeling · New-build (MH 인력) | 만원/대 | ASSUMPTION | 120 / 100 / 75 / 62 / 55 | 120 / 90 / 60 / 45 / 38 | 120 / 85 / 52 / 38 / 30 | Calibration 시간 KPI와 연동 |
 | `comm_cost_rt` | Installation · Calibration 원가 — Retrofit (MH 인력) | 만원/대 | ASSUMPTION | 160 / 140 / 110 / 95 / 85 | 160 / 130 / 95 / 75 / 62 | 160 / 120 / 85 / 65 / 52 | 현장 Calibration 비중 큼 |
@@ -104,7 +104,7 @@
 | `warranty` | Warranty Reserve (Robot 매출 대비) | % | ASSUMPTION | 5% | 4% | 3.5% | 1년 무상 A/S |
 | `visits` | 정기 방문 횟수 | 회/년 | ASSUMPTION | 2 / 2 / 2 / 2 / 2 | 2 / 2 / 2 / 1.5 / 1.5 | 2 / 2 / 1.5 / 1.2 / 1 | 원격진단 고도화로 감소 |
 | `visit_cost` | 방문 1회 원가 (인건비 · 이동) | 만원/회 | ASSUMPTION | 15 / 14 / 12.5 / 11 / 10 | 15 / 13 / 11 / 9 / 8 | 15 / 12 / 10 / 8 / 7 | 참고: 제조사 출장비 2.8만원 (소비자 부과분, 2026)과 별개인 실제 원가. Route Density로 하락 |
-| `corrective` | 고장 방문 (Failure Rate) | 회/대·년 | ASSUMPTION | 0.9 | 0.6 | 0.5 | - |
+| `corrective` | 고장 방문 (연 고장 횟수) | 회/대·년 | ASSUMPTION | 0.9 | 0.6 | 0.5 | - |
 | `corr_cost` | 고장 방문 1회 원가 (소부품 포함) | 만원/회 | ASSUMPTION | = | 18 | = | - |
 | `cloud` | Cloud · Software 운영비 | 만원/대·년 | ASSUMPTION | = | 4 | = | - |
 | `cons_cogs` | Consumables 원가율 (물류 포함) | % | ASSUMPTION | 40% | 35% | 32% | - |
@@ -113,7 +113,7 @@
 | `partner_margin` | Kitchen · Interior · 설치 Partner 수수료 (Partner 경유 판매) | % | ASSUMPTION | 12% | 10% | 9% | - |
 | `cac` | 직접판매 획득비용 (상담 · 설계 · Demo) | 만원/세대 | ASSUMPTION | 180 | 150 | 140 | - |
 | `bd_new` | 신축 Project 수주비용 (Spec · 견본주택) | 만원/Project | ASSUMPTION | = | 2,000 | = | - |
-| `residual` | Rental 자산 잔존가치 (60개월 후) | % | ASSUMPTION | = | 15% | = | Refurbish 재배치 |
+| `residual` | Rental 자산 잔존가치 (60개월 후) | % | ASSUMPTION | = | 15% | = | Refurbish 후 재임대 |
 | `fin_rate` | Rental 자산 금융비용 | %/년 | ASSUMPTION | = | 8% | = | 캐피탈 조달금리 + Spread 가정 |
 | `payback_hurdle` | Rental Partner 요구 Payback | 개월 | ASSUMPTION | = | 36 | = | 렌탈 · 캐피탈사 협의로 검증 |
 
@@ -121,17 +121,17 @@
 
 | Key | 항목 | 단위 | Tag | Conservative | Base | Upside | 출처 · 근거 |
 |---|---|---|---|---|---|---|---|
-| `rd` | Remodeling — MH 직접 판매 (시공은 파트너) | 세대 | TARGET | 0 / 3 / 20 / 35 / 40 | 0 / 3 / 30 / 50 / 60 | 0 / 3 / 35 / 60 / 70 | Y2 = 가정 실증 3세대 (유료 목표, 할인) |
+| `rd` | Remodeling — MH 직접 판매 (시공은 파트너) | 세대 | TARGET | 0 / 3 / 20 / 35 / 40 | 0 / 3 / 30 / 50 / 60 | 0 / 3 / 35 / 60 / 70 | Y2 = 실거주 3세대 실증 (유료 목표, 할인) |
 | `rp` | Remodeling — 주방 · 인테리어 Partner 경유 | 세대 | TARGET | 0 / 0 / 10 / 60 / 150 | 0 / 0 / 20 / 130 / 340 | 0 / 0 / 30 / 220 / 600 | Kitchen 가구 · 인테리어 Partner |
 | `rt` | Existing Kitchen Retrofit (호환 주방, Partner 설치) | 세대 | TARGET | 0 / 0 / 0 / 10 / 40 | 0 / 0 / 0 / 20 / 80 | 0 / 0 / 0 / 30 / 120 | Phase 2. Y4 시작 |
-| `attach` | Robot Attach Rate (Remodeling, 설치 시점) | % | ASSUMPTION | 100% / 100% / 75% / 75% / 75% | 100% / 100% / 85% / 85% / 85% | = | 나머지는 Interface 선설치 (Robot 후설치) |
+| `attach` | 로봇 동시 구매율 (Remodeling, 설치 시점) | % | ASSUMPTION | 100% / 100% / 75% / 75% / 75% | 100% / 100% / 85% / 85% / 85% | = | 나머지는 Interface 선설치 (Robot 후설치) |
 | `later_attach` | Interface 선설치 세대의 연간 Robot 후설치 | %/년 | ASSUMPTION | 5% | 10% | 12% | - |
 | `rental_share` | Rental 선택 비중 | % | ASSUMPTION | 0% / 30% / 30% / 35% / 35% | 0% / 30% / 30% / 40% / 40% | 0% / 30% / 30% / 45% / 45% | - |
 | `partner_rental` | Rental 자산 보유 주체 (0 = MH Pilot, 1 = Rental Partner) | flag | ASSUMPTION | = | 0 / 0 / 0 / 1 / 1 | = | - |
 | `projects` | 신축 Interface Option 계약 Project | 개 | TARGET | 0 / 0 / 0 / 1 / 2 | 0 / 0 / 1 / 2 / 3 | 0 / 0 / 2 / 3 / 4 | 계약 2년 후 입주 · 설치 |
 | `hh_project` | Project당 세대수 | 세대 | ASSUMPTION | = | 800 | = | - |
 | `option_rate` | 신축 Interface Option 선택률 | % | ASSUMPTION | 6% | 10% | 12% | - |
-| `new_attach` | 신축 입주 시 Robot Attach | % | ASSUMPTION | 15% | 25% | 30% | - |
+| `new_attach` | 신축 입주 시 로봇 구매율 | % | ASSUMPTION | 15% | 25% | 30% | - |
 
 ### 운영비 (14)
 
@@ -174,8 +174,8 @@
 | New-build SAM | 184억원/년 | 20만 × 15% × 10% × 612.5만원 | market.B.sam_new |
 | Recurring (1,000대당) | 5.9억원/년 | ARPU 58.8만원 (Care 70% × 48 + 소모품 70% × 36) | market.B.recurring_per_1000 |
 | Y5 매출 / 대상 세대 비중 | 91.5억원 · 2.5% | 560세대 ÷ 대상 세대 합 | market.B.som · som_share_hh |
-| 1세대 5년 매출 · 기여이익 (Y3 원가) | 2,418만원 · 428만원 (17.7%) | 부록 D2 · 10번 문서 | household.purchase_direct_Y3 |
-| 1세대 5년 기여이익 (Y5 원가) | 798만원 (33.0%) | BOM 915 · 설치 38 · Care 26.8만원 | household.purchase_direct_Y5 |
+| 세대당 5년 매출 · 공헌이익 (Y3 원가) | 2,418만원 · 428만원 (17.7%) | 부록 D2 · 10번 문서 | household.purchase_direct_Y3 |
+| 세대당 5년 공헌이익 (Y5 원가) | 798만원 (33.0%) | BOM 915 · 설치 38 · Care 26.8만원 | household.purchase_direct_Y5 |
 | Rental 월 원가 · Payback (Y3) | 25.6만원 · 40개월 | 감가 + 금융 + Care + Grip + Reserve | rental.Y3 |
 | Partner IRR (연) | 13.1% | Robot을 ASP의 88% (1,311만원)에 매입, 월 27만원 순유입, 잔존 15% | partner_irr.B |
 | Care 마진 Y3 → Y5 | 23% → 44% | 요금 48만원 − (방문 + 고장 + Cloud) | care.Y3 · Y5 |
@@ -184,7 +184,7 @@
 | 24개월 지출 | 23.4억원 | 팀 계획 + 비용 + 예비비 10% + 연구수당 | funding.spend_total |
 | TIPS 과제 총액 | 10.67억원 | 정부 8억원 ÷ 75% | tips.total |
 | Seed Base · Lean · TIPS 미선정 | 19.0억원 · 13.8억원 · 21.5억원 | 지출 − TIPS 정부지원 + Y2 월지출 × 3개월 | funding.seed_* |
-| 손익분기 설치 물량 (Y5 단가 · 원가) | 연 약 1,376세대 | Y5 Opex ÷ 세대당 기여이익 | breakeven_kitchens |
+| 손익분기 설치 물량 (Y5 단가 · 원가) | 연 약 1,376세대 | Y5 Opex ÷ 세대당 공헌이익 | breakeven_kitchens |
 | Series A 이후 2년 (Y3~Y4) 현금 소요 | 68억원 | Base 계획 기준 | post_seed_burn.y3_y4 |
 
 ## 3. TARGET (물량 · 표준화 목표)
@@ -192,7 +192,7 @@
 | Key | 항목 | Base (Y1~Y5) | 근거 |
 |---|---|---|---|
 | `smr` | Interface 표준부품 사용률 | 40% / 50% / 65% / 75% / 80% | M24 65% 이상 목표 (M18 60% 미만이면 Interface 설계 재검토) |
-| `rd` | Remodeling — MH 직접 판매 (시공은 파트너) | 0 / 3 / 30 / 50 / 60 | Y2 = 가정 실증 3세대 (유료 목표, 할인) |
+| `rd` | Remodeling — MH 직접 판매 (시공은 파트너) | 0 / 3 / 30 / 50 / 60 | Y2 = 실거주 3세대 실증 (유료 목표, 할인) |
 | `rp` | Remodeling — 주방 · 인테리어 Partner 경유 | 0 / 0 / 20 / 130 / 340 | Kitchen 가구 · 인테리어 Partner |
 | `rt` | Existing Kitchen Retrofit (호환 주방, Partner 설치) | 0 / 0 / 0 / 20 / 80 | Phase 2. Y4 시작 |
 | `projects` | 신축 Interface Option 계약 Project | 0 / 0 / 1 / 2 / 3 | 계약 2년 후 입주 · 설치 |
@@ -204,10 +204,10 @@
 | 대상 | 위치 (본문 · 부록) | Tag |
 |---|---|---|
 | Adaptive Robot Hand 형상 · 구성 | 06 · 부록 B1 | CONCEPT (v1~v3 설계 전) |
-| Robot Home · Rail · 식세기 Interface · Storage Dock | 01 · 08 · 10 · 부록 B3 · B4 | CONCEPT (3D 충돌검사 = 모델 기준) |
+| Robot Home · Rail · 식세기 Interface · Storage Dock | 01 · 08 · 10 · 부록 B3 · B4 | CONCEPT (3D 간섭 검토 = 모델 기준) |
 | CLEAN 5단계 동작 장면 | 09 | CONCEPT |
 | Kitchen A~C 평면 도식 | 07 | CONCEPT (개념 예시) |
 | Calibration 4요소 · Skill 실행 구조 | 07 · 08 | CONCEPT (개발 전) |
 | ASSIST Skill Pack · Tool | 09 · 11 | FUTURE (출시 전제, Y3~) |
 | COOK · Robot Upgrade | 09 · 11 | FUTURE CONCEPT (5년 Base 매출 미반영) |
-| MH 안전 원칙 (Zone · 감속 · Safe Home Return) | 08 · 부록 B5 | CONCEPT |
+| MH 안전 원칙 (Zone · 감속 · Robot Home 자동 복귀) | 08 · 부록 B5 | CONCEPT |

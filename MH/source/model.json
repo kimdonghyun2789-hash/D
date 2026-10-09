@@ -278,7 +278,7 @@
     "U": 0.4
    },
    "yearly": false,
-   "src": "가설. 확보 평면 5종 (Remodeling 기본 배치 수용 1 · 미수용 3 · 미검토 1)으로는 판단 불가 → 평면 30개 · 상담 주방 실측으로 검증"
+   "src": "가설. 확보 평면 5종 (Remodeling 기본 배치 가능 1 · 불가 3 · 미검토 1)으로는 판단 불가 → 평면 30개 · 상담 주방 실측으로 검증"
   },
   {
    "key": "a_retro_conv",
@@ -348,7 +348,7 @@
     "U": 40
    },
    "yearly": false,
-   "src": "Time-diary(n=30)로 검증"
+   "src": "시간일지 조사 (n=30)로 검증"
   },
   {
    "key": "a_auto_share",
@@ -362,7 +362,7 @@
     "U": 0.6
    },
    "yearly": false,
-   "src": "식기 이동 · 식세기 적재/인출 · 수납만. 행주 · 싱크 세척 제외"
+   "src": "식기 이동 · 식세기 적재/꺼내기 · 수납만. 행주 · 싱크 세척 제외"
   },
   {
    "key": "fx",
@@ -409,7 +409,7 @@
   {
    "key": "p_rt_if",
    "group": "price",
-   "desc": "Interface Kit — Retrofit (Compact Mount · Dock · Vision Reference · Drop Zone)",
+   "desc": "Interface Kit — Retrofit (Compact Mount · Dock · Vision 기준점 · Drop Zone)",
    "unit": "만원/세대",
    "tag": "ASSUMPTION",
    "vals": {
@@ -846,7 +846,7 @@
     "U": 70
    },
    "yearly": false,
-   "src": "Compact Mount · Dock · Vision Reference"
+   "src": "Compact Mount · Dock · Vision 기준점"
   },
   {
    "key": "bom",
@@ -1039,7 +1039,7 @@
   {
    "key": "corrective",
    "group": "cost",
-   "desc": "고장 방문 (Failure Rate)",
+   "desc": "고장 방문 (연 고장 횟수)",
    "unit": "회/대·년",
    "tag": "ASSUMPTION",
    "vals": {
@@ -1174,7 +1174,7 @@
     "U": 0.15
    },
    "yearly": false,
-   "src": "Refurbish 재배치"
+   "src": "Refurbish 후 재임대"
   },
   {
    "key": "fin_rate",
@@ -1234,7 +1234,7 @@
     ]
    },
    "yearly": true,
-   "src": "Y2 = 가정 실증 3세대 (유료 목표, 할인)"
+   "src": "Y2 = 실거주 3세대 실증 (유료 목표, 할인)"
   },
   {
    "key": "rp",
@@ -1303,7 +1303,7 @@
   {
    "key": "attach",
    "group": "volume",
-   "desc": "Robot Attach Rate (Remodeling, 설치 시점)",
+   "desc": "로봇 동시 구매율 (Remodeling, 설치 시점)",
    "unit": "%",
    "tag": "ASSUMPTION",
    "vals": {
@@ -1473,7 +1473,7 @@
   {
    "key": "new_attach",
    "group": "volume",
-   "desc": "신축 입주 시 Robot Attach",
+   "desc": "신축 입주 시 로봇 구매율",
    "unit": "%",
    "tag": "ASSUMPTION",
    "vals": {
@@ -4073,7 +4073,7 @@
     "hi": 75.0
    },
    {
-    "name": "Failure Rate 1.2 ↔ 0.3회",
+    "name": "고장 횟수 1.2 ↔ 0.3회/년",
     "lo": -83.79999999999973,
     "hi": 49.350000000000136
    },
@@ -4088,7 +4088,7 @@
     "hi": 33.0
    },
    {
-    "name": "Interface 표준부품 사용률 -15pp/+15pp",
+    "name": "Interface 표준부품 사용률 -15%p/+15%p",
     "lo": -33.0,
     "hi": 33.0
    },
@@ -4128,7 +4128,7 @@
     "hi": 33169.343999999925
    },
    {
-    "name": "Robot Attach Rate 65% ↔ 95%",
+    "name": "로봇 동시 구매율 65% ↔ 95%",
     "lo": -30175.012400000065,
     "hi": 15087.506199999945
    },
@@ -4138,12 +4138,12 @@
     "hi": 13965.76777499984
    },
    {
-    "name": "Failure Rate 1.2 ↔ 0.3회",
+    "name": "고장 횟수 1.2 ↔ 0.3회/년",
     "lo": -16468.571899999864,
     "hi": 11378.878800000064
    },
    {
-    "name": "Interface 표준부품 사용률 -15pp/+10pp",
+    "name": "Interface 표준부품 사용률 -15%p/+10%p",
     "lo": -13200.0,
     "hi": 8800.0
    },
@@ -4240,7 +4240,7 @@
    },
    {
     "cat": "Pilot",
-    "item": "가정 실증 운영 (설치 파트너 · 보험 · 모니터링). 실증 하드웨어는 원가로 별도",
+    "item": "실거주 실증 운영 (설치 파트너 · 보험 · 모니터링). 실증 하드웨어는 원가로 별도",
     "y": [
      0,
      3500
@@ -4252,7 +4252,7 @@
    },
    {
     "cat": "Customer · Partner",
-    "item": "고객 인터뷰 · 정리 시간 기록 · WTP 조사 (n≥300) · 예약금 Test · 파트너 개발 · 전시",
+    "item": "고객 인터뷰 · 정리 시간 기록 · WTP 조사 (n≥300) · 예약금 테스트 · 파트너 개발 · 전시",
     "y": [
      2000,
      4000
@@ -4625,7 +4625,7 @@
    },
    {
     "key": "S1",
-    "role": "설치 · Commissioning 엔지니어",
+    "role": "설치 · 시운전 엔지니어",
     "start": 13,
     "loaded": 6600,
     "frac": 1.0,
@@ -4659,7 +4659,7 @@
    },
    {
     "key": "S2",
-    "role": "현장 서비스 Technician",
+    "role": "현장 서비스 엔지니어",
     "start": 19,
     "loaded": 5400,
     "frac": 1.0,
@@ -4848,7 +4848,7 @@
    },
    {
     "key": "S1",
-    "role": "설치 · Commissioning 엔지니어",
+    "role": "설치 · 시운전 엔지니어",
     "start": 13,
     "loaded": 6600,
     "frac": 1.0,
@@ -4997,7 +4997,7 @@
  },
  "bom_breakdown": [
   [
-   "6축 Arm (가반 3~5kg, Controller 포함)",
+   "6축 Arm (가반하중 3~5kg, Controller 포함)",
    950,
    600,
    450,
