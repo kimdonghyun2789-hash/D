@@ -216,9 +216,9 @@ def b3(prs):
     for i, (nm, lab) in enumerate(names):
         x = MX + i * (tw + gap)
         render(s, nm, x, y, tw, th, focus=(0.5, 0.5))
+        mt(s, x + 0.05, y + 0.05, 'CONCEPT', size=5.5, h=0.14, fill='FFFFFF')
         rect(s, x, y + th, tw, 0.3, fill=SOFT)
         text(s, x, y + th, tw, 0.3, lab, size=9.5, bold=True, align='c', anchor='m')
-    mt(s, MX + 0.06, y + 0.06, 'CONCEPT', fill='FFFFFF')
     rows = [['Robot Home (Dock)', '조리대 위 끝 W45 × D62 × H137cm · 여닫이 문 1짝 · 평소 로봇 수납 (보이지 않음)', TG('CONCEPT')],
             ['Rail', '상부장 하단 (높이 약 139cm) · 바닥 사용 안 함 · Retrofit은 Compact Mount로 대체', TG('CONCEPT')],
             ['낮은 작업점', '식세기 하단 랙 44cm 당김 → 위에서 적재 (Gripper 최저 약 37cm) · 서랍도 열어서 위에서 넣음', TG('CONCEPT')],
@@ -237,6 +237,7 @@ def b4(prs):
     for i, (nm, lab) in enumerate([('plan_old2a_top_orig', '원래 평면 (ㄱ자 주방)'), ('plan_old2a_top_arki', 'Interface 적용 (윗벽 로봇 줄 + 인덕션 옆벽)')]):
         x = MX + i * (pw + 0.3)
         render(s, nm, x, y, pw, ph, bg=(255, 255, 255))
+        if i == 1: mt(s, x + 0.05, y + 0.05, 'CONCEPT', size=5.5, h=0.14, fill='FFFFFF')     # MH Interface shown
         text(s, x, y + ph + 0.04, pw, 0.24, lab, size=9.5, bold=True, check=False)
     rx = MX + 2 * pw + 0.65; rw = W - MX - rx
     rows = [['주방 윗벽', '3,255mm'], ['로봇 작업 줄', '3,150mm (Robot Home 45 · Drop Zone 70 · 싱크 80 · 서랍 60 · 식세기 60cm)'],
