@@ -52,46 +52,72 @@ def m01(prs):
 
 
 # ================================================================= 02 problem
+def _flow_tag(s, at, key, txt, dx, dy, side=None):
+    """m02 figure label: appliance (기기 안 자동화) = white chip + thin leader, grey text."""
+    ax, ay = at(key); lx, ly = ax + dx, ay + dy
+    seg(s, ax, ay, lx, ly, color=GREY, lw=0.6)
+    dot(s, ax, ay, 0.06, fill=INK2)
+    chipl(s, lx, ly, txt, size=8.5, side=side or ('r' if dx >= 0 else 'l'), color=INK2)
+
+
+def _flow_kitchen(s, x, y, w, h):
+    """m02 figure: ordinary kitchen without robot (3D) · appliances = white chips · human tasks between them = dark dashed paths ①~④."""
+    rect(s, x, y, w, h, fill=SOFT)
+    at = render(s, 'fig_flow_kitchen', x, y, w, h, focus=(0.5, 0.5), bg=(244, 245, 246))
+    _flow_tag(s, at, 'ih', '인덕션', -0.3, -0.42)
+    _flow_tag(s, at, 'oven', '오븐', -0.62, 0.2)
+    _flow_tag(s, at, 'fridge', '냉장고', 0.0, -0.5, side='c')
+    _flow_tag(s, at, 'dwDoor', '식기세척기', 0.62, 0.36)
+    for i, key in enumerate(['p1_35', 'p2_55', 'p3_35', 'p4_55']):
+        cx, cy = at(key)
+        marker(s, cx, cy, i + 1, d=0.23, fill=INK, size=8.5)
+
+
 def m02(prs):
     s = start(prs, 'm02', pg(prs), '가전 자동화 이후에도 사람 몫으로 남은 주방 Physical Workflow',
-              visual='상단 가전 4종 카드 (기기 안의 자동화). 중간 짙은 띠: 가전 사이 Physical Task 10개 (앞 4개 = CLEAN 범위 강조). 하단 공식: Appliance Automation ≠ Physical Workflow Automation · 근거 숫자 4개.',
-              chart='카드 4 + 작업 띠 + 핵심 숫자 4',
+              visual='좌측 3D 주방 그림 (로봇 없음): 냉장고 · 인덕션 · 오븐 · 식기세척기 = 기기 안 자동화 (흰 라벨) · 가전 사이 사람 작업 = 짙은 점선 ①~④ (식탁 → 싱크 → 식세기 → 조리대 → 수납장) + 사람 형상. 우측: 가전 4종 압축 카드 (기기 안 자동화) · 짙은 띠 Physical Task 10개 (①~④ = CLEAN 범위). 하단 공식: Appliance Automation ≠ Physical Workflow Automation · 근거 숫자 4개.',
+              chart='3D 주방 Workflow 그림 1개 (로봇 없음) + 압축 카드 4 + 작업 띠 + 핵심 숫자 4',
               note=('- 식세기 · 인덕션 · 냉장고 · 오븐 = 기기 안의 일만 자동화\n'
                     '- 식기 이동 · 식세기 적재 · 인출 · 수납 · 재료 투입 · 도구 조작 = 여전히 사람 몫\n'
                     '- 문제 정의: 개별 가전 기능이 아닌 주방 Workflow 전체의 Physical Manipulation 미자동화\n'
                     '- 근거: 2024 무급 가사노동 가치 582.4조원 · 그중 가정관리 (음식 준비 · 청소 등) 78.9% (가계생산 위성계정)\n'
-                    '- 식사 후 정리 하루 약 40분 = 가설 → Time-diary 30세대로 검증 예정'))
+                    '- 식사 후 정리 하루 약 40분 = 가설 → Time-diary 30세대로 검증 예정\n'
+                    '- 가전 사이 사람 작업 흐름 ①~④: 식탁 → 싱크 → 식세기 → 조리대 → 수납장 (CLEAN 범위)'))
     y = mhead(s, '02  문제', '가전 자동화 이후에도 사람 몫으로 남은 주방 Physical Workflow',
               '개별 가전 기능은 자동화 · 주방 Workflow 전체의 Physical Manipulation은 아직 사람 몫')
+    fw, fh = 6.55, 3.05
+    _flow_kitchen(s, MX, y, fw, fh)
+    rx = MX + fw + 0.3; rw = W - MX - rx
+    text(s, rx, y, rw, 0.24, '기기 안 자동화', size=10, bold=True, color=GREY)
     apps = [('식기세척기', '세척 자동화'), ('인덕션', '가열 자동화'), ('냉장고', '보관 자동화'), ('오븐', '조리 일부 자동화')]
-    gap = 0.22; cw = (CW - 3 * gap) / 4
+    gap = 0.14; cw = (rw - gap) / 2; ch = 0.6
     for i, (a, b) in enumerate(apps):
-        cx = MX + i * (cw + gap)
-        rect(s, cx, y, cw, 0.9, fill=SOFT)
-        text(s, cx + 0.18, y + 0.12, cw - 0.36, 0.22, '기기 안', size=8.5, bold=True, color=GREY, check=False)
-        text(s, cx + 0.18, y + 0.34, cw - 0.36, 0.32, a, size=14, bold=True)
-        text(s, cx + cw - 2.0, y + 0.36, 1.82, 0.3, b, size=10.5, color=INK2, align='r')
-    y2 = y + 1.12
-    rect(s, MX, y2, CW, 1.3, fill=INK)
-    text(s, MX + 0.25, y2 + 0.14, 6, 0.3, '가전 사이 사람이 하는 Physical Task', size=12, bold=True, color='FFFFFF')
-    tasks = ['식기 이동', '식세기 적재', '식세기 인출', '수납', '식재료 이동', '재료 투입', '조리도구 조작', '젓기', '뚜껑 조작', '조리 후 정리']
-    xx = MX + 0.25; yy = y2 + 0.6
+        cx = rx + (i % 2) * (cw + gap); cy = y + 0.3 + (i // 2) * (ch + 0.1)
+        rect(s, cx, cy, cw, ch, fill=SOFT)
+        text(s, cx + 0.16, cy, cw - 0.32, ch, a, size=12.5, bold=True, anchor='m')
+        text(s, cx + 0.16, cy, cw - 0.32, ch, b, size=9.5, color=INK2, align='r', anchor='m')
+    y2 = y + 0.3 + 2 * ch + 0.1 + 0.17; bh = y + fh - y2
+    rect(s, rx, y2, rw, bh, fill=INK)
+    text(s, rx + 0.2, y2 + 0.14, rw - 0.4, 0.28, '가전 사이 사람이 하는 Physical Task', size=11.5, bold=True, color='FFFFFF')
+    text(s, rx + 0.2, y2 + 0.16, rw - 0.4, 0.26, '①~④ = CLEAN 검증 범위', size=8.5, color='A9AEB5', align='r', check=False)
+    tasks = ['① 식기 이동', '② 식세기 적재', '③ 식세기 인출', '④ 수납', '식재료 이동', '재료 투입', '조리도구 조작', '젓기', '뚜껑 조작', '조리 후 정리']
+    xx = rx + 0.2; yy = y2 + 0.52
     for i, t in enumerate(tasks):
-        wv = kit.text_w(t, 10.5, True) + 0.3
-        if xx + wv > MX + CW - 0.2: xx = MX + 0.25; yy += 0.36
-        rect(s, xx, yy, wv, 0.28, fill='2C3036')
-        text(s, xx, yy, wv, 0.28, t, size=10.5, bold=True, color='FFFFFF' if i < 4 else 'C9CDD2', align='c', anchor='m', check=False)
-        xx += wv + 0.1
-    text(s, MX + CW - 4.2, y2 + 0.14, 3.95, 0.3, '앞 4개 = CLEAN 검증 범위', size=9, color='A9AEB5', align='r')
-    y3 = y2 + 1.48
-    text(s, MX, y3, CW, 0.48, [[('Appliance Automation  ', {'color': INK}), ('≠', {'color': INK}), ('  Physical Workflow Automation', {'color': INK})]],
-         size=21, bold=True, align='c')
-    y4 = y3 + 0.72
+        wv = kit.text_w(t, 9, True) + 0.2
+        if xx + wv > rx + rw - 0.2: xx = rx + 0.2; yy += 0.34
+        rect(s, xx, yy, wv, 0.27, fill='2C3036')
+        text(s, xx, yy, wv, 0.27, t, size=9, bold=True, color='FFFFFF' if i < 4 else 'C9CDD2', align='c', anchor='m', check=False)
+        xx += wv + 0.07
+    assert yy + 0.27 <= y2 + bh - 0.1, yy
+    y3 = y + fh + 0.2
+    text(s, MX, y3, CW, 0.44, [[('Appliance Automation  ', {'color': INK}), ('≠', {'color': INK}), ('  Physical Workflow Automation', {'color': INK})]],
+         size=20, bold=True, align='c')
+    y4 = y3 + 0.6
     nw = (CW - 3 * 0.3) / 4
     items = [('582.4조원', '무급 가사노동 가치 (2024)', 'FACT'), ('78.9%', '그중 가정관리 (음식 준비 · 청소 등) 459.5조원', 'FACT'),
              ('132분', '1인당 하루 가사노동 (2024, 2019년 137분)', 'FACT'), ('약 40분', '하루 식사 후 정리 (식기 이동 · 식세기 · 수납)', 'ASSUMPTION')]
     for i, (v, lab, tg) in enumerate(items):
-        knum(s, MX + i * (nw + 0.3), y4, nw, v, lab, tg, vsize=24, color=ACC if i == 3 else INK, lsize=9.5, tag_y=y4 + 0.92)
+        knum(s, MX + i * (nw + 0.3), y4, nw, v, lab, tg, vsize=22, color=ACC if i == 3 else INK, lsize=9.5, tag_y=y4 + 0.7)
     note(s, '출처: 국가데이터처 2024 가계생산 위성계정 (2026.4) [S40] · 식사 후 정리 40분 = 가설 → Time-diary 30세대로 검증 예정')
     mfoot(s)
 
@@ -489,12 +515,21 @@ def m09(prs):
 
 
 # ================================================================= 10 channels
+def _flow_install(s, x, y, w, h, name, labels):
+    """m10 column image: same kitchen run · same camera · Integration 수준별 MH 요소 (CONCEPT). labels = (anchor, text, dx, dy, side)."""
+    rect(s, x, y, w, h, fill=SOFT)
+    at = render(s, name, x, y, w, h, focus=(0.555, 0.655), zoom=1.36, bg=(244, 245, 246))
+    for key, txt, dx, dy, side in labels:
+        callout(s, at, key, txt, dx, dy, size=8, side=side)
+    mt(s, x + 0.05, y + 0.05, 'CONCEPT', size=5.5, h=0.14, fill='FFFFFF')
+
+
 def m10(prs):
     hr, hrt, hnb = HH('purchase_direct_Y3'), HH('retrofit_purchase_Y3'), HH('newbuild_purchase_Y3')
     kl = M['kpi_links']
     s = start(prs, 'm10', pg(prs), '단일 제품 · 3가지 설치 경로 (기존 주방 · Remodeling · 신축)',
-              visual='상단 Integration 수준 막대 3개 (Retrofit 최소 → Remodeling 통합 → New-build 설계 반영). 아래 비교표 6행 (고객 상황 · 공사 범위 · Interface · 설치 · MH 매출 가설 · 역할). 하단 MH Core vs Partner 띠.',
-              chart='Integration 수준 막대 + 3열 비교표',
+              visual='상단 3열 머리 (Retrofit · Integration · 설계 반영 + Integration 수준 막대). 열마다 같은 주방 · 같은 시점 3D 콘셉트 렌더 1개 (CONCEPT): 기존 주방 = Compact Mount · Vision 기준점 · Drop Zone (Rail 없음) / Remodeling = Rail · Robot Home · 수납 Dock · 식세기 Interface / New-build = Tool Dock · Service 공간 · 전원 · 통신 매립. 주황 = Robot Zone · Path만. 아래 압축 비교표 6행 (고객 상황 · 공사 범위 · Interface · 설치 · MH 매출 가설 · 역할). 하단 MH Core vs Partner 띠.',
+              chart='3D 콘셉트 렌더 3컷 (CONCEPT, 동일 시점) + Integration 수준 막대 + 3열 비교표',
               note=('- 제품 1개 · 설치 경로 3개 (Integration 수준만 차등)\n'
                     '- Retrofit (기존 주방): 호환성 확인 → Compact Mount · Dock · Vision 기준점만 설치 · 현장 Calibration 비중 큼\n'
                     '- Remodeling: 주방 교체 시 Rail · Robot Home · 식세기 Interface · 수납 Dock 동시 시공 = 첫 검증 채널\n'
@@ -502,20 +537,30 @@ def m10(prs):
                     '- MH Core = Robot · Hand · Skill · Calibration · Interface 표준 · 안전 · 시운전 · 품질 / Partner = 철거 · 가구 · 전기 · 배관 · 일반 시공'))
     y = mhead(s, '10  Existing / Remodeling / New-build', '단일 제품 · 3가지 설치 경로 (기존 주방 · Remodeling · 신축)',
               '주방 전체 획일화 없이 Integration 수준만 차등 적용')
-    lab_w = 1.75; cw = (CW - lab_w) / 3
+    lab_w = 1.55; cw = (CW - lab_w) / 3
     heads = [('Existing Kitchen', 'Retrofit', 1), ('Remodeling', 'Integration', 2), ('New-build', '설계 반영', 3)]
+    iy, ih = y + 0.62, 1.6
+    imgs = [('fig_flow_retrofit', [('fid1', 'Vision 기준점', -0.05, 0.6, 'c'), ('drop', 'Drop Zone', 0.0, 0.62, 'c'),
+                                   ('mount', 'Compact Mount', 0.72, 0.62, 'l')]),
+            ('fig_flow_remodel', [('railR', 'Rail', 0.35, 0.25, 'r'), ((360, 400), 'Robot Home', 0.1, 0.6, 'r'),
+                                  ('drawer', '수납 Dock', -0.2, 0.45, 'l'), ('dw', '식세기 Interface', 0.8, 0.35, 'l')]),
+            ('fig_flow_newbuild', [('tooldock', 'Tool Dock', 0.25, 0.62, 'r'), ('service', 'Service 공간', 0.25, 0.5, 'r'),
+                                   ('lineR', '전원 · 통신', -0.05, 0.62, 'l')])]
     for i, (a, b, lv) in enumerate(heads):
         cx = MX + lab_w + i * cw
-        text(s, cx + 0.1, y, cw - 0.2, 0.34, a, size=15, bold=True)
-        text(s, cx + 0.1, y + 0.36, cw - 0.2, 0.24, b, size=9.5, bold=True, color=GREY)
+        text(s, cx + 0.08, y, cw - 0.16, 0.3, a, size=14, bold=True)
+        text(s, cx + 0.08, y + 0.32, 1.6, 0.22, b, size=9, bold=True, color=GREY)
+        bx0 = cx + cw - 0.08 - 3 * 0.3 - 2 * 0.06
         for j in range(3):
-            rect(s, cx + 0.1 + j * 0.42, y + 0.66, 0.36, 0.12, fill=INK if j < lv else SOFT2)
-        text(s, cx + 1.45, y + 0.6, cw - 1.55, 0.24, 'Integration 수준', size=8, color=GREY, check=False)
+            rect(s, bx0 + j * 0.36, y + 0.38, 0.3, 0.1, fill=INK if j < lv else SOFT2)
+        text(s, bx0 - 1.12, y + 0.32, 1.04, 0.22, 'Integration 수준', size=8, color=GREY, align='r', check=False)
+        _flow_install(s, cx + 0.08, iy, cw - 0.16, ih, *imgs[i])
+    text(s, MX, iy, lab_w - 0.1, 0.24, '설치 형태', size=9, color=INK)
     rows = [
         ['고객 상황', '주방 유지 · 호환 주방', '주방 교체 시점 (Premium)', '분양 · 입주 전 (건설사 · 가구사)'],
         ['공사 범위', '최소 시공 (Mount · Dock)', '주방 공사와 동시 (Partner 시공)', '설계 단계에서 반영'],
         ['Interface', 'Compact Mount · Dock · Vision 기준점 · Drop Zone', 'Rail · Robot Home · 식세기 Interface · 수납 Dock',
-         'Mount · 전원 · 통신 · Tool Dock · 가전 Interface · Service 공간'],
+         'Mount · 전원 · 통신 · Tool Dock · 가전 Interface · Service\u00a0공간'],
         ['설치 · Calibration', f"현장 Calibration 중심 · Y3 원가 {A('comm_cost_rt')[2]}만원 (약 {kl['inst_h_rt'][2]:.0f}인시)",
          f"Y3 원가 {A('comm_cost')[2]}만원 (약 {kl['inst_h'][2]:.0f}인시 = 2인 약 1일)", '입주 시 또는 후설치 (Option 세대)'],
         ['MH 매출 (가설)', f"Kit {A('p_rt_if')} + Robot {A('p_robot'):,} + 설치 {A('p_comm_rt')} = {hrt['y0']:,.0f}만원",
@@ -523,10 +568,11 @@ def m10(prs):
          f"Option {A('p_rr_new')}만원 (B2B) + 입주 Attach {A('new_attach') * 100:.0f}% × (Robot + 설치)"],
         ['역할', ('Phase 2 · 고객 확대', {'bold': True}), ('Phase 1 · 검증 채널', {'bold': True}), ('Phase 3 · Scale 채널', {'bold': True})],
     ]
-    table(s, MX, y + 0.95, CW, None, rows, col_w=[lab_w, cw, cw, cw], size=10, label='m10', pad=0.07)
-    by = H - 0.62 - 0.32 - 0.5
-    rect(s, MX, by, CW, 0.5, fill=INK)
-    text(s, MX + 0.2, by, CW - 0.4, 0.5, [[('MH Core  ', {'bold': True, 'color': 'FFFFFF'}),
+    by = H - 0.62 - 0.32 - 0.42
+    ty = iy + ih + 0.1
+    table(s, MX, ty, CW, None, rows, col_w=[lab_w, cw, cw, cw], size=9, label='m10', pad=0.04, max_h=by - 0.08 - ty)
+    rect(s, MX, by, CW, 0.42, fill=INK)
+    text(s, MX + 0.2, by, CW - 0.4, 0.42, [[('MH Core  ', {'bold': True, 'color': 'FFFFFF'}),
                                            ('Robot · Hand · Skill · Calibration · Interface Standard · Safety · Commissioning · QA', {'color': 'E3E5E8'}),
                                            ('     Partner  ', {'bold': True, 'color': 'A9AEB5'}),
                                            ('철거 · 가구 · 전기 · 배관 · 일반 시공', {'color': 'A9AEB5'})]], size=10.5, anchor='m')

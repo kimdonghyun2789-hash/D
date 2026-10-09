@@ -5,7 +5,8 @@
 <script type="module">
 import { ARKI_SCENES } from './arki.js';
 import { HAND_SCENES } from './hand.js';
-Object.assign(ARKI_SCENES, HAND_SCENES);
+import { FLOW_SCENES } from './fig_flow.js';
+Object.assign(ARKI_SCENES, HAND_SCENES, FLOW_SCENES);
 const p = new URLSearchParams(location.search);
 const name = p.get('scene'); const W = +p.get('w'), H = +p.get('h');
 try {

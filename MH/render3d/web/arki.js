@@ -1251,3 +1251,7 @@ function k4(g, anchors) {
   Object.assign(anchors, { home: V(562, 160, 40), rail: V(690, 145, 34), sink: V(710, 80, 40), dw: V(870, 90, 70), storage: V(870, 150, 40), ih: V(720, 92, 243),
     robotZone: V(620, 89, 46), humanZone: V(700, 0, 140), nogo: V(800, 89, 243), reach: V(780, 134, 76), __ik: R.ik });
 }
+
+// ---------------------------------------------------------------- building blocks for add-on scene modules (web/fig_flow.js). Export list only: no behaviour change.
+export { bx, obst, baseRun, counter, sink, induction, upperRun, backsplash, underDW, table, zone, pathCurve, room, lights, camPersp, project,
+  placeRobot, attachHeld, RB_Q0 };
