@@ -123,17 +123,49 @@ def m02(prs):
 
 
 # ================================================================= 03 why kitchen
+def _tech_brk(t, w, size):
+    """Two-line text: break at the last ' · ' / ' → ' separator that fits in `w` (no break inside a phrase)."""
+    if kit.text_w(t, size) <= w: return t
+    cuts = [(i, sep) for sep in (' · ', ' → ') for i in range(len(t)) if t.startswith(sep, i)
+            and kit.text_w(t[:i] + sep.rstrip(), size) <= w]
+    if not cuts: return t
+    i, sep = max(cuts)
+    return t[:i] + sep.rstrip() + '\n' + t[i + len(sep):]
+
+
+def _tech_kitchen(s, x, y, w, h):
+    """m03 figure: 확보 평면 구축 2Bay A 주방 + MH Interface (3D, CONCEPT) · 주황 = Robot 작업영역 · 회색 지시선 라벨."""
+    rect(s, x, y, w, h, fill=SOFT)
+    at = render(s, 'fig_tech_m03_kitchen', x, y, w, h, bg=(244, 245, 246))
+    callout(s, at, 'garage', 'Robot Home', 0.35, -0.28, size=8, side='r')
+    callout(s, at, 'sink', '싱크', -0.55, -0.62, size=8, side='l')
+    callout(s, at, 'drawer', '수납 (서랍)', -0.75, 0.55, size=8, side='l')
+    callout(s, at, 'dw', '식세기', 0.25, 0.62, size=8, side='l')
+    callout(s, at, 'cooktop', '인덕션 (옆벽 이동)', 0.1, 0.62, size=8, side='c')
+    mt(s, x + 0.05, y + 0.05, 'CONCEPT', size=5.5, h=0.14, fill='FFFFFF')
+    lx, ly = x + 0.08, y + h - 0.3
+    lw_ = kit.text_w('Robot 작업영역 (고정)', 8, True) + 0.44
+    rect(s, lx, ly, lw_, 0.22, fill='FFFFFF', line=EDGE, lw=0.5)
+    kit.alpha(rect(s, lx + 0.08, ly + 0.06, 0.18, 0.1, fill=ACC, line=ACC, lw=0.75), 45)
+    text(s, lx + 0.32, ly, lw_ - 0.34, 0.22, 'Robot 작업영역 (고정)', size=8, bold=True, color=INK, anchor='m', check=False)
+
+
 def m03(prs):
     s = start(prs, 'm03', pg(prs), '주방: 기술 · 사업성 동시 검증이 가능한 첫 적용 공간',
-              visual='2열 비교: 좌 Robot Engineering 기준 4개, 우 Business 기준 4개 (번호 + 굵은 제목 + 한 줄 근거). 하단 결론 띠.',
-              chart='2열 목록 + 결론 띠',
+              visual='좌측 3D 콘셉트 그림 (CONCEPT): 확보 평면 구축 2Bay A 주방 + MH Interface · 주황 = Robot 작업영역 (조리대 한 줄 고정) · 라벨 Robot Home · 싱크 · 수납 · 식세기 · 인덕션 (옆벽). 우측 2열: Robot Engineering 기준 4개 · Business 기준 4개 (번호 + 굵은 제목 + 한 줄 근거). 하단 결론 띠.',
+              chart='3D 콘셉트 그림 1개 (CONCEPT) + 2열 목록 + 결론 띠',
               note=('- 기술: 동작 종류 적음 (집기 · 옮기기 · 놓기 · 넣기 · 빼기) · 작업영역 고정 (싱크 · 조리대 · 식세기 · 수납장)\n'
                     '- 물체 범위 닫힘: 접시 · 컵 · 그릇 · 수저 · 뚜껑 · 도구 → 이후 식재료\n'
                     '- 사업: 매일 사용 → 빠른 가치 체감 · 주방 Remodeling · 신축 입주 = 구매 계기\n'
                     '- Why now: 6축 Arm 가격 하락 ($6,999~) · 공개 조작 모델 (π0.5) · 가정용 로봇 안전기준 (IEC 63682 초안)\n'
-                    '- 지불의사 = 별도 검증 (M18 WTP 조사 n ≥ 300 · 예약금 Test)'))
+                    '- 지불의사 = 별도 검증 (M18 WTP 조사 n ≥ 300 · 예약금 Test)\n'
+                    '- 그림: 확보 평면 (구축 2Bay A) 주방에 Interface 적용 예 → Robot 작업영역 = 조리대 한 줄 (Robot Home · 싱크 · 수납 · 식세기) 고정'))
     y = mhead(s, '03  왜 Kitchen인가', '주방: 기술 · 사업성 동시 검증이 가능한 첫 적용 공간',
               'Robot Engineering 4개 기준 · Business 4개 기준')
+    fw = 4.1
+    text(s, MX, y, fw, 0.3, '구축 2Bay A 주방 · Interface 적용 예', size=12, bold=True, color=GREY)
+    hline(s, MX, y + 0.36, fw, color=INK, lw=1.0)
+    _tech_kitchen(s, MX, y + 0.5, fw, 3 * 0.92 + 0.8)
     cols = [('Robot Engineering 기준', [
                 ('집기 · 이동 · 놓기 · 넣기 · 빼기 중심', '동작 종류 적고 반복 → Skill Library화 용이'),
                 ('작업영역 고정', '싱크 · 조리대 · 식세기 · 수납장 → Calibration 대상 명확'),
@@ -144,17 +176,19 @@ def m03(prs):
                 ('구매 계기 존재', '주방 Remodeling · 신축 입주 시 공사 · 설치 동시 결정'),
                 ('CLEAN → ASSIST → COOK', '같은 Platform + Skill · Tool 추가로 기능 확장'),
                 ('설치 이후 반복매출', 'Installed Base 기반 Care · 소모품 · Skill')])]
-    cw = (CW - 0.4) / 2
+    x0 = MX + fw + 0.4; cg = 0.35
+    cw = (W - MX - x0 - cg) / 2; ni = 0.48
     for ci, (head_, rows) in enumerate(cols):
-        cx = MX + ci * (cw + 0.4)
+        cx = x0 + ci * (cw + cg)
         text(s, cx, y, cw, 0.3, head_, size=12, bold=True, color=GREY)
         hline(s, cx, y + 0.36, cw, color=INK, lw=1.0)
         for ri, (a, b) in enumerate(rows):
             ry = y + 0.5 + ri * 0.92
-            text(s, cx, ry, 0.5, 0.42, f'0{ri + 1}', size=16, bold=True, color=INK)
-            text(s, cx + 0.6, ry, cw - 0.6, 0.32, a, size=13, bold=True)
-            text(s, cx + 0.6, ry + 0.36, cw - 0.6, 0.3, b, size=10.5, color=INK2)
-            if ri < 3: hline(s, cx, ry + 0.8, cw)
+            text(s, cx, ry, ni, 0.4, f'0{ri + 1}', size=15, bold=True, color=INK)
+            text(s, cx + ni, ry, cw - ni, 0.32, a, size=13 if kit.text_w(a, 13, True) < cw - ni - 0.1 else 12.5, bold=True)
+            b = _tech_brk(b, cw - ni - 0.12, 10.5)
+            text(s, cx + ni, ry + 0.35, cw - ni, kit.text_h(b, 10.5, cw - ni, line=1.0) + 0.02, b, size=10.5, color=INK2, line=1.0)
+            if ri < 3: hline(s, cx, ry + 0.84, cw)
     by = y + 0.5 + 4 * 0.92 + 0.08
     bar(s, MX, by, CW, 0.52, '→  주거용 Manipulation의 기술성 · 고객가치 동시 검증이 가능한 첫 Application', size=13)
     note(s, 'Why now: 6축 Arm $6,999~ [S15] · 공개 조작 모델 π0.5 [S46] · 가정용 로봇 안전기준 IEC 63682 초안 [S47] · 지불의사 = WTP n≥300 · 예약금 Test로 검증 (M18)')
@@ -232,15 +266,30 @@ def m04(prs):
 
 
 # ================================================================= 05 technology strategy
+_TECH_M05 = [('fig_tech_m05_hand', (0.5, 0.5), 1.0, '국자 · 컵 · 접시 파지'), ('v2_seq_3_load', (0.6, 0.62), 1.0, '식세기 적재'),
+             ('v2_seq_1_detect', (0.45, 0.55), 1.0, '조리대 식기 인식'), ('v2_stow_2_open', (0.4, 0.45), 1.0, 'Robot Home · Rail')]
+
+
+def _tech_tile(s, x, y, w, h, name, focus, zoom, cap):
+    """m05 card image: SOFT 바탕 3D 콘셉트 렌더 (CONCEPT) + 우하단 작은 예시 라벨."""
+    rect(s, x, y, w, h, fill=SOFT)
+    render(s, name, x, y, w, h, focus=focus, zoom=zoom, bg=(244, 245, 246))
+    mt(s, x + 0.05, y + 0.05, 'CONCEPT', size=5.5, h=0.14, fill='FFFFFF')
+    cw_ = kit.text_w(cap, 8, False) + 0.16
+    rect(s, x + w - cw_ - 0.05, y + h - 0.24, cw_, 0.19, fill='FFFFFF', line=EDGE, lw=0.5)
+    text(s, x + w - cw_ - 0.05, y + h - 0.24, cw_, 0.19, cap, size=8, color=INK2, align='c', anchor='m', check=False)
+
+
 def m05(prs):
     s = start(prs, 'm05', pg(prs), 'Robot 적응 + 반복 작업점에만 최소 Interface',
-              visual='4열 대응표: 위 회색 칩 = 변동 요인 (Object · Task · Kitchen · 반복 작업점), 아래 카드 = MH 기술 (Hand · Skill · Calibration · Interface). 하단 짙은 결론 띠.',
-              chart='4열 대응 Diagram',
+              visual='4열 대응표: 위 회색 칩 = 변동 요인 (Object · Task · Kitchen · 반복 작업점), 아래 카드 = MH 기술 (Hand · Skill · Calibration · Interface) + 카드마다 3D 콘셉트 그림 1개 (CONCEPT · 같은 크기): 같은 Hand의 국자 · 컵 · 접시 파지 · 식세기 적재 · 조리대 식기 인식 · Robot Home · Rail. 하단 짙은 결론 띠.',
+              chart='4열 대응 Diagram + 3D 콘셉트 그림 4컷 (CONCEPT)',
               note=('- 접근: 주방 전체를 로봇에 맞게 바꾸는 방식이 아님\n'
                     '- 물체 다양성 → Adaptive Robot Hand · 작업 다양성 → Manipulation Skill Library\n'
                     '- 주방 차이 → Perception + Calibration (현장에서 좌표 · 가전 · 수납 위치 등록)\n'
                     '- 매일 반복되는 작업점 (Robot 대기 자리 · 도구 거치대 · 식세기 랙)에만 최소 Interface\n'
-                    '- 환경 표준화 = 목적이 아닌 신뢰성 · 반복설치 수단 → 같은 Robot · Skill의 여러 주방 반복 적용'))
+                    '- 환경 표준화 = 목적이 아닌 신뢰성 · 반복설치 수단 → 같은 Robot · Skill의 여러 주방 반복 적용\n'
+                    '- 카드 그림 예 (CONCEPT): 같은 Hand의 국자 · 컵 · 접시 파지 · 식세기 적재 · 조리대 식기 인식 · Robot Home · Rail'))
     y = mhead(s, '05  MH Robotics Technology Strategy', 'Robot 적응 + 반복 작업점에만 최소 Interface',
               'Robot Hand · Manipulation Skill · Calibration · Environment Interface 통합 설계')
     cols = [('물체 다양성 (Object)', '형상 · 재질 · 젖은 표면 · 얇은 Edge', 'Adaptive Robot Hand', '파지 방식 전환 → 다양한 식기 · 도구를 하나의 손으로'),
@@ -248,16 +297,19 @@ def m05(prs):
             ('주방 차이 (Kitchen)', '가전 · 수납 위치 · 설치 오차', 'Perception + Calibration', '현장에서 좌표 · 가전 · 수납 위치 등록 → 같은 Skill 실행'),
             ('반복 작업점', 'Robot 대기 · 도구 · 식세기 랙', 'Minimal Robot-friendly Interface', 'Robot Home · Tool Dock · 가전 Interface · Vision 기준점')]
     gap = 0.22; cw = (CW - 3 * gap) / 4
+    kh = 0.8; b0 = y + kh + 0.36; ih = 1.15; bh = 2.48
     for i, (k, kd, t, d) in enumerate(cols):
         cx = MX + i * (cw + gap)
-        rect(s, cx, y, cw, 0.92, fill=SOFT)
-        text(s, cx + 0.16, y + 0.12, cw - 0.32, 0.3, k, size=12.5, bold=True, color=INK2)
-        text(s, cx + 0.16, y + 0.48, cw - 0.32, 0.3, kd, size=9.5, color=GREY)
-        arrow(s, cx + cw / 2, y + 0.97, cx + cw / 2, y + 1.3, color=GREY, lw=1.5)
-        rect(s, cx, y + 1.36, cw, 1.95, fill='FFFFFF', line=INK, lw=1.25)
-        text(s, cx + 0.16, y + 1.52, cw - 0.32, 0.72, t, size=15, bold=True, line=1.0)
-        text(s, cx + 0.16, y + 2.3, cw - 0.32, 0.9, d, size=10.5, color=INK2, line=1.05)
-    by = y + 3.55
+        rect(s, cx, y, cw, kh, fill=SOFT)
+        text(s, cx + 0.16, y + 0.1, cw - 0.32, 0.3, k, size=12.5, bold=True, color=INK2)
+        text(s, cx + 0.16, y + 0.44, cw - 0.32, 0.26, kd, size=9.5, color=GREY)
+        arrow(s, cx + cw / 2, y + kh + 0.05, cx + cw / 2, b0 - 0.06, color=GREY, lw=1.5)
+        rect(s, cx, b0, cw, bh, fill='FFFFFF', line=INK, lw=1.25)
+        _tech_tile(s, cx + 0.08, b0 + 0.08, cw - 0.16, ih, *_TECH_M05[i])
+        ty = b0 + 0.08 + ih + 0.08
+        text(s, cx + 0.16, ty, cw - 0.32, 0.62, t, size=15, bold=True, line=1.0)
+        text(s, cx + 0.16, ty + 0.62, cw - 0.32, b0 + bh - ty - 0.66, d, size=10.5, color=INK2, line=1.05)
+    by = b0 + bh + 0.2
     bar(s, MX, by, CW, 0.56, '결과: 다양한 주방에서 같은 Platform · Skill의 반복 적용 가능성 확대', size=14)
     text(s, MX, by + 0.72, CW, 0.3, [[('핵심 원칙  ', {'bold': True, 'color': INK}),
                                       ('환경 표준화 = 목적이 아닌 신뢰성 · 반복설치 수단 · 주방 전체 표준화 없음', {'color': INK2})]],

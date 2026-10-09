@@ -246,12 +246,68 @@ def b4(prs):
     foot(s, 'B4')
 
 
+def _tech_wrap(txt, w, size=9):
+    """Line breaks only at top-level ' · ' / ': ' separators (not inside parentheses) for a cell `w` inches wide."""
+    parts, depth, buf, i = [], 0, '', 0
+    while i < len(txt):
+        sep = next((d for d in (' · ', ': ') if txt.startswith(d, i)), None) if depth == 0 else None
+        if sep: parts.append((buf, sep)); buf = ''; i += len(sep); continue
+        depth += {'(': 1, ')': -1}.get(txt[i], 0); buf += txt[i]; i += 1
+    parts.append((buf, ''))
+    lines, cur, prev = [], '', ''
+    for p, sep in parts:
+        cand = p if not cur else cur + prev + p
+        if cur and kit.text_w(cand, size, False) > w: lines.append(cur + prev.rstrip()); cur = p
+        else: cur = cand
+        prev = sep
+    return '\n'.join(lines + [cur])
+
+
+def _tech_legend(s, x, y, kind, label, desc):
+    """B5 legend row: swatch (robot = 주황 반투명 · human = 회색 점선 · nogo = 빗금) + 굵은 이름 + 설명."""
+    from pptx.enum.dml import MSO_PATTERN_TYPE
+    if kind == 'robot':
+        kit.alpha(rect(s, x, y + 0.04, 0.3, 0.16, fill=ACC, line=ACC, lw=1.0), 40)
+    elif kind == 'human':
+        rect(s, x, y + 0.04, 0.3, 0.16, fill='DADDE1')
+        kit.dashed_rect(s, x, y + 0.04, 0.3, 0.16, color=INK2, lw=1.0)
+    else:
+        sh = rect(s, x, y + 0.04, 0.3, 0.16, line=INK, lw=1.0)
+        sh.fill.patterned(); sh.fill.pattern = MSO_PATTERN_TYPE.WIDE_UPWARD_DIAGONAL
+        sh.fill.fore_color.rgb = kit._rgb(INK2); sh.fill.back_color.rgb = kit._rgb('FFFFFF')
+    text(s, x + 0.4, y, 3.4, 0.24, [[(label + '  ', {'bold': True, 'color': INK}), (desc, {'color': INK2})]], size=8.5,
+         anchor='m', label='B5leg ' + label)
+
+
+def _tech_zones(s, x, y, w, h):
+    """B5 figure: 위에서 본 주방 Zoning (3D 콘셉트) · 주황 = Robot Zone · 회색 점선 = Human Zone · 빗금 = No-go (조리기구)."""
+    rect(s, x, y, w, h, fill=SOFT)
+    at = render(s, 'fig_tech_b5_zones', x, y, w, h, bg=(244, 245, 246))
+    mt(s, x + 0.05, y + 0.05, 'CONCEPT', size=5.5, h=0.14, fill='FFFFFF')
+    return at
+
+
 def b5(prs):
-    rows = [[a, b, TG(t), src] for a, b, t, src in C.SAFETY]
-    tslide(prs, 'B5', 'Safety · Certification 경로', ['항목', '내용', 'Tag', '출처'], rows, [1.7, 8.0, 1.2, 0.93], size=9.5,
-           sub='가정용 로봇 기준 발행 전 (IEC 63682 초안) → 인증기관 사전상담으로 경로 우선 확정 (WP5)',
-           takeaway='안전 설계 = 기준 발행 전 착수: 협동로봇 기준 (감속 · 접촉력) = 최소선 · 가정용 초안 요구 = Gap 분석 반영',
-           note='- 협동로봇 기준 ISO 10218 (2025) 감속 · 접촉력 = 최소선\n- 가정용 IEC 63682 = 초안 → Gap 분석으로 반영\n- M9 인증기관 사전상담 · M18 전기 · EMC 사전시험')
+    s, y = S(prs, 'B5', 'Safety · Certification 경로', sub='가정용 로봇 기준 발행 전 (IEC 63682 초안) → 인증기관 사전상담으로 경로 우선 확정 (WP5)',
+             visual='좌측 표 (항목 · 내용 · Tag · 출처, 7행) + 우측 위에서 본 주방 Zoning 3D 콘셉트 그림 (CONCEPT): 주황 = Robot Zone (조리대 한 줄) · 회색 점선 = Human Zone · 빗금 = No-go (조리기구 구역) + 범례 3줄. 하단 결론 띠.',
+             chart='표 + Zoning 콘셉트 그림 1개 (CONCEPT) + 범례',
+             note='- 협동로봇 기준 ISO 10218 (2025) 감속 · 접촉력 = 최소선\n- 가정용 IEC 63682 = 초안 → Gap 분석으로 반영\n- M9 인증기관 사전상담 · M18 전기 · EMC 사전시험\n'
+                  '- Zoning 그림: Robot Zone = 조리대 한 줄 · 사람 동선 = Human Zone (진입 시 감속 · 정지) · 조리기구 구역 = No-go (MH 안전 원칙, CONCEPT)')
+    cw = [1.08, 5.49, 0.8, 0.88]
+    rows = [[a, _tech_wrap(b, cw[1] - 0.4), TG(t), src] for a, b, t, src in C.SAFETY]
+    lw = sum(cw); fx = MX + lw + 0.3; fw = W - MX - fx
+    th = table(s, MX, y, lw, ['항목', '내용', 'Tag', '출처'], rows, col_w=cw, size=9, header_size=9, label='B5', pad=0.05)
+    text(s, fx, y + 0.02, fw, 0.24, 'MH 안전 원칙: Zoning 예', size=9.5, bold=True, color=GREY)
+    lg = 3 * 0.26
+    fh = max(th - 0.32 - lg - 0.08, 2.2)
+    _tech_zones(s, fx, y + 0.32, fw, fh)
+    ly = y + 0.32 + fh + 0.1
+    for i, (k, lab, d) in enumerate([('robot', 'Robot Zone', '조리대 한 줄 · Robot 작업 범위'), ('human', 'Human Zone', '사람 동선 · 진입 시 감속 · 정지'),
+                                     ('nogo', 'No-go', '조리기구 구역 · Robot 진입 금지')]):
+        _tech_legend(s, fx, ly + i * 0.26, k, lab, d)
+    sy = max(y + th, ly + lg) + 0.18
+    statement(s, MX, sy, CW, '안전 설계 = 기준 발행 전 착수: 협동로봇 기준 (감속 · 접촉력) = 최소선 · 가정용 초안 요구 = Gap 분석 반영', size=11)
+    foot(s, 'B5')
 
 
 def b6(prs):
