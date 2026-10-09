@@ -724,17 +724,92 @@ def m11(prs):
 
 
 # ================================================================= 12 market
+def _chart_poly(s, pts, fill):
+    """Filled polygon (slide inches, no outline)."""
+    E = 914400
+    fb = s.shapes.build_freeform(int(pts[0][0] * E), int(pts[0][1] * E), scale=1.0)
+    fb.add_line_segments([(int(px * E), int(py * E)) for px, py in pts[1:]], close=True)
+    sh = fb.convert_to_shape()
+    sh.fill.solid(); sh.fill.fore_color.rgb = RGBColor.from_string(fill); sh.line.fill.background()
+    kit._nostyle(sh)
+    return sh
+
+
+def _chart_legend(s, x, y, items, size=8, h=0.22, sw=0.12, gap=0.16):
+    """One-row legend (swatch + INK2 label). Returns the x after the last item."""
+    for nm, col in items:
+        rect(s, x, y + (h - sw) / 2, sw, sw, fill=col)
+        tw = kit.text_w(nm, size) + 0.04
+        text(s, x + sw + 0.05, y, tw, h, nm, size=size, color=INK2, anchor='m', check=False)
+        x += sw + 0.05 + tw + gap
+    return x - gap
+
+
+def _chart_legend_w(items, size=8, sw=0.12, gap=0.16):
+    return sum(sw + 0.05 + kit.text_w(nm, size) + 0.04 for nm, _ in items) + gap * (len(items) - 1)
+
+
+def _chart_mix(s, x, y, w, y1, mk, n5):
+    """m12 figure: 연 대상 세대 (① · ② · ③) × 패키지 단가 → 연 규모 = 100% 막대 2개 + 연결 띠 · Y5 계획 세대 = 대상 세대 막대와 같은 축척."""
+    ch = [(mk['fit'] * 1000, mk['sam_remodel'], '5C6169', 'FFFFFF'), (mk['retro_annual'] * 1000, mk['sam_retro'], '9DA2A9', INK),
+          (mk['new_opt'] * 1000, mk['sam_new'], 'D5D8DC', INK)]
+    hh = sum(c[0] for c in ch); sam = sum(c[1] for c in ch)
+    assert abs(sam - mk['sam']) < 1e-6 and abs(n5 / hh - mk['som_share_hh']) < 1e-9, 'm12 figure ≠ model'
+    lab_w = 1.35; bx = x + lab_w; L = x + w - bx; gp = 0.025; bh = 0.22
+    t1 = '채널 구성: 대상 세대 × 패키지 단가 → 연 규모'
+    text(s, x, y, kit.text_w(t1, 10, True) + 0.05, 0.24, t1, size=10, bold=True, color=GREY, anchor='m')
+    mt(s, x + kit.text_w(t1, 10, True) + 0.12, y + 0.035, 'DERIVED')
+    leg = [('① Remodeling', '5C6169'), ('② Retrofit', '9DA2A9'), ('③ New-build', 'D5D8DC')]
+    _chart_legend(s, x + w - _chart_legend_w(leg), y + 0.01, leg)
+    y5 = y + 0.35; ay = y5 + 0.21; by = y1 - bh
+    assert by - (ay + bh) >= 0.22, ('m12 figure too short', by - ay - bh)
+
+    def segs(vals):
+        tot = sum(vals); out = []; c = 0.0
+        for i, v in enumerate(vals):
+            x0 = bx + L * c / tot; c += v; x1 = bx + L * c / tot
+            out.append((x0 + (gp / 2 if i else 0), x1 - (gp / 2 if i < len(vals) - 1 else 0)))
+        return out
+    sa = segs([c[0] for c in ch]); sb = segs([c[1] for c in ch])
+    for (a0, a1), (b0, b1) in zip(sa, sb):                                   # 연결 띠 (세대 비중 → 매출 비중)
+        _chart_poly(s, [(a0, ay + bh), (a1, ay + bh), (b1, by), (b0, by)], 'E4E6E9')
+    for (row_y, sg, k) in ((ay, sa, 0), (by, sb, 1)):
+        for (x0, x1), c in zip(sg, ch):
+            rect(s, x0, row_y, x1 - x0, bh, fill=c[2])
+            lab = f'{c[k]:,.0f}'
+            assert kit.text_w(lab, 8.5, True) + 0.1 < x1 - x0, ('m12 label does not fit', lab)
+            text(s, x0, row_y, x1 - x0, bh, lab, size=8.5, bold=True, color=c[3], align='c', anchor='m', check=False)
+    w5 = L * n5 / hh                                                         # Y5 계획 세대 (같은 축척)
+    rect(s, bx, y5, w5, 0.13, fill=INK)
+    text(s, bx + w5 + 0.1, y5 - 0.045, 4.0, 0.22, f"{n5:,.0f}세대 = 약 {mk['som_share_hh'] * 100:.1f}%", size=8.5, bold=True,
+         anchor='m', check=False)
+    for ty, th_, t in ((y5 - 0.045, 0.22, 'Y5 계획'), (ay, bh, '대상 세대 /년'), (ay + bh, by - ay - bh, '× 패키지 단가'), (by, bh, '연 규모 (억원)')):
+        text(s, x, ty, lab_w - 0.12, th_, t, size=8.5, color=GREY if t.startswith('×') else INK2, align='r', anchor='m', check=False)
+
+
+def _chart_stock(s, x, y, w, mk):
+    """m12 좌측 패널: 아파트 재고 (Stock) 대비 연 주방 교체 (Flow) 막대 → Stock ≠ 구매시장."""
+    rect(s, x, y, w, 0.12, fill='3A3F46')
+    rect(s, x, y, w * mk['rep'] / mk['apt'], 0.12, fill='FFFFFF')
+    t1 = f"연 주방 교체 약 {mk['rep'] / 10:.0f}만"
+    text(s, x, y + 0.16, kit.text_w(t1, 8.5, True) + 0.05, 0.2, t1, size=8.5, bold=True, color='FFFFFF', anchor='m', check=False)
+    mt(s, x + kit.text_w(t1, 8.5, True) + 0.1, y + 0.175, 'ASSUMPTION', fill=INK)
+    t2 = f"재고 {mk['apt'] / 10:,.0f}만호"; w2 = kit.text_w(t2, 8.5) + 0.05
+    text(s, x + w - w2, y + 0.16, w2, 0.2, t2, size=8.5, color='A9AEB5', align='r', anchor='m', check=False)
+
+
 def m12(prs):
     mk = M['market']['B']; B = M['scenarios']['B']
     s = start(prs, 'm12', pg(prs), 'Bottom-up 시장 산정: 세대 수 × 적용률 × 단가',
-              visual='좌측 짙은 박스: 아파트 재고 1,328만호 (기회 기반) + 노후 · 거래 FACT. 우측 4개 시장 Funnel 표 (산식 · 대상 세대 · 패키지 단가 · 연 규모) + SAM 합계 · SOM.',
-              chart='Bottom-up 시장 표',
+              visual='좌측 짙은 박스: 아파트 재고 1,328만호 (기회 기반) + 노후 · 거래 FACT + 재고 대비 연 주방 교체 약 30만 막대 (Stock ≠ 구매시장). 우측 4개 시장 Funnel 표 (산식 · 대상 세대 · 패키지 단가 · 연 규모) + SAM 합계 · SOM. 우하단 채널 구성 막대: 연 대상 세대 (① · ② · ③) → × 패키지 단가 → 연 규모 (억원) 100% 막대 2개 + 연결 띠 · Y5 계획 560세대 = 같은 축척 막대 (약 2.5%).',
+              chart='Bottom-up 시장 표 + 채널 구성 100% 막대 2개 (세대 → 억원, 연결 띠) + Y5 비교 막대 + 재고 대비 연 교체 막대',
               note=('- 시장 산정 = 큰 TAM이 아닌 세대 수 × 적용률 × 단가\n'
                     f"- 국내 아파트 약 {mk['apt'] / 10:,.0f}만호 = 기회 기반 (구매자 수 아님)\n"
                     f"- Remodeling: 연 주방 교체 약 30만 × Premium 10% × 적용 60% = 연 약 {mk['fit'] / 10:.1f}만 세대 · {mk['sam_remodel']:,.0f}억원\n"
                     f"- Retrofit: 호환 기존 주방 약 {mk['retro_pool'] / 10:.1f}만 세대 × 연 0.5% = {mk['sam_retro']:,.0f}억원 · 신축 {mk['sam_new']:,.0f}억원\n"
                     f"- Y5 계획 매출 {mk['som']:.1f}억원 = 대상 세대의 약 {mk['som_share_hh'] * 100:.1f}%\n"
-                    '- 비율 = 전부 가정 → 견적 20건 · 평면 30개 분석 · 소비자 조사로 검증'))
+                    '- 비율 = 전부 가정 → 견적 20건 · 평면 30개 분석 · 소비자 조사로 검증\n'
+                    f"- 채널 구성: Remodeling = 대상 세대 · 연 규모 모두 최대 (Beachhead) · 신축 = Option 단가 {kit.nf(mk['pkg_new'])}만원 → 세대 대비 연 규모 비중 작음"))
     y = mhead(s, '12  Market / Beachhead', 'Bottom-up 시장 산정: 세대 수 × 적용률 × 단가',
               '아파트 재고 = 기회 기반 (구매시장 아님) · 비율 = ASSUMPTION (검증 계획 부록 C3)')
     lw = 3.45; lh = H - 0.62 - 0.3 - y
@@ -747,6 +822,7 @@ def m12(prs):
     for i, (t, tg) in enumerate(facts):
         yy = y + 1.65 + i * 0.52
         text(s, MX + 0.25, yy, lw - 0.5, 0.42, t, size=10, color='E3E5E8', line=1.02)
+    _chart_stock(s, MX + 0.25, y + lh - 1.22, lw - 0.5, mk)
     text(s, MX + 0.25, y + lh - 0.62, lw - 0.5, 0.5, 'Stock ≠ 구매시장', size=9, color='A9AEB5', line=1.02)
     rx = MX + lw + 0.3; rw = W - MX - rx
     hdr = ['시장', '산식 (세대 × 적용률)', '대상 세대', '패키지', '연 규모']
@@ -765,6 +841,7 @@ def m12(prs):
     text(s, rx + sw + 0.5, sy + 0.12, sw - 0.4, 0.26, 'Y5 계획 매출 (Base · TARGET)', size=10, bold=True, color=GREY)
     text(s, rx + sw + 0.5, sy + 0.4, sw - 0.4, 0.5, f"{mk['som']:.1f}억원 · {B['kitchens'][4]:,.0f}세대", size=22, bold=True, color=ACC)
     text(s, rx + sw + 0.5, sy + 0.78, sw - 0.4, 0.24, f"대상 세대의 약 {mk['som_share_hh'] * 100:.1f}% (DERIVED)", size=8.5, color=INK2, check=False)
+    _chart_mix(s, rx, sy + 1.05 + 0.22, rw, y + lh, mk, B['kitchens'][4])
     note(s, f"적용 60% = 확보 평면 5종 (기본 배치 수용 1)보다 높은 가정 → 평면 30개 분석으로 검증 (M6) · 주방 교체 30만 = 교차검증 {mk['tri1'] / 10:.1f}만 · {mk['tri2'] / 10:.1f}만 기반 가정 · 출처 [S1~S6]",
          y=H - 0.6 - 0.2)
     mfoot(s)
@@ -1020,23 +1097,60 @@ def m16(prs):
 
 
 # ================================================================= 17 founder / team
+def _chart_ramp(s, x, y, w, y1, Fd):
+    """m17 figure: 월별 인원 (FTE) 누적 막대 M1~M24 · 구분별 + Y1 · Y2 평균 FTE 선 (하단 요약 띠와 같은 수치)."""
+    kinds = [('founder', INK), ('rnd', INK2), ('biz', '757A81'), ('field', 'A3A8AF'), ('ops', 'D5D8DC')]      # 인접 명도차 ≥ 15 (OKLab)
+    ramp = [[sum(m['frac'] for m in Fd['team'] if m['kind'] == k and m['start'] <= mo) for k, _ in kinds] for mo in range(1, 25)]
+    tot = [sum(r) for r in ramp]; avg = [sum(tot[:12]) / 12, sum(tot[12:]) / 12]
+    assert abs(tot[-1] - Fd['heads_m24']) < 1e-9 and all(abs(a - b) < 1e-9 for a, b in zip(avg, Fd['fte'])), 'm17 ramp ≠ model'
+    t1 = '월별 인원 (FTE · M1~M24)'
+    tw = kit.text_w(t1, 10, True)
+    text(s, x, y, tw + 0.05, 0.24, t1, size=10, bold=True, color=GREY, anchor='m')
+    lx = x + tw + 0.12 + mt(s, x + tw + 0.12, y + 0.035, 'ASSUMPTION') + 0.3
+    _chart_legend(s, lx, y + 0.01, [(M['team_kind'][k], c) for k, c in kinds])
+    py0 = y + 0.32; py1 = y1 - 0.18; vmax = 15.0; k_ = (py1 - py0) / vmax
+    slot = w / 24; cw = slot * 0.7; gp = 0.012
+    for n, (a, i0) in enumerate(zip(avg, (0, 12))):                              # Y1 · Y2 평균 FTE 선 (막대 뒤 기준선)
+        ya = py1 - a * k_; xa = x + i0 * slot; xb = xa + 12 * slot
+        seg(s, xa, ya, xb, ya, color=INK, lw=0.9)
+        lab = f'Y{n + 1} 평균 FTE {a:.1f}'; lw_ = kit.text_w(lab, 8, True) + 0.06
+        if n == 0: text(s, xa, ya - 0.2, lw_, 0.17, lab, size=8, bold=True, color=INK, anchor='m', check=False)
+        else: text(s, xa - lw_ - 0.04, ya - 0.085, lw_, 0.17, lab, size=8, bold=True, color=INK, align='r', anchor='m', check=False)
+    for i, r in enumerate(ramp):
+        cx = x + i * slot + (slot - cw) / 2; base = py1
+        for v, (_, col) in zip(r, kinds):
+            if v <= 0: continue
+            hgt = v * k_
+            rect(s, cx, base - hgt, cw, hgt - (gp if base < py1 else 0), fill=col)
+            base -= hgt
+    hline(s, x, py1, w, color=EDGE, lw=0.75)
+    for i in (0, 5, 11, 17, 23):
+        cx = x + (i + 0.5) * slot; hw = min(0.3, cx - x, x + w - cx)
+        text(s, cx - hw, py1 + 0.03, 2 * hw, 0.17, f'M{i + 1}', size=8, color=GREY, align='c', anchor='m', check=False)
+    top = py1 - tot[-1] * k_
+    text(s, x + w - 0.7, top - 0.2, 0.7, 0.17, f"약 {Fd['heads_m24']:.0f}명", size=8.5, bold=True, align='r', anchor='m', check=False)
+
+
 def m17(prs):
     Fd = F()
     s = start(prs, 'm17', pg(prs), 'Founder / Team: 필요 핵심 역량 3개 · 24개월 채용 계획',
-              visual='좌측 Founder 확인 항목 7행 × Founder 2인 (입력 전 [Founder 정보 필요]). 우측 24개월 채용 계획 표 (역할 · 시작 월 · 구분) + 인원 요약.',
-              chart='확인 항목 표 + 채용 계획 표',
+              visual='좌측 Founder 확인 항목 7행 × Founder 2인 (입력 전 [Founder 정보 필요]) + 하단 월별 인원 누적 막대 (M1~M24 · Founder · R&D · 사업 · 현장 · 경영지원 · Y1 · Y2 평균 FTE 선). 우측 24개월 채용 계획 표 (역할 · 시작 월 · 구분) + 인원 요약 띠.',
+              chart='확인 항목 표 + 월별 인원 누적 막대 (FTE, 24개월) + 채용 계획 표',
               note=('- 필요 핵심 역량 3개: 로봇 조작 (Hand · Skill) · 주방 · 건축 설치 (Interface · 시공 Partner) · 고객 · Partner 영업\n'
                     '- Founder 확인 항목 7개: Why This Problem · 관련 엔지니어링 경험 · 하드웨어 · 제품 개발 · Robot · 기계 · AI 역량 · 건설 · 주방 · 제조 지식 · 고객 · Partner 네트워크 · 전업 여부 · 지분\n'
                     f"- 24개월 채용 계획: Founder 2명 포함 24개월 차 약 {Fd['heads_m24']:.0f}명 · R&D 중심 · 리드 3명 (Manipulation · Perception · Hand) 우선 채용\n"
-                    '- TIPS 요건: 대표 포함 창업팀 2인 이상 지분 60% 이상 · 정부지원 5억원당 청년 1명 신규 채용'))
+                    '- TIPS 요건: 대표 포함 창업팀 2인 이상 지분 60% 이상 · 정부지원 5억원당 청년 1명 신규 채용\n'
+                    '- 월별 인원 (FTE): 리드 3명 M1~M2 → 사업개발 M7 → 시험 · 설치 M13 → 현장 서비스 M19 · 경영지원 0.5 FTE (M10)'))
     y = mhead(s, '17  Founder / Team', 'Founder / Team: 필요 핵심 역량 3개 · 24개월 채용 계획',
               '필요 역량 = 로봇 조작 (Hand · Skill) · 주방 · 건축 설치 · 고객 · Partner 영업')
-    lw = 6.3
+    lw = 6.6
     items = ['Why This Problem', 'Relevant Engineering Experience', 'Hardware / Product Development', 'Robot · Mechanical · AI Capability',
              'Construction · Kitchen · Manufacturing Knowledge', 'Customer / Partner Network', 'Full-time Commitment · 지분']
     NEED = ('[Founder 정보 필요]', {'color': INK2, 'bold': True})
     rows = [[it, NEED, NEED] for it in items]
-    table(s, MX, y, lw, ['확인 항목', 'Founder 1 (대표)', 'Founder 2 (확보 여부 확인)'], rows, col_w=[2.9, 1.7, 1.7], size=9.5, label='m17f', pad=0.075)
+    fth = table(s, MX, y, lw, ['확인 항목', 'Founder 1 (대표)', 'Founder 2 (확보 여부 확인)'], rows, col_w=[3.36, 1.44, 1.8], size=9.5, label='m17f', pad=0.05)
+    yb = H - 0.62 - 0.3 - 0.52
+    _chart_ramp(s, MX, y + fth + 0.25, lw, yb - 0.2, Fd)
     rx = MX + lw + 0.35; rw = W - MX - rx
     tm = Fd['team']
     trows = []
@@ -1049,7 +1163,6 @@ def m17(prs):
     for m in tm:
         if m['pm'][1] > 0: kinds[m['kind']] = kinds.get(m['kind'], 0) + m['frac']
     summ = f"M24 약 {Fd['heads_m24']:.0f}명 = Founder {kinds.get('founder', 0):.0f} · R&D {kinds.get('rnd', 0):.0f} · 사업 {kinds.get('biz', 0):.0f} · 현장 {kinds.get('field', 0):.0f} · 경영지원 {kinds.get('ops', 0):.1f}  |  평균 FTE {Fd['fte'][0]:.1f} (Y1) → {Fd['fte'][1]:.1f} (Y2)"
-    yb = H - 0.62 - 0.3 - 0.52
     rect(s, MX, yb, CW, 0.52, fill=SOFT)
     text(s, MX + 0.2, yb, CW - 0.4, 0.52, summ, size=10.5, bold=True, anchor='m')
     note(s, 'TIPS 요건: 대표 포함 창업팀 2인 이상 지분 60% 이상 · 운영사 30% 이하 · 정부지원 5억원당 청년 1명 신규 채용 [S33]',
