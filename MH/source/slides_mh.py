@@ -633,12 +633,35 @@ def m10(prs):
 
 
 # ================================================================= 11 business model
+def _bm_padded(name, top=0.0, bottom=0.0):
+    """Render with transparent headroom above / below (upright hand touches the frame edge). Cached in _img; returns (path, top px)."""
+    from PIL import Image as _Im
+    im = _Im.open(os.path.join(RD, name + '.png')).convert('RGBA')
+    iw, ih = im.size; t, b = int(ih * top), int(ih * bottom)
+    out = _Im.new('RGBA', (iw, ih + t + b), (0, 0, 0, 0)); out.paste(im, (0, t))
+    os.makedirs(kit.IMG_CACHE, exist_ok=True)
+    p = os.path.join(kit.IMG_CACHE, f'{name}_bmpad_{t}_{b}.png'); out.save(p)
+    return p, t
+
+
+def _bm_layer_img(s, x, y, w, h, name, focus, zoom, lab=None, pad=None):
+    """m11 layer thumbnail (CONCEPT): product render cover-fit on white, flush right of the dark layer label.
+    lab = (anchor, text, dx, dy, side) thin grey leader callout, 8 pt · pad = (top, bottom) headroom fractions."""
+    src, t = _bm_padded(name, *pad) if pad else (None, 0)
+    at = render(s, name, x, y, w, h, focus=focus, zoom=zoom, bg=(255, 255, 255), src=src)
+    if lab:
+        key, txt, dx, dy, side = lab
+        ax, ay = json.load(open(os.path.join(RD, name + '.json'), encoding='utf-8'))['anchors'][key]
+        callout(s, at, (ax, ay + t), txt, dx, dy, size=8, side=side)
+    mt(s, x + 0.05, y + 0.05, 'CONCEPT', size=5.5, h=0.14, fill='FFFFFF')
+
+
 def m11(prs):
     h3, h5 = HH('purchase_direct_Y3'), HH('purchase_direct_Y5')
     pi = M['partner_irr']['B']; cons = M['cons']; Bs = M['scenarios']['B']
     s = start(prs, 'm11', pg(prs), '설치 매출 → 사용 기간 반복매출 → 기능 확장매출의 3층 BM',
-              visual='좌측 3층 사업모델 (INSTALL · OPERATE · EXPAND: 항목 + 가격 가설). 우측 상단 대표 1세대 5년 매출 막대 (층별) + Contribution. 우측 하단 Rental 구조 도식 (고객 · Capital Partner · MH).',
-              chart='층별 가로 막대 + Rental 3자 구조도',
+              visual='좌측 3층 사업모델 (INSTALL · OPERATE · EXPAND): 층마다 짙은 라벨 + 제품 콘셉트 그림 1컷 (Rail 장착 Robot System · 식세기 적재 / 교체형 Pad 손끝 + 가는 회색 지시선 / 국자 Tool 파지, 각 CONCEPT) + 항목 · 가격 가설. 우측 상단 대표 1세대 5년 매출 막대 (층별) + Contribution. 우측 하단 Rental 구조 도식 (고객 · Capital Partner · MH).',
+              chart='층별 3D 콘셉트 그림 3컷 (CONCEPT) + 층별 가로 막대 + Rental 3자 구조도',
               note=('- BM 3층: INSTALL (Robot System · Interface · 설치) → OPERATE (Rental · Care · 소모품) → EXPAND (ASSIST Skill · Tool · 이후 COOK Skill · Upgrade)\n'
                     f"- Remodeling 구매 1세대 5년: 설치 {h3['layers']['install']:,.0f}만원 · 운영 {h3['layers']['operate']:,.0f}만원 · 확장 {h3['layers']['expand']:,.0f}만원\n"
                     f"- 5년 기여이익 {h3['contrib5']:,.0f}만원 (Y3 원가) → {h5['contrib5']:,.0f}만원 (Y5 원가)\n"
@@ -654,18 +677,24 @@ def m11(prs):
                                       ('Consumables (Pad · Seal · Tip · Cover)', f"연 {cons['list_y']:.0f}만원 (List)")]),
               ('EXPAND', '확장매출', [('ASSIST Skill Pack', f"{A('p_sw')}만원"), ('Tool · End-effector', f"{A('p_tool')}만원"),
                                      ('COOK Skill · Robot Upgrade', 'FUTURE')])]
-    lh = 1.28
+    imgs = [('v2_seq_3_load', (0.55, 0.4), 1.3, None, None),                                  # INSTALL: Robot System · Rail · 식세기 Interface
+            ('hand_hero', (0.5, 0.3), 1.5, ('pad', '교체형 Pad', 0.0, 0.64, 'c'), (0.1, 0.0)),  # OPERATE: Grip Kit · 소모품 Pad
+            ('hand_tool', (0.5, 0.55), 1.1, None, None)]                                      # EXPAND: Tool · End-effector
+    lh = 1.34; kw = 1.2; iw_ = 1.22
     for i, (k, kd, items) in enumerate(layers):
         ly = y + i * (lh + 0.14)
         rect(s, MX, ly, lw, lh, fill=SOFT)
-        rect(s, MX, ly, 1.45, lh, fill=INK)
-        text(s, MX, ly + 0.3, 1.45, 0.36, k, size=14, bold=True, color='FFFFFF', align='c')
-        text(s, MX, ly + 0.7, 1.45, 0.26, kd, size=9.5, color='A9AEB5', align='c')
+        rect(s, MX, ly, kw, lh, fill=INK)
+        text(s, MX, ly + lh / 2 - 0.37, kw, 0.36, k, size=14, bold=True, color='FFFFFF', align='c')
+        text(s, MX, ly + lh / 2 + 0.03, kw, 0.26, kd, size=9.5, color='A9AEB5', align='c')
+        _bm_layer_img(s, MX + kw, ly, iw_, lh, *imgs[i])
+        ix = MX + kw + iw_ + 0.2; pr = MX + lw - 0.15
         for j, (a, b) in enumerate(items):
-            iy = ly + 0.16 + j * 0.36
-            text(s, MX + 1.65, iy, lw - 3.4, 0.3, a, size=10.5, anchor='m')
-            text(s, MX + lw - 1.75, iy, 1.6, 0.3, b, size=10.5, bold=True, align='r', anchor='m')
-        if i < 2: arrow(s, MX + 0.72, ly + lh + 0.01, MX + 0.72, ly + lh + 0.13, color=GREY, lw=1.25)
+            iy = ly + 0.15 + j * 0.38
+            pw_ = kit.text_w(b, 10.5, True) + 0.04
+            text(s, ix, iy, pr - pw_ - 0.06 - ix, 0.3, a, size=10.5, anchor='m')
+            text(s, pr - pw_, iy, pw_, 0.3, b, size=10.5, bold=True, align='r', anchor='m')
+        if i < 2: arrow(s, MX + kw / 2, ly + lh + 0.01, MX + kw / 2, ly + lh + 0.13, color=GREY, lw=1.25)
     mts(s, MX, y + 3 * (lh + 0.14) - 0.06, ['ASSUMPTION'], label='가격 = ASSUMPTION (VAT 별도)')
     rx = MX + lw + 0.35; rw = W - MX - rx
     text(s, rx, y, rw, 0.26, '대표 1세대 · 5년 (Remodeling 구매, Y3 원가)', size=10.5, bold=True, color=GREY)
@@ -922,52 +951,69 @@ def m15(prs):
 
 
 # ================================================================= 16 TIPS R&D / roadmap
+def _bm_phase_img(s, x, y, w, h, subs, gap=0.04):
+    """m16 phase picture between the period bar and the task list: 1 wide render or 3 equal sub-images (each CONCEPT).
+    sub = (render, focus, zoom[, (top, bottom) headroom])."""
+    n = len(subs); sw = (w - (n - 1) * gap) / n
+    for j, sub in enumerate(subs):
+        nm, fc, zm = sub[:3]
+        sx = x + j * (sw + gap)
+        render(s, nm, sx, y, sw, h, focus=fc, zoom=zm, bg=(244, 245, 246), src=_bm_padded(nm, *sub[3])[0] if len(sub) > 3 else None)
+        mt(s, sx + 0.05, y + 0.05, 'CONCEPT', size=5.5, h=0.14, fill='FFFFFF')
+
+
 def m16(prs):
     s = start(prs, 'm16', pg(prs), 'TIPS = 기술 검증 (WP1~6) · Seed = 사업 검증 · 과제 외 개발',
-              visual='상단 좌우 비교: TIPS 과제 (WP1~WP6, 기술 검증) vs 민간 Seed (사업 검증 · 과제 외 개발). 중간 24개월 4구간 일정 (0~6 · 7~12 · 13~18 · 19~24M). 하단 Gate 4개 (M6 · M12 · M18 · M24) 판단 기준.',
-              chart='2열 비교 + 4구간 로드맵 + Gate',
+              visual='상단 좌우 비교: TIPS 과제 (WP1~WP6, 기술 검증) vs 민간 Seed (사업 검증 · 과제 외 개발). 중간 24개월 4구간 일정 (0~6 · 7~12 · 13~18 · 19~24M): 구간 머리 아래 같은 크기 콘셉트 그림 (Hand v1 · 접시 · 컵 파지 / 주방 CLEAN 경로 · 식세기 적재 / 서로 다른 주방 3종 / 가정 주방 Robot Zone · 사람 공존, 각 CONCEPT) + 구간별 과업 목록. 하단 Gate 4개 (M6 · M12 · M18 · M24) 판단 기준.',
+              chart='2열 비교 + 4구간 로드맵 (구간별 3D 콘셉트 그림, CONCEPT 8컷) + Gate',
               note=(f"- TIPS 과제 {M['tips']['total'] / 10000:.2f}억원 = 기술 위험 해소 (WP1 Hand · WP2 Skill · WP3 Perception · Calibration · WP4 최소 Interface · WP5 안전 · WP6 통합 CLEAN 실증)\n"
                     '- Seed = 기관부담금 · 과제 외 인건비 · 고객 검증 · 실증 운영 · WTP · Partner 개발 · BM 검증\n'
                     '- 일정 6개월 단위 · Gate별 판단 (계속 · 범위 축소 · 전환)\n'
                     '- M6 상용 Gripper 대비 Hand 비교 · M12 목업 CLEAN 전 과정 · M18 주방 3종 Transfer · WTP · M24 가정 실증 · 유료 전환 · 원가 실측'))
     y = mhead(s, '16  TIPS R&D / 24개월 Roadmap', 'TIPS = 기술 검증 (WP1~6) · Seed = 사업 검증 · 과제 외 개발',
               f"TIPS 과제 {M['tips']['total'] / 10000:.2f}억원 = WP1~6 기술 검증 · Seed = 기관부담금 · 과제 외 인건비 · 고객 · 실증 · 사업 검증")
-    lw = (CW - 0.3) / 2; bh = 1.32
+    lw = (CW - 0.3) / 2; bh = 1.16
     rect(s, MX, y, lw, bh, fill=INK)
-    text(s, MX + 0.2, y + 0.1, lw - 0.4, 0.3, 'TIPS 과제  ·  기술 검증 (Technology De-risking)', size=12, bold=True, color='FFFFFF')
+    text(s, MX + 0.2, y + 0.09, lw - 0.4, 0.3, 'TIPS 과제  ·  기술 검증 (Technology De-risking)', size=12, bold=True, color='FFFFFF')
     wps = ['WP1 Adaptive Kitchen Robot Hand', 'WP2 Kitchen Manipulation Skill', 'WP3 Perception / Calibration',
            'WP4 Minimal Environment Interface', 'WP5 Human-Robot Safety', 'WP6 Integrated CLEAN 실증']
     for i, w_ in enumerate(wps):
-        text(s, MX + 0.2 + (i % 2) * (lw / 2 - 0.1), y + 0.48 + (i // 2) * 0.27, lw / 2 - 0.2, 0.26, w_, size=9.5, color='E3E5E8', check=False)
+        text(s, MX + 0.2 + (i % 2) * (lw / 2 - 0.1), y + 0.43 + (i // 2) * 0.24, lw / 2 - 0.2, 0.24, w_, size=9.5, color='E3E5E8', check=False)
     rx = MX + lw + 0.3
     rect(s, rx, y, lw, bh, fill=SOFT)
-    text(s, rx + 0.2, y + 0.1, lw - 0.4, 0.3, '민간 Seed  ·  사업 검증 (Commercial Validation)', size=12, bold=True)
+    text(s, rx + 0.2, y + 0.09, lw - 0.4, 0.3, '민간 Seed  ·  사업 검증 (Commercial Validation)', size=12, bold=True)
     seeds = ['과제 외 인건비 (사업 · 현장 · 지원)', '목업 · 시제품 운영', '고객 검증 · WTP', 'Pilot 운영 · 유료 전환',
              'Partner 개발', 'BM 검증 · 기관부담금']
     for i, w_ in enumerate(seeds):
-        text(s, rx + 0.2 + (i % 2) * (lw / 2 - 0.1), y + 0.48 + (i // 2) * 0.27, lw / 2 - 0.2, 0.26, w_, size=9.5, color=INK2, check=False)
-    gy = y + bh + 0.22
+        text(s, rx + 0.2 + (i % 2) * (lw / 2 - 0.1), y + 0.43 + (i // 2) * 0.24, lw / 2 - 0.2, 0.24, w_, size=9.5, color=INK2, check=False)
+    gy = y + bh + 0.18
     per = [('0~6M', ['주방 작업 분석', 'Robot 구조 설계', 'Hand 시제품 v1', '식기 30종 파지 시험', '초기 Calibration']),
            ('7~12M', ['CLEAN Skill', '식세기 연동', 'Hand v2 · 안전 기능', '1:1 주방 목업', '목업 CLEAN 전 과정']),
            ('13~18M', ['주방 3종 적용', '주방 간 Transfer 시험', '실패 복구', 'Pilot 착수', 'WTP 검증']),
            ('19~24M', ['신뢰성 (연속 운전)', '설치 표준', '가정 실증 3세대', 'BOM · 설치 · 서비스 원가', '유료 실증 · Partner 조건'])]
-    pw = (CW - 3 * 0.14) / 4; ph = 1.62
+    pics = [[('hand_hero', (0.5, 0.5), 1.0, (0.1, 0.04)), ('hand_plate', (0.47, 0.45), 1.15), ('hand_cup', (0.6, 0.47), 1.2)],   # Hand v1 · 식기 파지 시험
+            [('v2_cover', (0.56, 0.53), 1.4)],                                                                       # 목업 CLEAN 전 과정 (식세기 적재 경로)
+            [('apt2_kitchen', (0.5, 0.4), 1.3), ('apt3_kitchen', (0.55, 0.4), 1.3), ('apt4_kitchen', (0.62, 0.42), 1.3)],  # 주방 3종
+            [('v2_after', (0.55, 0.45), 1.0)]]                                                                       # 가정 실증 (사람 공존)
+    pw = (CW - 3 * 0.14) / 4; hh = 0.3; ih = 1.26; hb = 1.05
     for i, (t, items) in enumerate(per):
         px = MX + i * (pw + 0.14)
-        rect(s, px, gy, pw, 0.32, fill=INK if i == 3 else '3A3F46')
-        text(s, px, gy, pw, 0.32, t, size=11, bold=True, color='FFFFFF', align='c', anchor='m')
-        rect(s, px, gy + 0.32, pw, ph - 0.32, fill=SOFT)
-        text(s, px + 0.14, gy + 0.4, pw - 0.28, ph - 0.46, items, size=9.5, color=INK, bullet='–', line=1.0, space_after=1)
-    ky = gy + ph + 0.16
+        rect(s, px, gy, pw, hh, fill=INK if i == 3 else '3A3F46')
+        text(s, px, gy, pw, hh, t, size=11, bold=True, color='FFFFFF', align='c', anchor='m')
+        _bm_phase_img(s, px, gy + hh, pw, ih, pics[i])
+        by_ = gy + hh + ih
+        rect(s, px, by_, pw, hb, fill=SOFT)
+        text(s, px + 0.14, by_ + 0.08, pw - 0.28, hb - 0.1, items, size=9.5, color=INK, bullet='–', line=0.95, space_after=1)
+    ky = gy + hh + ih + hb + 0.14
     gates = [('M6', '상용 Gripper 대비 Hand 비교 (30종) → Build / Buy 결정'),
              ('M12', '목업 CLEAN 전 과정 · 식기 성공률 ≥ 80%'),
              ('M18', '주방 3종 Transfer (하락 ≤ 10%p) · WTP n≥300'),
              ('M24', '가정 3세대 성공률 ≥ 90% · 유료 전환 ≥ 2세대 · 원가 실측')]
     for i, (g, d) in enumerate(gates):
         px = MX + i * (pw + 0.14)
-        rect(s, px, ky, pw, 0.78, fill='FFFFFF', line=INK if i == 3 else EDGE, lw=1.25 if i == 3 else 0.75)
-        text(s, px + 0.12, ky + 0.06, 0.6, 0.26, g, size=11, bold=True, color=INK)
-        text(s, px + 0.12, ky + 0.32, pw - 0.24, 0.44, d, size=8.8, color=INK, line=1.0)
+        rect(s, px, ky, pw, 0.7, fill='FFFFFF', line=INK if i == 3 else EDGE, lw=1.25 if i == 3 else 0.75)
+        text(s, px + 0.12, ky + 0.05, 0.6, 0.26, g, size=11, bold=True, color=INK)
+        text(s, px + 0.12, ky + 0.29, pw - 0.24, 0.39, d, size=8.8, color=INK, line=1.0)
     mts(s, MX + CW - 0.75, ky - 0.24, ['TARGET'])
     note(s, 'TIPS 2026 일반트랙: 정부 R&D 최대 8억원 · 24개월 · 정부 75% 이내 · 기관부담 25% 이상 [S33 · S52] · KPI: 부록 A1~A3', y=H - 0.6 - 0.2)
     mfoot(s)
