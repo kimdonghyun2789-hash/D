@@ -8,13 +8,13 @@
 
 - **구성**: 좌측 짙은 패널: 회사명 · 제품 정의 · CLEAN → ASSIST → COOK · 현재 단계. 우측 3D 콘셉트 렌더: 구축 아파트 주방 한 벽 (Robot Home · Rail · 식기세척기 Interface)
 - **도표 유형**: 3D 콘셉트 렌더 1개 (CONCEPT)
-- **사용 이미지**: `assets/renders/v2_cover.png`
+- **사용 이미지**: `assets/renders/v2_cover.png`, `assets/renders/fig_flow_kitchen.png`
 - **CONCEPT 표기**: 렌더 우하단 [CONCEPT RENDERING]
 
 ## 02. 가전 자동화 이후에도 사람 몫으로 남은 주방 Physical Workflow
 
-- **구성**: 상단 가전 4종 카드 (기기 안의 자동화). 중간 짙은 띠: 가전 사이 Physical Task 10개 (앞 4개 = CLEAN 범위 강조). 하단 공식: Appliance Automation ≠ Physical Workflow Automation · 근거 숫자 4개
-- **도표 유형**: 카드 4 + 작업 띠 + 핵심 숫자 4
+- **구성**: 좌측 3D 주방 그림 (로봇 없음): 냉장고 · 인덕션 · 오븐 · 식기세척기 = 기기 안 자동화 (흰 라벨) · 가전 사이 사람 작업 = 짙은 점선 ①~④ (식탁 → 싱크 → 식세기 → 조리대 → 수납장) + 사람 형상. 우측: 가전 4종 압축 카드 (기기 안 자동화) · 짙은 띠 Physical Task 10개 (①~④ = CLEAN 범위). 하단 공식: Appliance Automation ≠ Physical Workflow Automation · 근거 숫자 4개
+- **도표 유형**: 3D 주방 Workflow 그림 1개 (로봇 없음) + 압축 카드 4 + 작업 띠 + 핵심 숫자 4
 - **사용 이미지**: 없음 (도형 · 표 · 텍스트)
 
 ## 03. 주방: 기술 · 사업성 동시 검증이 가능한 첫 적용 공간
@@ -25,8 +25,8 @@
 
 ## 04. 주방마다 다른 환경 → 동일 로봇 반복 설치의 구조적 한계
 
-- **구성**: 좌측 3×3 칩: 주방마다 달라지는 9개 변수. 우측 세로 체인: 범용 Robot 적용 시 집마다 반복되는 6단계 (Perception → Validation). 하단 근거 2개 (확보 평면 5종 · 공개 사례)
-- **도표 유형**: 변수 Grid + 반복 공정 체인
+- **구성**: 좌측 상단: 확보 평면 4종 주방 3D 재작도 4컷 (구축 2Bay A · B · 신축 3Bay · 4Bay, 도면 그대로 · 로봇 없음 · 같은 시점 · 동일 축척) + 평면명 · 주방 형태 · 기본 한 줄 배치 수용/불가 캡션. 좌측 하단: 주방마다 달라지는 9개 변수 칩. 우측 세로 체인: 범용 Robot 적용 시 집마다 반복되는 6단계 (Perception → Validation) + 결론 상자. 하단 전체 폭: 근거 2행 (확보 평면 5종 · 공개 사례)
+- **도표 유형**: 평면 재작도 주방 4컷 (동일 축척 Axonometric) + 변수 칩 + 반복 공정 체인 + 근거 표
 - **사용 이미지**: 없음 (도형 · 표 · 텍스트)
 
 ## 05. Robot 적응 + 반복 작업점에만 최소 Interface
@@ -65,9 +65,9 @@
 
 ## 10. 단일 제품 · 3가지 설치 경로 (기존 주방 · Remodeling · 신축)
 
-- **구성**: 상단 Integration 수준 막대 3개 (Retrofit 최소 → Remodeling 통합 → New-build 설계 반영). 아래 비교표 6행 (고객 상황 · 공사 범위 · Interface · 설치 · MH 매출 가설 · 역할). 하단 MH Core vs Partner 띠
-- **도표 유형**: Integration 수준 막대 + 3열 비교표
-- **사용 이미지**: 없음 (도형 · 표 · 텍스트)
+- **구성**: 상단 3열 머리 (Retrofit · Integration · 설계 반영 + Integration 수준 막대). 열마다 같은 주방 · 같은 시점 3D 콘셉트 렌더 1개 (CONCEPT): 기존 주방 = Compact Mount · Vision 기준점 · Drop Zone (Rail 없음) / Remodeling = Rail · Robot Home · 수납 Dock · 식세기 Interface / New-build = Tool Dock · Service 공간 · 전원 · 통신 매립. 주황 = Robot Zone · Path만. 아래 압축 비교표 6행 (고객 상황 · 공사 범위 · Interface · 설치 · MH 매출 가설 · 역할). 하단 MH Core vs Partner 띠
+- **도표 유형**: 3D 콘셉트 렌더 3컷 (CONCEPT, 동일 시점) + Integration 수준 막대 + 3열 비교표
+- **사용 이미지**: `assets/renders/fig_flow_retrofit.png`, `assets/renders/fig_flow_remodel.png`, `assets/renders/fig_flow_newbuild.png`
 
 ## 11. 설치 매출 → 사용 기간 반복매출 → 기능 확장매출의 3층 BM
 

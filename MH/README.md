@@ -78,7 +78,7 @@ python3 MH/source/model.py          # 가정 · 계산 · 24개월 예산 · See
 python3 MH/source/xlsx_model.py     # 수식 기반 xlsx
 python3 /mnt/skills/public/xlsx/scripts/recalc.py MH/MH_Robotics_Financial_Model.xlsx 120
 python3 MH/source/check_xlsx.py     # xlsx 수식값 ↔ model.json 교차검증
-cd MH/render3d && npm install && bash render_v2.sh && bash render_plans.sh && bash render_hand.sh && cd ../..   # 3D 렌더 (선택)
+cd MH/render3d && npm install && bash render_v2.sh && bash render_plans.sh && bash render_hand.sh && for f in render_fig_*.sh; do bash $f; done && cd ../..   # 3D 렌더 (선택)
 python3 MH/source/build.py --pdf    # 제출용 덱 + 본문 PDF + 전체 PDF + 내부 검토용 (fit 검사, --png: 미리보기)
 python3 MH/source/gen_docs.py       # docs/*.md + 이 README
 ```

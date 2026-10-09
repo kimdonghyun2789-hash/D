@@ -310,7 +310,7 @@ REQ = [
     ('3', 'Plate · Cup · Bowl · Tool Handling', '06', 'hand_plate · hand_cup · hand_bowl · hand_tool', '접시 가장자리 Pinch · 컵 외벽 감싸기 · 그릇 테두리 Pinch · 국자 손잡이 Power Grasp (손가락 각도를 접촉점에 맞춰 계산)'),
     ('4', '다양한 Kitchen → Calibration → 동일 Skill', '07', '도형 (평면 도식 3)', 'Kitchen A ㅡ자 · B ㄱ자 · C Retrofit → Mapping · 기준점 · 가전/수납 위치 · Task Parameter → 같은 CLEAN Skill Library'),
     ('5', 'Kitchen CLEAN Workflow', '09', 'v2_seq_1~5', '식기 인식 → Pick → Dishwasher Loading → Unloading → Storage Return'),
-    ('6', 'Existing / Remodeling / New-build 비교', '10', '도형 · 표', 'Integration 수준 막대 + 6행 비교표 (고객 상황 · 공사 범위 · Interface · 설치 · 매출 가설 · 역할)'),
+    ('6', 'Existing / Remodeling / New-build 비교', '10', 'fig_flow_retrofit · fig_flow_remodel · fig_flow_newbuild + 표', '같은 주방 · 같은 시점 3D 3컷 (Compact Mount · Rail · 설계 반영, CONCEPT) + Integration 수준 막대 + 6행 비교표 (고객 상황 · 공사 범위 · Interface · 설치 · 매출 가설 · 역할)'),
     ('7', 'Robot + Skill + Calibration + Environment Interface Architecture', '08', 'v2_after + A~E 층 카드', 'A Robot Module · B Manipulation · C Calibration · D Environment Interface · E Safety'),
     ('8', 'Business Model: Install → Operate → Expand', '11', '도형 · 막대', '3층 항목 · 가격 가설 + 1세대 5년 층별 막대 + Rental 3자 구조'),
 ]
@@ -320,11 +320,11 @@ DATA = {
     'm05': '대응 관계 = CONCEPT (기술 개발 전)',
     'm08': '렌더 v2_after (CONCEPT) · 안전 기준 [S39 · S47]',
     'm09': '렌더 v2_seq_1~5 (CONCEPT) · 가치 Anchor value.value · p_rent',
-    'm02': '가계생산 위성계정 [S40] (FACT) · 정리 시간 a_cleanup_min (ASSUMPTION)',
-    'm04': '확보 평면 5종 재작도 (부록 B2, DERIVED) · LG CLOiD 보도 [S21]',
+    'm02': '렌더 fig_flow_kitchen (로봇 없음 · 가전 사이 사람 작업 ①~④) · 가계생산 위성계정 [S40] (FACT) · 정리 시간 a_cleanup_min (ASSUMPTION)',
+    'm04': '렌더 fig_var_k_old2a · old2b · new3 · new4 (확보 평면 주방 재작도 · 동일 축척) · content.PLANS · LG CLOiD 보도 [S21]',
     'm06': 'Robotiq · Inspire 공개가 [S16 · S42] · 식품 접촉 규격 [S48]',
     'm07': 'KPI 목표 (content.KPI, TARGET)',
-    'm10': 'inputs p_rt_if · p_rr · p_rr_new · p_robot · p_comm · p_comm_rt · comm_cost · comm_cost_rt · kpi_links.inst_h',
+    'm10': '렌더 fig_flow_retrofit · remodel · newbuild (CONCEPT) · inputs p_rt_if · p_rr · p_rr_new · p_robot · p_comm · p_comm_rt · comm_cost · comm_cost_rt · kpi_links.inst_h',
     'm11': 'household.purchase_direct_Y3 / _Y5 · partner_irr.B · scenarios.B recurring · oe_share · inputs p_* (xlsx Household · Unit_Economics 시트)',
     'm12': 'market.B (xlsx Market 시트) · [S1~S6]',
     'm13': 'scenarios.B rd · rp · rt · ni · kitchens (xlsx FM 시트, TARGET)',
@@ -334,6 +334,13 @@ DATA = {
     'm17': 'model.TEAM · funding.team (xlsx Budget_24M)',
     'm18': 'funding.uses · tips.rows · funding.seed_* · post_seed_burn · breakeven_kitchens (xlsx Budget_24M · FM)',
 }
+import glob as _glob
+FIG_DESC = {'render_fig_flow.sh': 'fig_flow_kitchen (02 · 로봇 없음) · fig_flow_retrofit · remodel · newbuild (10 · CONCEPT)',
+            'render_fig_var.sh': 'fig_var_k_* (04 · 확보 평면 주방 재작도 · 동일 축척) · fig_var_top_* (부록 B2)',
+            'render_fig_tech.sh': 'fig_tech_* (03 · 05 · 부록 B5 · CONCEPT)',
+            'render_fig_bm.sh': 'fig_bm_* (11 · 16 · CONCEPT)'}
+FIG_SH = ''.join(f"bash {os.path.basename(f):<23}# {FIG_DESC.get(os.path.basename(f)) or open(f, encoding='utf-8').readline().lstrip('#').strip()}\n"
+                 for f in sorted(_glob.glob(os.path.join(ROOT, 'render3d', 'render_fig_*.sh'))))
 rows05 = [(f"{m['no']:02d}", m['title'][:40] + ('…' if len(m['title']) > 40 else ''), m['chart'], DATA.get(m['id'], '-')) for m in MAIN]
 write('05_Diagram_Chart.md', f"""# 05. Diagram / Chart
 
@@ -359,7 +366,7 @@ npm install                 # three 0.170 · playwright
 bash render_v2.sh           # v2_cover · v2_after · v2_seq_1~5 · v2_stow_1~5 (충돌검사 포함)
 bash render_plans.sh        # 대표 평면 (구축 2Bay A) 원본 · Interface 적용 · 충돌검사
 bash render_hand.sh         # hand_hero · hand_plate · hand_cup · hand_bowl · hand_tool
-```
+{FIG_SH}```
 
 PNG 옆 JSON = Callout 위치 (Anchor) · 충돌검사 결과.
 """)
@@ -1195,7 +1202,7 @@ python3 MH/source/model.py          # 가정 · 계산 · 24개월 예산 · See
 python3 MH/source/xlsx_model.py     # 수식 기반 xlsx
 python3 /mnt/skills/public/xlsx/scripts/recalc.py MH/MH_Robotics_Financial_Model.xlsx 120
 python3 MH/source/check_xlsx.py     # xlsx 수식값 ↔ model.json 교차검증
-cd MH/render3d && npm install && bash render_v2.sh && bash render_plans.sh && bash render_hand.sh && cd ../..   # 3D 렌더 (선택)
+cd MH/render3d && npm install && bash render_v2.sh && bash render_plans.sh && bash render_hand.sh && for f in render_fig_*.sh; do bash $f; done && cd ../..   # 3D 렌더 (선택)
 python3 MH/source/build.py --pdf    # 제출용 덱 + 본문 PDF + 전체 PDF + 내부 검토용 (fit 검사, --png: 미리보기)
 python3 MH/source/gen_docs.py       # docs/*.md + 이 README
 ```

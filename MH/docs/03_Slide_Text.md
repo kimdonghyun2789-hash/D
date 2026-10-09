@@ -32,30 +32,35 @@ Rail (필요 시)
 02  문제
 가전 자동화 이후에도 사람 몫으로 남은 주방 Physical Workflow
 개별 가전 기능은 자동화 · 주방 Workflow 전체의 Physical Manipulation은 아직 사람 몫
-기기 안
+인덕션
+오븐
+냉장고
+식기세척기
+1
+2
+3
+4
+기기 안 자동화
 식기세척기
 세척 자동화
-기기 안
 인덕션
 가열 자동화
-기기 안
 냉장고
 보관 자동화
-기기 안
 오븐
 조리 일부 자동화
 가전 사이 사람이 하는 Physical Task
-식기 이동
-식세기 적재
-식세기 인출
-수납
+①~④ = CLEAN 검증 범위
+① 식기 이동
+② 식세기 적재
+③ 식세기 인출
+④ 수납
 식재료 이동
 재료 투입
 조리도구 조작
 젓기
 뚜껑 조작
 조리 후 정리
-앞 4개 = CLEAN 검증 범위
 Appliance Automation  ≠  Physical Workflow Automation
 582.4조원
 무급 가사노동 가치 (2024)
@@ -115,24 +120,28 @@ Why now: 6축 Arm $6,999~ [S15] · 공개 조작 모델 π0.5 [S46] · 가정용
 주방마다 다른 환경 → 동일 로봇 반복 설치의 구조적 한계
 Robot 지능 부족만이 아닌 높은 환경 편차 (Environment Variation) → 신뢰성 · 반복설치 제약
 주방마다 다른 것
-주방 형태
-ㅡ자 · ㄱ자 · 반도형
-가전 위치
-식세기 · 인덕션 배치
-수납 위치
-상부장 · 서랍 · 키큰장
-조리대 치수
-높이 · 깊이 · 길이
-가전 모델
-랙 구조 · 문 열림
-물건 위치
-식기 놓는 자리
-동선
-통로 폭 · 사람 위치
-조명
-창 · 조명 반사
-설치오차
-벽 · 가구 수직 · 수평
+확보 평면 재작도 (단지명 미표기) · 동일 축척 · 신축 2Bay = 3D 미착수
+구축 2Bay A
+ㄱ자 · 윗벽 3,255mm
+기본 한 줄 배치 수용
+구축 2Bay B
+ㄱ자 · 싱크 줄 약 2.6m
+기본 한 줄 배치 불가
+신축 3Bay
+반도형 · 싱크 줄 약 2.6m
+기본 한 줄 배치 불가
+신축 4Bay
+반도형 · 싱크 줄 약 2.8m
+기본 한 줄 배치 불가
+주방 형태   ㅡ자 · ㄱ자 · 반도형
+가전 위치   식세기 · 인덕션 배치
+수납 위치   상부장 · 서랍 · 키큰장
+조리대 치수   높이 · 깊이 · 길이
+가전 모델   랙 구조 · 문 열림
+물건 위치   식기 놓는 자리
+동선   통로 폭 · 사람 위치
+조명   창 · 조명 반사
+설치오차   벽 · 가구 수직 · 수평
 범용 Robot 적용 시 집마다 반복
 인식 (Perception)
 Mapping
@@ -142,10 +151,10 @@ Calibration
 검증 (Validation)
 집마다
 반복
-확보 평면 5종 | 싱크 벽 길이 약 2.6~3.3m · 3종 기본 한 줄 배치 불가 · 1종 미검토 · ㄱ자 · 일자 · 반도형 혼재 | DERIVED
-공개 사례 | LG CLOiD: 팔 작업 범위 무릎 높이 이상 (보도) → 낮은 작업점 (식세기 하단 랙) = 환경 측 보완 필요 (MH 해석) | FACT + 해석
 모든 주방 표준화가 아닌
 → Robot 적응력 + 필요한 지점만 Interface
+확보 평면 5종 | 싱크 벽 길이 약 2.6~3.3m · 3종 기본 한 줄 배치 불가 · 1종 미검토 · ㄱ자 · 일자 · 반도형 혼재 | DERIVED
+공개 사례 | LG CLOiD: 팔 작업 범위 무릎 높이 이상 (보도) → 낮은 작업점 (식세기 하단 랙) = 환경 측 보완 필요 (MH 해석) | FACT + 해석
 출처 [S21] · 평면 5종 = 제공 도면 재작도 (부록 B2) · 평면 30개 분석 예정 (M6)
 ```
 
@@ -354,15 +363,29 @@ CLEAN 단독 가사대체 가치 ≈ 월 18만원 < Rental 월 33만원 (DERIVED
 Existing Kitchen
 Retrofit
 Integration 수준
+Vision 기준점
+Drop Zone
+Compact Mount
+[CONCEPT]
 Remodeling
 Integration
 Integration 수준
+Rail
+Robot Home
+수납 Dock
+식세기 Interface
+[CONCEPT]
 New-build
 설계 반영
 Integration 수준
+Tool Dock
+Service 공간
+전원 · 통신
+[CONCEPT]
+설치 형태
 고객 상황 | 주방 유지 · 호환 주방 | 주방 교체 시점 (Premium) | 분양 · 입주 전 (건설사 · 가구사)
 공사 범위 | 최소 시공 (Mount · Dock) | 주방 공사와 동시 (Partner 시공) | 설계 단계에서 반영
-Interface | Compact Mount · Dock · Vision 기준점 · Drop Zone | Rail · Robot Home · 식세기 Interface · 수납 Dock | Mount · 전원 · 통신 · Tool Dock · 가전 Interface · Service 공간
+Interface | Compact Mount · Dock · Vision 기준점 · Drop Zone | Rail · Robot Home · 식세기 Interface · 수납 Dock | Mount · 전원 · 통신 · Tool Dock · 가전 Interface · Service 공간
 설치 · Calibration | 현장 Calibration 중심 · Y3 원가 95만원 (약 29인시) | Y3 원가 60만원 (약 18인시 = 2인 약 1일) | 입주 시 또는 후설치 (Option 세대)
 MH 매출 (가설) | Kit 150 + Robot 1,490 + 설치 120 = 1,760만원 | Interface 450 + Robot 1,490 + 설치 80 = 2,020만원 | Option 220만원 (B2B) + 입주 Attach 25% × (Robot + 설치)
 역할 | Phase 2 · 고객 확대 | Phase 1 · 검증 채널 | Phase 3 · Scale 채널
