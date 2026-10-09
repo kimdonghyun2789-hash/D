@@ -15,24 +15,24 @@
 
 - **구성**: 좌측 3D 주방 그림 (로봇 없음): 냉장고 · 인덕션 · 오븐 · 식기세척기 = 기기 안 자동화 (흰 라벨) · 가전 사이 사람 작업 = 짙은 점선 ①~④ (식탁 → 싱크 → 식세기 → 조리대 → 수납장) + 사람 형상. 우측: 가전 4종 압축 카드 (기기 안 자동화) · 짙은 띠 Physical Task 10개 (①~④ = CLEAN 범위). 하단 공식: Appliance Automation ≠ Physical Workflow Automation · 근거 숫자 4개
 - **도표 유형**: 3D 주방 Workflow 그림 1개 (로봇 없음) + 압축 카드 4 + 작업 띠 + 핵심 숫자 4
-- **사용 이미지**: 없음 (도형 · 표 · 텍스트)
+- **사용 이미지**: `assets/renders/fig_tech_m03_kitchen.png`
 
 ## 03. 주방: 기술 · 사업성 동시 검증이 가능한 첫 적용 공간
 
-- **구성**: 2열 비교: 좌 Robot Engineering 기준 4개, 우 Business 기준 4개 (번호 + 굵은 제목 + 한 줄 근거). 하단 결론 띠
-- **도표 유형**: 2열 목록 + 결론 띠
+- **구성**: 좌측 3D 콘셉트 그림 (CONCEPT): 확보 평면 구축 2Bay A 주방 + MH Interface · 주황 = Robot 작업영역 (조리대 한 줄 고정) · 라벨 Robot Home · 싱크 · 수납 · 식세기 · 인덕션 (옆벽). 우측 2열: Robot Engineering 기준 4개 · Business 기준 4개 (번호 + 굵은 제목 + 한 줄 근거). 하단 결론 띠
+- **도표 유형**: 3D 콘셉트 그림 1개 (CONCEPT) + 2열 목록 + 결론 띠
 - **사용 이미지**: 없음 (도형 · 표 · 텍스트)
 
 ## 04. 주방마다 다른 환경 → 동일 로봇 반복 설치의 구조적 한계
 
 - **구성**: 좌측 상단: 확보 평면 4종 주방 3D 재작도 4컷 (구축 2Bay A · B · 신축 3Bay · 4Bay, 도면 그대로 · 로봇 없음 · 같은 시점 · 동일 축척) + 평면명 · 주방 형태 · 기본 한 줄 배치 수용/불가 캡션. 좌측 하단: 주방마다 달라지는 9개 변수 칩. 우측 세로 체인: 범용 Robot 적용 시 집마다 반복되는 6단계 (Perception → Validation) + 결론 상자. 하단 전체 폭: 근거 2행 (확보 평면 5종 · 공개 사례)
 - **도표 유형**: 평면 재작도 주방 4컷 (동일 축척 Axonometric) + 변수 칩 + 반복 공정 체인 + 근거 표
-- **사용 이미지**: 없음 (도형 · 표 · 텍스트)
+- **사용 이미지**: `assets/renders/fig_tech_m05_hand.png`, `assets/renders/v2_seq_3_load.png`, `assets/renders/v2_seq_1_detect.png`, `assets/renders/v2_stow_2_open.png`
 
 ## 05. Robot 적응 + 반복 작업점에만 최소 Interface
 
-- **구성**: 4열 대응표: 위 회색 칩 = 변동 요인 (Object · Task · Kitchen · 반복 작업점), 아래 카드 = MH 기술 (Hand · Skill · Calibration · Interface). 하단 짙은 결론 띠
-- **도표 유형**: 4열 대응 Diagram
+- **구성**: 4열 대응표: 위 회색 칩 = 변동 요인 (Object · Task · Kitchen · 반복 작업점), 아래 카드 = MH 기술 (Hand · Skill · Calibration · Interface) + 카드마다 3D 콘셉트 그림 1개 (CONCEPT · 같은 크기): 같은 Hand의 국자 · 컵 · 접시 파지 · 식세기 적재 · 조리대 식기 인식 · Robot Home · Rail. 하단 짙은 결론 띠
+- **도표 유형**: 4열 대응 Diagram + 3D 콘셉트 그림 4컷 (CONCEPT)
 - **사용 이미지**: 없음 (도형 · 표 · 텍스트)
 
 ## 06. 핵심 Hardware: 주방 물체 대응 Adaptive Robot Hand
@@ -71,14 +71,14 @@
 
 ## 11. 설치 매출 → 사용 기간 반복매출 → 기능 확장매출의 3층 BM
 
-- **구성**: 좌측 3층 사업모델 (INSTALL · OPERATE · EXPAND: 항목 + 가격 가설). 우측 상단 대표 1세대 5년 매출 막대 (층별) + Contribution. 우측 하단 Rental 구조 도식 (고객 · Capital Partner · MH)
-- **도표 유형**: 층별 가로 막대 + Rental 3자 구조도
-- **사용 이미지**: 없음 (도형 · 표 · 텍스트)
+- **구성**: 좌측 3층 사업모델 (INSTALL · OPERATE · EXPAND): 층마다 짙은 라벨 + 제품 콘셉트 그림 1컷 (Rail 장착 Robot System · 식세기 적재 / 교체형 Pad 손끝 + 가는 회색 지시선 / 국자 Tool 파지, 각 CONCEPT) + 항목 · 가격 가설. 우측 상단 대표 1세대 5년 매출 막대 (층별) + Contribution. 우측 하단 Rental 구조 도식 (고객 · Capital Partner · MH)
+- **도표 유형**: 층별 3D 콘셉트 그림 3컷 (CONCEPT) + 층별 가로 막대 + Rental 3자 구조도
+- **사용 이미지**: `assets/renders/v2_seq_3_load.png`, `assets/renders/hand_hero.png`, `assets/renders/hand_tool.png`
 
 ## 12. Bottom-up 시장 산정: 세대 수 × 적용률 × 단가
 
-- **구성**: 좌측 짙은 박스: 아파트 재고 1,328만호 (기회 기반) + 노후 · 거래 FACT. 우측 4개 시장 Funnel 표 (산식 · 대상 세대 · 패키지 단가 · 연 규모) + SAM 합계 · SOM
-- **도표 유형**: Bottom-up 시장 표
+- **구성**: 좌측 짙은 박스: 아파트 재고 1,328만호 (기회 기반) + 노후 · 거래 FACT + 재고 대비 연 주방 교체 약 30만 막대 (Stock ≠ 구매시장). 우측 4개 시장 Funnel 표 (산식 · 대상 세대 · 패키지 단가 · 연 규모) + SAM 합계 · SOM. 우하단 채널 구성 막대: 연 대상 세대 (① · ② · ③) → × 패키지 단가 → 연 규모 (억원) 100% 막대 2개 + 연결 띠 · Y5 계획 560세대 = 같은 축척 막대 (약 2.5%)
+- **도표 유형**: Bottom-up 시장 표 + 채널 구성 100% 막대 2개 (세대 → 억원, 연결 띠) + Y5 비교 막대 + 재고 대비 연 교체 막대
 - **사용 이미지**: 없음 (도형 · 표 · 텍스트)
 
 ## 13. Premium Remodeling 검증 → Retrofit → 신축 B2B2C 확장
@@ -101,14 +101,14 @@
 
 ## 16. TIPS = 기술 검증 (WP1~6) · Seed = 사업 검증 · 과제 외 개발
 
-- **구성**: 상단 좌우 비교: TIPS 과제 (WP1~WP6, 기술 검증) vs 민간 Seed (사업 검증 · 과제 외 개발). 중간 24개월 4구간 일정 (0~6 · 7~12 · 13~18 · 19~24M). 하단 Gate 4개 (M6 · M12 · M18 · M24) 판단 기준
-- **도표 유형**: 2열 비교 + 4구간 로드맵 + Gate
-- **사용 이미지**: 없음 (도형 · 표 · 텍스트)
+- **구성**: 상단 좌우 비교: TIPS 과제 (WP1~WP6, 기술 검증) vs 민간 Seed (사업 검증 · 과제 외 개발). 중간 24개월 4구간 일정 (0~6 · 7~12 · 13~18 · 19~24M): 구간 머리 아래 같은 크기 콘셉트 그림 (Hand v1 · 접시 · 컵 파지 / 주방 CLEAN 경로 · 식세기 적재 / 서로 다른 주방 3종 / 가정 주방 Robot Zone · 사람 공존, 각 CONCEPT) + 구간별 과업 목록. 하단 Gate 4개 (M6 · M12 · M18 · M24) 판단 기준
+- **도표 유형**: 2열 비교 + 4구간 로드맵 (구간별 3D 콘셉트 그림, CONCEPT 8컷) + Gate
+- **사용 이미지**: `assets/renders/hand_hero.png`, `assets/renders/hand_plate.png`, `assets/renders/hand_cup.png`, `assets/renders/v2_cover.png`, `assets/renders/apt2_kitchen.png`, `assets/renders/apt3_kitchen.png`, `assets/renders/apt4_kitchen.png`, `assets/renders/v2_after.png`
 
 ## 17. Founder / Team: 필요 핵심 역량 3개 · 24개월 채용 계획
 
-- **구성**: 좌측 Founder 확인 항목 7행 × Founder 2인 (입력 전 [Founder 정보 필요]). 우측 24개월 채용 계획 표 (역할 · 시작 월 · 구분) + 인원 요약
-- **도표 유형**: 확인 항목 표 + 채용 계획 표
+- **구성**: 좌측 Founder 확인 항목 7행 × Founder 2인 (입력 전 [Founder 정보 필요]) + 하단 월별 인원 누적 막대 (M1~M24 · Founder · R&D · 사업 · 현장 · 경영지원 · Y1 · Y2 평균 FTE 선). 우측 24개월 채용 계획 표 (역할 · 시작 월 · 구분) + 인원 요약 띠
+- **도표 유형**: 확인 항목 표 + 월별 인원 누적 막대 (FTE, 24개월) + 채용 계획 표
 - **사용 이미지**: 없음 (도형 · 표 · 텍스트)
 
 ## 18. 24개월 사용 23.4억원 · Seed 14~19억원 요청 (TIPS 8억원 별도)

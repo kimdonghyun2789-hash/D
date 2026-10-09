@@ -677,7 +677,7 @@ def m11(prs):
                                       ('Consumables (Pad · Seal · Tip · Cover)', f"연 {cons['list_y']:.0f}만원 (List)")]),
               ('EXPAND', '확장매출', [('ASSIST Skill Pack', f"{A('p_sw')}만원"), ('Tool · End-effector', f"{A('p_tool')}만원"),
                                      ('COOK Skill · Robot Upgrade', 'FUTURE')])]
-    imgs = [('v2_seq_3_load', (0.55, 0.4), 1.3, None, None),                                  # INSTALL: Robot System · Rail · 식세기 Interface
+    imgs = [('v2_seq_3_load', (0.5, 0.45), 1.0, None, None),                                  # INSTALL: Robot System · Rail · 식세기 Interface
             ('hand_hero', (0.5, 0.3), 1.5, ('pad', '교체형 Pad', 0.0, 0.64, 'c'), (0.1, 0.0)),  # OPERATE: Grip Kit · 소모품 Pad
             ('hand_tool', (0.5, 0.55), 1.1, None, None)]                                      # EXPAND: Tool · End-effector
     lh = 1.34; kw = 1.2; iw_ = 1.22

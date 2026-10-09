@@ -77,7 +77,9 @@ def render(s, name, x, y, w, h, focus=(0.5, 0.5), zoom=1.0, bg=(255, 255, 255), 
     iw, ih = Image.open(path).size; ar = w / h
     cw, ch = (int(ih * ar), ih) if iw / ih > ar else (iw, int(iw / ar))
     cw, ch = int(cw / zoom), int(ch / zoom)
-    cx = min(max(int(focus[0] * iw - cw / 2), 0), iw - cw); cy = min(max(int(focus[1] * ih - ch / 2), 0), ih - ch)
+    # same crop as kit.image (zoom < 1 pads the image centred on the background colour)
+    cx = -((cw - iw) // 2) if cw > iw else min(max(int(focus[0] * iw - cw / 2), 0), iw - cw)
+    cy = -((ch - ih) // 2) if ch > ih else min(max(int(focus[1] * ih - ch / 2), 0), ih - ch)
     kit.image(s, path, x, y, w, h, focus=focus, bg=bg, zoom=zoom)
     if border: rect(s, x, y, w, h, line=T['line'], lw=0.75)
     jp = os.path.join(RD, name + '.json')

@@ -316,8 +316,8 @@ REQ = [
 ]
 DATA = {
     'm01': '렌더 v2_cover (CONCEPT)',
-    'm03': '정성 기준 (사업 가설) → WTP n ≥ 300 (M18)',
-    'm05': '대응 관계 = CONCEPT (기술 개발 전)',
+    'm03': '렌더 fig_tech_m03_kitchen (구축 2Bay A 주방 · Interface 적용 예, CONCEPT) · 정성 기준 (사업 가설) → WTP n ≥ 300 (M18)',
+    'm05': '렌더 fig_tech_m05_hand · v2_seq_3_load · v2_seq_1_detect · v2_stow_2_open (CONCEPT) · 대응 관계 = CONCEPT (기술 개발 전)',
     'm08': '렌더 v2_after (CONCEPT) · 안전 기준 [S39 · S47]',
     'm09': '렌더 v2_seq_1~5 (CONCEPT) · 가치 Anchor value.value · p_rent',
     'm02': '렌더 fig_flow_kitchen (로봇 없음 · 가전 사이 사람 작업 ①~④) · 가계생산 위성계정 [S40] (FACT) · 정리 시간 a_cleanup_min (ASSUMPTION)',
@@ -325,13 +325,13 @@ DATA = {
     'm06': 'Robotiq · Inspire 공개가 [S16 · S42] · 식품 접촉 규격 [S48]',
     'm07': 'KPI 목표 (content.KPI, TARGET)',
     'm10': '렌더 fig_flow_retrofit · remodel · newbuild (CONCEPT) · inputs p_rt_if · p_rr · p_rr_new · p_robot · p_comm · p_comm_rt · comm_cost · comm_cost_rt · kpi_links.inst_h',
-    'm11': 'household.purchase_direct_Y3 / _Y5 · partner_irr.B · scenarios.B recurring · oe_share · inputs p_* (xlsx Household · Unit_Economics 시트)',
-    'm12': 'market.B (xlsx Market 시트) · [S1~S6]',
+    'm11': '렌더 v2_seq_3_load · hand_hero · hand_tool (CONCEPT) · household.purchase_direct_Y3 / _Y5 · partner_irr.B · scenarios.B recurring · oe_share · inputs p_* (xlsx Household · Unit_Economics 시트)',
+    'm12': 'market.B 채널별 대상 세대 · 패키지 · 연 규모 → 채널 구성 막대 · Y5 계획 세대 (xlsx Market 시트) · [S1~S6]',
     'm13': 'scenarios.B rd · rp · rt · ni · kitchens (xlsx FM 시트, TARGET)',
     'm14': 'kpi_links (inst_h · care_unit · bom · pad_life) · sens_household (xlsx Sensitivity)',
     'm15': 'content.COMP · content.IP · [S19~S25 · S41 · S45 · S46 · S49~S51]',
-    'm16': 'content.WP · content.GATES · TIPS 규정 [S33 · S52]',
-    'm17': 'model.TEAM · funding.team (xlsx Budget_24M)',
+    'm16': '렌더 hand_* · v2_cover · apt2/3/4_kitchen · v2_after (CONCEPT) · content.WP · content.GATES · TIPS 규정 [S33 · S52]',
+    'm17': 'model.TEAM · funding.team (시작월 × FTE → 월별 인원 막대 · Y1 · Y2 평균 FTE) (xlsx Budget_24M)',
     'm18': 'funding.uses · tips.rows · funding.seed_* · post_seed_burn · breakeven_kitchens (xlsx Budget_24M · FM)',
 }
 import glob as _glob

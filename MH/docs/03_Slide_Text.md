@@ -83,16 +83,26 @@ Appliance Automation  ≠  Physical Workflow Automation
 03  왜 Kitchen인가
 주방: 기술 · 사업성 동시 검증이 가능한 첫 적용 공간
 Robot Engineering 4개 기준 · Business 4개 기준
+구축 2Bay A 주방 · Interface 적용 예
+Robot Home
+싱크
+수납 (서랍)
+식세기
+인덕션 (옆벽 이동)
+[CONCEPT]
+Robot 작업영역 (고정)
 Robot Engineering 기준
 01
 집기 · 이동 · 놓기 · 넣기 · 빼기 중심
 동작 종류 적고 반복 → Skill Library화 용이
 02
 작업영역 고정
-싱크 · 조리대 · 식세기 · 수납장 → Calibration 대상 명확
+싱크 · 조리대 · 식세기 · 수납장 →
+Calibration 대상 명확
 03
 물체는 다양 · 범위는 닫힘
-접시 · 컵 · 그릇 · 수저 · 뚜껑 · 집게 · 국자 → 이후 식재료
+접시 · 컵 · 그릇 · 수저 · 뚜껑 · 집게 · 국자 →
+이후 식재료
 04
 가전 사이 이동 반복
 식세기 · 수납장 · 조리대 사이 물리적 이동
@@ -102,7 +112,8 @@ Business 기준
 매일 식사 후 반복 → 사용 Data · 빠른 가치 체감
 02
 구매 계기 존재
-주방 Remodeling · 신축 입주 시 공사 · 설치 동시 결정
+주방 Remodeling · 신축 입주 시 공사 ·
+설치 동시 결정
 03
 CLEAN → ASSIST → COOK
 같은 Platform + Skill · Tool 추가로 기능 확장
@@ -166,18 +177,26 @@ Robot 적응 + 반복 작업점에만 최소 Interface
 Robot Hand · Manipulation Skill · Calibration · Environment Interface 통합 설계
 물체 다양성 (Object)
 형상 · 재질 · 젖은 표면 · 얇은 Edge
+[CONCEPT]
+국자 · 컵 · 접시 파지
 Adaptive Robot Hand
 파지 방식 전환 → 다양한 식기 · 도구를 하나의 손으로
 작업 다양성 (Task)
 집기 · 넣기 · 꺼내기 · 열기
+[CONCEPT]
+식세기 적재
 Manipulation Skill Library
 집기 · 놓기 · 넣기 · 빼기 · 열고 닫기 = 재사용 단위
 주방 차이 (Kitchen)
 가전 · 수납 위치 · 설치 오차
+[CONCEPT]
+조리대 식기 인식
 Perception + Calibration
 현장에서 좌표 · 가전 · 수납 위치 등록 → 같은 Skill 실행
 반복 작업점
 Robot 대기 · 도구 · 식세기 랙
+[CONCEPT]
+Robot Home · Rail
 Minimal Robot-friendly Interface
 Robot Home · Tool Dock · 가전 Interface · Vision 기준점
 결과: 다양한 주방에서 같은 Platform · Skill의 반복 적용 가능성 확대
@@ -401,6 +420,7 @@ MH Core  Robot · Hand · Skill · Calibration · Interface Standard · Safety �
 INSTALL → OPERATE → EXPAND · Hardware 외 매출 = 실제 유지관리 · 기능가치 기반
 INSTALL
 초기 매출
+[CONCEPT]
 Robot System (Arm · Adaptive Hand · Vision · Safety)
 1,490만원
 Interface · Integration
@@ -409,6 +429,8 @@ Interface · Integration
 80~120만원
 OPERATE
 반복매출
+교체형 Pad
+[CONCEPT]
 Rental (60개월, Care · Grip Kit 포함)
 월 33만원
 Care (Robot Lifecycle Maintenance)
@@ -417,6 +439,7 @@ Consumables (Pad · Seal · Tip · Cover)
 연 36만원 (List)
 EXPAND
 확장매출
+[CONCEPT]
 ASSIST Skill Pack
 60만원
 Tool · End-effector
@@ -457,6 +480,9 @@ Bottom-up 시장 산정: 세대 수 × 적용률 × 단가
 준공 20년 이상 주택 56.0%
 주택 매매 72.6만호 (2025)
 아파트 입주 23.6만 (2025) · 18.3만 (2026 예정)
+연 주방 교체 약 30만
+[ASSUMPTION]
+재고 1,328만호
 Stock ≠ 구매시장
 시장 | 산식 (세대 × 적용률) | 대상 세대 | 패키지 | 연 규모
 ① Remodeling Beachhead | 주방 교체 30만 × Premium 10% × 적용 60% · Robot Attach 85% | 18,000/년 | 1,785만원 | 3,212억원
@@ -468,6 +494,22 @@ SAM 합계 (① + ② + ③)
 Y5 계획 매출 (Base · TARGET)
 91.5억원 · 560세대
 대상 세대의 약 2.5% (DERIVED)
+채널 구성: 대상 세대 × 패키지 단가 → 연 규모
+[DERIVED]
+① Remodeling
+② Retrofit
+③ New-build
+18,000
+1,593
+3,000
+3,212
+280
+184
+560세대 = 약 2.5%
+Y5 계획
+대상 세대 /년
+× 패키지 단가
+연 규모 (억원)
 적용 60% = 확보 평면 5종 (기본 배치 수용 1)보다 높은 가정 → 평면 30개 분석으로 검증 (M6) · 주방 교체 30만 = 교차검증 29.0만 · 30.3만 기반 가정 · 출처 [S1~S6]
 ```
 
@@ -613,24 +655,32 @@ Pilot 운영 · 유료 전환
 Partner 개발
 BM 검증 · 기관부담금
 0~6M
+[CONCEPT]
+[CONCEPT]
+[CONCEPT]
 · 주방 작업 분석
 · Robot 구조 설계
 · Hand 시제품 v1
 · 식기 30종 파지 시험
 · 초기 Calibration
 7~12M
+[CONCEPT]
 · CLEAN Skill
 · 식세기 연동
 · Hand v2 · 안전 기능
 · 1:1 주방 목업
 · 목업 CLEAN 전 과정
 13~18M
+[CONCEPT]
+[CONCEPT]
+[CONCEPT]
 · 주방 3종 적용
 · 주방 간 Transfer 시험
 · 실패 복구
 · Pilot 착수
 · WTP 검증
 19~24M
+[CONCEPT]
 · 신뢰성 (연속 운전)
 · 설치 표준
 · 가정 실증 3세대
@@ -662,6 +712,21 @@ Robot · Mechanical · AI Capability | [Founder 정보 필요] | [Founder 정보
 Construction · Kitchen · Manufacturing Knowledge | [Founder 정보 필요] | [Founder 정보 필요]
 Customer / Partner Network | [Founder 정보 필요] | [Founder 정보 필요]
 Full-time Commitment · 지분 | [Founder 정보 필요] | [Founder 정보 필요]
+월별 인원 (FTE · M1~M24)
+[ASSUMPTION]
+Founder
+R&D
+사업
+현장
+경영지원
+Y1 평균 FTE 7.0
+Y2 평균 FTE 12.8
+M1
+M6
+M12
+M18
+M24
+약 14명
 역할 (채용 계획, ASSUMPTION) | 시작 | 구분
 대표 · 사업 총괄 | M1 | Founder
 공동창업자 · 기술 총괄 | M1 | Founder

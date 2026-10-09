@@ -23,21 +23,21 @@
 |---|---|---|---|
 | 01 | MH Robotics — Kitchen Manipulation Robot… | 3D 콘셉트 렌더 1개 (CONCEPT) | 렌더 v2_cover (CONCEPT) |
 | 02 | 가전 자동화 이후에도 사람 몫으로 남은 주방 Physical Workfl… | 3D 주방 Workflow 그림 1개 (로봇 없음) + 압축 카드 4 + 작업 띠 + 핵심 숫자 4 | 렌더 fig_flow_kitchen (로봇 없음 · 가전 사이 사람 작업 ①~④) · 가계생산 위성계정 [S40] (FACT) · 정리 시간 a_cleanup_min (ASSUMPTION) |
-| 03 | 주방: 기술 · 사업성 동시 검증이 가능한 첫 적용 공간 | 2열 목록 + 결론 띠 | 정성 기준 (사업 가설) → WTP n ≥ 300 (M18) |
+| 03 | 주방: 기술 · 사업성 동시 검증이 가능한 첫 적용 공간 | 3D 콘셉트 그림 1개 (CONCEPT) + 2열 목록 + 결론 띠 | 렌더 fig_tech_m03_kitchen (구축 2Bay A 주방 · Interface 적용 예, CONCEPT) · 정성 기준 (사업 가설) → WTP n ≥ 300 (M18) |
 | 04 | 주방마다 다른 환경 → 동일 로봇 반복 설치의 구조적 한계 | 평면 재작도 주방 4컷 (동일 축척 Axonometric) + 변수 칩 + 반복 공정 체인 + 근거 표 | 렌더 fig_var_k_old2a · old2b · new3 · new4 (확보 평면 주방 재작도 · 동일 축척) · content.PLANS · LG CLOiD 보도 [S21] |
-| 05 | Robot 적응 + 반복 작업점에만 최소 Interface | 4열 대응 Diagram | 대응 관계 = CONCEPT (기술 개발 전) |
+| 05 | Robot 적응 + 반복 작업점에만 최소 Interface | 4열 대응 Diagram + 3D 콘셉트 그림 4컷 (CONCEPT) | 렌더 fig_tech_m05_hand · v2_seq_3_load · v2_seq_1_detect · v2_stow_2_open (CONCEPT) · 대응 관계 = CONCEPT (기술 개발 전) |
 | 06 | 핵심 Hardware: 주방 물체 대응 Adaptive Robot Han… | 3D 콘셉트 렌더 5컷 (CONCEPT) + 연결 체인 | Robotiq · Inspire 공개가 [S16 · S42] · 식품 접촉 규격 [S48] |
 | 07 | 핵심 기술: Calibration 기반 Skill의 주방 간 이전 | 실행 체인 + Calibration 흐름도 (평면 도식 3개) | KPI 목표 (content.KPI, TARGET) |
 | 08 | MH Kitchen Robotics System: 5개 Layer 통합 … | 3D 콘셉트 렌더 (CONCEPT) + 5층 Architecture | 렌더 v2_after (CONCEPT) · 안전 기준 [S39 · S47] |
 | 09 | CLEAN 첫 검증 → 동일 Platform으로 ASSIST · COOK… | 3D 콘셉트 렌더 5컷 (CONCEPT) + 단계 카드 | 렌더 v2_seq_1~5 (CONCEPT) · 가치 Anchor value.value · p_rent |
 | 10 | 단일 제품 · 3가지 설치 경로 (기존 주방 · Remodeling · … | 3D 콘셉트 렌더 3컷 (CONCEPT, 동일 시점) + Integration 수준 막대 + 3열 비교표 | 렌더 fig_flow_retrofit · remodel · newbuild (CONCEPT) · inputs p_rt_if · p_rr · p_rr_new · p_robot · p_comm · p_comm_rt · comm_cost · comm_cost_rt · kpi_links.inst_h |
-| 11 | 설치 매출 → 사용 기간 반복매출 → 기능 확장매출의 3층 BM | 층별 가로 막대 + Rental 3자 구조도 | household.purchase_direct_Y3 / _Y5 · partner_irr.B · scenarios.B recurring · oe_share · inputs p_* (xlsx Household · Unit_Economics 시트) |
-| 12 | Bottom-up 시장 산정: 세대 수 × 적용률 × 단가 | Bottom-up 시장 표 | market.B (xlsx Market 시트) · [S1~S6] |
+| 11 | 설치 매출 → 사용 기간 반복매출 → 기능 확장매출의 3층 BM | 층별 3D 콘셉트 그림 3컷 (CONCEPT) + 층별 가로 막대 + Rental 3자 구조도 | 렌더 v2_seq_3_load · hand_hero · hand_tool (CONCEPT) · household.purchase_direct_Y3 / _Y5 · partner_irr.B · scenarios.B recurring · oe_share · inputs p_* (xlsx Household · Unit_Economics 시트) |
+| 12 | Bottom-up 시장 산정: 세대 수 × 적용률 × 단가 | Bottom-up 시장 표 + 채널 구성 100% 막대 2개 (세대 → 억원, 연결 띠) + Y5 비교 막대 + 재고 대비 연 교체 막대 | market.B 채널별 대상 세대 · 패키지 · 연 규모 → 채널 구성 막대 · Y5 계획 세대 (xlsx Market 시트) · [S1~S6] |
 | 13 | Premium Remodeling 검증 → Retrofit → 신축 B2… | 3단계 카드 + 누적 막대 (Y1~Y5) + 역할 분담 | scenarios.B rd · rp · rt · ni · kitchens (xlsx FM 시트, TARGET) |
 | 14 | R&D 성과의 설치비 · 서비스비 · 확장매출 연결 구조 | 연결 Diagram + 표 + Tornado 막대 | kpi_links (inst_h · care_unit · bom · pad_life) · sens_household (xlsx Sensitivity) |
 | 15 | 경쟁 구도: 차별화 = 주방 적용 방식, 실증으로 입증 | 비교표 2개 + 결론 띠 | content.COMP · content.IP · [S19~S25 · S41 · S45 · S46 · S49~S51] |
-| 16 | TIPS = 기술 검증 (WP1~6) · Seed = 사업 검증 · 과제… | 2열 비교 + 4구간 로드맵 + Gate | content.WP · content.GATES · TIPS 규정 [S33 · S52] |
-| 17 | Founder / Team: 필요 핵심 역량 3개 · 24개월 채용 계획 | 확인 항목 표 + 채용 계획 표 | model.TEAM · funding.team (xlsx Budget_24M) |
+| 16 | TIPS = 기술 검증 (WP1~6) · Seed = 사업 검증 · 과제… | 2열 비교 + 4구간 로드맵 (구간별 3D 콘셉트 그림, CONCEPT 8컷) + Gate | 렌더 hand_* · v2_cover · apt2/3/4_kitchen · v2_after (CONCEPT) · content.WP · content.GATES · TIPS 규정 [S33 · S52] |
+| 17 | Founder / Team: 필요 핵심 역량 3개 · 24개월 채용 계획 | 확인 항목 표 + 월별 인원 누적 막대 (FTE, 24개월) + 채용 계획 표 | model.TEAM · funding.team (시작월 × FTE → 월별 인원 막대 · Y1 · Y2 평균 FTE) (xlsx Budget_24M) |
 | 18 | 24개월 사용 23.4억원 · Seed 14~19억원 요청 (TIPS 8… | 사용처 표 + 4단계 흐름도 | funding.uses · tips.rows · funding.seed_* · post_seed_burn · breakeven_kitchens (xlsx Budget_24M · FM) |
 
 도표 숫자 원천 = `model.json` (xlsx 수식 재계산값과 대조 완료)
@@ -52,6 +52,7 @@ bash render_v2.sh           # v2_cover · v2_after · v2_seq_1~5 · v2_stow_1~5 
 bash render_plans.sh        # 대표 평면 (구축 2Bay A) 원본 · Interface 적용 · 충돌검사
 bash render_hand.sh         # hand_hero · hand_plate · hand_cup · hand_bowl · hand_tool
 bash render_fig_flow.sh     # fig_flow_kitchen (02 · 로봇 없음) · fig_flow_retrofit · remodel · newbuild (10 · CONCEPT)
+bash render_fig_tech.sh     # fig_tech_* (03 · 05 · 부록 B5 · CONCEPT)
 bash render_fig_var.sh      # fig_var_k_* (04 · 확보 평면 주방 재작도 · 동일 축척) · fig_var_top_* (부록 B2)
 ```
 

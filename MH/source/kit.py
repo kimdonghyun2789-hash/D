@@ -202,6 +202,9 @@ def image(s, path, x, y, w, h, focus=(0.5, 0.5), bg=None, zoom=1.0):
     iw, ih = im.size; ar = w / h
     cw, ch = (int(ih * ar), ih) if iw / ih > ar else (iw, int(iw / ar))
     cw, ch = int(cw / zoom), int(ch / zoom)
+    if cw > iw or ch > ih:      # zoom < 1: pad with the background colour (a plain crop would fill the overflow with black)
+        pad = Image.new('RGB', (max(cw, iw), max(ch, ih)), tuple(bg or T['img_bg']))
+        pad.paste(im, ((pad.width - iw) // 2, (pad.height - ih) // 2)); im = pad; iw, ih = im.size
     cx = min(max(int(focus[0] * iw - cw / 2), 0), iw - cw); cy = min(max(int(focus[1] * ih - ch / 2), 0), ih - ch)
     im = im.crop((cx, cy, cx + cw, cy + ch))
     maxw = int(w * 220)
