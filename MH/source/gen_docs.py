@@ -152,6 +152,7 @@ FILES = [
     ('`MH/MH_Robotics_Seed_TIPS_IR_Final.pdf`', '본문 + 부록 전체'),
     ('`MH/MH_Robotics_IR_Internal_QA.pptx` · `.pdf`', f'내부 검토용 {len(INT)}장 (예상질문 · 방어논리 · Evidence · Founder 입력 · 투자심사 Memo · Tag 원칙, 제출 제외)'),
     ('`MH/MH_Robotics_Financial_Model.xlsx`', '수식 재무모델: Inputs (Tag · 출처) · 5Y FM (3 Scenario) · Household · Unit Economics · Market · Budget_24M · Sensitivity'),
+    ('`MH/MH_Robotics_Seed_TIPS_Report.docx` · `.pdf`', '사업계획 상세 보고서 (Word, 개조식 · 13개 장 + 부록 · 표 · 차트 · 3D 그림, PDF = 미리보기)'),
 ]
 write('00_README_Index.md', f"""# MH Robotics — Seed · TIPS IR 산출물 Index
 
@@ -1162,6 +1163,7 @@ readme = f"""# MH Robotics — Seed · TIPS IR Package (최종본, 2026.10)
 | `MH_Robotics_Seed_TIPS_IR_Final.pdf` | 본문 + 부록 전체 |
 | `MH_Robotics_IR_Internal_QA.pptx` · `.pdf` | 내부 검토용 {len(INT)}장 (예상질문 · 방어논리 · Evidence · Founder 입력 · 투자심사 Memo · Tag 원칙) — 제출 제외 |
 | `MH_Robotics_Financial_Model.xlsx` | 수식 기반 모델: Inputs (Tag · 출처) → 5Y FM 3 Scenario · Household · Unit_Economics · Market · Budget_24M · Sensitivity · Sources |
+| `MH_Robotics_Seed_TIPS_Report.docx` · `.pdf` | 사업계획 상세 보고서 (Word, 개조식 · 13개 장 + 부록 · 표 · 차트 · 3D 그림 · 자동 목차) · PDF = 미리보기 |
 | `docs/00~20` | 결과물 20종 (01~15 제출 · 공유용 · 16~20 내부 검토용) · [docs/00_README_Index.md](docs/00_README_Index.md) |
 | `render3d/` | 3D 콘셉트 렌더 생성기 (three.js + Playwright) · 간섭 검토 · 보관/펼침 경로 · 평면 JSON · Adaptive Hand 모델 (`web/hand.js`) |
 | `assets/renders/` | 덱에 들어간 렌더 PNG + Callout Anchor · 간섭 검토 JSON |
@@ -1205,10 +1207,12 @@ python3 MH/source/check_xlsx.py     # xlsx 수식값 ↔ model.json 교차검증
 cd MH/render3d && npm install && bash render_v2.sh && bash render_plans.sh && bash render_hand.sh && for f in render_fig_*.sh; do bash $f; done && cd ../..   # 3D 렌더 (선택)
 python3 MH/source/build.py --pdf    # 제출용 덱 + 본문 PDF + 전체 PDF + 내부 검토용 (fit 검사, --png: 미리보기)
 python3 MH/source/gen_docs.py       # docs/*.md + 이 README
+python3 MH/source/report.py --pdf   # 상세 보고서 docx + PDF 미리보기 (docx-js: NODE_PATH=$(npm root -g), 목차 쪽번호 = LibreOffice 기준 · Word에서 필드 업데이트)
 ```
 
 - 단일 원천: `source/model.py` (입력 · Tag · 출처 · 계산) → `model.json` → 덱 · xlsx · 문서. 정성 표 (KPI · WP · Gate · IP · Risk · Q&A · Evidence · Founder 항목 · 경쟁 · 기준 · 평면)는 `source/content.py`.
 - 덱: `source/slides_mh.py` (본문) · `source/slides_mh_apx.py` (부록 · 내부 검토용) · 공용 `kit.py` · `common.py` · `mhkit.py`. 이전 판 코드 = `archive/ARKI_v4/source`.
+- 보고서: `source/report.py` (본문 · 표 · 차트 · 그림 합성 → spec JSON) → `source/report_docx.js` (docx-js 렌더).
 
 ## 외부 제출 전 입력 · 확인
 

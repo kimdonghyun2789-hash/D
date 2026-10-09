@@ -36,3 +36,4 @@
 | `MH/MH_Robotics_Seed_TIPS_IR_Final.pdf` | 본문 + 부록 전체 |
 | `MH/MH_Robotics_IR_Internal_QA.pptx` · `.pdf` | 내부 검토용 7장 (예상질문 · 방어논리 · Evidence · Founder 입력 · 투자심사 Memo · Tag 원칙, 제출 제외) |
 | `MH/MH_Robotics_Financial_Model.xlsx` | 수식 재무모델: Inputs (Tag · 출처) · 5Y FM (3 Scenario) · Household · Unit Economics · Market · Budget_24M · Sensitivity |
+| `MH/MH_Robotics_Seed_TIPS_Report.docx` · `.pdf` | 사업계획 상세 보고서 (Word, 개조식 · 13개 장 + 부록 · 표 · 차트 · 3D 그림, PDF = 미리보기) |
